@@ -38,5 +38,7 @@ app.use("/", indexRouter);
 app.use("/scores", scoreRouter);
 
 db.sequelize.sync({ alter: true }).then(() => {
-  app.listen(3000, () => console.log("server run at port 3000"));
+  app.listen(process.env.PORT || 3000, () =>
+    console.log("server run at port 3000")
+  );
 });
