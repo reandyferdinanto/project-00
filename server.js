@@ -9,8 +9,11 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 // ROUTER
-const indexRouter = require("./src/routers/indexRouter");
+const db = require("./src/models");
+const indexRouter = require("./src/routers/scoreRoute");
 
-app.use("/", indexRouter);
+app.use("/scores", indexRouter);
 
-app.listen(3000, () => console.log("server run at port 3000"));
+db.sequelize.sync({ alter: true }).then(() => {
+  app.listen(3000, () => console.log("server run at port 3000"));
+});

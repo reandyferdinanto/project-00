@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const indexController = require("../controllers/indexController");
+const indexController = require("../controllers/scoreController");
 
 router.get("/", indexController.getAllScore);
 router.get("/:username", indexController.getScoreByUsername);
