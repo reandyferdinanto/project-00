@@ -25,7 +25,6 @@ const indexController = require("../controllers/scoreController");
  *          type: string
  *          description: user point
  *      example:
- *        unique_id: jQfu25f8
  *        username: Assami Muzaki
  *        class: R83
  *        point: 98
@@ -44,15 +43,6 @@ const indexController = require("../controllers/scoreController");
  *  get:
  *    summary: Return the list of all the user scores
  *    tags: [Scores]
- *    responses:
- *      200:
- *        description: the list of the user scores
- *        content:
- *          application/json:
- *            schema:
- *              type: array
- *              items:
- *                $ref: '#/components/schemas/Score'
  */
 
 router.get("/", indexController.getAllScore);
@@ -70,15 +60,6 @@ router.get("/", indexController.getAllScore);
  *          type: string
  *        required: true
  *        description: this is the username score
- *    responses:
- *      200:
- *        description: get score by username parameter
- *        content:
- *          application/json:
- *            schema:
- *              $ref: '#/components/schemas/Score'
- *      404:
- *        description: the score not found
  */
 
 router.get("/:username", indexController.getScoreByUsername);
@@ -95,15 +76,6 @@ router.get("/:username", indexController.getScoreByUsername);
  *        application/json:
  *          schema:
  *            $ref: '#/components/schemas/Score'
- *    responses:
- *      200:
- *        description: success created new score
- *        content:
- *          application/json:
- *            schema:
- *              $ref: '#/components/schemas/Score'
- *      500:
- *        description: Some server error
  */
 
 router.post("/", indexController.addScore);
