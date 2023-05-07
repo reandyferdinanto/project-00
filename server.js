@@ -25,7 +25,7 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:3000",
+        url: "https://muslim-maya-production.up.railway.app/",
       },
     ],
   },
@@ -39,6 +39,6 @@ app.use("/scores", scoreRouter);
 
 db.sequelize.sync({ alter: true }).then(() => {
   app.listen(process.env.PORT || 3000, () =>
-    console.log("server run at port 3000")
+    console.log("server run at port" + process.env.PORT)
   );
 });
