@@ -3,7 +3,7 @@ const response = (statusCode, message, datas, res) => {
     payload: {
       status_code: statusCode,
       message: message,
-      datas: datas,
+      datas: datas || [],
     },
   });
 };

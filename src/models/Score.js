@@ -11,7 +11,12 @@ module.exports = (sequelize, DataTypes) => {
       },
       username: DataTypes.STRING,
       class: DataTypes.STRING,
-      point: DataTypes.STRING,
+      exam_type: DataTypes.STRING,
+      kkm_point: DataTypes.STRING,
+      point: DataTypes.INTEGER,
+      remedial_point: DataTypes.INTEGER,
+      available_try: DataTypes.STRING,
+      number_of_try: DataTypes.INTEGER,
     },
     {
       timestamps: false,

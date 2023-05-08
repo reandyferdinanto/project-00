@@ -6,21 +6,32 @@ const Sequelize = require("sequelize");
 const basename = path.basename(__filename);
 const db = {};
 
+let env_type = process.env.ENV_TYPE || "development";
 let sequelize;
-sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USERNAME,
-  process.env.DB_PASSWORD,
-  {
-    host: process.env.DB_HOST,
-    dialect: "mysql",
-    dialectOptions: {
-      ssl: {
-        rejectUnauthorized: true,
+
+if (env_type == "production") {
+  sequelize = new Sequelize(
+    process.env.DB_NAME,
+    process.env.DB_USERNAME,
+    process.env.DB_PASSWORD,
+    {
+      host: process.env.DB_HOST,
+      dialect: "mysql",
+      dialectOptions: {
+        ssl: {
+          rejectUnauthorized: true,
+        },
       },
-    },
-  }
-);
+    }
+  );
+  console.log("db run on host");
+} else {
+  sequelize = new Sequelize("muslim-maya", "root", "181001", {
+    host: "localhost",
+    dialect: "mysql",
+  });
+  console.log("db run on local");
+}
 
 fs.readdirSync(__dirname)
   .filter((file) => {

@@ -1,16 +1,6 @@
 const { Score } = require("../models");
 const response = require("./response");
 
-async function addScore(req, res) {
-  const body = req.body;
-  const newScore = await Score.create({
-    username: body.username,
-    class: body.class,
-    point: body.point,
-  });
-  response(200, "add new score", newScore, res);
-}
-
 async function getScoreByUsername(req, res, next) {
   const { username } = req.params;
   const score = await Score.findOne({
@@ -36,8 +26,36 @@ async function getAllScore(req, res, next) {
   response(200, "get score by username", score, res);
 }
 
+async function updatePoint(req, res) {
+  const { point, remedial_point } = req.body;
+  const { username } = req.params;
+
+  const user = await Score.findOne({
+    where: {
+      username: username,
+    },
+  });
+  console.log(user.number_of_try);
+  let number_of_try = user.number_of_try + 1;
+
+  const updatedUser = await Score.update(
+    {
+      point: point || user.point,
+      remedial_point: remedial_point || user.remedial_point,
+      number_of_try: number_of_try || user.number_of_try,
+    },
+    {
+      where: {
+        username: username,
+      },
+    }
+  );
+
+  response(203, "point updated", [], res);
+}
+
 module.exports = {
-  addScore,
   getAllScore,
   getScoreByUsername,
+  updatePoint,
 };
