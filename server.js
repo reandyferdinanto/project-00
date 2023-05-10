@@ -15,6 +15,7 @@ const db = require("./src/models");
 const scoreRouter = require("./src/routers/scoreRoute");
 const indexRouter = require("./src/routers/indexRoute");
 const userRouter = require("./src/routers/userRoute");
+const examRoute = require("./src/routers/examRoute");
 
 const options = {
   definition: {
@@ -38,6 +39,7 @@ app.use("/api-docs", SwaggerUI.serve, SwaggerUI.setup(specs));
 app.use("/", indexRouter);
 app.use("/scores", scoreRouter);
 app.use("/users", userRouter);
+app.use("/exams", examRoute);
 
 let PORT = process.env.PORT || 3000;
 

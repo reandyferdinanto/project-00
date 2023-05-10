@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Score = sequelize.define(
-    "Score",
+  const Exams = sequelize.define(
+    "Exam",
     {
       unique_id: {
         type: DataTypes.UUID,
@@ -9,13 +9,15 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         unique: true,
       },
-      username: DataTypes.STRING,
-      class: DataTypes.STRING,
-      point: DataTypes.INTEGER,
+      exam_type: DataTypes.STRING,
+      kkm_point: DataTypes.STRING,
+      remedial_point: DataTypes.INTEGER,
+      available_try: DataTypes.STRING,
+      number_of_try: DataTypes.INTEGER,
     },
     {
       timestamps: false,
     }
   );
-  return Score;
+  return Exams;
 };

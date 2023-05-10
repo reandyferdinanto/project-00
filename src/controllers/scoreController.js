@@ -1,4 +1,4 @@
-const { Score } = require("../models");
+const { Score, Exam, Question } = require("../models");
 const response = require("./response");
 
 async function getScoreByUsername(req, res, next) {
@@ -7,6 +7,21 @@ async function getScoreByUsername(req, res, next) {
     where: {
       username: username,
     },
+    include: [
+      {
+        model: Exam,
+        // attributes: ["unique_id"],
+        include: [
+          {
+            model: Question,
+            attributes: { exclude: ["ExamUniqueId"] },
+          },
+        ],
+        through: {
+          attributes: [],
+        },
+      },
+    ],
   });
   response(200, "get score by username", score, res);
 }
@@ -17,10 +32,41 @@ async function getAllScore(req, res, next) {
     where: {
       username: username || "",
     },
+    include: [
+      {
+        model: Exam,
+        // attributes: ["unique_id"],
+        include: [
+          {
+            model: Question,
+            attributes: { exclude: ["ExamUniqueId"] },
+          },
+        ],
+        through: {
+          attributes: [],
+        },
+      },
+    ],
   });
 
   if (!score) {
-    score = await Score.findAll();
+    score = await Score.findAll({
+      include: [
+        {
+          model: Exam,
+          // attributes: ["unique_id"],
+          include: [
+            {
+              model: Question,
+              attributes: { exclude: ["ExamUniqueId"] },
+            },
+          ],
+          through: {
+            attributes: [],
+          },
+        },
+      ],
+    });
     return response(200, "get all scores", score, res);
   }
   response(200, "get score by username", score, res);

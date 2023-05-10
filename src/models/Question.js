@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Score = sequelize.define(
-    "Score",
+  const Questions = sequelize.define(
+    "Question",
     {
       unique_id: {
         type: DataTypes.UUID,
@@ -9,13 +9,13 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         unique: true,
       },
-      username: DataTypes.STRING,
-      class: DataTypes.STRING,
-      point: DataTypes.INTEGER,
+      question_text: DataTypes.STRING,
+      question_img: DataTypes.STRING,
+      answer: DataTypes.STRING,
     },
     {
       timestamps: false,
     }
   );
-  return Score;
+  return Questions;
 };
