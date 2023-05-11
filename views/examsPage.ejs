@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exam Page | Muslim Maya</title>
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.min.js"
+      integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="static/css/examPage.css" />
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav>
+      <div class="nav-brand">
+        <h2>Muslim Maya</h2>
+      </div>
+      <div class="nav-list">
+        <ul>
+          <li>Daftar Murid</li>
+          <li>Ujian-Ujian</li>
+          <li>Nilai</li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- MAIN -->
+    <main>
+      <div class="main-title">
+        <h4>Daftar Ujian</h4>
+        <a href="/exams/create">
+          <button>Buat Ujian Baru</button>
+        </a>
+      </div>
+      <div class="main-content">tidak ada ujain terdaftar</div>
+    </main>
+  </body>
+  <script>
+    $(document).ready(() => {
+      const url = "http://localhost:3000/api/exams";
+      $.get(url, (data, status) => {
+        if (status == "success") {
+          console.log(data.payload.datas[0]);
+        }
+      });
+    });
+  </script>
+</html>

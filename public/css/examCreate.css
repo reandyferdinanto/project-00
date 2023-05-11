@@ -1,0 +1,54 @@
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+main {
+  padding: 0 10rem 4rem;
+}
+
+.form-config {
+  padding: 2rem 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.form-config label {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.questions {
+  padding: 2rem 0;
+  display: grid;
+}
+.input-question {
+  width: 100%;
+  padding: 0.3rem 0.5rem;
+  min-height: 50px;
+}
+
+.question-answer label {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.question-answer label input {
+  padding: 0.3rem 0.5rem;
+}
+
+.button-submit {
+  width: 100%;
+  padding: 1rem;
+  background-color: #20809d;
+  color: white;
+  border: none;
+  border-radius: 3px;
+}

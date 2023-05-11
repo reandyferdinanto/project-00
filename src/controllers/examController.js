@@ -14,20 +14,46 @@ Exam.hasMany(Question);
 Question.belongsTo(Exam);
 
 async function tambahExam(req, res) {
+  const {
+    exam_type,
+    kkm_point,
+    available_try,
+    question_text,
+    answer,
+    wrong_answer1,
+    wrong_answer2,
+    wrong_answer3,
+  } = req.body;
   const score = await Score.findAll();
-  const exam = await Exam.create();
+  const exam = await Exam.create({
+    exam_type,
+    kkm_point,
+    available_try,
+  });
 
-  const question = await Question.create();
+  const question = await Question.create({
+    question_text,
+    answer,
+    wrong_answer1,
+    wrong_answer2,
+    wrong_answer3,
+  });
   exam.addQuestions(question);
   exam.addScores(score);
-  res.json(score);
+  // response(201, "success add new exam", exam, res);
+  res.redirect("http://localhost:3000/exams");
 }
 
 async function getAllExam(req, res, next) {
   const exams = await Exam.findAll({
-    include: { all: true },
+    include: [
+      {
+        model: Question,
+        attributes: { exclude: ["ExamUniqueId"] },
+      },
+    ],
   });
-  response(200, "get score by username", exams, res);
+  response(200, "get all exam data", exams, res);
 }
 
 module.exports = {

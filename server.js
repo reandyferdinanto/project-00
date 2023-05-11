@@ -1,45 +1,38 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
-const swaggerJSDoc = require("swagger-jsdoc");
-const SwaggerUI = require("swagger-ui-express");
+const path = require("path");
 
 const app = express();
 
 app.use(cors());
 app.use(morgan("dev"));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+app.use("/static", express.static(path.join(__dirname, "public")));
+
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
 // ROUTER
 const db = require("./src/models");
 const scoreRouter = require("./src/routers/scoreRoute");
 const indexRouter = require("./src/routers/indexRoute");
 const userRouter = require("./src/routers/userRoute");
-const examRoute = require("./src/routers/examRoute");
+const examRouter = require("./src/routers/examRoute");
 
-const options = {
-  definition: {
-    openapi: "3.0.0",
-    info: {
-      title: "Muslim Maya API",
-      version: "1.0.0",
-      description: "muslim maya api documentation",
-    },
-    servers: [
-      {
-        url: "https://muslim-maya-production.up.railway.app/",
-      },
-    ],
-  },
-  apis: ["./src/routers/*.js"], // files containing annotations as above
-};
-const specs = swaggerJSDoc(options);
+app.get("/exams", (req, res) => {
+  res.render("examsPage");
+});
+app.get("/exams/create", (req, res) => {
+  res.render("examsCreate");
+});
 
-app.use("/api-docs", SwaggerUI.serve, SwaggerUI.setup(specs));
-app.use("/", indexRouter);
-app.use("/scores", scoreRouter);
-app.use("/users", userRouter);
-app.use("/exams", examRoute);
+app.use("/api/", indexRouter);
+app.use("/api/scores", scoreRouter);
+app.use("/api/users", userRouter);
+app.use("/api/exams", examRouter);
 
 let PORT = process.env.PORT || 3000;
 
