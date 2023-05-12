@@ -7,7 +7,6 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: DataTypes.UUIDV4,
         allowNull: false,
         primaryKey: true,
-        unique: true,
       },
       question_text: DataTypes.STRING,
       question_img: DataTypes.STRING,

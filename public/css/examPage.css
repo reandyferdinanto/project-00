@@ -6,6 +6,8 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 0.3px solid gray;
+  margin-bottom: 3rem;
 }
 
 nav .nav-list ul {
@@ -21,10 +23,5 @@ main .main-title {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-main .main-content {
-  padding: 1rem;
-  text-align: center;
-  color: #5e5e5e;
+  margin-bottom: 1rem;
 }

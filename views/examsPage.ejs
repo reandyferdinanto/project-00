@@ -5,6 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Exam Page | Muslim Maya</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css"
+    />
     <script
       src="https://code.jquery.com/jquery-3.6.4.min.js"
       integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
@@ -30,20 +34,53 @@
     <!-- MAIN -->
     <main>
       <div class="main-title">
-        <h4>Daftar Ujian</h4>
+        <h3>Daftar Ujian</h3>
         <a href="/exams/create">
           <button>Buat Ujian Baru</button>
         </a>
       </div>
-      <div class="main-content">tidak ada ujain terdaftar</div>
+      <div class="main-content">
+        <table id="myTable" class="display">
+          <thead>
+            <tr>
+              <th>Tipe Ujian</th>
+              <th>Nilai KKM</th>
+              <th>Max.Percobaan</th>
+              <!-- <th>Edit Data</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Row 1 Data 1</td>
+              <td>Row 1 Data 2</td>
+              <td>Row 1 Data 1</td>
+            </tr>
+            <tr>
+              <td>Row 2 Data 1</td>
+              <td>Row 2 Data 2</td>
+              <td>Row 2 Data 1</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </main>
   </body>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
   <script>
     $(document).ready(() => {
       const url = "http://localhost:3000/api/exams";
-      $.get(url, (data, status) => {
+      let datas;
+      $.get(url, async (data, status) => {
         if (status == "success") {
-          console.log(data.payload.datas[0]);
+          datas = data.payload.datas;
+          $("#myTable").DataTable({
+            data: datas,
+            columns: [
+              { data: "exam_type" },
+              { data: "kkm_point" },
+              { data: "available_try" },
+            ],
+          });
         }
       });
     });
