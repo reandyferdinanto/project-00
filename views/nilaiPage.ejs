@@ -4,13 +4,13 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Exam Create | Muslim Maya</title>
+    <title>Exam Page | Muslim Maya</title>
     <script
       src="https://code.jquery.com/jquery-3.6.4.min.js"
       integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
       crossorigin="anonymous"
     ></script>
-    <link rel="stylesheet" href="/static/css/examCreate.css" />
+    <link rel="stylesheet" href="static/css/examPage.css" />
   </head>
   <body>
     <!-- NAV -->
@@ -39,49 +39,30 @@
         </div>
         <div class="list-sidebar">
           <a href="">Beranda</a>
-          <a href="">Daftar Siswa</a>
-          <a href="/exams" class="selected">Ujian</a>
-          <a href="">Nilai</a>
+          <a href="/siswa">Daftar Siswa</a>
+          <a href="/ujian">Ujian</a>
+          <a href="/nilai" class="selected">Nilai</a>
         </div>
       </div>
       <div class="main-content">
         <div class="main-background">
           <div class="main-title">
-            <h2>Membuat Ujian Baru</h2>
+            <h2>Nilai</h2>
+            <a href="/exams/create"><button>Download CSV</button></a>
           </div>
-          <div class="main-input">
-            <label for="">
-              Nama Ujian <br />
-              <input class="exam-type" type="text" name="exam_type" id="" />
-              Tipe Ujian
-              <select name="pets" class="exam-type" required>
-                <option value="">--Please choose an option--</option>
-                <option value="manasik">Manasik</option>
-                <option value="jenazah">Jenazah</option>
-              </select>
-            </label>
-            <div class="main-input-config">
-              <label for="">
-                KKM <br />
-                <input
-                  class="exam-input"
-                  type="number"
-                  name="kkm_point"
-                  id=""
-                />
-              </label>
-              <label for="">
-                Max.Percobaan <br />
-                <input
-                  class="exam-input"
-                  type="number"
-                  name="available_try"
-                  id=""
-                />
-              </label>
+          <div class="main-table">
+            <div class="main-table-title">
+              <p><b>No.</b></p>
+              <p><b>Nama Siswa</b></p>
+              <p><b>Tipe Ujian</b></p>
+              <p><b>Nilai Akhir</b></p>
+            </div>
+            <hr />
+            <div class="main-table-body">
+              <img src="/static/img/nothing.png" alt="" />
+              <p>Belum ada nilai</p>
             </div>
           </div>
-          <button class="main-create-question">Membuat Soal</button>
         </div>
       </div>
     </main>
@@ -90,13 +71,10 @@
     $(document).ready(() => {
       const d = new Date();
       let text;
-      // setInterval(() => {
       text = d.toLocaleString("id-ID", {
         dateStyle: "medium",
-        // timeStyle: "medium",
       });
       $("#date").html(text);
-      // }, 1000);
     });
   </script>
 </html>

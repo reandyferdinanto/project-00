@@ -22,11 +22,17 @@ const indexRouter = require("./src/routers/indexRoute");
 const userRouter = require("./src/routers/userRoute");
 const examRouter = require("./src/routers/examRoute");
 
-app.get("/exams", (req, res) => {
+app.get("/ujian", (req, res) => {
   res.render("examsPage");
 });
-app.get("/exams/create", (req, res) => {
+app.get("/ujian/buat", (req, res) => {
   res.render("examsCreate");
+});
+app.get("/nilai", (req, res) => {
+  res.render("nilaiPage");
+});
+app.get("/siswa", (req, res) => {
+  res.render("siswaPage");
 });
 
 app.use("/api/", indexRouter);

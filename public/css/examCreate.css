@@ -109,7 +109,7 @@ main {
 }
 
 .main-input {
-  margin: 1rem 2rem;
+  margin: 1rem 2rem 2rem;
   background-color: #358f6c;
   border-radius: 20px;
   padding: 2rem;
@@ -117,14 +117,14 @@ main {
 }
 .exam-type {
   width: 100%;
-  background-color: antiquewhite;
+  background-color: white;
   border-radius: 7px;
   padding: 0.5rem 0.5rem;
   border: 0.1px solid gray;
 }
 .exam-input {
   width: 50%;
-  background-color: antiquewhite;
+  background-color: white;
   border-radius: 7px;
   padding: 0.5rem 0.5rem;
   border: 0.1px solid gray;
@@ -132,8 +132,8 @@ main {
 .main-input-config {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  margin-top: 2rem;
+  /* gap: 2rem; */
+  margin-top: 1rem;
 }
 label {
   display: grid;
