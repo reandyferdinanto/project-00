@@ -101,10 +101,10 @@ main {
   margin-top: auto;
 }
 .main-title a button {
-  background-color: #358f6c;
+  background-color: #ff4d4d;
   color: white;
   padding: 0.5rem 1.5rem;
-  border-radius: 15px;
+  border-radius: 5px;
   border: none;
   cursor: pointer;
 }
@@ -118,7 +118,7 @@ main {
 .main-table-title {
   padding: 0.5rem 2rem;
   display: grid;
-  grid-template-columns: 0.2fr 1fr 0.1fr 0.1fr;
+  grid-template-columns: 0.2fr 1fr 0.05fr 0.05fr;
 }
 .main-table-body {
   color: #358f6c;
@@ -127,4 +127,17 @@ main {
 }
 .main-table-body p {
   margin: 0;
+}
+.main-table-delete {
+  display: flex;
+  justify-content: flex-end;
+}
+.button-delete {
+  margin: 2rem 2rem 0 0;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 2rem;
+  cursor: pointer;
 }
