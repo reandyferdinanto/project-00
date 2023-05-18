@@ -10,8 +10,14 @@ Exam.belongsToMany(Score, {
   through: ScoreExam,
 });
 
-Exam.hasMany(Question);
-Question.belongsTo(Exam);
+Exam.hasMany(Question, {
+  foreignKey: "examId",
+  constraints: false,
+});
+Question.belongsTo(Exam, {
+  foreignKey: "examId",
+  constraints: false,
+});
 
 async function tambahExam(req, res) {
   let {
