@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exam Create | Muslim Maya</title>
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.min.js"
+      integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="/static/css/siswaCreate.css" />
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav>
+      <div class="nav-brand">
+        <h2>Muslim Maya</h2>
+        <!-- <img src="/static/img/logo.png" alt="" width="100px" /> -->
+      </div>
+      <div class="nav-list">
+        <p id="date"></p>
+        <a href=""><button>Keluar</button></a>
+      </div>
+    </nav>
+
+    <!-- MAIN -->
+    <main>
+      <div class="main-sidebar">
+        <div class="profile-sidebar">
+          <div class="profile-img">
+            <img src="" alt="" />
+          </div>
+          <div class="profile-info">
+            <p><b>Assami Muzaki</b></p>
+            <p>Guru</p>
+          </div>
+        </div>
+        <div class="list-sidebar">
+          <a href="/">Beranda</a>
+          <a href="/siswa" class="selected">Daftar Siswa</a>
+          <a href="/ujian">Ujian</a>
+          <a href="/nilai">Nilai</a>
+        </div>
+      </div>
+
+      <div class="main-content">
+        <div class="main-background">
+          <form
+            id="submit-form"
+            action="http://localhost:3000/api/users"
+            method="post"
+          >
+            <div class="main-title">
+              <h2>Membuat Ujian Baru</h2>
+            </div>
+            <div class="main-input">
+              <label for="">
+                Nama Siswa <br />
+                <input class="nama-input" type="text" name="username" id="" />
+                Kelas <br />
+                <input class="kelas-input" type="text" name="class" id="" />
+              </label>
+            </div>
+            <div class="submit-input">
+              <button type="button" id="selesai">Selesai</button>
+            </div>
+            <div class="submit-layer">
+              <div class="submit-question">
+                <img src="/static/img/warning-alt.png" alt="" width="150" />
+                <p>Apakah anda sudah yakin selesai?</p>
+                <div class="submit-buttons">
+                  <button class="ubah-button" type="button">Ubah</button>
+                  <button class="selesai-button" type="submit">Selesai</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </body>
+  <script>
+    $(document).ready(() => {
+      const d = new Date();
+      let text;
+      text = d.toLocaleString("id-ID", {
+        dateStyle: "medium",
+      });
+      $("#date").html(text);
+
+      // ADD SOAL
+
+      $("#selesai").on("click", () => {
+        $(".submit-layer").css("visibility", "visible");
+      });
+
+      $(".ubah-button").on("click", () => {
+        $(".submit-layer").css("visibility", "hidden");
+      });
+    });
+  </script>
+</html>

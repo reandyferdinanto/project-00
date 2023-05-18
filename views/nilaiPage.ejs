@@ -10,7 +10,7 @@
       integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
       crossorigin="anonymous"
     ></script>
-    <link rel="stylesheet" href="static/css/examPage.css" />
+    <link rel="stylesheet" href="static/css/nilaiPage.css" />
   </head>
   <body>
     <!-- NAV -->
@@ -38,7 +38,7 @@
           </div>
         </div>
         <div class="list-sidebar">
-          <a href="">Beranda</a>
+          <a href="/">Beranda</a>
           <a href="/siswa">Daftar Siswa</a>
           <a href="/ujian">Ujian</a>
           <a href="/nilai" class="selected">Nilai</a>
@@ -75,6 +75,39 @@
         dateStyle: "medium",
       });
       $("#date").html(text);
+
+      // CALL
+
+      const url = "http://localhost:3000/api/scores";
+      let datas;
+      $.get(url, async (data, status) => {
+        if (status == "success" && data.payload.datas.length !== 0) {
+          $(".main-table-body").html("");
+          $(".main-table-body").css({
+            "text-align": "left",
+            // padding: "0.5rem 2rem",
+            margin: ".5rem 2rem",
+          });
+          datas = data.payload.datas;
+          console.log(datas);
+          datas.map((data, index) => {
+            $(".main-table-body").append([
+              `
+                <div class="table-body">
+                  <p>${index + 1}.</p>
+                  <p>${data.username}</p>
+                  <p>${
+                    data.Exams.length !== 0
+                      ? data.Exams[0].exam_type
+                      : "Belum Ujian"
+                  }</p>
+                  <p>${data.point ? data.point : 0}</p>
+                </div>
+              `,
+            ]);
+          });
+        }
+      });
     });
   </script>
 </html>

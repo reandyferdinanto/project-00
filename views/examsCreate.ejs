@@ -38,7 +38,7 @@
           </div>
         </div>
         <div class="list-sidebar">
-          <a href="">Beranda</a>
+          <a href="/">Beranda</a>
           <a href="/siswa">Daftar Siswa</a>
           <a href="/ujian" class="selected">Ujian</a>
           <a href="/nilai">Nilai</a>
@@ -58,11 +58,18 @@
             <div class="main-input">
               <label for="">
                 Nama Ujian <br />
-                <input class="exam-type" type="text" name="exam_name" id="" />
+                <input
+                  class="exam-type"
+                  type="text"
+                  name="exam_name"
+                  id=""
+                  required
+                />
                 Tipe Ujian
                 <select name="exam_type" class="exam-type" required>
                   <option value="">--Please choose an option--</option>
                   <option value="manasik">Manasik</option>
+                  <option value="jenazah">Jenazah</option>
                 </select>
               </label>
               <div class="main-input-config">
@@ -124,11 +131,11 @@
               <p>Soal</p>
                 <textarea name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
                 <div class="answers">
-                  <input placeholder='jawaban benar' name='answer' class='answer'/>
-                  <input placeholder='jawaban lain' name='wrong_answer1' class='answer'/>
-                  <input placeholder='jawaban lain' name='wrong_answer2' class='answer'/>
-                  <input placeholder='jawaban lain' name='wrong_answer3' class='answer'/>
-                  <input placeholder='jawaban lain' name='wrong_answer4' class='answer'/>
+                  <input placeholder='jawaban benar' name='correct_answer' class='answer'/>
+                  <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
+                  <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
+                  <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
+                  <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
                 </div>
               </div>
             </div>
@@ -152,11 +159,11 @@
               <p>Soal</p>
               <textarea name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
               <div class="answers">
-                <input placeholder='jawaban benar' name='answer' class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer1' class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer2' class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer3' class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer4' class='answer'/>
+                <input placeholder='jawaban benar' name='correct_answer' class='answer'/>
+                <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
+                <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
+                <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
+                <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
               </div>
             </div>
           `,

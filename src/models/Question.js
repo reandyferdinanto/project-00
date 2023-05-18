@@ -10,10 +10,8 @@ module.exports = (sequelize, DataTypes) => {
       },
       question_text: DataTypes.STRING,
       question_img: DataTypes.STRING,
-      answer: DataTypes.STRING,
-      wrong_answer1: DataTypes.STRING,
-      wrong_answer2: DataTypes.STRING,
-      wrong_answer3: DataTypes.STRING,
+      correct_answer: DataTypes.STRING,
+      wrong_answer: DataTypes.STRING,
     },
     {
       timestamps: false,

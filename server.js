@@ -34,6 +34,12 @@ app.get("/nilai", (req, res) => {
 app.get("/siswa", (req, res) => {
   res.render("siswaPage");
 });
+app.get("/siswa/tambah", (req, res) => {
+  res.render("siswaCreate");
+});
+app.get("/", (req, res) => {
+  res.render("berandaPage");
+});
 
 app.use("/api/", indexRouter);
 app.use("/api/scores", scoreRouter);

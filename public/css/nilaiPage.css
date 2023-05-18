@@ -97,24 +97,14 @@ main {
   justify-content: space-between;
   padding: 1rem 2rem;
 }
-.main-title .main-side {
+.main-title a {
   margin-top: auto;
-  display: flex;
-  gap: 1rem;
 }
-.main-title a .hapus-button {
-  background-color: #ff4d4d;
-  color: white;
-  padding: 0.5rem 1.5rem;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-}
-.main-title a .tambah-button {
+.main-title a button {
   background-color: #358f6c;
   color: white;
   padding: 0.5rem 1.5rem;
-  border-radius: 5px;
+  border-radius: 15px;
   border: none;
   cursor: pointer;
 }
@@ -128,7 +118,7 @@ main {
 .main-table-title {
   padding: 0.5rem 2rem;
   display: grid;
-  grid-template-columns: 0.2fr 1fr 0.1fr 0.05fr;
+  grid-template-columns: 0.3fr 1fr 1fr 0.4fr;
 }
 .main-table-body {
   color: #358f6c;
@@ -138,31 +128,11 @@ main {
 .main-table-body p {
   margin: 0;
 }
-.main-table-delete {
-  display: flex;
-  justify-content: flex-end;
-}
-.button-delete {
-  margin: 2rem 2rem 0 0;
-  background-color: red;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 0.5rem 2rem;
-  cursor: pointer;
-}
 
 .table-body {
   display: grid;
-  grid-template-columns: 0.2fr 1fr 0.1fr 0.05fr;
   padding: 1rem 0;
+  grid-template-columns: 0.3fr 1fr 1fr 0.4fr;
   border: 0.1px solid lightgray;
   border-width: 0px 0 0.1px 0;
-}
-.uil-edit {
-  text-align: center;
-}
-.table-body a {
-  width: max-content;
-  color: #358f6c;
 }

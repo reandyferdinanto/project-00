@@ -7,7 +7,8 @@ async function addUser(req, res) {
     username: body.username,
     class: body.class,
   });
-  response(201, "add new user", newUser, res);
+  res.redirect("/siswa");
+  // response(201, "add new user", newUser, res);
 }
 
 module.exports = {

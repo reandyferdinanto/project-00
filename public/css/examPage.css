@@ -118,7 +118,7 @@ main {
 .main-table-title {
   padding: 0.5rem 2rem;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 0.3fr 1fr 1fr 0.5fr 0.5fr;
 }
 .main-table-body {
   color: #358f6c;
@@ -127,4 +127,16 @@ main {
 }
 .main-table-body p {
   margin: 0;
+}
+
+.table-body {
+  display: grid;
+  padding: 1rem 0;
+  grid-template-columns: 0.3fr 1fr 1fr 0.5fr 0.5fr;
+  border: 0.1px solid lightgray;
+  border-width: 0px 0 0.1px 0;
+}
+.table-body a {
+  width: max-content;
+  color: #358f6c;
 }
