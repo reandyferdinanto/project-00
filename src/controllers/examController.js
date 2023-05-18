@@ -4,10 +4,12 @@ const response = require("./response");
 Score.belongsToMany(Exam, {
   foreignKey: "score_id",
   through: ScoreExam,
+  constraints: false,
 });
 Exam.belongsToMany(Score, {
   foreignKey: "exam_id",
   through: ScoreExam,
+  constraints: false,
 });
 
 Exam.hasMany(Question, {
