@@ -78,7 +78,7 @@
       });
       $("#date").html(text);
 
-      const url = "http://localhost:3000/api/exams";
+      const url = "/api/exams";
       let datas;
       $.get(url, async (data, status) => {
         if (status == "success" && data.payload.datas.length !== 0) {
