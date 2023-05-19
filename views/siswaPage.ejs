@@ -70,10 +70,7 @@
               <p><input type="checkbox" name="" id="" /></p>
             </div>
             <hr />
-            <div class="main-table-body">
-              <img src="/static/img/nothing.png" alt="" />
-              <p>Belum ada siswa</p>
-            </div>
+            <div class="main-table-body"></div>
           </div>
         </div>
       </div>
@@ -113,6 +110,13 @@
               `,
             ]);
           });
+        } else {
+          $(".main-table-body").append([
+            `
+                <img src="/static/img/nothing.png" alt="" />
+                <p>Belum ada siswa</p>
+              `,
+          ]);
         }
       });
     });
