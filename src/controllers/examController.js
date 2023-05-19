@@ -52,7 +52,7 @@ async function tambahExam(req, res) {
       exam.addQuestions(question);
     });
     exam.addScores(score);
-    return res.redirect("http://localhost:3000/ujian");
+    return res.redirect("/ujian");
   } else {
     let wrong_answer = req.body.wrong_answer.join();
     const question = await Question.create({
@@ -62,7 +62,7 @@ async function tambahExam(req, res) {
     });
     exam.addQuestions(question);
     exam.addScores(score);
-    return res.redirect("http://localhost:3000/ujian");
+    return res.redirect("/ujian");
   }
 }
 
