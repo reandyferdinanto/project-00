@@ -1,15 +1,30 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+const multer = require("multer");
 const path = require("path");
 
 const app = express();
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "images");
+  },
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      file.fieldname + "-" + Date.now() + file.originalname.match(/\..*$/)[0]
+    );
+  },
+});
+
+app.use(multer({ storage: storage, limits: { fileSize: 1000000 } }).any());
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/static", express.static(path.join(__dirname, "public")));
 
 app.set("view engine", "ejs");

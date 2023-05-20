@@ -10,6 +10,10 @@
       integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
       crossorigin="anonymous"
     ></script>
+    <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v4.0.8/css/line.css"
+    />
     <link rel="stylesheet" href="/static/css/examCreate.css" />
   </head>
   <body>
@@ -47,7 +51,12 @@
 
       <div class="main-content">
         <div class="main-background">
-          <form id="submit-form" action="/api/exams" method="post">
+          <form
+            id="submit-form"
+            action="/api/exams"
+            method="post"
+            enctype="multipart/form-data"
+          >
             <div class="main-title">
               <h2>Membuat Ujian Baru</h2>
             </div>
@@ -107,71 +116,5 @@
       </div>
     </main>
   </body>
-  <script>
-    $(document).ready(() => {
-      const d = new Date();
-      let text;
-      text = d.toLocaleString("id-ID", {
-        dateStyle: "medium",
-      });
-      $("#date").html(text);
-
-      // ADD SOAL
-      $("#add-question").on("click", () => {
-        $("#add-question").remove();
-        $("#submit-form").append([
-          `
-          <div class="questions-box">
-            <div class="questions">
-              <div class="question">
-              <p>Soal</p>
-                <textarea name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
-                <div class="answers">
-                  <input placeholder='jawaban benar' name='correct_answer' class='answer'/>
-                  <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
-                  <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
-                  <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
-                  <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
-                </div>
-              </div>
-            </div>
-            <div class="add-more">
-              <button id="add-more" type="button">Tambah Soal</button>
-            </div>
-          </div>
-          <div class="submit-input">
-            <button type="button" id="selesai">Selesai</button>
-          </div>
-          `,
-        ]);
-      });
-
-      // ADD MORE
-
-      $(".main-background").on("click", "#add-more", () => {
-        $(".questions").append([
-          `
-            <div class="question">
-              <p>Soal</p>
-              <textarea name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
-              <div class="answers">
-                <input placeholder='jawaban benar' name='correct_answer' class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
-              </div>
-            </div>
-          `,
-        ]);
-      });
-
-      $(".main-background").on("click", "#selesai", () => {
-        $(".submit-layer").css("visibility", "visible");
-      });
-      $(".ubah-button").on("click", () => {
-        $(".submit-layer").css("visibility", "hidden");
-      });
-    });
-  </script>
+  <script src="/static/js/examCreate.js"></script>
 </html>
