@@ -46,7 +46,7 @@ async function tambahExam(req, res) {
         .join();
       const question = await Question.create({
         question_text: question_text[index],
-        question_img: `${req.protocol + "://" + req.get("host")}/images/${
+        question_img: `${req.protocol + "://" + req.get("host")}/uploads/${
           req.files[index].filename
         }`,
         correct_answer: correct_answer[index],
@@ -60,7 +60,7 @@ async function tambahExam(req, res) {
     let wrong_answer = req.body.wrong_answer.join();
     const question = await Question.create({
       question_text,
-      question_img: `${req.protocol + "://" + req.get("host")}/images/${
+      question_img: `${req.protocol + "://" + req.get("host")}/uploads/${
         req.files[0].filename
       }`,
       correct_answer,

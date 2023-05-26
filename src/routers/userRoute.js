@@ -47,5 +47,6 @@ const userController = require("../controllers/userController");
  */
 
 router.post("/", userController.addUser);
+router.post("/file", userController.uploadCSV);
 
 module.exports = router;

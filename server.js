@@ -8,7 +8,7 @@ const app = express();
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "images");
+    cb(null, "uploads");
   },
   filename: function (req, file, cb) {
     cb(
@@ -60,6 +60,22 @@ app.use("/api/", indexRouter);
 app.use("/api/scores", scoreRouter);
 app.use("/api/users", userRouter);
 app.use("/api/exams", examRouter);
+
+// ERROR HANDLER
+app.all("*", (req, res, next) => {
+  const err = new Error(`can't find ${req.originalUrl} on the server!`);
+  err.status = "fail";
+  err.statusCode = 404;
+  next(err);
+});
+app.use((error, req, res, next) => {
+  error.statusCode = error.statusCode || 500;
+  error.status = error.status || "error";
+  res.status(error.statusCode).json({
+    status: error.statusCode,
+    message: error.message,
+  });
+});
 
 let PORT = process.env.PORT || 3000;
 

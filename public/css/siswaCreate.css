@@ -103,7 +103,7 @@ main {
 .main-title {
   display: flex;
   justify-content: space-between;
-  padding: 1rem 2rem;
+  padding: 2rem 2rem 0;
 }
 .main-title a {
   margin-top: auto;
@@ -257,4 +257,27 @@ label {
 .selesai-button {
   background-color: #358f6c;
   color: white;
+}
+
+input[type="file"] {
+  /* display: none; */
+}
+
+.custom-file-upload {
+  border-radius: 7px;
+  display: inline-block;
+  padding: 0.4rem 1.5rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  width: max-content;
+  height: max-content;
+  background-color: #358f6c;
+  color: white;
+}
+
+.upload-siswa {
+  margin-right: 2rem;
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 2rem;
 }

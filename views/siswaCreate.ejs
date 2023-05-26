@@ -47,10 +47,25 @@
 
       <div class="main-content">
         <div class="main-background">
+          <div class="main-title">
+            <h2>Membuat Ujian Baru</h2>
+          </div>
+          <div class="upload-siswa">
+            <form id="fileUpload">
+              <label class="custom-file-upload">
+                <input
+                  type="file"
+                  class="input-file"
+                  multiple="multiple"
+                  name="siswa_upload"
+                  accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                />
+                <!-- <i class="uil uil-file-plus-alt"></i> Upload CSV Siswa -->
+                <input type="submit" value="Upload CSV" />
+              </label>
+            </form>
+          </div>
           <form id="submit-form" action="/api/users" method="post">
-            <div class="main-title">
-              <h2>Membuat Ujian Baru</h2>
-            </div>
             <div class="main-input">
               <label for="">
                 Nama Siswa <br />
@@ -94,6 +109,30 @@
 
       $(".ubah-button").on("click", () => {
         $(".submit-layer").css("visibility", "hidden");
+      });
+
+      // FILE UPLOAD
+      const fileUpload = document.getElementById("fileUpload");
+      fileUpload.addEventListener("submit", (e) => {
+        e.preventDefault();
+        let formData = new FormData(fileUpload);
+
+        $.ajax({
+          url: "/api/users/file",
+          type: "POST",
+          data: formData,
+          async: false,
+          cache: false,
+          contentType: false,
+          encrypt: "multipart/form-data",
+          processData: false,
+          success: (response) => {
+            console.log(response);
+            if (response.status == "ok") {
+              window.location = "/siswa";
+            }
+          },
+        });
       });
     });
   </script>
