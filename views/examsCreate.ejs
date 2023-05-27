@@ -25,7 +25,9 @@
       </div>
       <div class="nav-list">
         <p id="date"></p>
-        <a href=""><button>Keluar</button></a>
+        <form action="/api/admin/logout" method="post">
+          <a href=""><button type="submit">Keluar</button></a>
+        </form>
       </div>
     </nav>
 
@@ -37,7 +39,7 @@
             <img src="" alt="" />
           </div>
           <div class="profile-info">
-            <p><b>Assami Muzaki</b></p>
+            <p><b><%= user.username %></b></p>
             <p>Guru</p>
           </div>
         </div>

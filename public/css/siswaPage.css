@@ -102,7 +102,7 @@ main {
   display: flex;
   gap: 1rem;
 }
-.main-title a .hapus-button {
+.hapus-button {
   background-color: #ff4d4d;
   color: white;
   padding: 0.5rem 1.5rem;
@@ -128,7 +128,7 @@ main {
 .main-table-title {
   padding: 0.5rem 2rem;
   display: grid;
-  grid-template-columns: 0.2fr 1fr 0.1fr 0.05fr;
+  grid-template-columns: 0.2fr 0.6fr 0.2fr 0.1fr 0.05fr;
 }
 .main-table-body {
   color: #358f6c;
@@ -154,7 +154,7 @@ main {
 
 .table-body {
   display: grid;
-  grid-template-columns: 0.2fr 1fr 0.1fr 0.05fr;
+  grid-template-columns: 0.2fr 0.6fr 0.2fr 0.1fr 0.05fr;
   padding: 1rem 0;
   border: 0.1px solid lightgray;
   border-width: 0px 0 0.1px 0;
@@ -165,4 +165,48 @@ main {
 .table-body a {
   width: max-content;
   color: #358f6c;
+}
+
+.submit-layer {
+  /* display: none; */
+  visibility: hidden;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  /* width: 100%;
+  height: 100vh; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.submit-question {
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5rem 10rem;
+  background-color: white;
+  color: black;
+}
+.submit-buttons {
+  display: flex;
+  gap: 1rem;
+}
+.submit-buttons button {
+  padding: 0.5rem 1.5rem;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  width: 100px;
+}
+.ubah-button {
+  background-color: #ff4c4c;
+  color: white;
+}
+.selesai-button {
+  background-color: #358f6c;
+  color: white;
 }

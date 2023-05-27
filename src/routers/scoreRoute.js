@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const scoreController = require("../controllers/scoreController");
+const { validateToken } = require("../utils/JWT");
 
 router.get("/", scoreController.getAllScore);
 router.get("/:username", scoreController.getScoreByUsername);

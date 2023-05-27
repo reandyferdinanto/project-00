@@ -21,7 +21,9 @@
       </div>
       <div class="nav-list">
         <p id="date"></p>
-        <a href=""><button>Keluar</button></a>
+        <form action="/api/admin/logout" method="post">
+          <a href=""><button type="submit">Keluar</button></a>
+        </form>
       </div>
     </nav>
 
@@ -33,7 +35,7 @@
             <img src="" alt="" />
           </div>
           <div class="profile-info">
-            <p><b>Assami Muzaki</b></p>
+            <p><b><%= user.username %></b></p>
             <p>Guru</p>
           </div>
         </div>
@@ -65,13 +67,41 @@
               </label>
             </form>
           </div>
-          <form id="submit-form" action="/api/users" method="post">
+          <form id="submit-form">
             <div class="main-input">
               <label for="">
+                Nis <br />
+                <input
+                  class="nama-input"
+                  required
+                  type="text"
+                  name="nis"
+                  id=""
+                />
                 Nama Siswa <br />
-                <input class="nama-input" type="text" name="username" id="" />
+                <input
+                  class="kelas-input"
+                  required
+                  type="text"
+                  name="username"
+                  id=""
+                />
                 Kelas <br />
-                <input class="kelas-input" type="text" name="class" id="" />
+                <input
+                  class="nama-input"
+                  required
+                  type="text"
+                  name="class"
+                  id=""
+                />
+                Jurusan <br />
+                <input
+                  class="kelas-input"
+                  required
+                  type="text"
+                  name="major"
+                  id=""
+                />
               </label>
             </div>
             <div class="submit-input">
@@ -119,6 +149,30 @@
 
         $.ajax({
           url: "/api/users/file",
+          type: "POST",
+          data: formData,
+          async: false,
+          cache: false,
+          contentType: false,
+          encrypt: "multipart/form-data",
+          processData: false,
+          success: (response) => {
+            console.log(response);
+            if (response.status == "ok") {
+              window.location = "/siswa";
+            }
+          },
+        });
+      });
+
+      // MANUAL UPLOAD
+      const manualForm = document.getElementById("submit-form");
+      manualForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        let formData = new FormData(manualForm);
+
+        $.ajax({
+          url: "/api/users",
           type: "POST",
           data: formData,
           async: false,

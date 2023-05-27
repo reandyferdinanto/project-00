@@ -41,7 +41,29 @@ async function uploadCSV(req, res) {
   );
 }
 
+async function deleteUser(req, res, next) {
+  let checkedSiswa = req.body.checkedSiswa;
+  if (!checkedSiswa) {
+    const err = new Error("no siswa selected");
+    err.status = "fail";
+    err.statusCode = 204;
+    next(err);
+  } else {
+    await Score.destroy({
+      where: {
+        unique_id: checkedSiswa,
+      },
+    });
+    const result = {
+      status: "ok",
+      message: "siswa berhasil dihapus",
+    };
+    return res.json(result);
+  }
+}
+
 module.exports = {
   addUser,
   uploadCSV,
+  deleteUser,
 };

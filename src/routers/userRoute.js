@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const userController = require("../controllers/userController");
+const { validateToken } = require("../utils/JWT");
 
 /**
  * @swagger
@@ -46,7 +47,8 @@ const userController = require("../controllers/userController");
  *            $ref: '#/components/schemas/User'
  */
 
-router.post("/", userController.addUser);
-router.post("/file", userController.uploadCSV);
+router.post("/", validateToken, userController.addUser);
+router.post("/file", validateToken, userController.uploadCSV);
+router.delete("/", validateToken, userController.deleteUser);
 
 module.exports = router;

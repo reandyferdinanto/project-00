@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.min.js"
+      integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="/static/css/loginPage.css" />
+    <title>Login Page</title>
+  </head>
+  <body>
+    <main>
+      <div class="logo">
+        <img src="/static/img/logo.png" alt="" />
+      </div>
+      <div class="content">
+        <p class="error-password"></p>
+        <form id="formLogin">
+          <input type="text" required name="username" placeholder="username" />
+          <input
+            type="password"
+            required
+            name="password"
+            placeholder="password"
+          />
+          <button class="loginButton">MASUK</button>
+        </form>
+      </div>
+    </main>
+  </body>
+  <script>
+    $(document).ready(() => {
+      const formLogin = document.getElementById("formLogin");
+      formLogin.addEventListener("submit", (e) => {
+        e.preventDefault();
+        let formData = new FormData(formLogin);
+
+        $.ajax({
+          url: "/api/admin/login",
+          type: "POST",
+          data: formData,
+          async: false,
+          cache: false,
+          contentType: false,
+          encrypt: "multipart/form-data",
+          processData: false,
+          success: (response) => {
+            if (response.message == "LOGEDIN") {
+              window.location = "/";
+            }
+            if (response.error) {
+              $(".error-password").html(response.error);
+            }
+          },
+        });
+      });
+    });
+  </script>
+</html>

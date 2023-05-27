@@ -88,16 +88,24 @@ $(document).ready(() => {
 
   function displayQueuedImages() {
     let img = "";
+    console.log(queuedImagesArray);
     queuedImagesArray.forEach((image, index) => {
-      img = `
-        <img src="${URL.createObjectURL(image[0])}" alt="image" />
-        <span onclick="deleteQueuedImage(${index});">&times;</span>
-      `;
+      if (image.length != 0) {
+        img = `<img src="${URL.createObjectURL(image[0])}" alt="no img" />
+        <span class="deleteImg">&times;</span>`;
+      } else {
+        img = "";
+      }
+
       document.querySelectorAll(".display_image")[index].innerHTML = img;
     });
   }
-  function deleteQueuedImage(index) {
-    queuedImagesArray.splice(index, 1);
-    displayQueuedImages();
-  }
+
+  $(".main-background").on("click", ".deleteImg", (e) => {
+    // queuedImagesArray.splice(index, 1);
+    let deleteImg = document.querySelectorAll(".deleteImg");
+    console.log(deleteImg);
+    // e.target.parentElement.innerHTML = "";
+    // console.log(e);
+  });
 });

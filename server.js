@@ -3,6 +3,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
+const cookieParse = require("cookie-parser");
 
 const app = express();
 
@@ -20,6 +21,7 @@ const storage = multer.diskStorage({
 
 app.use(multer({ storage: storage, limits: { fileSize: 1000000 } }).any());
 app.use(cors());
+app.use(cookieParse());
 app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -36,30 +38,15 @@ const scoreRouter = require("./src/routers/scoreRoute");
 const indexRouter = require("./src/routers/indexRoute");
 const userRouter = require("./src/routers/userRoute");
 const examRouter = require("./src/routers/examRoute");
+const adminRouter = require("./src/routers/adminRoute");
+const webRouter = require("./src/routers/webRouter");
 
-app.get("/ujian", (req, res) => {
-  res.render("examsPage");
-});
-app.get("/ujian/buat", (req, res) => {
-  res.render("examsCreate");
-});
-app.get("/nilai", (req, res) => {
-  res.render("nilaiPage");
-});
-app.get("/siswa", (req, res) => {
-  res.render("siswaPage");
-});
-app.get("/siswa/tambah", (req, res) => {
-  res.render("siswaCreate");
-});
-app.get("/", (req, res) => {
-  res.render("berandaPage");
-});
-
+app.use("/", webRouter);
 app.use("/api/", indexRouter);
 app.use("/api/scores", scoreRouter);
 app.use("/api/users", userRouter);
 app.use("/api/exams", examRouter);
+app.use("/api/admin", adminRouter);
 
 // ERROR HANDLER
 app.all("*", (req, res, next) => {
