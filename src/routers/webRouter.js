@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { validateRedirect } = require("../utils/JWT");
+const { validateRedirect, validateToken } = require("../utils/JWT");
 
 router.get("/ujian", validateRedirect, (req, res) => {
   res.render("examsPage", {
@@ -32,7 +32,11 @@ router.get("/", validateRedirect, (req, res) => {
   });
 });
 router.get("/login", (req, res) => {
-  res.render("loginPage");
+  if (req.cookies["access-token"]) {
+    res.redirect("/");
+  } else {
+    res.render("loginPage");
+  }
 });
 
 module.exports = router;

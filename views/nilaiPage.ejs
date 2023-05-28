@@ -50,13 +50,23 @@
         <div class="main-background">
           <div class="main-title">
             <h2>Nilai</h2>
-            <a href="/exams/create"><button>Download CSV</button></a>
+            <form id="download-form" method="post">
+              <a href="/exams/create"
+                ><button type="submit">Download CSV</button></a
+              >
+            </form>
+          </div>
+          <div class="filter-option">
+            <select name="exams-filter" id="exams-select">
+              <option value="0">Manasik</option>
+              <option value="1">Jenazah</option>
+            </select>
           </div>
           <div class="main-table">
             <div class="main-table-title">
               <p><b>No.</b></p>
               <p><b>Nama Siswa</b></p>
-              <p><b>Tipe Ujian</b></p>
+              <p><b>Nama Ujian</b></p>
               <p><b>Nilai Akhir</b></p>
             </div>
             <hr />
@@ -84,11 +94,9 @@
           $(".main-table-body").html("");
           $(".main-table-body").css({
             "text-align": "left",
-            // padding: "0.5rem 2rem",
             margin: ".5rem 2rem",
           });
           datas = data.payload.datas;
-          console.log(datas);
           datas.map((data, index) => {
             $(".main-table-body").append([
               `
@@ -97,8 +105,8 @@
                   <p>${data.username}</p>
                   <p>${
                     data.Exams.length !== 0
-                      ? data.Exams[0].exam_type
-                      : "Belum Ujian"
+                      ? data.Exams[0].exam_name
+                      : "Belum Mengambil Ujian"
                   }</p>
                   <p>${data.point ? data.point : 0}</p>
                 </div>
@@ -113,6 +121,65 @@
               `,
           ]);
         }
+      });
+
+      // SELECT
+      $("#exams-select").on("change", function () {
+        const url = "/api/scores";
+        let datas;
+        $.get(url, async (data, status) => {
+          if (status == "success" && data.payload.datas.length !== 0) {
+            $(".main-table-body").html("");
+            $(".main-table-body").css({
+              "text-align": "left",
+              margin: ".5rem 2rem",
+            });
+            datas = data.payload.datas;
+            datas.map((data, index) => {
+              $(".main-table-body").append([
+                `
+                <div class="table-body">
+                  <p>${index + 1}.</p>
+                  <p>${data.username}</p>
+                  <p>${
+                    data.Exams.length !== 0
+                      ? data.Exams[$(this).val()].exam_name
+                      : "Belum Mengambil Ujian"
+                  }</p>
+                  <p>${data.point ? data.point : 0}</p>
+                </div>
+              `,
+              ]);
+            });
+          } else {
+            $(".main-table-body").append([
+              `
+                <img src="/static/img/nothing.png" alt="" />
+                <p>Belum ada nilai</p>
+              `,
+            ]);
+          }
+        });
+      });
+
+      // DOWNLOAD
+
+      let download_form = document.getElementById("download-form");
+      download_form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        $.ajax({
+          url: "/api/users/export",
+          type: "GET",
+          async: false,
+          cache: false,
+          contentType: false,
+          processData: false,
+          success: (response) => {
+            if (response.status_code == 200) {
+              window.location.href = "files/exports/nilai-siswa.csv";
+            }
+          },
+        });
       });
     });
   </script>

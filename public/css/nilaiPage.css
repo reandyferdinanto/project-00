@@ -136,3 +136,15 @@ main {
   border: 0.1px solid lightgray;
   border-width: 0px 0 0.1px 0;
 }
+
+.filter-option {
+  display: flex;
+  justify-content: center;
+}
+.filter-option select {
+  padding: 0.5rem 1.5rem;
+  background-color: #358f6c;
+  color: white;
+  border-radius: 5px;
+  border: 0.1px solid gray;
+}

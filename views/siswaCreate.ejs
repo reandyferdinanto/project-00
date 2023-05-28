@@ -53,7 +53,7 @@
             <h2>Membuat Ujian Baru</h2>
           </div>
           <div class="upload-siswa">
-            <form id="fileUpload">
+            <form id="fileUpload" method="post">
               <label class="custom-file-upload">
                 <input
                   type="file"
@@ -67,7 +67,7 @@
               </label>
             </form>
           </div>
-          <form id="submit-form">
+          <form id="submit-form" method="post">
             <div class="main-input">
               <label for="">
                 Nis <br />
@@ -157,8 +157,8 @@
           encrypt: "multipart/form-data",
           processData: false,
           success: (response) => {
-            console.log(response);
-            if (response.status == "ok") {
+            console.log(response.payload.status_code);
+            if (response.payload.status_code == 201) {
               window.location = "/siswa";
             }
           },
@@ -167,10 +167,10 @@
 
       // MANUAL UPLOAD
       const manualForm = document.getElementById("submit-form");
+      // $("selesai-button").on("click", () => {
       manualForm.addEventListener("submit", (e) => {
-        e.preventDefault();
         let formData = new FormData(manualForm);
-
+        e.preventDefault();
         $.ajax({
           url: "/api/users",
           type: "POST",
@@ -181,13 +181,14 @@
           encrypt: "multipart/form-data",
           processData: false,
           success: (response) => {
-            console.log(response);
-            if (response.status == "ok") {
+            console.log(response.payload.status_code);
+            if (response.payload.status_code == 201) {
               window.location = "/siswa";
             }
           },
         });
       });
+      // });
     });
   </script>
 </html>

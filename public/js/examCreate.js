@@ -75,7 +75,7 @@ $(document).ready(() => {
   });
 
   // IMAGE INPUT
-  $(".main-background").on("change", ".input-file", () => {
+  $(".main-background").on("change", ".input-file", function () {
     let input_file = document.querySelectorAll(".input-file");
     queuedImagesArray = [];
     input_file.forEach((inp, index) => {
@@ -88,24 +88,24 @@ $(document).ready(() => {
 
   function displayQueuedImages() {
     let img = "";
-    console.log(queuedImagesArray);
     queuedImagesArray.forEach((image, index) => {
       if (image.length != 0) {
-        img = `<img src="${URL.createObjectURL(image[0])}" alt="no img" />
-        <span class="deleteImg">&times;</span>`;
+        img = `
+        <img src="${URL.createObjectURL(image[0])}" alt="no img" />
+        <span class="deleteImg">&times;</span>
+        `;
       } else {
         img = "";
       }
-
       document.querySelectorAll(".display_image")[index].innerHTML = img;
     });
   }
 
-  $(".main-background").on("click", ".deleteImg", (e) => {
-    // queuedImagesArray.splice(index, 1);
-    let deleteImg = document.querySelectorAll(".deleteImg");
-    console.log(deleteImg);
-    // e.target.parentElement.innerHTML = "";
-    // console.log(e);
+  $(".main-background").on("click", ".deleteImg", function (e) {
+    let input_file = document.querySelectorAll(".input-file");
+    let index = $(".deleteImg").index($(this));
+    input_file[index].type = "text";
+    input_file[index].type = "file";
+    $(this)[0].parentElement.innerHTML = "";
   });
 });

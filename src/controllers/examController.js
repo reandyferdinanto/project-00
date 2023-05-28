@@ -46,9 +46,12 @@ async function tambahExam(req, res) {
         .join();
       const question = await Question.create({
         question_text: question_text[index],
-        question_img: `${req.protocol + "://" + req.get("host")}/uploads/${
-          req.files[index].filename
-        }`,
+        question_img:
+          req.files[index] !== undefined
+            ? `${req.protocol + "://" + req.get("host")}/files/uploads/${
+                req.files[index].filename
+              }`
+            : null,
         correct_answer: correct_answer[index],
         wrong_answer: wrong_answer,
       });
@@ -60,9 +63,12 @@ async function tambahExam(req, res) {
     let wrong_answer = req.body.wrong_answer.join();
     const question = await Question.create({
       question_text,
-      question_img: `${req.protocol + "://" + req.get("host")}/uploads/${
-        req.files[0].filename
-      }`,
+      question_img:
+        req.files[0] !== undefined
+          ? `${req.protocol + "://" + req.get("host")}/files/uploads/${
+              req.files[0].filename
+            }`
+          : null,
       correct_answer,
       wrong_answer,
     });
