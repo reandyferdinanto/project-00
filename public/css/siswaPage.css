@@ -83,7 +83,7 @@ main {
 }
 .main-content {
   width: 100%;
-  min-height: 85vh;
+  min-height: 100vh;
 }
 .main-background {
   width: 100%;
@@ -91,6 +91,9 @@ main {
   background-color: white;
   border-radius: 20px 0 0px 0px;
   overflow: hidden;
+}
+#form-delete{
+  height: 100%;
 }
 .main-title {
   display: flex;
