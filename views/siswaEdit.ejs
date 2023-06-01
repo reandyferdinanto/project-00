@@ -10,7 +10,7 @@
       integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
       crossorigin="anonymous"
     ></script>
-    <link rel="stylesheet" href="/static/css/siswaCreate.css" />
+    <link rel="stylesheet" href="/static/css/siswaEdit.css" />
   </head>
   <body>
     <!-- NAV -->
@@ -50,22 +50,7 @@
       <div class="main-content">
         <div class="main-background">
           <div class="main-title">
-            <h2>Membuat Ujian Baru</h2>
-          </div>
-          <div class="upload-siswa">
-            <form id="fileUpload" method="post">
-              <label class="custom-file-upload">
-                <input
-                  type="file"
-                  class="input-file"
-                  multiple="multiple"
-                  name="siswa_upload"
-                  accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                />
-                <!-- <i class="uil uil-file-plus-alt"></i> Upload CSV Siswa -->
-                <input type="submit" value="Upload CSV" />
-              </label>
-            </form>
+            <h2>Mengubah Data Siswa</h2>
           </div>
           <form id="submit-form" method="post">
             <div class="main-input">
@@ -76,7 +61,7 @@
                   required
                   type="text"
                   name="nis"
-                  id=""
+                  id="nis"
                 />
                 Nama Siswa <br />
                 <input
@@ -84,7 +69,7 @@
                   required
                   type="text"
                   name="username"
-                  id=""
+                  id="username"
                 />
                 <div class="input-side">
                   <div class="">
@@ -108,6 +93,19 @@
                     />
                   </div>
                 </div>
+                Ujian <br />
+                <div class="exams-assign">
+                  <div class="exam-assign">
+                    Ujian Manasik 1
+                    <input type="checkbox" name="" id="" />
+                  </div>
+                  <div class="exam-assign">
+                    Ujian Manasik 1 <input type="checkbox" name="" id="" />
+                  </div>
+                  <div class="exam-assign">
+                    Ujian Manasik 1 <input type="checkbox" name="" id="" />
+                  </div>
+                </div>
               </label>
             </div>
             <div class="submit-input">
@@ -116,7 +114,7 @@
             <div class="submit-layer">
               <div class="submit-question">
                 <img src="/static/img/warning-alt.png" alt="" width="150" />
-                <p>Apakah anda sudah yakin selesai?</p>
+                <p>Apakah anda sudah yakin ingin menyimpan perubahan ?</p>
                 <div class="submit-buttons">
                   <button class="ubah-button" type="button">Ubah</button>
                   <button class="selesai-button" type="submit">Selesai</button>
@@ -147,54 +145,21 @@
         $(".submit-layer").css("visibility", "hidden");
       });
 
-      // FILE UPLOAD
-      const fileUpload = document.getElementById("fileUpload");
-      fileUpload.addEventListener("submit", (e) => {
-        e.preventDefault();
-        let formData = new FormData(fileUpload);
-
-        $.ajax({
-          url: "/api/users/file",
-          type: "POST",
-          data: formData,
-          async: false,
-          cache: false,
-          contentType: false,
-          encrypt: "multipart/form-data",
-          processData: false,
-          success: (response) => {
-            console.log(response.payload.status_code);
-            if (response.payload.status_code == 201) {
-              window.location = "/siswa";
-            }
-          },
-        });
+      // GET URL
+      let unique_id = window.location.href.substring(
+        window.location.href.lastIndexOf("/") + 1
+      );
+      let url = `http://localhost:3000/api/scores/${unique_id}`;
+      // SET INPUT
+      $.get(url, async (data, status) => {
+        let datas = data.payload.datas;
+        if (status == "success" && datas.length !== 0) {
+          $("#nis").val(datas.nis);
+          $("#username").val(datas.username);
+          $("#class").val(datas.class);
+          $("#major").val(datas.major);
+        }
       });
-
-      // MANUAL UPLOAD
-      const manualForm = document.getElementById("submit-form");
-      // $("selesai-button").on("click", () => {
-      manualForm.addEventListener("submit", (e) => {
-        let formData = new FormData(manualForm);
-        e.preventDefault();
-        $.ajax({
-          url: "/api/users",
-          type: "POST",
-          data: formData,
-          async: false,
-          cache: false,
-          contentType: false,
-          encrypt: "multipart/form-data",
-          processData: false,
-          success: (response) => {
-            console.log(response.payload.status_code);
-            if (response.payload.status_code == 201) {
-              window.location = "/siswa";
-            }
-          },
-        });
-      });
-      // });
     });
   </script>
 </html>

@@ -26,6 +26,11 @@ router.get("/siswa/tambah", validateRedirect, (req, res) => {
     user: req.user,
   });
 });
+router.get("/siswa/edit/:id", validateRedirect, (req, res) => {
+  res.render("siswaEdit", {
+    user: req.user,
+  });
+});
 router.get("/", validateRedirect, (req, res) => {
   res.render("berandaPage", {
     user: req.user,

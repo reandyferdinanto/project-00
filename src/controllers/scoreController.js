@@ -1,12 +1,9 @@
 const { Score, Exam, Question } = require("../models");
 const response = require("./response");
 
-async function getScoreByUsername(req, res, next) {
-  const { username } = req.params;
-  const score = await Score.findOne({
-    where: {
-      username: username,
-    },
+async function getScoreById(req, res, next) {
+  const { id } = req.params;
+  const score = await Score.findByPk(id, {
     include: [
       {
         model: Exam,
@@ -102,6 +99,6 @@ async function updatePoint(req, res) {
 
 module.exports = {
   getAllScore,
-  getScoreByUsername,
+  getScoreById,
   updatePoint,
 };

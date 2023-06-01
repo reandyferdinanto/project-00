@@ -54,6 +54,10 @@ main {
   grid-template-columns: 0.2fr 1fr;
 }
 
+.main-title h2 {
+  color: #358f6c;
+}
+
 .profile-sidebar {
   display: flex;
   align-items: center;
@@ -280,4 +284,14 @@ input[type="file"] {
   display: flex;
   justify-content: flex-end;
   padding-top: 2rem;
+}
+
+.input-side {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 1rem;
+}
+.input-side div input {
+  width: 50%;
+  margin-top: 0.75rem;
 }

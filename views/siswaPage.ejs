@@ -121,7 +121,9 @@
                   <p>${index + 1}.</p>
                   <p>${data.username}</p>
                   <p>${data.class}</p>
-                  <a href="#"><i class="uil uil-edit"></i></a>
+                  <a href="/siswa/edit/${
+                    data.unique_id
+                  }"><i class="uil uil-edit"></i></a>
                   <p><input type="checkbox" name="checkedSiswa" id="" class="checkbox-delete" value="${
                     data.unique_id
                   }" /></p>

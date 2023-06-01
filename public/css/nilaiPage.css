@@ -97,6 +97,10 @@ main {
   justify-content: space-between;
   padding: 1rem 2rem;
 }
+
+.main-title h2 {
+  color: #358f6c;
+}
 .main-title a {
   margin-top: auto;
 }
@@ -147,4 +151,8 @@ main {
   color: white;
   border-radius: 5px;
   border: 0.1px solid gray;
+}
+#download-form {
+  display: block;
+  margin-top: auto;
 }
