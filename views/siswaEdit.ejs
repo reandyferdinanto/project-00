@@ -62,6 +62,7 @@
                   type="text"
                   name="nis"
                   id="nis"
+                  readonly="true"
                 />
                 Nama Siswa <br />
                 <input
@@ -94,18 +95,7 @@
                   </div>
                 </div>
                 Ujian <br />
-                <div class="exams-assign">
-                  <div class="exam-assign">
-                    Ujian Manasik 1
-                    <input type="checkbox" name="" id="" />
-                  </div>
-                  <div class="exam-assign">
-                    Ujian Manasik 1 <input type="checkbox" name="" id="" />
-                  </div>
-                  <div class="exam-assign">
-                    Ujian Manasik 1 <input type="checkbox" name="" id="" />
-                  </div>
-                </div>
+                <div class="exams-assign"></div>
               </label>
             </div>
             <div class="submit-input">
@@ -149,16 +139,69 @@
       let unique_id = window.location.href.substring(
         window.location.href.lastIndexOf("/") + 1
       );
-      let url = `http://localhost:3000/api/scores/${unique_id}`;
+      let url_input = `http://localhost:3000/api/scores/${unique_id}`;
+      let url_ujian = `http://localhost:3000/api/exams`;
+      let user_data;
       // SET INPUT
-      $.get(url, async (data, status) => {
+      $.get(url_input, async (data, status) => {
         let datas = data.payload.datas;
+        user_data = data.payload.datas;
         if (status == "success" && datas.length !== 0) {
           $("#nis").val(datas.nis);
           $("#username").val(datas.username);
           $("#class").val(datas.class);
           $("#major").val(datas.major);
+          if (datas.Exams) {
+            datas.Exams.forEach((exam) => {
+              $(".exams-assign").on("click", `#${exam.exam_name}`, function () {
+                console.log(this);
+              });
+            });
+          }
         }
+      });
+      // SET UJIAN
+      $.get(url_ujian, async (data, status) => {
+        let datas = data.payload.datas;
+        if (status == "success" && datas.length !== 0) {
+          datas.forEach((data, index) => {
+            $(".exams-assign").append([
+              `
+              <div class="exam-assign">
+                <label for="${data.exam_name}">${data.exam_name}</label>
+                <input type="checkbox" name="${data.unique_id}" id="${data.exam_name}" />
+              </div>`,
+            ]);
+            if (
+              datas.find((e) => e.exam_name == user_data.Exams[index].exam_name)
+            ) {
+              $(`#${data.exam_name}`).prop("checked", true);
+            }
+          });
+        }
+      });
+
+      // SUBMIT
+      const manualForm = document.getElementById("submit-form");
+      manualForm.addEventListener("submit", (e) => {
+        let formData = new FormData(manualForm);
+        formData.append("unique_id", unique_id);
+        e.preventDefault();
+        $.ajax({
+          url: "/api/users/edit",
+          type: "POST",
+          data: formData,
+          async: false,
+          cache: false,
+          contentType: false,
+          encrypt: "multipart/form-data",
+          processData: false,
+          success: (response) => {
+            if (response.payload.status_code == 200) {
+              window.location = "/siswa";
+            }
+          },
+        });
       });
     });
   </script>

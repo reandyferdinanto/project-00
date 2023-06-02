@@ -49,6 +49,7 @@ const { validateToken } = require("../utils/JWT");
 
 router.post("/", validateToken, userController.addUser);
 router.post("/file", validateToken, userController.uploadCSV);
+router.post("/edit", validateToken, userController.userEdit);
 router.get("/export", validateToken, userController.createCSV);
 router.delete("/", validateToken, userController.deleteUser);
 

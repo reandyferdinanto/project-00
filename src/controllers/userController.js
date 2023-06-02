@@ -1,8 +1,19 @@
 const csv = require("fast-csv");
 const fs = require("fs");
 const path = require("path");
-const { Score } = require("../models");
+const { Score, Exam, ScoreExam } = require("../models");
 const response = require("./response");
+
+Score.belongsToMany(Exam, {
+  foreignKey: "score_id",
+  through: ScoreExam,
+  constraints: false,
+});
+Exam.belongsToMany(Score, {
+  foreignKey: "exam_id",
+  through: ScoreExam,
+  constraints: false,
+});
 
 async function addUser(req, res) {
   const body = req.body;
@@ -105,9 +116,31 @@ async function deleteUser(req, res, next) {
   }
 }
 
+async function userEdit(req, res, next) {
+  let { unique_id, username, nis, major } = req.body;
+  // INIT USER
+  const user = await Score.findByPk(unique_id);
+  // UPDATE USER
+  const updatedUser = await Score.update(
+    {
+      username: username !== null ? username : user.username,
+      nis: nis !== null ? nis : user.nis,
+      major: major !== null ? major : user.major,
+      class: req.body.class !== null ? req.body.class : user.class,
+    },
+    {
+      where: {
+        unique_id,
+      },
+    }
+  );
+  response(200, "success update user", updatedUser, res);
+}
+
 module.exports = {
   addUser,
   uploadCSV,
   deleteUser,
   createCSV,
+  userEdit,
 };
