@@ -95,7 +95,9 @@
                   </div>
                 </div>
                 Ujian <br />
-                <div class="exams-assign"></div>
+                <div class="exams-assign">
+                  <p style="color: #358f6c">belum mengambil ujian</p>
+                </div>
               </label>
             </div>
             <div class="submit-input">
@@ -164,18 +166,34 @@
       $.get(url_ujian, async (data, status) => {
         let datas = data.payload.datas;
         if (status == "success" && datas.length !== 0) {
+          $(".exams-assign").html("");
           datas.forEach((data, index) => {
             $(".exams-assign").append([
               `
               <div class="exam-assign">
                 <label for="${data.exam_name}">${data.exam_name}</label>
-                <input type="checkbox" name="${data.unique_id}" id="${data.exam_name}" />
+                <input type="checkbox" name="${data.unique_id}" id="${data.unique_id}" />
               </div>`,
             ]);
-            if (
-              datas.find((e) => e.exam_name == user_data.Exams[index].exam_name)
-            ) {
-              $(`#${data.exam_name}`).prop("checked", true);
+            $(".exams-assign").on("change", "#" + data.unique_id, function () {
+              // console.log($("#" + data.unique_id).is(":checked"));
+              if (!$("#" + data.unique_id).is(":checked")) {
+                $(this).html(
+                  `<input type="hidden" name="${data.unique_id}" id="${data.unique_id}" value="off" />`
+                );
+              } else {
+                $("#" + data.unique_id).val("on");
+              }
+            });
+            // CHEKED
+            if (user_data.Exams.length !== 0) {
+              if (
+                datas.find(
+                  (e) => e.exam_name == user_data.Exams[index].exam_name
+                )
+              ) {
+                $(`#${data.unique_id}`).prop("checked", true);
+              }
             }
           });
         }

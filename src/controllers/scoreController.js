@@ -48,6 +48,7 @@ async function getAllScore(req, res, next) {
 
   if (!score) {
     score = await Score.findAll({
+      order: [["username"]],
       include: [
         {
           model: Exam,

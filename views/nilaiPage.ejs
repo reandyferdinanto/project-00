@@ -142,7 +142,7 @@
                   <p>${index + 1}.</p>
                   <p>${data.username}</p>
                   <p>${
-                    data.Exams.length !== 0
+                    data.Exams.length !== 0 && data.Exams[$(this).val()]
                       ? data.Exams[$(this).val()].exam_name
                       : "Belum Mengambil Ujian"
                   }</p>

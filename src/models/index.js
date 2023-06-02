@@ -29,6 +29,7 @@ if (env_type == "production") {
   sequelize = new Sequelize("muslim-maya", "root", "181001", {
     host: "localhost",
     dialect: "mysql",
+    logging: false,
   });
   console.log("db run on local");
 }
