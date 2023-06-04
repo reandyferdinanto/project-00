@@ -120,9 +120,9 @@ main {
   height: 100%;
 }
 .main-table-title {
-  padding: 0.5rem 2rem;
-  display: grid;
-  grid-template-columns: 0.2fr 0.6fr 0.3fr 0.3fr 0.3fr 0.2fr 0.05fr;
+  padding: 2rem;
+  /* display: grid;
+  grid-template-columns: 0.2fr 0.6fr 0.3fr 0.3fr 0.3fr 0.2fr 0.05fr; */
 }
 .main-table-body {
   color: #358f6c;
@@ -142,5 +142,9 @@ main {
 }
 .table-body a {
   width: max-content;
+  color: #358f6c;
+}
+
+.ujian-link {
   color: #358f6c;
 }

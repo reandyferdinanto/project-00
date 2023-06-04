@@ -133,9 +133,9 @@ main {
   height: 100%;
 }
 .main-table-title {
-  padding: 0.5rem 2rem;
-  display: grid;
-  grid-template-columns: 0.1fr 0.3fr 0.6fr 0.2fr 0.1fr 0.05fr;
+  padding: 2rem;
+  /* display: grid;
+  grid-template-columns: 1fr 0.01fr; */
 }
 .main-table-body {
   color: #358f6c;
@@ -216,4 +216,7 @@ main {
 .selesai-button {
   background-color: #358f6c;
   color: white;
+}
+.edit-siswa {
+  color: #358f6c;
 }

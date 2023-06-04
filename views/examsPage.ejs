@@ -5,6 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Exam Page | Muslim Maya</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css"
+    />
     <script
       src="https://code.jquery.com/jquery-3.6.4.min.js"
       integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
@@ -58,13 +63,19 @@
           </div>
           <div class="main-table">
             <div class="main-table-title">
-              <p><b>No.</b></p>
-              <p><b>Nama Ujian</b></p>
-              <p><b>Tipe Ujian</b></p>
-              <p><b>Nilai KKM</b></p>
-              <p><b>Max.Percobaan</b></p>
-              <p><b></b></p>
-              <p><b></b></p>
+              <table id="siswa-table" class="display" style="width: 100%">
+                <thead>
+                  <tr>
+                    <!-- <th>No.</th> -->
+                    <th>Nama Ujian</th>
+                    <th>Tipe Ujian</th>
+                    <th>Nilai KKM</th>
+                    <th>Max Percobaan</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+              </table>
             </div>
             <hr />
             <div class="main-table-body"></div>
@@ -73,7 +84,7 @@
       </div>
     </main>
   </body>
-
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
   <script>
     $(document).ready(() => {
       const d = new Date();
@@ -85,33 +96,33 @@
 
       const url = "/api/exams";
       let datas;
+
       $.get(url, async (data, status) => {
         if (status == "success" && data.payload.datas.length !== 0) {
-          $(".main-table-body").html("");
-          $(".main-table-body").css({
-            "text-align": "left",
-            // padding: "0.5rem 2rem",
-            margin: ".5rem 2rem",
-          });
-          datas = data.payload.datas;
-          datas.map((data, index) => {
-            $(".main-table-body").append([
-              `
-                <div class="table-body">
-                  <p>${index + 1}.</p>
-                  <a href="#">${data.exam_name}</a>
-                  <p>${data.exam_type}</p>
-                  <p>${data.kkm_point}</p>
-                  <p>${data.available_try}</p>
-                  <a href="/ujian/edit/${
-                    data.unique_id
-                  }"><i class="uil uil-edit"></i></a>
-                  <a href="/siswa/edit/${
-                    data.unique_id
-                  }"><i class="uil uil-presentation-play"></i></a>
-                </div>
-              `,
-            ]);
+          $("#siswa-table").DataTable({
+            ajax: {
+              url: "/api/exams",
+              dataSrc: "payload.datas",
+            },
+            columns: [
+              { data: "exam_name" },
+              { data: "exam_type" },
+              { data: "kkm_point" },
+              { data: "available_try" },
+              {
+                data: "unique_id",
+                render: function (data, type) {
+                  console.log(type);
+                  return `<a class="ujian-link" href="/ujian/edit/${data}" class="edit-siswa"><i class="uil uil-edit"></i></a>`;
+                },
+              },
+              {
+                data: "unique_id",
+                render: function (data, type) {
+                  return `<a class="ujian-link" href="/siswa/edit/${data}"><i class="uil uil-presentation-play"></i></a>`;
+                },
+              },
+            ],
           });
         } else {
           $(".main-table-body").append([

@@ -5,6 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Exam Page | Muslim Maya</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css"
+    />
     <script
       src="https://code.jquery.com/jquery-3.6.4.min.js"
       integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
@@ -67,16 +71,22 @@
             </div>
             <div class="main-table">
               <div class="main-table-title">
-                <p><b>No.</b></p>
-                <p><b>NIS</b></p>
-                <p><b>Nama Siswa</b></p>
-                <p><b>Kelas</b></p>
-                <p></p>
-                <p><input type="checkbox" name="" id="selectAll" /></p>
+                <table id="siswa-table" class="display" style="width:100%">
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>Nis</th>
+                      <th>Nama Siswa</th>
+                      <th>Kelas</th>
+                      <th>Jurusan</th>
+                      <th></th>
+                      <th><input type="checkbox" name="" id="selectAll" /></th>
+                    </tr>
+                  </thead>
+                </table>
               </div>
-              <hr />
+              <hr>
               <div class="main-table-body"></div>
-            </div>
             <div class="submit-layer">
               <div class="submit-question">
                 <img src="/static/img/warning-alt.png" alt="" width="150" />
@@ -84,17 +94,21 @@
                 <div class="submit-buttons">
                   <button class="ubah-button" type="button">Batal</button>
                   <button class="selesai-button">Hapus</button>
+                  
                 </div>
               </div>
             </div>
+            
             <!-- FORM HAPUS ENDED -->
           </form>
         </div>
       </div>
     </main>
   </body>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
   <script>
     $(document).ready(() => {
+      // TIME
       const d = new Date();
       let text;
       text = d.toLocaleString("id-ID", {
@@ -108,30 +122,30 @@
       let datas;
       $.get(url, async (data, status) => {
         if (status == "success" && data.payload.datas.length !== 0) {
-          $(".main-table-body").html("");
-          $(".main-table-body").css({
-            "text-align": "left",
-            // padding: "0.5rem 2rem",
-            margin: ".5rem 2rem",
-          });
-          datas = data.payload.datas;
-          datas.map((data, index) => {
-            $(".main-table-body").append([
-              `
-                <div class="table-body">
-                  <p>${index + 1}.</p>
-                  <p>${data.nis}</p>
-                  <p>${data.username}</p>
-                  <p>${data.class}</p>
-                  <a href="/siswa/edit/${
-                    data.unique_id
-                  }"><i class="uil uil-edit"></i></a>
-                  <p><input type="checkbox" name="checkedSiswa" id="" class="checkbox-delete" value="${
-                    data.unique_id
-                  }" /></p>
-                </div>
-              `,
-            ]);
+          
+          $("#siswa-table").DataTable({
+            ajax: {
+              url: "/api/scores",
+              dataSrc: "payload.datas",
+            },
+            columns: [
+              { data: "nis" },
+              { data: "username" },
+              { data: "class" },
+              { data: "major" },
+              {
+                data: "unique_id",
+                render: function (data, type) {
+                  return `<a href="/siswa/edit/${data}" class="edit-siswa"><i class="uil uil-edit"></i></a>`;
+                },
+              },
+              {
+                data: "unique_id",
+                render: function (data, type) {
+                  return `<input type="checkbox" name="checkedSiswa" id="" class="checkbox-delete" value="${data}" />`;
+                },
+              },
+            ],
           });
         } else {
           $(".main-table-body").append([
