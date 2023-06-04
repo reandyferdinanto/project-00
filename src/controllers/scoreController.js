@@ -35,7 +35,7 @@ async function getAllScore(req, res, next) {
           },
         },
       ],
-      order: [[Exam, "createdAt"], ["username"]],
+      order: [[Exam, "createdAt"]],
     });
     return response(200, "get all scores", score, res);
   } catch (error) {

@@ -29,30 +29,36 @@ async function addUser(req, res) {
 }
 
 async function uploadCSV(req, res) {
-  const siswa = [];
-  fs.createReadStream(
-    path.join(
-      __dirname,
-      "..",
-      "..",
-      "public",
-      "files",
-      "uploads",
-      req.files[0].filename
-    )
-  ).pipe(
-    csv
-      .parse({ headers: true })
-      .on("data", (row) => {
-        row.password = row.nis + "!##!";
-        siswa.push(row);
-      })
-      .on("end", () => {
-        Score.bulkCreate(siswa).then((datas) => {
-          return response(201, "add new user", datas, res);
-        });
-      })
-  );
+  try {
+    const siswa = [];
+    fs.createReadStream(
+      path.join(
+        __dirname,
+        "..",
+        "..",
+        "public",
+        "files",
+        "uploads",
+        req.files[0].filename
+      )
+    ).pipe(
+      csv
+        .parse({ headers: true })
+        .on("data", (row) => {
+          row.password = row.nis + "!##!";
+          siswa.push(row);
+        })
+        .on("end", () => {
+          Score.bulkCreate(siswa).then((datas) => {
+            return response(201, "add new user", datas, res);
+          });
+        })
+    );
+  } catch (error) {
+    res.status().json({
+      error: error.message,
+    });
+  }
 }
 
 async function createCSV(req, res) {
