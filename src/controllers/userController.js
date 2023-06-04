@@ -103,6 +103,7 @@ async function createCSV(req, res) {
 
 async function deleteUser(req, res, next) {
   let checkedSiswa = req.body.checkedSiswa;
+  console.log(checkedSiswa);
   if (!checkedSiswa) {
     const err = new Error("no siswa selected");
     err.status = "fail";

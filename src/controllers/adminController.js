@@ -36,7 +36,7 @@ async function login(req, res) {
     } else {
       const accessToken = createToken(admin);
       res.cookie("access-token", accessToken, {
-        maxAge: 60000,
+        maxAge: 3600000,
       });
       res.status(200).json({ message: "LOGEDIN" });
     }
