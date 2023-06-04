@@ -96,7 +96,7 @@
                 </div>
                 Ujian <br />
                 <div class="exams-assign">
-                  <p style="color: #358f6c">belum mengambil ujian</p>
+                  <p style="color: #358f6c">belum ada ujian terdaftar</p>
                 </div>
               </label>
             </div>
@@ -176,7 +176,6 @@
               </div>`,
             ]);
             $(".exams-assign").on("change", "#" + data.unique_id, function () {
-              // console.log($("#" + data.unique_id).is(":checked"));
               if (!$("#" + data.unique_id).is(":checked")) {
                 $(this).html(
                   `<input type="hidden" name="${data.unique_id}" id="${data.unique_id}" value="off" />`
@@ -186,14 +185,10 @@
               }
             });
             // CHEKED
-            if (user_data.Exams.length !== 0) {
-              if (
-                datas.find(
-                  (e) => e.exam_name == user_data.Exams[index].exam_name
-                )
-              ) {
-                $(`#${data.unique_id}`).prop("checked", true);
-              }
+          });
+          user_data.Exams.forEach((user_exam) => {
+            if (datas.find((e) => e.exam_name == user_exam.exam_name)) {
+              $(`#${user_exam.unique_id}`).prop("checked", true);
             }
           });
         }

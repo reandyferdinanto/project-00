@@ -68,10 +68,11 @@
             <div class="main-table">
               <div class="main-table-title">
                 <p><b>No.</b></p>
+                <p><b>NIS</b></p>
                 <p><b>Nama Siswa</b></p>
                 <p><b>Kelas</b></p>
                 <p></p>
-                <p><input type="checkbox" name="" id="" /></p>
+                <p><input type="checkbox" name="" id="selectAll" /></p>
               </div>
               <hr />
               <div class="main-table-body"></div>
@@ -119,6 +120,7 @@
               `
                 <div class="table-body">
                   <p>${index + 1}.</p>
+                  <p>${data.nis}</p>
                   <p>${data.username}</p>
                   <p>${data.class}</p>
                   <a href="/siswa/edit/${
@@ -169,6 +171,13 @@
         });
         $(".ubah-button").on("click", () => {
           $(".submit-layer").css("visibility", "hidden");
+        });
+        $("#selectAll").on("click", function () {
+          if ($(this).is(":checked")) {
+            $(".checkbox-delete").attr("checked", true);
+          } else {
+            $(".checkbox-delete").attr("checked", false);
+          }
         });
       });
     });

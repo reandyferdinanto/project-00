@@ -18,11 +18,11 @@ $(document).ready(() => {
               <div class="display_image"></div>
               <textarea name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
               <div class="answers">
-                <input placeholder='jawaban benar' name='correct_answer' class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
+                <input placeholder='jawaban benar' name='correct_answer' required class='answer'/>
+                <input placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
+                <input placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
+                <input placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
+                <input placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
                 <label class="custom-file-upload">
                     <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/jpg, image/png"/>
                     <i class="uil uil-file-plus-alt"></i> Masukan Gambar
@@ -51,11 +51,11 @@ $(document).ready(() => {
             <div class="display_image"></div>
             <textarea name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
             <div class="answers">
-              <input placeholder='jawaban benar' name='correct_answer' class='answer'/>
-              <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
-              <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
-              <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
-              <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
+              <input placeholder='jawaban benar' name='correct_answer'required class='answer'/>
+              <input placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
+              <input placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
+              <input placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
+              <input placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
               
               <label class="custom-file-upload">
                     <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/jpg, image/png"/>

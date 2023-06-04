@@ -10,6 +10,10 @@
       integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
       crossorigin="anonymous"
     ></script>
+    <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v4.0.8/css/line.css"
+    />
     <link rel="stylesheet" href="static/css/examPage.css" />
   </head>
   <body>
@@ -59,6 +63,8 @@
               <p><b>Tipe Ujian</b></p>
               <p><b>Nilai KKM</b></p>
               <p><b>Max.Percobaan</b></p>
+              <p><b></b></p>
+              <p><b></b></p>
             </div>
             <hr />
             <div class="main-table-body"></div>
@@ -97,6 +103,12 @@
                   <p>${data.exam_type}</p>
                   <p>${data.kkm_point}</p>
                   <p>${data.available_try}</p>
+                  <a href="/ujian/edit/${
+                    data.unique_id
+                  }"><i class="uil uil-edit"></i></a>
+                  <a href="/siswa/edit/${
+                    data.unique_id
+                  }"><i class="uil uil-presentation-play"></i></a>
                 </div>
               `,
             ]);

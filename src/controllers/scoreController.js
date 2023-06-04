@@ -4,10 +4,10 @@ const response = require("./response");
 async function getScoreById(req, res, next) {
   const { id } = req.params;
   const score = await Score.findByPk(id, {
+    // attributes: ["creataedAt", "updatedAt"],
     include: [
       {
         model: Exam,
-        // attributes: ["unique_id"],
         include: [
           {
             model: Question,
@@ -15,7 +15,7 @@ async function getScoreById(req, res, next) {
           },
         ],
         through: {
-          attributes: [],
+          attributes: ["point", "remedial_point"],
         },
       },
     ],
@@ -31,38 +31,32 @@ async function getAllScore(req, res, next) {
     },
     include: [
       {
+        order: [[Exam, "createdAt", "asc"]],
         model: Exam,
-        // attributes: ["unique_id"],
-        include: [
-          {
-            model: Question,
-            attributes: { exclude: ["ExamUniqueId"] },
-          },
-        ],
+        attributes: ["unique_id"],
         through: {
-          attributes: [],
+          attributes: ["point", "remedial_point"],
         },
       },
     ],
+    attributes: { exclude: ["createdAt", "updatedAt"] },
   });
 
   if (!score) {
     score = await Score.findAll({
-      order: [["username"]],
       include: [
         {
           model: Exam,
           // attributes: ["unique_id"],
-          include: [
-            {
-              model: Question,
-              attributes: { exclude: ["ExamUniqueId"] },
-            },
-          ],
           through: {
-            attributes: [],
+            attributes: ["point", "remedial_point"],
           },
         },
+      ],
+      attributes: { exclude: ["createdAt", "updatedAt"] },
+      order: [
+        [Exam, "createdAt"],
+        [this, "username"],
       ],
     });
     return response(200, "get all scores", score, res);

@@ -11,6 +11,11 @@ router.get("/ujian/buat", validateRedirect, (req, res) => {
     user: req.user,
   });
 });
+router.get("/ujian/edit/:id", validateRedirect, (req, res) => {
+  res.render("examsEdit", {
+    user: req.user,
+  });
+});
 router.get("/nilai", validateRedirect, (req, res) => {
   res.render("nilaiPage", {
     user: req.user,

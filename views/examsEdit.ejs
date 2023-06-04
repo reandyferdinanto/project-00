@@ -14,7 +14,7 @@
       rel="stylesheet"
       href="https://unicons.iconscout.com/release/v4.0.8/css/line.css"
     />
-    <link rel="stylesheet" href="/static/css/examCreate.css" />
+    <link rel="stylesheet" href="/static/css/examEdit.css" />
   </head>
   <body>
     <!-- NAV -->
@@ -53,15 +53,23 @@
 
       <div class="main-content">
         <div class="main-background">
-          <form
-            id="submit-form"
-            action="/api/exams"
-            method="post"
-            enctype="multipart/form-data"
-          >
-            <div class="main-title">
-              <h2>Membuat Ujian Baru</h2>
-            </div>
+          <div class="main-title">
+            <h2>Membuat Ujian Baru</h2>
+            <form action="" id="hapus-ujian">
+              <button type="button" id="selesai-hapus">Hapus Ujian</button>
+              <div class="submit-hapus">
+                <div class="submit-question">
+                  <img src="/static/img/warning-alt.png" alt="" width="150" />
+                  <p>Apakah anda yakin ingin menghapus ujian?</p>
+                  <div class="submit-buttons">
+                    <button class="ubah-button" type="button">Batal</button>
+                    <button class="selesai-button" type="submit">Hapus</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <form id="submit-form" action="/api/exams">
             <div class="main-input">
               <label for="">
                 Nama Ujian <br />
@@ -69,12 +77,17 @@
                   class="exam-type"
                   type="text"
                   name="exam_name"
-                  id=""
+                  id="exam_name"
                   required
                   placeholder="masukan nama ujian"
                 />
                 Tipe Ujian
-                <select name="exam_type" class="exam-type" required>
+                <select
+                  name="exam_type"
+                  class="exam-type"
+                  required
+                  id="exam_type"
+                >
                   <option value="">--Please choose an option--</option>
                   <option value="manasik">Manasik</option>
                   <option value="jenazah">Jenazah</option>
@@ -87,7 +100,7 @@
                     class="exam-input"
                     type="number"
                     name="kkm_point"
-                    id=""
+                    id="kkm_point"
                     value="70"
                   />
                 </label>
@@ -97,15 +110,12 @@
                     class="exam-input"
                     type="number"
                     name="available_try"
-                    id=""
+                    id="available_try"
                     value="2"
                   />
                 </label>
               </div>
             </div>
-            <button class="main-create-question" id="add-question">
-              Membuat Soal
-            </button>
             <div class="submit-layer">
               <div class="submit-question">
                 <img src="/static/img/warning-alt.png" alt="" width="150" />
@@ -116,10 +126,17 @@
                 </div>
               </div>
             </div>
+            <div class="questions-box">
+              <div class="questions"></div>
+            </div>
+
+            <div class="submit-input">
+              <button type="button" id="selesai">Selesai</button>
+            </div>
           </form>
         </div>
       </div>
     </main>
   </body>
-  <script src="/static/js/examCreate.js"></script>
+  <script src="/static/js/examEdit.js"></script>
 </html>

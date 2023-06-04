@@ -123,6 +123,16 @@
         }
       });
 
+      $.get("/api/exams", async (response, status) => {
+        $("#exams-select").html("");
+        let exams = response.payload.datas;
+        exams.forEach((exam, index) => {
+          $("#exams-select").append(
+            `<option value="${index}">${exam.exam_name}</option>`
+          );
+        });
+      });
+
       // SELECT
       $("#exams-select").on("change", function () {
         const url = "/api/scores";
@@ -136,6 +146,12 @@
             });
             datas = data.payload.datas;
             datas.map((data, index) => {
+              data.Exams.forEach((user_exam) => {
+                console.log(user_exam);
+                // if (datas.find((e) => e.exam_name == user_exam.exam_name)) {
+                //   $(`#${user_exam.unique_id}`).prop("checked", true);
+                // }
+              });
               $(".main-table-body").append([
                 `
                 <div class="table-body">

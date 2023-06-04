@@ -142,6 +142,7 @@ async function userEdit(req, res, next) {
     }
   );
   // EXAMS
+  console.log(exams_on);
   exams_on.forEach(async (exam_id) => {
     let exam = await Exam.findByPk(exam_id);
     if (!(await exam.hasScore(user))) {
