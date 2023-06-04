@@ -1,7 +1,7 @@
 const csv = require("fast-csv");
 const fs = require("fs");
 const path = require("path");
-const { Score } = require("../models");
+const { Score, Exam } = require("../models");
 const response = require("./response");
 
 async function uploadCSV(req, res) {
@@ -38,7 +38,19 @@ async function uploadCSV(req, res) {
 }
 
 async function exportCSV(req, res) {
-  let users = await Score.findAll();
+  let users = await Score.findAll({
+    attributes: { exclude: ["createdAt", "updatedAt"] },
+    include: [
+      {
+        model: Exam,
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+        through: {
+          attributes: { exclude: ["createdAt", "updatedAt"] },
+        },
+      },
+    ],
+    order: [["username"], [Exam, "createdAt"]],
+  });
   if (!fs.existsSync("public/files/exports")) {
     if (!fs.existsSync("public/files")) {
       fs.mkdirSync("public/files");
@@ -63,13 +75,16 @@ async function exportCSV(req, res) {
   csvStream.pipe(writableStream);
   if (users.length > 0) {
     users.map((user) => {
-      csvStream.write({
-        nis: user.nis ? user.nis : 0,
-        nama: user.username ? user.username : 0,
-        kelas: user.class ? user.class : 0,
-        jurusan: user.major ? user.major : 0,
-        // nilai: user.Exams[0].ScoreExam.point,
-        // nilai_remedial: user.Exams[0].ScoreExam.remedial_point,
+      user.Exams.forEach((exam) => {
+        csvStream.write({
+          nis: user.nis ? user.nis : 0,
+          nama: user.username ? user.username : 0,
+          kelas: user.class ? user.class : 0,
+          jurusan: user.major ? user.major : 0,
+          ujian: exam.exam_name,
+          nilai: exam.ScoreExam.point,
+          nilai_remedial: exam.ScoreExam.remedial_point,
+        });
       });
     });
   }
