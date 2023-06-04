@@ -1,5 +1,6 @@
 const { Exam, Score, Question, ScoreExam } = require("../models");
 const response = require("./response");
+const fs = require("fs");
 
 Score.belongsToMany(Exam, {
   foreignKey: "score_id",

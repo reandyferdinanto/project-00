@@ -68,8 +68,8 @@ async function exportCSV(req, res) {
         nama: user.username ? user.username : 0,
         kelas: user.class ? user.class : 0,
         jurusan: user.major ? user.major : 0,
-        nilai: user.Exams.ScoreExam.point,
-        nilai_remedial: user.Exams.ScoreExam.remedial_point,
+        // nilai: user.Exams[0].ScoreExam.point,
+        // nilai_remedial: user.Exams[0].ScoreExam.remedial_point,
       });
     });
   }
