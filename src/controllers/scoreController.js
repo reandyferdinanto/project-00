@@ -24,8 +24,6 @@ async function getScoreById(req, res, next) {
 }
 
 async function getAllScore(req, res, next) {
-  const { username } = req.query;
-
   let score = await Score.findAll({
     include: [
       {
@@ -36,10 +34,7 @@ async function getAllScore(req, res, next) {
         },
       },
     ],
-    order: [
-      [Exam, "createdAt"],
-      [this, "username"],
-    ],
+    order: [[Exam, "createdAt"]],
   });
   return response(200, "get all scores", score, res);
 }

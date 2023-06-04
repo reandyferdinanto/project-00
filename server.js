@@ -19,10 +19,10 @@ const storage = multer.diskStorage({
   },
 });
 
-app.use(multer({ storage: storage, limits: { fileSize: 1000000 } }).any());
+app.use(multer({ storage: storage, limits: { fileSize: 200000 } }).any());
 app.use(cors());
 app.use(cookieParse());
-// app.use(morgan("dev"));
+app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
