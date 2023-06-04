@@ -201,7 +201,7 @@
         formData.append("unique_id", unique_id);
         e.preventDefault();
         $.ajax({
-          url: "/api/users/edit",
+          url: "/api/scores/edit",
           type: "POST",
           data: formData,
           async: false,
@@ -210,6 +210,7 @@
           encrypt: "multipart/form-data",
           processData: false,
           success: (response) => {
+            console.log(response);
             if (response.payload.status_code == 200) {
               window.location = "/siswa";
             }

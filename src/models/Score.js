@@ -12,8 +12,6 @@ module.exports = (sequelize, DataTypes) => {
     class: DataTypes.STRING,
     major: DataTypes.STRING,
     password: DataTypes.STRING,
-    point: DataTypes.INTEGER,
-    remedial_point: DataTypes.INTEGER,
   });
   return Score;
 };

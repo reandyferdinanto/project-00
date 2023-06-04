@@ -8,9 +8,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     exam_name: DataTypes.STRING,
     exam_type: DataTypes.STRING,
-    kkm_point: DataTypes.STRING,
-    available_try: DataTypes.STRING,
-    number_of_try: DataTypes.INTEGER,
+    kkm_point: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
+    available_try: {
+      type: DataTypes.INTEGER,
+      defaultValue: 2,
+    },
   });
   return Exams;
 };

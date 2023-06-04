@@ -154,7 +154,7 @@
         let formData = new FormData(fileUpload);
 
         $.ajax({
-          url: "/api/users/file",
+          url: "/api/utils/upload",
           type: "POST",
           data: formData,
           async: false,
@@ -178,7 +178,7 @@
         let formData = new FormData(manualForm);
         e.preventDefault();
         $.ajax({
-          url: "/api/users",
+          url: "/api/scores",
           type: "POST",
           data: formData,
           async: false,

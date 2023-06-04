@@ -36,7 +36,7 @@ app.set("views", path.join(__dirname, "views"));
 const db = require("./src/models");
 const scoreRouter = require("./src/routers/scoreRoute");
 const indexRouter = require("./src/routers/indexRoute");
-const userRouter = require("./src/routers/userRoute");
+const utilsRouter = require("./src/routers/utilsRoute");
 const examRouter = require("./src/routers/examRoute");
 const adminRouter = require("./src/routers/adminRoute");
 const webRouter = require("./src/routers/webRouter");
@@ -44,7 +44,7 @@ const webRouter = require("./src/routers/webRouter");
 app.use("/", webRouter);
 app.use("/api/", indexRouter);
 app.use("/api/scores", scoreRouter);
-app.use("/api/users", userRouter);
+app.use("/api/utils", utilsRouter);
 app.use("/api/exams", examRouter);
 app.use("/api/admin", adminRouter);
 
@@ -65,7 +65,6 @@ app.use((error, req, res, next) => {
 });
 
 let PORT = process.env.PORT || 3000;
-
 db.sequelize.sync({ alter: true }).then(() => {
   app.listen(PORT, () => console.log("server run at port " + PORT));
 });

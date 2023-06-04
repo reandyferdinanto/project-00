@@ -6,8 +6,18 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true,
     },
-    point: DataTypes.INTEGER,
-    remedial_point: DataTypes.INTEGER,
+    point: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
+    remedial_point: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
+    number_of_try: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
   });
   return ScoreExams;
 };
