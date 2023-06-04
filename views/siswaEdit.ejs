@@ -141,8 +141,8 @@
       let unique_id = window.location.href.substring(
         window.location.href.lastIndexOf("/") + 1
       );
-      let url_input = `http://localhost:3000/api/scores/${unique_id}`;
-      let url_ujian = `http://localhost:3000/api/exams`;
+      let url_input = `/api/scores/${unique_id}`;
+      let url_ujian = `/api/exams`;
       let user_data;
       // SET INPUT
       $.get(url_input, async (data, status) => {
