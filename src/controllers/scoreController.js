@@ -24,19 +24,26 @@ async function getScoreById(req, res, next) {
 }
 
 async function getAllScore(req, res, next) {
-  let score = await Score.findAll({
-    include: [
-      {
-        model: Exam,
-        // attributes: ["unique_id"],
-        through: {
-          attributes: ["point", "remedial_point"],
+  try {
+    let score = await Score.findAll({
+      include: [
+        {
+          model: Exam,
+          // attributes: ["unique_id"],
+          through: {
+            attributes: ["point", "remedial_point"],
+          },
         },
-      },
-    ],
-    order: [[Exam, "createdAt"]],
-  });
-  return response(200, "get all scores", score, res);
+      ],
+      order: [
+        [Exam, "createdAt"],
+        [this, "username"],
+      ],
+    });
+    return response(200, "get all scores", score, res);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
 }
 
 async function updatePoint(req, res) {
