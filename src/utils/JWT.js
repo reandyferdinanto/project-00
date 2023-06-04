@@ -1,4 +1,5 @@
 const { sign, verify } = require("jsonwebtoken");
+const response = require("../controllers/response");
 
 const createToken = (user) => {
   const accessToken = sign(
@@ -14,7 +15,7 @@ const createToken = (user) => {
 const validateToken = (req, res, next) => {
   const accessToken = req.cookies["access-token"];
   if (!accessToken) {
-    return res.status(400).json({ error: "you're not authenticated" });
+    return response(400, "you're not authenticated", [], res);
   }
   try {
     const validToken = verify(accessToken, "SECRET");
@@ -24,7 +25,7 @@ const validateToken = (req, res, next) => {
       next();
     }
   } catch (error) {
-    return res.status(400).json({ error: err });
+    return response(500, "server error", { error: error.message }, res);
   }
 };
 
@@ -41,7 +42,7 @@ const validateRedirect = (req, res, next) => {
       next();
     }
   } catch (error) {
-    return res.status(400).json({ error: err });
+    return response(500, "server error", { error: error.message }, res);
   }
 };
 

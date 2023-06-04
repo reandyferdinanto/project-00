@@ -54,6 +54,8 @@
             }
             if (response.error) {
               $(".error-password").html(response.error);
+            } else if (response.payload.message == "you're not authenticated") {
+              window.location = "/login";
             }
           },
         });

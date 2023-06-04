@@ -136,6 +136,8 @@ $(document).ready(() => {
       success: (response) => {
         if (response.payload.status_code == 200) {
           window.location = "/ujian";
+        } else if (response.payload.message == "you're not authenticated") {
+          window.location = "/login";
         }
       },
     });

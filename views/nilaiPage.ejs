@@ -193,6 +193,8 @@
           success: (response) => {
             if (response.status_code == 200) {
               window.location.href = "files/exports/nilai-siswa.csv";
+            } else if (response.payload.message == "you're not authenticated") {
+              window.location = "/login";
             }
           },
         });
