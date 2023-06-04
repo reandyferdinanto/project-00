@@ -9,7 +9,7 @@ $(document).ready(() => {
   let unique_id = window.location.href.substring(
     window.location.href.lastIndexOf("/") + 1
   );
-  let url_input = `http://localhost:3000/api/exams/${unique_id}`;
+  let url_input = `/api/exams/${unique_id}`;
   let question_id = [];
   $.get(url_input, async (data, status) => {
     let datas = data.payload.datas;
