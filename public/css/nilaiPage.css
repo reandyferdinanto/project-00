@@ -121,8 +121,8 @@ main {
 }
 .main-table-title {
   padding: 0.5rem 2rem;
-  display: grid;
-  grid-template-columns: 0.3fr 1fr 1fr 0.4fr;
+  /* display: grid;
+  grid-template-columns: 0.3fr 1fr 1fr 0.4fr; */
 }
 .main-table-body {
   color: #358f6c;
