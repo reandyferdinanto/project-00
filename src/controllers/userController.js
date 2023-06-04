@@ -22,7 +22,7 @@ async function addUser(req, res) {
     username: body.username,
     class: body.class,
     major: body.major,
-    password: body.nis + "!",
+    password: body.nis + "!##!",
   });
   // res.redirect("/siswa");
   response(201, "add new user", newUser, res);

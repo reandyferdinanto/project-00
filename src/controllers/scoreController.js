@@ -25,43 +25,23 @@ async function getScoreById(req, res, next) {
 
 async function getAllScore(req, res, next) {
   const { username } = req.query;
-  let score = await Score.findOne({
-    where: {
-      username: username || "",
-    },
+
+  let score = await Score.findAll({
     include: [
       {
-        order: [[Exam, "createdAt", "asc"]],
         model: Exam,
-        attributes: ["unique_id"],
+        // attributes: ["unique_id"],
         through: {
           attributes: ["point", "remedial_point"],
         },
       },
     ],
-    attributes: { exclude: ["createdAt", "updatedAt"] },
+    order: [
+      [Exam, "createdAt"],
+      [this, "username"],
+    ],
   });
-
-  if (!score) {
-    score = await Score.findAll({
-      include: [
-        {
-          model: Exam,
-          // attributes: ["unique_id"],
-          through: {
-            attributes: ["point", "remedial_point"],
-          },
-        },
-      ],
-      attributes: { exclude: ["createdAt", "updatedAt"] },
-      order: [
-        [Exam, "createdAt"],
-        [this, "username"],
-      ],
-    });
-    return response(200, "get all scores", score, res);
-  }
-  response(200, "get score by username", score, res);
+  return response(200, "get all scores", score, res);
 }
 
 async function updatePoint(req, res) {
