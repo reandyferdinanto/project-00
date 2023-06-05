@@ -296,3 +296,38 @@ input[type="file"] {
   height: 90%;
   object-fit: contain;
 }
+
+.file-layer {
+  /* display: none; */
+  visibility: hidden;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.file-toolarge {
+  background-color: white;
+  color: black;
+  padding: 3rem 10rem;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+.file-toolarge button {
+  padding: 0.5rem 1rem;
+  border: 0.1px solid lightgray;
+  background-color: #358f6c;
+  border-radius: 15px;
+  color: white;
+  width: 100px;
+  cursor: pointer;
+}

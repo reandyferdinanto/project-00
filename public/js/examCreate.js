@@ -24,7 +24,7 @@ $(document).ready(() => {
                 <input placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
                 <input placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
                 <label class="custom-file-upload">
-                    <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/jpg, image/png"/>
+                    <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
                     <i class="uil uil-file-plus-alt"></i> Masukan Gambar
                 </label>
               </div>
@@ -58,7 +58,7 @@ $(document).ready(() => {
               <input placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
               
               <label class="custom-file-upload">
-                    <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/jpg, image/png"/>
+                    <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
                     <i class="uil uil-file-plus-alt"></i> Masukan Gambar
               </label>
             </div>
@@ -73,13 +73,21 @@ $(document).ready(() => {
   $(".ubah-button").on("click", () => {
     $(".submit-layer").css("visibility", "hidden");
   });
+  $(".file-toolarge button").on("click", (e) => {
+    e.preventDefault();
+    $(".file-layer").css("visibility", "hidden");
+  });
 
   // IMAGE INPUT
   $(".main-background").on("change", ".input-file", function () {
     let input_file = document.querySelectorAll(".input-file");
     queuedImagesArray = [];
     input_file.forEach((inp, index) => {
-      queuedImagesArray.push(input_file[index].files);
+      if (input_file[index].files[0].size < 200000) {
+        queuedImagesArray.push(input_file[index].files);
+      } else {
+        $(".file-layer").css("visibility", "visible");
+      }
     });
     displayQueuedImages();
   });
