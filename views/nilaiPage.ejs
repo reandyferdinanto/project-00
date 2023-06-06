@@ -167,11 +167,17 @@
       $.get("/api/exams", async (response, status) => {
         $("#exams-select").html("");
         let exams = response.payload.datas;
-        exams.forEach((exam, index) => {
+        if (exams.length !== 0) {
+          exams.forEach((exam, index) => {
+            $("#exams-select").append(
+              `<option value="${exam.unique_id}">${exam.exam_name}</option>`
+            );
+          });
+        } else {
           $("#exams-select").append(
-            `<option value="${exam.unique_id}">${exam.exam_name}</option>`
+            `<option value="">tidak ada ujian terdaftar</option>`
           );
-        });
+        }
       });
 
       // SELECT

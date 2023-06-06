@@ -167,7 +167,8 @@ label {
   font-size: 0.9rem;
 }
 .question {
-  padding: 1rem 2rem 0 2rem;
+  position: relative;
+  padding: 1rem 2rem;
 }
 .soal-text {
   width: 100%;
@@ -191,6 +192,9 @@ label {
   border: 0.1px solid gray;
 }
 .add-more {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
   text-align: center;
   margin: 2rem 0 1rem 0;
 }
@@ -284,17 +288,40 @@ input[type="file"] {
 .display_image {
   width: 100%;
   height: 300px;
-  border: 1px solid gray;
+  /* border: 1px solid white; */
+  border-radius: 15px;
   margin-bottom: 1rem;
-  display: flex;
   justify-content: center;
   align-items: center;
+  display: none;
 }
 
 .display_image img {
-  width: 90%;
+  width: 70%;
   height: 90%;
   object-fit: contain;
+}
+.display_image span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f6f6f6;
+  color: #358f6c;
+  width: 30px;
+  height: 30px;
+  /* padding: 0.3rem; */
+  border-radius: 100%;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  transition: 0.3s;
+}
+.display_image span:hover {
+  transform: scale(1.1);
+}
+.display_image span i {
+  width: max-content;
+  height: max-content;
+  font-size: 1.3rem;
 }
 
 .file-layer {
@@ -310,6 +337,7 @@ input[type="file"] {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  z-index: 999;
 }
 .file-toolarge {
   background-color: white;
@@ -330,4 +358,23 @@ input[type="file"] {
   color: white;
   width: 100px;
   cursor: pointer;
+}
+
+.delete-quest {
+  background-color: #f6f6f6;
+  color: #358f6c;
+  padding: 0.3rem;
+  border-radius: 3px;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  right: -10px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  transition: 0.3s;
+}
+.delete-quest:hover {
+  transform: scale(1.1);
+}
+.delete-quest span i {
+  font-size: 1.3rem;
 }
