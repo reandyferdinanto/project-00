@@ -26,33 +26,36 @@ $(document).ready(() => {
         $(".questions").append([
           `
             <div class="question">
-                  <p>Soal ${index + 1}</p>
-                    <div class="display_image"></div>
-                    <textarea name="question_text" class='soal-text' placeholder="Masukan Soal">${
-                      quest.question_text
-                    }</textarea>
-                    <div class="answers">
-                      <input placeholder='jawaban benar' name='correct_answer' class='answer' required value="${
-                        quest.correct_answer
-                      }"/>
-                      <input placeholder='jawaban lain' name='wrong_answer' class='answer' required value="${
-                        w_ans[0]
-                      }"/>
-                      <input placeholder='jawaban lain' name='wrong_answer' class='answer' required value="${
-                        w_ans[1]
-                      }"/>
-                      <input placeholder='jawaban lain' name='wrong_answer' class='answer' required value="${
-                        w_ans[2]
-                      }"/>
-                      <input placeholder='jawaban lain' name='wrong_answer' class='answer' required value="${
-                        w_ans[3]
-                      }"/>
-                      <label class="custom-file-upload">
-                          <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/jpg, image/png"/>
-                          <i class="uil uil-file-plus-alt"></i> Masukan Gambar
-                      </label>
-                    </div>
-                  </div>`,
+              <p>Soal ${index + 1}</p>
+              <div class="display_image"></div>
+              <textarea name="question_text" class='soal-text' placeholder="Masukan Soal">${
+                quest.question_text
+              }</textarea>
+              <div class="answers">
+                <input placeholder='jawaban benar' name='correct_answer' class='answer' required value="${
+                  quest.correct_answer
+                }"/>
+                <input placeholder='jawaban lain' name='wrong_answer' class='answer' required value="${
+                  w_ans[0]
+                }"/>
+                <input placeholder='jawaban lain' name='wrong_answer' class='answer' required value="${
+                  w_ans[1]
+                }"/>
+                <input placeholder='jawaban lain' name='wrong_answer' class='answer' required value="${
+                  w_ans[2]
+                }"/>
+                <input placeholder='jawaban lain' name='wrong_answer' class='answer' required value="${
+                  w_ans[3]
+                }"/>
+                <label class="custom-file-upload">
+                  <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/jpg, image/png"/>
+                  <i class="uil uil-file-plus-alt"></i> Masukan Gambar
+                </label>
+              </div>
+              <div class="delete-quest" title="Hapus Soal" >
+                <span><i class="uil uil-trash-alt"></i></span>
+              </div>
+            </div>`,
         ]);
         // IMG PROCESS
         let img = "";
@@ -68,6 +71,9 @@ $(document).ready(() => {
     }
   });
 
+  $(".main-background").on("click", ".delete-quest", function () {
+    $(this).parent().remove();
+  });
   $(".main-background").on("click", "#selesai", () => {
     $(".submit-layer").css("visibility", "visible");
   });
