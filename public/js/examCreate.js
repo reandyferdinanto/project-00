@@ -110,6 +110,7 @@ $(document).ready(() => {
   let queuedImagesArray = [];
 
   function displayQueuedImages() {
+    console.log(queuedImagesArray);
     let img = "";
     queuedImagesArray.forEach((image, index) => {
       if (image.length != 0) {
