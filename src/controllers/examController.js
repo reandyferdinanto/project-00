@@ -121,56 +121,76 @@ async function updateExam(req, res) {
     );
 
     // UPDATE QUESTION
-    question_id.forEach(async (quest_id, index) => {
-      const question = await Question.findOne({
-        where: {
-          unique_id: quest_id,
-        },
-      });
-      if (Array.isArray(question_text)) {
-        wrong_answer = req.body.wrong_answer
+
+    if (Array.isArray(question_text)) {
+      let bulkNewBody = [];
+      for (const [index, quest_id] of question_id.entries()) {
+        let wrong_answer = req.body.wrong_answer
           .slice(index * 4, (index + 1) * 4)
           .join();
-        await Question.update(
-          {
-            question_text: question_text[index],
-            question_img:
-              req.files[index] !== undefined
-                ? `${req.protocol + "://" + req.get("host")}/files/uploads/${
-                    req.files[index].filename
-                  }`
-                : question.question_img,
-            correct_answer: correct_answer[index],
-            wrong_answer: wrong_answer,
+        await Question.findOne({
+          where: {
+            unique_id: quest_id,
           },
-          {
-            where: {
-              unique_id: quest_id,
-            },
-          }
-        );
-      } else {
-        let wrong_answer = req.body.wrong_answer.join();
-        await Question.update(
-          {
-            question_text,
-            question_img:
-              req.files[0] !== undefined
-                ? `${req.protocol + "://" + req.get("host")}/files/uploads/${
-                    req.files[0].filename
-                  }`
-                : question.question_img,
-            correct_answer,
-            wrong_answer,
-          },
-          {
-            where: {
-              unique_id: quest_id,
-            },
-          }
-        );
+        })
+          .then((question) => {
+            return (newBody = {
+              question_text: question_text[index],
+              question_img:
+                req.files[index] !== undefined
+                  ? `${req.protocol + "://" + req.get("host")}/files/uploads/${
+                      req.files[index].filename
+                    }`
+                  : question.question_img,
+              correct_answer: correct_answer[index],
+              wrong_answer: wrong_answer,
+            });
+          })
+          .then((newBody) => {
+            bulkNewBody.push(newBody);
+          });
       }
-    });
+
+      await Question.bulkCreate(bulkNewBody, {
+        updateOnDuplicate: ["unique_id"],
+      }).then(async (result) => {
+        exam.setQuestions(result);
+        await Question.destroy({
+          where: {
+            unique_id: question_id,
+          },
+        });
+      });
+    } else {
+      const question = await Question.findOne({
+        where: {
+          unique_id: question_id,
+        },
+      });
+      let wrong_answer = req.body.wrong_answer.join();
+      let newBody = {
+        question_text,
+        question_img:
+          req.files[0] !== undefined
+            ? `${req.protocol + "://" + req.get("host")}/files/uploads/${
+                req.files[0].filename
+              }`
+            : question.question_img,
+        correct_answer,
+        wrong_answer,
+      };
+      await Question.update(newBody, {
+        where: {
+          unique_id: question_id,
+        },
+      })
+        .then(() => {
+          return Question.findOne({ where: { unique_id: question_id } });
+        })
+        .then((result) => {
+          exam.setQuestions(result);
+        });
+    }
     response(200, "updated exams success", [], res);
   } catch (error) {
     response(

@@ -26,48 +26,64 @@ $(document).ready(() => {
         $(".questions").append([
           `
             <div class="question">
-                  <p>Soal ${index + 1}</p>
-                    <div class="display_image"></div>
-                    <textarea name="question_text" class='soal-text' placeholder="Masukan Soal">${
-                      quest.question_text
-                    }</textarea>
-                    <div class="answers">
-                      <input placeholder='jawaban benar' name='correct_answer' class='answer' required value="${
-                        quest.correct_answer
-                      }"/>
-                      <input placeholder='jawaban lain' name='wrong_answer' class='answer' required value="${
-                        w_ans[0]
-                      }"/>
-                      <input placeholder='jawaban lain' name='wrong_answer' class='answer' required value="${
-                        w_ans[1]
-                      }"/>
-                      <input placeholder='jawaban lain' name='wrong_answer' class='answer' required value="${
-                        w_ans[2]
-                      }"/>
-                      <input placeholder='jawaban lain' name='wrong_answer' class='answer' required value="${
-                        w_ans[3]
-                      }"/>
-                      <label class="custom-file-upload">
-                          <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/jpg, image/png"/>
-                          <i class="uil uil-file-plus-alt"></i> Masukan Gambar
-                      </label>
-                    </div>
-                  </div>`,
+              <p>Soal ${index + 1}</p>
+              <div class="display_image"></div>
+              <textarea name="question_text" class='soal-text' placeholder="Masukan Soal">${
+                quest.question_text
+              }</textarea>
+              <div class="answers">
+                <input placeholder='jawaban benar' name='correct_answer' class='answer' required value="${
+                  quest.correct_answer
+                }"/>
+                <input placeholder='jawaban lain' name='wrong_answer' class='answer' required value="${
+                  w_ans[0]
+                }"/>
+                <input placeholder='jawaban lain' name='wrong_answer' class='answer' required value="${
+                  w_ans[1]
+                }"/>
+                <input placeholder='jawaban lain' name='wrong_answer' class='answer' required value="${
+                  w_ans[2]
+                }"/>
+                <input placeholder='jawaban lain' name='wrong_answer' class='answer' required value="${
+                  w_ans[3]
+                }"/>
+                <input type="hidden" name="row_id" class="row_id" value="${
+                  quest.unique_id
+                }">
+                <label class="custom-file-upload">
+                  <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
+                  <i class="uil uil-file-plus-alt"></i> Masukan Gambar
+                </label>
+              </div>
+              <div class="delete-quest" title="Hapus Soal" >
+                <span><i class="uil uil-trash-alt"></i></span>
+              </div>
+            </div>`,
         ]);
-        // IMG PROCESS
         let img = "";
         if (quest.question_img !== null) {
           img = `
               <img src="${quest.question_img}" alt="no img" />
               `;
+          document.querySelectorAll(".display_image")[index].style.display =
+            "flex";
         } else {
           img = "";
         }
+        // <span title="Hapus Gambar" class="deleteImg"><i class="uil uil-times"></i></span>
         document.querySelectorAll(".display_image")[index].innerHTML = img;
       });
     }
   });
 
+  $(".main-background").on("click", ".delete-quest", function () {
+    $(this).parent().remove();
+    let deleted = $(this).parent().find('input[name="row_id"]').val();
+    let index = question_id.indexOf(deleted);
+    if (index !== -1) {
+      question_id.splice(index, 1);
+    }
+  });
   $(".main-background").on("click", "#selesai", () => {
     $(".submit-layer").css("visibility", "visible");
   });
@@ -82,12 +98,27 @@ $(document).ready(() => {
     $(".submit-hapus").css("visibility", "hidden");
   });
 
+  $(".file-toolarge button").on("click", (e) => {
+    e.preventDefault();
+    $(".file-layer").css("visibility", "hidden");
+  });
+
   // IMAGE INPUT
   $(".main-background").on("change", ".input-file", function () {
     let input_file = document.querySelectorAll(".input-file");
     queuedImagesArray = [];
     input_file.forEach((inp, index) => {
-      queuedImagesArray.push(input_file[index].files);
+      if (input_file[index].files[0] == undefined) {
+        queuedImagesArray.push(input_file[index].files);
+      } else if (input_file[index].files[0]) {
+        if (input_file[index].files[0].size < 200000) {
+          queuedImagesArray.push(input_file[index].files);
+          document.querySelectorAll(".display_image")[index].style.display =
+            "flex";
+        } else {
+          $(".file-layer").css("visibility", "visible");
+        }
+      }
     });
     displayQueuedImages();
   });
@@ -98,6 +129,7 @@ $(document).ready(() => {
     let img = "";
     queuedImagesArray.forEach((image, index) => {
       if (image.length != 0) {
+        console.log(URL.createObjectURL(image[0]));
         img = `
           <img src="${URL.createObjectURL(image[0])}" alt="no img" />
           <span class="deleteImg">&times;</span>
@@ -111,10 +143,12 @@ $(document).ready(() => {
 
   $(".main-background").on("click", ".deleteImg", function (e) {
     let input_file = document.querySelectorAll(".input-file");
-    let index = $(".deleteImg").index($(this));
+    let index = $(".display_image").index($(this).parent());
     input_file[index].type = "text";
     input_file[index].type = "file";
     $(this)[0].parentElement.innerHTML = "";
+
+    document.querySelectorAll(".display_image")[index].style.display = "none";
   });
 
   // UPDATE FORM SUBMIT
@@ -134,6 +168,7 @@ $(document).ready(() => {
       encrypt: "multipart/form-data",
       processData: false,
       success: (response) => {
+        console.log(response);
         if (response.payload.status_code == 200) {
           window.location = "/ujian";
         } else if (response.payload.message == "you're not authenticated") {
