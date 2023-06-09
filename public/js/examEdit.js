@@ -140,6 +140,7 @@ $(document).ready(() => {
   let queuedImagesArray = [];
 
   function displayQueuedImages() {
+    console.log(question_with_img);
     let img = "";
     queuedImagesArray.forEach((image, index) => {
       if (image.length != 0) {
@@ -173,6 +174,12 @@ $(document).ready(() => {
     input_file[index].type = "text";
     input_file[index].type = "file";
     $(this)[0].parentElement.innerHTML = "";
+
+    let index_deleted = question_with_img.indexOf(index);
+    if (index_deleted !== -1) {
+      question_with_img.splice(index_deleted, 1);
+    }
+    console.log(question_with_img);
 
     document.querySelectorAll(".display_image")[index].style.display = "none";
   });

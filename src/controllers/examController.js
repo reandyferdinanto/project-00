@@ -220,11 +220,13 @@ async function updateExam(req, res) {
 async function getAllExam(req, res, next) {
   try {
     const exams = await Exam.findAll({
-      order: [["createdAt"]],
+      order: [["createdAt"], [Question, "createdAt"]],
       include: [
         {
           model: Question,
-          attributes: { exclude: ["ExamUniqueId", "examId"] },
+          attributes: {
+            exclude: ["ExamUniqueId", "createdAt", "updatedAt"],
+          },
         },
       ],
       attributes: { exclude: ["createdAt", "updatedAt"] },
@@ -264,10 +266,11 @@ async function deleteExam(req, res, next) {
 async function getExamById(req, res, next) {
   try {
     const exam = await Exam.findByPk(req.params.id, {
+      attributes: { exclude: ["createdAt", "updatedAt"] },
       include: [
         {
           model: Question,
-          attributes: { exclude: ["ExamUniqueId"] },
+          attributes: { exclude: ["ExamUniqueId", "createdAt", "updatedAt"] },
         },
       ],
     });
