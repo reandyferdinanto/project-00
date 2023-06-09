@@ -6,11 +6,14 @@ $(document).ready(() => {
   });
   $("#date").html(text);
 
+  let question_with_img = [];
+
   let unique_id = window.location.href.substring(
     window.location.href.lastIndexOf("/") + 1
   );
   let url_input = `/api/exams/${unique_id}`;
   let question_id = [];
+  let deleted_img = [];
   $.get(url_input, async (data, status) => {
     let datas = data.payload.datas;
     if (status == "success" && datas.length !== 0) {
@@ -19,10 +22,9 @@ $(document).ready(() => {
       $("#kkm_point").val(datas.kkm_point);
       $("#available_try").val(datas.available_try);
       //   QUESTION
-
-      datas.Questions.forEach((quest, index) => {
+      for (const [index, quest] of datas.Questions.entries()) {
         question_id.push(quest.unique_id);
-        let w_ans = quest.wrong_answer.split(",");
+        let w_ans = quest.wrong_answer.split("|");
         $(".questions").append([
           `
             <div class="question">
@@ -52,7 +54,6 @@ $(document).ready(() => {
                 }">
                 <label class="custom-file-upload">
                   <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
-                  <i class="uil uil-file-plus-alt"></i> Masukan Gambar
                 </label>
               </div>
               <div class="delete-quest" title="Hapus Soal" >
@@ -60,19 +61,30 @@ $(document).ready(() => {
               </div>
             </div>`,
         ]);
-        let img = "";
-        if (quest.question_img !== null) {
-          img = `
-              <img src="${quest.question_img}" alt="no img" />
-              `;
-          document.querySelectorAll(".display_image")[index].style.display =
-            "flex";
-        } else {
-          img = "";
-        }
-        // <span title="Hapus Gambar" class="deleteImg"><i class="uil uil-times"></i></span>
-        document.querySelectorAll(".display_image")[index].innerHTML = img;
-      });
+
+        getImgURL(quest.question_img, (imgBlob) => {
+          // Load img blob to input
+          // WIP: UTF8 character error
+          if (quest.question_img) {
+            question_with_img.push(index);
+            let fileName = quest.question_img;
+            let file = new File(
+              [imgBlob],
+              fileName,
+              { type: "image/jpeg", lastModified: new Date().getTime() },
+              "utf-8"
+            );
+            let container = new DataTransfer();
+            container.items.add(file);
+            document.querySelectorAll(".input-file")[index].files =
+              container.files;
+            queuedImagesArray.push(container.files);
+            displayQueuedImages();
+          } else {
+            queuedImagesArray.push([]);
+          }
+        });
+      }
     }
   });
 
@@ -107,11 +119,13 @@ $(document).ready(() => {
   $(".main-background").on("change", ".input-file", function () {
     let input_file = document.querySelectorAll(".input-file");
     queuedImagesArray = [];
+    question_with_img = [];
     input_file.forEach((inp, index) => {
       if (input_file[index].files[0] == undefined) {
         queuedImagesArray.push(input_file[index].files);
       } else if (input_file[index].files[0]) {
         if (input_file[index].files[0].size < 200000) {
+          question_with_img.push(index);
           queuedImagesArray.push(input_file[index].files);
           document.querySelectorAll(".display_image")[index].style.display =
             "flex";
@@ -126,18 +140,31 @@ $(document).ready(() => {
   let queuedImagesArray = [];
 
   function displayQueuedImages() {
+    console.log(question_with_img);
     let img = "";
     queuedImagesArray.forEach((image, index) => {
       if (image.length != 0) {
-        console.log(URL.createObjectURL(image[0]));
         img = `
-          <img src="${URL.createObjectURL(image[0])}" alt="no img" />
-          <span class="deleteImg">&times;</span>
-          `;
-      } else {
-        img = "";
+            <img src="" alt="no img" />
+            <span title="Hapus Gambar" class="deleteImg"><i class="uil uil-times"></i></span>
+            `;
+        document.querySelectorAll(".display_image")[index].style.display =
+          "flex";
+        document.querySelectorAll(".display_image")[index].innerHTML = img;
+        let reader = new FileReader();
+        reader.onload = function (e) {
+          document
+            .querySelectorAll(".display_image")
+            [index].getElementsByTagName("img")[0].src = e.target.result;
+        };
+        if (
+          document.querySelectorAll(".input-file")[index].files[0] !== undefined
+        ) {
+          reader.readAsDataURL(
+            document.querySelectorAll(".input-file")[index].files[0]
+          );
+        }
       }
-      document.querySelectorAll(".display_image")[index].innerHTML = img;
     });
   }
 
@@ -148,6 +175,12 @@ $(document).ready(() => {
     input_file[index].type = "file";
     $(this)[0].parentElement.innerHTML = "";
 
+    let index_deleted = question_with_img.indexOf(index);
+    if (index_deleted !== -1) {
+      question_with_img.splice(index_deleted, 1);
+    }
+    console.log(question_with_img);
+
     document.querySelectorAll(".display_image")[index].style.display = "none";
   });
 
@@ -157,6 +190,7 @@ $(document).ready(() => {
     let formData = new FormData(manualForm);
     formData.append("exam_unique_id", unique_id);
     formData.append("question_unique_id", question_id);
+    formData.append("index_deleted", question_with_img);
     e.preventDefault();
     $.ajax({
       url: "/api/exams",
@@ -168,7 +202,6 @@ $(document).ready(() => {
       encrypt: "multipart/form-data",
       processData: false,
       success: (response) => {
-        console.log(response);
         if (response.payload.status_code == 200) {
           window.location = "/ujian";
         } else if (response.payload.message == "you're not authenticated") {
@@ -200,3 +233,22 @@ $(document).ready(() => {
     });
   });
 });
+
+async function getImgURL(url, callback) {
+  var xhr = new XMLHttpRequest();
+  xhr.onload = function () {
+    callback(xhr.response);
+  };
+  xhr.open("GET", url);
+  xhr.responseType = "blob";
+  xhr.send();
+}
+
+function loadInputFieldToPreview(imgElement) {
+  // Load preview to img tag
+  var reader = new FileReader();
+  reader.onload = function (e) {
+    imgElement.src = e.target.result;
+  };
+  reader.readAsDataURL(document.querySelector("#file_input").files[0]); // convert to base64 string
+}

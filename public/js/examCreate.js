@@ -6,6 +6,8 @@ $(document).ready(() => {
   });
   $("#date").html(text);
 
+  let question_with_img = [];
+
   // ADD SOAL
   $("#add-question").on("click", () => {
     $("#add-question").remove();
@@ -91,11 +93,13 @@ $(document).ready(() => {
   $(".main-background").on("change", ".input-file", function () {
     let input_file = document.querySelectorAll(".input-file");
     queuedImagesArray = [];
+    question_with_img = [];
     input_file.forEach((inp, index) => {
       if (input_file[index].files[0] == undefined) {
         queuedImagesArray.push(input_file[index].files);
       } else if (input_file[index].files[0]) {
         if (input_file[index].files[0].size < 200000) {
+          question_with_img.push(index);
           queuedImagesArray.push(input_file[index].files);
           document.querySelectorAll(".display_image")[index].style.display =
             "flex";
@@ -110,7 +114,6 @@ $(document).ready(() => {
   let queuedImagesArray = [];
 
   function displayQueuedImages() {
-    console.log(queuedImagesArray);
     let img = "";
     queuedImagesArray.forEach((image, index) => {
       if (image.length != 0) {
@@ -131,9 +134,37 @@ $(document).ready(() => {
     input_file[index].type = "text";
     input_file[index].type = "file";
     $(this)[0].parentElement.innerHTML = "";
+
+    let index_deleted = question_with_img.indexOf(index);
+    if (index_deleted !== -1) {
+      question_with_img.splice(index_deleted, 1);
+    }
     document.querySelectorAll(".display_image")[index].style.display = "none";
-    // console.log($(".display_image"));
-    // console.log($(this).parent());
-    // console.log($(".display_image").index($(this).parent()));
+  });
+
+  const manualForm = document.getElementById("submit-form");
+  manualForm.addEventListener("submit", (e) => {
+    let formData = new FormData(manualForm);
+    formData.append("index_deleted", question_with_img);
+    e.preventDefault();
+    $.ajax({
+      url: "/api/exams",
+      type: "POST",
+      data: formData,
+      async: false,
+      cache: false,
+      contentType: false,
+      encrypt: "multipart/form-data",
+      processData: false,
+      success: (response) => {
+        if (response.payload.status_code == 200) {
+          window.location = "/ujian";
+        } else if (response.payload.message == "you're not authenticated") {
+          window.location = "/login";
+        }
+      },
+    });
   });
 });
+
+// UPDATE FORM SUBMIT

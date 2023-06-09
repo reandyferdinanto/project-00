@@ -163,7 +163,6 @@
           encrypt: "multipart/form-data",
           processData: false,
           success: (response) => {
-            console.log(response.payload.status_code);
             if (response.payload.status_code == 201) {
               window.location = "/siswa";
             } else if (response.payload.message == "you're not authenticated") {

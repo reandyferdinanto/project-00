@@ -279,7 +279,7 @@ label {
 }
 
 input[type="file"] {
-  display: none;
+  /* display: none; */
 }
 
 .custom-file-upload {

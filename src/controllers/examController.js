@@ -42,27 +42,33 @@ async function tambahExam(req, res) {
     });
 
     if (Array.isArray(question_text)) {
+      let question_with_img = req.body.index_deleted.split(",");
+      let count = 0;
       question_text.forEach(async (qt, index) => {
-        wrong_answer = req.body.wrong_answer
+        let wrong_answer = req.body.wrong_answer
           .slice(index * 4, (index + 1) * 4)
-          .join();
+          .join("|");
+        let img = "";
+        if (question_with_img.includes(index.toString())) {
+          img = `${req.protocol + "://" + req.get("host")}/files/uploads/${
+            req.files[count].filename
+          }`;
+          count += 1;
+        } else {
+          img = null;
+        }
+
         const question = await Question.create({
           question_text: question_text[index],
-          question_img:
-            req.files[index] !== undefined
-              ? `${req.protocol + "://" + req.get("host")}/files/uploads/${
-                  req.files[index].filename
-                }`
-              : null,
+          question_img: img,
           correct_answer: correct_answer[index],
           wrong_answer: wrong_answer,
         });
         exam.addQuestions(question);
       });
       exam.addScores(score);
-      return res.redirect("/ujian");
     } else {
-      let wrong_answer = req.body.wrong_answer.join();
+      let wrong_answer = req.body.wrong_answer.join("|");
       const question = await Question.create({
         question_text,
         question_img:
@@ -76,8 +82,8 @@ async function tambahExam(req, res) {
       });
       exam.addQuestions(question);
       exam.addScores(score);
-      return res.redirect("/ujian");
     }
+    return response(200, "success create new exam", [], res);
   } catch (error) {
     response(
       500,
@@ -121,27 +127,34 @@ async function updateExam(req, res) {
     );
 
     // UPDATE QUESTION
-
+    // IF QUESTION > 1
     if (Array.isArray(question_text)) {
+      let question_with_img = req.body.index_deleted.split(",");
+      let count = 0;
       let bulkNewBody = [];
       for (const [index, quest_id] of question_id.entries()) {
         let wrong_answer = req.body.wrong_answer
           .slice(index * 4, (index + 1) * 4)
-          .join();
+          .join("|");
+        let img = "";
+        if (question_with_img.includes(index.toString())) {
+          img = `${req.protocol + "://" + req.get("host")}/files/uploads/${
+            req.files[count].filename
+          }`;
+          count += 1;
+        } else {
+          img = null;
+        }
+
         await Question.findOne({
           where: {
             unique_id: quest_id,
           },
         })
-          .then((question) => {
+          .then(() => {
             return (newBody = {
               question_text: question_text[index],
-              question_img:
-                req.files[index] !== undefined
-                  ? `${req.protocol + "://" + req.get("host")}/files/uploads/${
-                      req.files[index].filename
-                    }`
-                  : question.question_img,
+              question_img: img,
               correct_answer: correct_answer[index],
               wrong_answer: wrong_answer,
             });
@@ -161,13 +174,15 @@ async function updateExam(req, res) {
           },
         });
       });
+
+      // IF QUESTION == 1
     } else {
       const question = await Question.findOne({
         where: {
           unique_id: question_id,
         },
       });
-      let wrong_answer = req.body.wrong_answer.join();
+      let wrong_answer = req.body.wrong_answer.join("|");
       let newBody = {
         question_text,
         question_img:
@@ -175,7 +190,7 @@ async function updateExam(req, res) {
             ? `${req.protocol + "://" + req.get("host")}/files/uploads/${
                 req.files[0].filename
               }`
-            : question.question_img,
+            : null,
         correct_answer,
         wrong_answer,
       };
@@ -205,11 +220,13 @@ async function updateExam(req, res) {
 async function getAllExam(req, res, next) {
   try {
     const exams = await Exam.findAll({
-      order: [["createdAt"]],
+      order: [["createdAt"], [Question, "createdAt"]],
       include: [
         {
           model: Question,
-          attributes: { exclude: ["ExamUniqueId", "examId"] },
+          attributes: {
+            exclude: ["ExamUniqueId", "createdAt", "updatedAt"],
+          },
         },
       ],
       attributes: { exclude: ["createdAt", "updatedAt"] },
@@ -249,10 +266,11 @@ async function deleteExam(req, res, next) {
 async function getExamById(req, res, next) {
   try {
     const exam = await Exam.findByPk(req.params.id, {
+      attributes: { exclude: ["createdAt", "updatedAt"] },
       include: [
         {
           model: Question,
-          attributes: { exclude: ["ExamUniqueId"] },
+          attributes: { exclude: ["ExamUniqueId", "createdAt", "updatedAt"] },
         },
       ],
     });
