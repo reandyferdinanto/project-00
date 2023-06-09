@@ -125,7 +125,6 @@
                     let correct = data.filter((e) => {
                       return e.unique_id == $("#exams-select").val();
                     });
-                    console.log(correct);
                     if (correct.length !== 0) {
                       return correct[0].exam_name;
                     }
@@ -143,7 +142,6 @@
                       return e.unique_id == $("#exams-select").val();
                     });
                     if (correct.length !== 0) {
-                      console.log(correct);
                       return correct[0].ScoreExam.point;
                     }
                     return "0";
@@ -182,7 +180,6 @@
 
       // SELECT
       $("#exams-select").on("change", function () {
-        console.log($(this).val());
         $("#siswa-table").DataTable().clear();
         $("#siswa-table").DataTable().destroy();
         $("#siswa-table").DataTable({
@@ -223,7 +220,6 @@
                     return e.unique_id == $("#exams-select").val();
                   });
                   if (correct.length !== 0) {
-                    console.log(correct);
                     return correct[0].ScoreExam.point;
                   }
                   return "0";

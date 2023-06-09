@@ -155,9 +155,11 @@
           $("#major").val(datas.major);
           if (datas.Exams) {
             datas.Exams.forEach((exam) => {
-              $(".exams-assign").on("click", `#${exam.exam_name}`, function () {
-                console.log(this);
-              });
+              $(".exams-assign").on(
+                "click",
+                `#${exam.exam_name}`,
+                function () {}
+              );
             });
           }
         }
@@ -210,7 +212,6 @@
           encrypt: "multipart/form-data",
           processData: false,
           success: (response) => {
-            console.log(response);
             if (response.payload.status_code == 200) {
               window.location = "/siswa";
             } else if (response.payload.message == "you're not authenticated") {
