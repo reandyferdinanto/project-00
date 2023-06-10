@@ -18,6 +18,7 @@ const storage = multer.diskStorage({
   },
 });
 
+app.enable("trust proxy");
 app.use(multer({ storage: storage, limits: { fileSize: 200000 } }).any());
 app.use(cors());
 app.use(cookieParse());
