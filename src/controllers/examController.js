@@ -50,7 +50,7 @@ async function tambahExam(req, res) {
           .join("|");
         let img = "";
         if (question_with_img.includes(index.toString())) {
-          img = `${"https" + "://" + req.get("host")}/files/uploads/${
+          img = `${req.protocol + "://" + req.get("host")}/files/uploads/${
             req.files[count].filename
           }`;
           count += 1;
@@ -73,7 +73,7 @@ async function tambahExam(req, res) {
         question_text,
         question_img:
           req.files[0] !== undefined
-            ? `${"https" + "://" + req.get("host")}/files/uploads/${
+            ? `${req.protocol + "://" + req.get("host")}/files/uploads/${
                 req.files[0].filename
               }`
             : null,
@@ -138,7 +138,7 @@ async function updateExam(req, res) {
           .join("|");
         let img = "";
         if (question_with_img.includes(index.toString())) {
-          img = `${"https" + "://" + req.get("host")}/files/uploads/${
+          img = `${req.protocol + "://" + req.get("host")}/files/uploads/${
             req.files[count].filename
           }`;
           count += 1;
@@ -187,7 +187,7 @@ async function updateExam(req, res) {
         question_text,
         question_img:
           req.files[0] !== undefined
-            ? `${"https" + "://" + req.get("host")}/files/uploads/${
+            ? `${req.protocol + "://" + req.get("host")}/files/uploads/${
                 req.files[0].filename
               }`
             : null,
