@@ -140,7 +140,6 @@ $(document).ready(() => {
   let queuedImagesArray = [];
 
   function displayQueuedImages() {
-    console.log(question_with_img);
     let img = "";
     queuedImagesArray.forEach((image, index) => {
       if (image.length != 0) {
@@ -179,7 +178,6 @@ $(document).ready(() => {
     if (index_deleted !== -1) {
       question_with_img.splice(index_deleted, 1);
     }
-    console.log(question_with_img);
 
     document.querySelectorAll(".display_image")[index].style.display = "none";
   });
@@ -235,13 +233,16 @@ $(document).ready(() => {
 });
 
 async function getImgURL(url, callback) {
-  var xhr = new XMLHttpRequest();
-  xhr.onload = function () {
-    callback(xhr.response);
-  };
-  xhr.open("GET", url);
-  xhr.responseType = "blob";
-  xhr.send();
+  $.ajax({
+    url: url,
+    method: "GET",
+    xhrFields: {
+      responseType: "blob",
+    },
+    success: function (response) {
+      callback(response);
+    },
+  });
 }
 
 function loadInputFieldToPreview(imgElement) {
