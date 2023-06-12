@@ -1,202 +1,109 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Exam Create | Muslim Maya</title>
-    <script
-      src="https://code.jquery.com/jquery-3.6.4.min.js"
-      integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
-      crossorigin="anonymous"
-    ></script>
-    <link rel="stylesheet" href="/static/css/siswaCreate.css" />
-  </head>
-  <body>
-    <!-- NAV -->
-    <nav>
-      <div class="nav-brand">
-        <h2>Muslim Maya</h2>
-        <!-- <img src="/static/img/logo.png" alt="" width="100px" /> -->
-      </div>
-      <div class="nav-list">
-        <p id="date"></p>
-        <form action="/api/admin/logout" method="post">
-          <a href=""><button type="submit">Keluar</button></a>
-        </form>
-      </div>
-    </nav>
+<%- include('./layouts/header'); -%>
+<link rel="stylesheet" href="/css/siswaCreate.css" />
+<body>
+  <!-- NAV -->
+  <%- include('./layouts/navbar'); -%>
 
-    <!-- MAIN -->
-    <main>
-      <div class="main-sidebar">
-        <div class="profile-sidebar">
-          <div class="profile-img">
-            <img src="" alt="" />
-          </div>
-          <div class="profile-info">
-            <p><b><%= user.username %></b></p>
-            <p>Guru</p>
-          </div>
+  <!-- MAIN -->
+  <main>
+    <div class="main-sidebar">
+      <div class="profile-sidebar">
+        <div class="profile-img">
+          <img src="" alt="" />
         </div>
-        <div class="list-sidebar">
-          <a href="/">Beranda</a>
-          <a href="/siswa" class="selected">Daftar Siswa</a>
-          <a href="/ujian">Ujian</a>
-          <a href="/nilai">Nilai</a>
+        <div class="profile-info">
+          <p><b><%= user.username %></b></p>
+          <p>Guru</p>
         </div>
       </div>
+      <div class="list-sidebar">
+        <a href="/">Beranda</a>
+        <a href="/siswa" class="selected">Daftar Siswa</a>
+        <a href="/ujian">Ujian</a>
+        <a href="/nilai">Nilai</a>
+      </div>
+    </div>
 
-      <div class="main-content">
-        <div class="main-background">
-          <div class="main-title">
-            <h2>Membuat Siswa Baru</h2>
-          </div>
-          <div class="upload-siswa">
-            <form id="fileUpload" method="post">
-              <label class="custom-file-upload">
-                <input
-                  type="file"
-                  class="input-file"
-                  multiple="multiple"
-                  name="siswa_upload"
-                  accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                />
-                <!-- <i class="uil uil-file-plus-alt"></i> Upload CSV Siswa -->
-                <input type="submit" value="Upload CSV" />
-              </label>
-            </form>
-          </div>
-          <form id="submit-form" method="post">
-            <div class="main-input">
-              <label for="">
-                NIS <br />
-                <input
-                  class="nama-input"
-                  required
-                  type="number"
-                  name="nis"
-                  id=""
-                />
-                Nama Siswa <br />
-                <input
-                  class="kelas-input"
-                  required
-                  type="text"
-                  name="username"
-                  id=""
-                />
-                <div class="input-side">
-                  <div class="">
-                    Kelas <br />
-                    <input
-                      class="nama-input"
-                      required
-                      type="text"
-                      name="class"
-                      id="class"
-                    />
-                  </div>
-                  <div class="">
-                    Jurusan <br />
-                    <input
-                      class="kelas-input"
-                      required
-                      type="text"
-                      name="major"
-                      id="major"
-                    />
-                  </div>
-                </div>
-              </label>
-            </div>
-            <div class="submit-input">
-              <button type="button" id="selesai">Selesai</button>
-            </div>
-            <div class="submit-layer">
-              <div class="submit-question">
-                <img src="/static/img/warning-alt.png" alt="" width="150" />
-                <p>Apakah anda sudah yakin selesai?</p>
-                <div class="submit-buttons">
-                  <button class="ubah-button" type="button">Ubah</button>
-                  <button class="selesai-button" type="submit">Selesai</button>
-                </div>
-              </div>
-            </div>
+    <div class="main-content">
+      <div class="main-background">
+        <div class="main-title">
+          <h2>Membuat Siswa Baru</h2>
+        </div>
+        <div class="upload-siswa">
+          <form id="fileUpload" method="post">
+            <label class="custom-file-upload">
+              <input
+                type="file"
+                class="input-file"
+                multiple="multiple"
+                name="siswa_upload"
+                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+              />
+              <!-- <i class="uil uil-file-plus-alt"></i> Upload CSV Siswa -->
+              <input type="submit" value="Upload CSV" />
+            </label>
           </form>
         </div>
+        <form id="submit-form" method="post">
+          <div class="main-input">
+            <label for="">
+              NIS <br />
+              <input
+                class="nama-input"
+                required
+                type="number"
+                name="nis"
+                id=""
+              />
+              Nama Siswa <br />
+              <input
+                class="kelas-input"
+                required
+                type="text"
+                name="username"
+                id=""
+              />
+              <div class="input-side">
+                <div class="">
+                  Kelas <br />
+                  <input
+                    class="nama-input"
+                    required
+                    type="text"
+                    name="class"
+                    id="class"
+                  />
+                </div>
+                <div class="">
+                  Jurusan <br />
+                  <input
+                    class="kelas-input"
+                    required
+                    type="text"
+                    name="major"
+                    id="major"
+                  />
+                </div>
+              </div>
+            </label>
+          </div>
+          <div class="submit-input">
+            <button type="button" id="selesai">Selesai</button>
+          </div>
+          <div class="submit-layer">
+            <div class="submit-question">
+              <img src="/img/warning-alt.png" alt="" width="150" />
+              <p>Apakah anda sudah yakin selesai?</p>
+              <div class="submit-buttons">
+                <button class="ubah-button" type="button">Ubah</button>
+                <button class="selesai-button" type="submit">Selesai</button>
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
-    </main>
-  </body>
-  <script>
-    $(document).ready(() => {
-      const d = new Date();
-      let text;
-      text = d.toLocaleString("id-ID", {
-        dateStyle: "medium",
-      });
-      $("#date").html(text);
-
-      // ADD SOAL
-
-      $("#selesai").on("click", () => {
-        $(".submit-layer").css("visibility", "visible");
-      });
-
-      $(".ubah-button").on("click", () => {
-        $(".submit-layer").css("visibility", "hidden");
-      });
-
-      // FILE UPLOAD
-      const fileUpload = document.getElementById("fileUpload");
-      fileUpload.addEventListener("submit", (e) => {
-        e.preventDefault();
-        let formData = new FormData(fileUpload);
-
-        $.ajax({
-          url: "/api/utils/upload",
-          type: "POST",
-          data: formData,
-          async: false,
-          cache: false,
-          contentType: false,
-          encrypt: "multipart/form-data",
-          processData: false,
-          success: (response) => {
-            if (response.payload.status_code == 201) {
-              window.location = "/siswa";
-            } else if (response.payload.message == "you're not authenticated") {
-              window.location = "/login";
-            }
-          },
-        });
-      });
-
-      // MANUAL UPLOAD
-      const manualForm = document.getElementById("submit-form");
-      // $("selesai-button").on("click", () => {
-      manualForm.addEventListener("submit", (e) => {
-        let formData = new FormData(manualForm);
-        e.preventDefault();
-        $.ajax({
-          url: "/api/scores",
-          type: "POST",
-          data: formData,
-          async: false,
-          cache: false,
-          contentType: false,
-          encrypt: "multipart/form-data",
-          processData: false,
-          success: (response) => {
-            if (response.payload.status_code == 201) {
-              window.location = "/siswa";
-            } else if (response.payload.message == "you're not authenticated") {
-              window.location = "/login";
-            }
-          },
-        });
-      });
-      // });
-    });
-  </script>
-</html>
+    </div>
+  </main>
+</body>
+<script src="/js/siswaCreate.js"></script>
+<%- include('./layouts/footer'); -%>

@@ -17,37 +17,6 @@ body {
   font-size: 0.9rem;
 }
 
-nav {
-  color: white;
-  padding: 0.5rem 2rem;
-  display: grid;
-  grid-template-columns: 0.2fr 1fr;
-  align-items: center;
-}
-
-.nav-brand h2 {
-  /* padding: 0 4rem 0 0; */
-}
-
-nav .nav-list {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-}
-nav .nav-list a button {
-  cursor: pointer;
-  padding: 0.5rem 1.5rem;
-  background-color: antiquewhite;
-  color: #358f6c;
-  border: none;
-  border-radius: 20px;
-}
-
-nav .nav-list li {
-  list-style-type: none;
-}
-
 main {
   padding: 0 0 0 2rem;
   display: grid;
