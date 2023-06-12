@@ -86,6 +86,7 @@ $(document).ready(() => {
                 const container = new DataTransfer();
                 container.items.add(file);
                 queuedImagesArray.push(container.files);
+                displayQueuedImages();
               }
             });
           } catch (error) {
