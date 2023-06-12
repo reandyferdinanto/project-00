@@ -154,17 +154,16 @@ $(document).ready(() => {
         const file = document.querySelectorAll(".input-file")[index].files[0];
         if (file && file.type.includes("image/")) {
           img = `
-        <img src="" alt="no img" />
-        <span title="Hapus Gambar" class="deleteImg"><i class="uil uil-times"></i></span>
-      `;
-          document.querySelectorAll(".display_image")[index].style.display =
-            "flex";
-          document.querySelectorAll(".display_image")[index].innerHTML = img;
+            <img src="" alt="no img" />
+            <span title="Hapus Gambar" class="deleteImg"><i class="uil uil-times"></i></span>
+          `;
+          let displayImageContainer =
+            document.querySelectorAll(".display_image")[index];
+          displayImageContainer.style.display = "flex";
+          displayImageContainer.innerHTML = img;
           let reader = new FileReader();
           reader.onload = function (e) {
-            document
-              .querySelectorAll(".display_image")
-              [index].getElementsByTagName("img")[0].src = e.target.result;
+            displayImageContainer.querySelector("img").src = e.target.result;
           };
           reader.readAsDataURL(file);
         }
@@ -253,13 +252,4 @@ function getImgBlob(url) {
       },
     });
   });
-}
-
-function loadInputFieldToPreview(imgElement) {
-  // Load preview to img tag
-  var reader = new FileReader();
-  reader.onload = function (e) {
-    imgElement.src = e.target.result;
-  };
-  reader.readAsDataURL(document.querySelector("#file_input").files[0]); // convert to base64 string
 }

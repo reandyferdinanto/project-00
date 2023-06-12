@@ -267,6 +267,7 @@ async function getExamById(req, res, next) {
   try {
     const exam = await Exam.findByPk(req.params.id, {
       attributes: { exclude: ["createdAt", "updatedAt"] },
+      order: [[Question, "question_img"]],
       include: [
         {
           model: Question,
