@@ -13,20 +13,21 @@ $(document).ready(() => {
   );
   let url_input = `/api/exams/${unique_id}`;
   let question_id = [];
-  let deleted_img = [];
-  $.get(url_input, async (data, status) => {
-    let datas = data.payload.datas;
-    if (status == "success" && datas.length !== 0) {
-      $("#exam_name").val(datas.exam_name);
-      $("#exam_type").val(datas.exam_type).change();
-      $("#kkm_point").val(datas.kkm_point);
-      $("#available_try").val(datas.available_try);
-      //   QUESTION
-      for (const [index, quest] of datas.Questions.entries()) {
-        question_id.push(quest.unique_id);
-        let w_ans = quest.wrong_answer.split("|");
-        $(".questions").append([
-          `
+  $.get(
+    "https://muslim-maya-production.up.railway.app/api/exams/b1741291-050f-4be2-871a-3dd20a578613",
+    async (data, status) => {
+      let datas = data.payload.datas;
+      if (status == "success" && datas.length !== 0) {
+        $("#exam_name").val(datas.exam_name);
+        $("#exam_type").val(datas.exam_type).change();
+        $("#kkm_point").val(datas.kkm_point);
+        $("#available_try").val(datas.available_try);
+        //   QUESTION
+        for (const [index, quest] of datas.Questions.entries()) {
+          question_id.push(quest.unique_id);
+          let w_ans = quest.wrong_answer.split("|");
+          $(".questions").append([
+            `
             <div class="question">
               <p>Soal ${index + 1}</p>
               <div class="display_image"></div>
@@ -60,33 +61,43 @@ $(document).ready(() => {
                 <span><i class="uil uil-trash-alt"></i></span>
               </div>
             </div>`,
-        ]);
-
-        getImgURL(quest.question_img, (imgBlob) => {
-          // Load img blob to input
-          // WIP: UTF8 character error
-          if (quest.question_img) {
-            question_with_img.push(index);
-            let fileName = quest.question_img;
-            let file = new File(
-              [imgBlob],
-              fileName,
-              { type: "image/jpeg", lastModified: new Date().getTime() },
-              "utf-8"
-            );
-            let container = new DataTransfer();
-            container.items.add(file);
-            document.querySelectorAll(".input-file")[index].files =
-              container.files;
-            queuedImagesArray.push(container.files);
-            displayQueuedImages();
-          } else {
-            queuedImagesArray.push([]);
-          }
-        });
+          ]);
+          (async () => {
+            try {
+              const imageUrl = quest.question_img;
+              getImgBlob(imageUrl).then((imgBlob) => {
+                if (quest.question_img) {
+                  question_with_img.push(index);
+                  const fileName = "image.jpeg";
+                  const file = new File([imgBlob], fileName, {
+                    type: "image/jpeg",
+                    lastModified: new Date().getTime(),
+                  });
+                  const container = new DataTransfer();
+                  container.items.add(file);
+                  document.querySelectorAll(".input-file")[index].files =
+                    container.files;
+                  queuedImagesArray.push(container.files);
+                  displayQueuedImages();
+                } else {
+                  const fileName = "non-img.jpeg";
+                  const file = new File([imgBlob], fileName, {
+                    type: "text/html",
+                    lastModified: new Date().getTime(),
+                  });
+                  const container = new DataTransfer();
+                  container.items.add(file);
+                  queuedImagesArray.push(container.files);
+                }
+              });
+            } catch (error) {
+              console.error("Error getting image blob:", error);
+            }
+          })();
+        }
       }
     }
-  });
+  );
 
   $(".main-background").on("click", ".delete-quest", function () {
     $(this).parent().remove();
@@ -142,26 +153,23 @@ $(document).ready(() => {
   function displayQueuedImages() {
     let img = "";
     queuedImagesArray.forEach((image, index) => {
-      if (image.length != 0) {
-        img = `
-            <img src="" alt="no img" />
-            <span title="Hapus Gambar" class="deleteImg"><i class="uil uil-times"></i></span>
-            `;
-        document.querySelectorAll(".display_image")[index].style.display =
-          "flex";
-        document.querySelectorAll(".display_image")[index].innerHTML = img;
-        let reader = new FileReader();
-        reader.onload = function (e) {
-          document
-            .querySelectorAll(".display_image")
-            [index].getElementsByTagName("img")[0].src = e.target.result;
-        };
-        if (
-          document.querySelectorAll(".input-file")[index].files[0] !== undefined
-        ) {
-          reader.readAsDataURL(
-            document.querySelectorAll(".input-file")[index].files[0]
-          );
+      if (image.length !== 0) {
+        const file = document.querySelectorAll(".input-file")[index].files[0];
+        if (file && file.type.includes("image/")) {
+          img = `
+        <img src="" alt="no img" />
+        <span title="Hapus Gambar" class="deleteImg"><i class="uil uil-times"></i></span>
+      `;
+          document.querySelectorAll(".display_image")[index].style.display =
+            "flex";
+          document.querySelectorAll(".display_image")[index].innerHTML = img;
+          let reader = new FileReader();
+          reader.onload = function (e) {
+            document
+              .querySelectorAll(".display_image")
+              [index].getElementsByTagName("img")[0].src = e.target.result;
+          };
+          reader.readAsDataURL(file);
         }
       }
     });
@@ -232,16 +240,21 @@ $(document).ready(() => {
   });
 });
 
-async function getImgURL(url, callback) {
-  $.ajax({
-    url: url,
-    method: "GET",
-    xhrFields: {
-      responseType: "blob",
-    },
-    success: function (response) {
-      callback(response);
-    },
+function getImgBlob(url) {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      url: url,
+      method: "GET",
+      xhrFields: {
+        responseType: "blob",
+      },
+      success: function (response) {
+        resolve(response);
+      },
+      error: function (error) {
+        reject(error);
+      },
+    });
   });
 }
 
