@@ -185,6 +185,45 @@ async function userEdit(req, res, next) {
   }
 }
 
+async function userAuth(req, res) {
+  const { nis, password } = req.query;
+  try {
+    const user = await Score.findOne({
+      where: {
+        nis,
+      },
+    });
+    if (user) {
+      if (user.password == password) {
+        return res.json({
+          ResultCode: 1,
+          UserId: user.unique_id,
+          data: user,
+        });
+      } else {
+        return res.json({
+          ResultCode: 2,
+          Message: "Authentication failed. Wrong credentials.",
+          Status: "failed",
+        });
+      }
+    } else {
+      return res.json({
+        ResultCode: 2,
+        Message: "Authentication failed. Wrong credentials.",
+        Status: "failed",
+      });
+    }
+  } catch (error) {
+    response(
+      500,
+      "server failed to auth the user",
+      { error: error.message },
+      res
+    );
+  }
+}
+
 module.exports = {
   getAllScore,
   getScoreById,
@@ -192,4 +231,5 @@ module.exports = {
   deleteUser,
   userEdit,
   addUser,
+  userAuth,
 };
