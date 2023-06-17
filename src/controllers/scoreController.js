@@ -198,7 +198,7 @@ async function userAuth(req, res) {
         return res.json({
           ResultCode: 1,
           UserId: user.unique_id,
-          data: user,
+          Data: user,
         });
       } else {
         return res.json({

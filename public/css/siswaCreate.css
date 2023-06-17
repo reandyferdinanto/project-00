@@ -89,6 +89,9 @@ main {
   padding: 2rem;
   color: white;
 }
+.main-input input {
+  margin: 0.75rem 0;
+}
 .nama-input {
   width: 100%;
   background-color: white;
@@ -108,10 +111,6 @@ main {
   grid-template-columns: 1fr 1fr;
   /* gap: 2rem; */
   margin-top: 1rem;
-}
-label {
-  display: grid;
-  gap: 0.75rem;
 }
 .main-create-question {
   margin-right: 2rem;
@@ -237,9 +236,9 @@ input[type="file"] {
 }
 
 .custom-file-upload {
-  border-radius: 7px;
+  border-radius: 30px;
   display: inline-block;
-  padding: 0.4rem 1.5rem;
+  padding: 0.5rem;
   font-size: 0.85rem;
   cursor: pointer;
   width: max-content;
@@ -252,7 +251,6 @@ input[type="file"] {
   margin-right: 2rem;
   display: flex;
   justify-content: flex-end;
-  padding-top: 2rem;
 }
 
 .input-side {
@@ -263,4 +261,32 @@ input[type="file"] {
 .input-side div input {
   width: 50%;
   margin-top: 0.75rem;
+}
+
+input[type="file"]::file-selector-button {
+  background-color: antiquewhite;
+  border: none;
+  color: #358f6c;
+  border-radius: 20px;
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+}
+.button-upload-csv {
+  background-color: antiquewhite;
+  border: none;
+  color: #358f6c;
+  border-radius: 20px;
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+}
+.button-upload-csv:disabled {
+  background-color: lightgray;
+  color: gray;
+  cursor: default;
+}
+.upload-csv-p {
+  margin: 0 0.5rem;
+  margin-top: 0.2rem;
+  font-size: 0.8rem;
+  color: #358f6c;
 }
