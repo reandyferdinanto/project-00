@@ -262,7 +262,9 @@ input[type="file"] {
   width: 50%;
   margin-top: 0.75rem;
 }
-
+input[type="file"] {
+  margin-right: 2rem;
+}
 input[type="file"]::file-selector-button {
   background-color: antiquewhite;
   border: none;

@@ -16,15 +16,18 @@ $(document).ready(() => {
         <div class="questions-box">
           <div class="questions">
             <div class="question">
+            <div class="question-head">
               <p>Soal</p>
+              <p class="word-count">Jumlah kata: 0 / 140</p>
+            </div>
               <div class="display_image"></div>
-              <textarea name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
+              <textarea maxlength="140" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
               <div class="answers">
-                <input placeholder='jawaban benar' name='correct_answer' required class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
+                <input maxlength="100" placeholder='jawaban benar' name='correct_answer' required class='answer'/>
+                <input maxlength="100" placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
+                <input maxlength="100" placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
+                <input maxlength="100" placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
+                <input maxlength="100" placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
                 <label class="custom-file-upload">
                     <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
                     <i class="uil uil-file-plus-alt"></i> Masukan Gambar
@@ -52,15 +55,19 @@ $(document).ready(() => {
     $(".questions").append([
       `
           <div class="question">
-            <p>Soal</p>
+          
+            <div class="question-head">
+              <p>Soal</p>
+              <p class="word-count">Jumlah kata: 0 / 140</p>
+            </div>
             <div class="display_image"></div>
-            <textarea name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
+            <textarea maxlength="140" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
             <div class="answers">
-                <input placeholder='jawaban benar' name='correct_answer'required class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
+                <input maxlength="100" placeholder='jawaban benar' name='correct_answer'required class='answer'/>
+                <input maxlength="100" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
+                <input maxlength="100" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
+                <input maxlength="100" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
+                <input maxlength="100" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
                 
                 <label class="custom-file-upload">
                       <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
@@ -87,6 +94,12 @@ $(document).ready(() => {
   $(".file-toolarge button").on("click", (e) => {
     e.preventDefault();
     $(".file-layer").css("visibility", "hidden");
+  });
+  $(".main-background").on("input", ".soal-text", function () {
+    $(this)
+      .parent()
+      .find(".question-head .word-count")
+      .html(`Jumlah kata: ${this.value.length} / 140`);
   });
 
   // IMAGE INPUT
