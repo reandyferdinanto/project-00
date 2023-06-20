@@ -161,7 +161,7 @@ label {
   width: 100%;
   background-color: white;
   border-radius: 7px;
-  padding: 0.7rem 0.5rem;
+  padding: 1rem;
   border: 0.1px solid gray;
   font-family: "Inter", sans-serif;
 }
@@ -246,7 +246,7 @@ input[type="file"] {
 .custom-file-upload {
   border-radius: 7px;
   display: inline-block;
-  padding: 0.4rem 1.5rem;
+  padding: 0.6rem 1.5rem;
   font-size: 0.85rem;
   cursor: pointer;
   width: max-content;
@@ -375,4 +375,15 @@ input[name="wrong_answer"]::placeholder {
 }
 .word-count {
   font-size: 0.8rem;
+}
+.upload-img {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  align-items: flex-end;
+}
+.upload-img p {
+  font-size: 0.7rem;
+  margin: 0.4rem 0 0 0;
+  font-style: italic;
 }

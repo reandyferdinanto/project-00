@@ -5,6 +5,40 @@ $(document).ready(() => {
     dateStyle: "medium",
   });
   $("#date").html(text);
+  setTimeout(() => {
+    introJs()
+      .setOptions({
+        // buttonClass: "button-intro",
+        // disableInteraction: true,
+        // overlayOpacity: 1,
+        // showStepNumbers: true,
+        dontShowAgainCookie: "berandaPage_intro",
+        dontShowAgain: true,
+        steps: [
+          {
+            title: "Beranda",
+            intro:
+              "Halaman ini berisi mengenai ujian terbaru yang dibuat dan juga fitur cepat untuk menambahkan ujian.",
+          },
+          {
+            element: ".ujian",
+            intro:
+              "Guru dapat mengakses ujian yang telah ada dengan menekan bagian ini",
+          },
+          {
+            element: ".tambah-ujian-baru",
+            intro:
+              "Guru dapat menambahkan ujian baru lebih cepat dengan menekan bagian ini",
+          },
+          {
+            element: ".keluar-button",
+            intro:
+              "Tombol ini berfungsi bila ingin keluar dari halaman Muslim Maya",
+          },
+        ],
+      })
+      .start();
+  }, 1000);
 
   const url = "/api/exams";
   let datas;
@@ -20,7 +54,7 @@ $(document).ready(() => {
       datas.map((data, index) => {
         $(".main-home").prepend([
           `
-              <a href="/ujian" class="tambah-ujian">
+              <a href="/ujian/edit/${data.unique_id}" class="tambah-ujian">
                 <div class="ujian">
                   <p>Ujian</p>
                   <p><b>${data.exam_name}</b></p>

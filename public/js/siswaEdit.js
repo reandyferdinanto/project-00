@@ -1,4 +1,33 @@
 $(document).ready(() => {
+  introJs()
+    .setOptions({
+      dontShowAgain: true,
+      steps: [
+        {
+          title: "Ubah data siswa?",
+          intro:
+            "Halaman ini berfungsi untuk mengubah data siswa yang tersedia",
+        },
+        {
+          element: document.querySelector(".main-input"),
+          intro:
+            "Berikut adalah data yang tersimpan dari siswa yang dipilih, kalian dapat mengubahnya kapanpun",
+          position: "left",
+        },
+        {
+          element: document.querySelector(".exams-assign"),
+          intro:
+            "form ini berisikan ujian apa yang terdaftar untuk siswa tersebut, semua ujian yang tersedia akan ditampilkan dalam form ini, centang untuk membuat siswa terdaftar diujian",
+        },
+        {
+          element: document.querySelector("#selesai"),
+          intro: "tekan selesai apabila yakin dengan perubahan",
+          position: "left",
+        },
+      ],
+    })
+    .start();
+
   const d = new Date();
   let text;
   text = d.toLocaleString("id-ID", {

@@ -1,4 +1,32 @@
 $(document).ready(() => {
+  setTimeout(() => {
+    introJs()
+      .setOptions({
+        dontShowAgainCookie: "nilaiPage_intro",
+        dontShowAgain: true,
+        steps: [
+          {
+            title: "Nilai",
+            intro:
+              "Halaman ini berisi mengenai nilai siswa. Guru dapat melihat nilai siswa berdasarkan ujian yang diikuti serta mengunduh data nilai.",
+          },
+          {
+            element: "#exams-select",
+            intro:
+              "Guru dapat memilih ingin melihat nilai berdasarkan ujian yang ada dengan menekan tombol ini.",
+          },
+          {
+            element: ".download-csv-button",
+            intro:
+              "Guru dapat mengunduh nilai yang ada dalam bentuk excel dengan menekan tombol ini.",
+            position: "left",
+          },
+          // Tambahkan langkah-langkah tutorial lainnya sesuai kebutuhan Anda
+        ],
+      })
+      .start();
+  }, 1000);
+
   const d = new Date();
   let text;
   text = d.toLocaleString("id-ID", {
@@ -27,7 +55,6 @@ $(document).ready(() => {
   });
 
   const url = "/api/scores";
-  let datas;
   $.get(url, async (data, status) => {
     if (status == "success" && data.payload.datas.length !== 0) {
       if (exams.length !== 0) {

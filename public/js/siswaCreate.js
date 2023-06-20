@@ -1,4 +1,46 @@
 $(document).ready(() => {
+  introJs()
+    .setOptions({
+      dontShowAgainCookie: "siswaCreate_intro",
+      dontShowAgain: true,
+      steps: [
+        {
+          title: "Tambah Siswa",
+          intro:
+            "Halaman ini berfungsi untuk menambahkan siswa baru ke dalam tabel",
+        },
+        {
+          intro:
+            "Guru dapat menambahkan siswa melalui dua cara, yaitu melalui file ataupun manual. Bila menambahkan melalui file, guru dapat menambahkan banyak siswa sekaligus.",
+        },
+        {
+          element: document.querySelector(".input-file"),
+          title: "MENAMBAHKAN MELALUI FILE",
+          intro:
+            "Untuk menambahkan siswa melalui file  excel (.csv), guru dapat menekan tombol ini dan memilih file terkait.",
+        },
+        {
+          element: document.querySelector(".button-upload-csv"),
+          intro:
+            "setelah selesai memilih file, tekan tombol ini untuk mengunggah data.",
+        },
+        {
+          element: document.querySelector(".main-input"),
+          title: "MENAMBAHKAN SECARA MANUAL",
+          intro:
+            "Guru dapat mengisi formulir ini bila ingin menambahkan satu siswa saja.",
+          position: "top",
+        },
+        {
+          element: document.querySelector("#selesai"),
+          intro:
+            "Apabila sudah selesai mengisi formulir dapat langsung menekan tombol selesai",
+          position: "left",
+        },
+      ],
+    })
+    .start();
+
   const d = new Date();
   let text;
   text = d.toLocaleString("id-ID", {
@@ -74,14 +116,4 @@ $(document).ready(() => {
       // $('input:submit').removeAttr('disabled');
     }
   });
-
-  window.pressed = function () {
-    var a = document.getElementById("aa");
-    if (a.value == "") {
-      fileLabel.innerHTML = "Choose file";
-    } else {
-      var theSplit = a.value.split("\\");
-      fileLabel.innerHTML = theSplit[theSplit.length - 1];
-    }
-  };
 });

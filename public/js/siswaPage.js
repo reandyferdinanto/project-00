@@ -1,4 +1,60 @@
 $(document).ready(() => {
+  setTimeout(() => {
+    introJs()
+      .setOptions({
+        dontShowAgainCookie: "siswaPage_intro",
+        dontShowAgain: true,
+        steps: [
+          {
+            title: "Daftar siswa",
+            intro:
+              "Halaman ini berisi mengenai informasi siswa. Guru dapat melihat siswa yang telah terdaftar, menambahkan siswa baru, maupun menghapus siswa.",
+          },
+          {
+            element: "#siswa-table_length",
+            intro:
+              "Bagian ini berfungsi untuk memunculkan berapa banyaknya jumlah siswa yang ingin ditampilkan pada tabel",
+          },
+          {
+            element: "#siswa-table_filter input",
+            intro:
+              "Guru dapat mencari siswa dengan mengetik nama siswa pada kotak ini",
+          },
+          {
+            element: ".checkbox-delete",
+            intro:
+              "Guru juga dapat menekan tombol ini untuk memilih satu atau lebih siswa.",
+          },
+          {
+            element: "#selectAll",
+            intro:
+              "Tombol ini berfungsi untuk memilih semua siswa yang ditampilkan pada tabel",
+          },
+          {
+            title: "Hapus Siswa",
+            intro:
+              "Setelah memilih siswa, guru dapat memilih untuk menghapus beberapa siswa secara bersamaan.",
+          },
+          {
+            element: ".hapus-button",
+            intro:
+              "Guru dapat menekan tombol ini untuk menghapus siswa setelah selesai memilih",
+          },
+          {
+            element: ".edit-siswa",
+            intro:
+              "Guru juga dapat mengubah data siswa dengan menekan tombol ini",
+          },
+          {
+            element: ".tambah-button",
+            intro:
+              "Guru dapat menambahkan siswa baru dengan menekan tombol ini.",
+          },
+        ],
+      })
+      .start();
+  }, 1000);
+
   // TIME
   const d = new Date();
   let text;
@@ -38,11 +94,18 @@ $(document).ready(() => {
           {
             data: "unique_id",
             render: function (data, type) {
-              return `<input type="checkbox" name="checkedSiswa" id="" class="checkbox-delete" value="${data}" />`;
+              return `<input type="checkbox" name="checkedSiswa" class="checkbox-delete" value="${data}" />`;
             },
           },
         ],
+        // drawCallback: function () {
+        //   if (!intro._introItems.length) {
+        //     console.log("test");
+        //     intro.start();
+        //   }
+        // },
       });
+      $("hr").remove();
     } else {
       $(".main-table-body").append([
         `
@@ -81,11 +144,26 @@ $(document).ready(() => {
     $(".ubah-button").on("click", () => {
       $(".submit-layer").css("visibility", "hidden");
     });
+    $(".main-table-title").on("click", ".checkbox-delete", function () {
+      alert("click");
+    });
     $("#selectAll").on("click", function () {
       if ($(this).is(":checked")) {
+        $(".hapus-button").attr("disabled", false);
+        // or, as has been pointed out elsewhere:
+        // $('input:submit').removeAttr('disabled');
         $(".checkbox-delete").attr("checked", true);
       } else {
+        $(".hapus-button").attr("disabled", true);
         $(".checkbox-delete").attr("checked", false);
+      }
+    });
+
+    $(".main-table-title").on("click", ".checkbox-delete", function () {
+      if ($(this).is(":checked")) {
+        $(".hapus-button").attr("disabled", false);
+      } else {
+        $(".hapus-button").attr("disabled", true);
       }
     });
   });
