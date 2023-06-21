@@ -187,6 +187,7 @@ async function userEdit(req, res, next) {
 
 async function userAuth(req, res) {
   const { nis, password } = req.query;
+  console.log(nis, password);
   try {
     const user = await Score.findOne({
       where: {
@@ -217,7 +218,7 @@ async function userAuth(req, res) {
   } catch (error) {
     res.json({
       ResultCode: 2,
-      Message: error.message,
+      Message: req.query,
       Status: "failed",
     });
   }
