@@ -28,30 +28,40 @@
       <div class="main-background">
         <form id="submit-form">
           <div class="main-title">
-            <h2>Membuat Ujian Baru</h2>
+            <h2>
+              Membuat Ujian Baru
+              <span style="color: #ff4c4c; font-size: 0.7rem"
+                >*harus diisi</span
+              >
+            </h2>
           </div>
           <div class="main-input">
             <label for="">
-              Nama Ujian <br />
-              <input
-                class="exam-type"
-                type="text"
-                name="exam_name"
-                id=""
-                required
-                placeholder="masukan nama ujian"
-              />
-              Tipe Ujian
-              <select name="exam_type" class="exam-type" required>
-                <option value="">--pilih ujian--</option>
-                <option value="manasik">Manasik</option>
-                <option value="jenazah">Jenazah</option>
-                <option value="zakat">Zakat</option>
-              </select>
+              Nama Ujian<span style="color: #ff4c4c"> *</span>
             </label>
+            <input
+              class="exam-type"
+              type="text"
+              name="exam_name"
+              id=""
+              required
+              placeholder="masukan nama ujian"
+            />
+            <label for=""
+              >Tipe Ujian<span style="color: #ff4c4c"> *</span></label
+            >
+
+            <select name="exam_type" class="exam-type" required>
+              <option value="">--pilih ujian--</option>
+              <option value="manasik">Manasik</option>
+              <option value="jenazah">Jenazah</option>
+              <option value="zakat">Zakat</option>
+            </select>
             <div class="main-input-config">
-              <label for="">
-                KKM <br />
+              <div class="">
+                <label for="">
+                  KKM <span style="color: #ff4c4c"> *</span>
+                </label>
                 <input
                   class="exam-input"
                   type="number"
@@ -59,9 +69,11 @@
                   id=""
                   value="70"
                 />
-              </label>
-              <label for="">
-                Max.Percobaan <br />
+              </div>
+              <div class="">
+                <label for="">
+                  Max.Percobaan<span style="color: #ff4c4c"> *</span>
+                </label>
                 <input
                   class="exam-input"
                   type="number"
@@ -69,7 +81,7 @@
                   id=""
                   value="2"
                 />
-              </label>
+              </div>
             </div>
           </div>
           <button class="main-create-question" id="add-question">
