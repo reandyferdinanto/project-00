@@ -227,7 +227,14 @@ async function userAuth(req, res) {
 function dummyAuth(req, res) {
   res.json({
     ResultCode: 2,
-    Message: JSON.stringify(req.query),
+    Message: JSON.stringify(req.body),
+    Status: "failed",
+  });
+}
+function dummyAuthDupe(req, res) {
+  res.json({
+    ResultCode: 2,
+    Message: req.body,
     Status: "failed",
   });
 }
@@ -240,4 +247,5 @@ module.exports = {
   addUser,
   userAuth,
   dummyAuth,
+  dummyAuthDupe,
 };
