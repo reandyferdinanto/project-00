@@ -189,6 +189,7 @@ async function userAuth(req, res) {
   const { nis, password } = req.body;
   try {
     const user = await Score.findOne({
+      attributes: { exclude: ["createdAt", "updatedAt"] },
       where: {
         nis,
       },
