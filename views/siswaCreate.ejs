@@ -27,7 +27,10 @@
     <div class="main-content">
       <div class="main-background">
         <div class="main-title">
-          <h2>Membuat Siswa Baru</h2>
+          <h2>
+            Membuat Siswa Baru
+            <span style="color: #ff4c4c; font-size: 0.7rem">*harus diisi</span>
+          </h2>
         </div>
         <div class="upload-siswa">
           <form id="fileUpload" method="post">
@@ -40,52 +43,72 @@
                 accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
               />
               <!-- <i class="uil uil-file-plus-alt"></i> Upload CSV Siswa -->
-              <input type="submit" value="Upload CSV" />
+              <input
+                class="button-upload-csv"
+                type="submit"
+                value="Upload"
+                disabled
+              />
             </label>
+            <p class="upload-csv-p">
+              *pilih file yang diinginkan lalu tekan tombol upload
+            </p>
           </form>
         </div>
         <form id="submit-form" method="post">
           <div class="main-input">
-            <label for="">
-              NIS <br />
-              <input
-                class="nama-input"
-                required
-                type="number"
-                name="nis"
-                id=""
-              />
-              Nama Siswa <br />
-              <input
-                class="kelas-input"
-                required
-                type="text"
-                name="username"
-                id=""
-              />
-              <div class="input-side">
-                <div class="">
-                  Kelas <br />
-                  <input
-                    class="nama-input"
-                    required
-                    type="text"
-                    name="class"
-                    id="class"
-                  />
-                </div>
-                <div class="">
-                  Jurusan <br />
-                  <input
-                    class="kelas-input"
-                    required
-                    type="text"
-                    name="major"
-                    id="major"
-                  />
-                </div>
+            <label for="">NIS<span style="color: #ff4c4c"> *</span></label>
+            <input
+              class="nama-input"
+              required
+              type="number"
+              name="nis"
+              id=""
+              placeholder="Masukan NIS Siswa"
+            />
+
+            <label for=""
+              >Nama Siswa<span style="color: #ff4c4c"> *</span></label
+            >
+            <input
+              class="kelas-input"
+              required
+              type="text"
+              name="username"
+              id=""
+              placeholder="Masukan Nama Siswa"
+            />
+
+            <div class="input-side">
+              <div class="">
+                <label for=""
+                  >Kelas<span style="color: #ff4c4c"> *</span></label
+                >
+                <br />
+                <input
+                  class="nama-input"
+                  required
+                  type="text"
+                  name="class"
+                  id="class"
+                  placeholder="Masukan Jurusan Kelas"
+                />
               </div>
-            </label>
+              <div class="">
+                <label for=""
+                  >Jurusan<span style="color: #ff4c4c"> *</span></label
+                >
+                <br />
+                <input
+                  class="kelas-input"
+                  required
+                  type="text"
+                  name="major"
+                  id="major"
+                  placeholder="Masukan Jurusan Siswa"
+                />
+              </div>
+            </div>
           </div>
           <div class="submit-input">
             <button type="button" id="selesai">Selesai</button>

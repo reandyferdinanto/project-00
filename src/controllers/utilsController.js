@@ -74,18 +74,28 @@ async function exportCSV(req, res) {
   });
   csvStream.pipe(writableStream);
   if (users.length > 0) {
-    users.map((user) => {
-      user.Exams.forEach((exam) => {
+    users.forEach((user) => {
+      if (user.Exams.length !== 0) {
+        user.Exams.forEach((exam) => {
+          csvStream.write({
+            nis: user.nis ? user.nis : 0,
+            nama: user.username ? user.username : "",
+            kelas: user.class ? user.class : "",
+            jurusan: user.major ? user.major : "",
+            ujian: exam.exam_name,
+            nilai: exam.ScoreExam.point,
+            nilai_remedial: exam.ScoreExam.remedial_point,
+          });
+        });
+      } else {
         csvStream.write({
           nis: user.nis ? user.nis : 0,
-          nama: user.username ? user.username : 0,
-          kelas: user.class ? user.class : 0,
-          jurusan: user.major ? user.major : 0,
-          ujian: exam.exam_name,
-          nilai: exam.ScoreExam.point,
-          nilai_remedial: exam.ScoreExam.remedial_point,
+          nama: user.username ? user.username : "",
+          kelas: user.class ? user.class : "",
+          jurusan: user.major ? user.major : "",
+          ujian: "Belum mengambil ujian",
         });
-      });
+      }
     });
   }
   csvStream.end();

@@ -84,6 +84,10 @@ main {
   border: none;
   cursor: pointer;
 }
+.hapus-button:disabled {
+  background-color: lightgray;
+  color: gray;
+}
 .main-title a .tambah-button {
   background-color: #358f6c;
   color: white;

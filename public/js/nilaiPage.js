@@ -27,7 +27,6 @@ $(document).ready(() => {
   });
 
   const url = "/api/scores";
-  let datas;
   $.get(url, async (data, status) => {
     if (status == "success" && data.payload.datas.length !== 0) {
       if (exams.length !== 0) {
@@ -36,6 +35,11 @@ $(document).ready(() => {
             url: "/api/scores",
             dataSrc: "payload.datas",
           },
+          pageLength: 20,
+          lengthMenu: [
+            [20, 50, 100, 200, -1],
+            [20, 50, 100, 200, "Semua"],
+          ],
           columns: [
             {
               data: null,
@@ -78,6 +82,51 @@ $(document).ready(() => {
               },
             },
           ],
+          initComplete: function () {
+            setTimeout(() => {
+              introJs()
+                .setOptions({
+                  dontShowAgainCookie: "nilaiPage_intro",
+                  dontShowAgain: true,
+                  dontShowAgainLabel: "Jangan tampilkan lagi",
+                  tooltipClass: "customTooltip",
+                  prevLabel: "Kembali",
+                  nextLabel: "Lanjut",
+                  doneLabel: "Selesai",
+                  steps: [
+                    {
+                      title: "Nilai",
+                      intro:
+                        "Halaman ini berisi mengenai nilai siswa. Guru dapat melihat nilai siswa berdasarkan ujian yang diikuti serta mengunduh data nilai.",
+                    },
+                    {
+                      element: "#exams-select",
+                      intro:
+                        "Guru dapat memilih ingin melihat nilai berdasarkan ujian yang ada dengan menekan tombol ini.",
+                    },
+
+                    {
+                      element: "#siswa-table_length",
+                      intro:
+                        "Bagian ini berfungsi untuk memunculkan berapa banyaknya jumlah nilai siswa yang ingin ditampilkan pada tabel",
+                    },
+                    {
+                      element: "#siswa-table_filter",
+                      intro:
+                        "Guru dapat mencari nilai siswa dengan mengetik nama siswa pada kotak ini",
+                    },
+                    {
+                      element: ".download-csv-button",
+                      intro:
+                        "Guru dapat mengunduh nilai yang ada dalam bentuk excel dengan menekan tombol ini.",
+                      position: "left",
+                    },
+                    // Tambahkan langkah-langkah tutorial lainnya sesuai kebutuhan Anda
+                  ],
+                })
+                .start();
+            }, 500);
+          },
         });
       } else {
         $(".main-table-body").append([
@@ -99,6 +148,11 @@ $(document).ready(() => {
         url: "/api/scores",
         dataSrc: "payload.datas",
       },
+      pageLength: 20,
+      lengthMenu: [
+        [20, 50, 100, 200, -1],
+        [20, 50, 100, 200, "Semua"],
+      ],
       columns: [
         {
           data: null,

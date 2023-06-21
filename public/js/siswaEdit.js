@@ -1,4 +1,28 @@
 $(document).ready(() => {
+  introJs()
+    .setOptions({
+      dontShowAgainLabel: "Jangan tampilkan lagi",
+      tooltipClass: "customTooltip",
+      prevLabel: "Kembali",
+      nextLabel: "Lanjut",
+      dontShowAgainCookie: "siswaEdit_intro",
+      dontShowAgain: true,
+      doneLabel: "Selesai",
+      steps: [
+        {
+          title: "Edit Siswa",
+          intro:
+            "Halaman ini berfungsi untuk mengubah informasi siswa yang telah ada. Tampilan pada halaman ini mirip seperti pada saat membuat siswa baru secara manual sehingga guru dapat langsung mengubah informasi yang diinginkan.",
+        },
+        {
+          element: document.querySelector(".exams-assign"),
+          intro:
+            "Pada halaman ini, akan muncul ujian yang telah dibuat. Guru dapat mengubah informasi ujian mana yang akan diikuti oleh siswa dengan menekan tombol di sebelah nama ujian yang ada.",
+        },
+      ],
+    })
+    .start();
+
   const d = new Date();
   let text;
   text = d.toLocaleString("id-ID", {

@@ -1,4 +1,51 @@
 $(document).ready(() => {
+  introJs()
+    .setOptions({
+      dontShowAgainCookie: "siswaCreate_intro",
+      dontShowAgain: true,
+      dontShowAgainLabel: "Jangan tampilkan lagi",
+      tooltipClass: "customTooltip",
+      prevLabel: "Kembali",
+      nextLabel: "Lanjut",
+      doneLabel: "Selesai",
+      steps: [
+        {
+          title: "Tambah Siswa",
+          intro:
+            "Halaman ini berfungsi untuk menambahkan siswa baru ke dalam tabel",
+        },
+        {
+          intro:
+            "Guru dapat menambahkan siswa melalui dua cara, yaitu melalui file ataupun manual. Bila menambahkan melalui file, guru dapat menambahkan banyak siswa sekaligus.",
+        },
+        {
+          element: document.querySelector(".input-file"),
+          title: "MENAMBAHKAN MELALUI FILE",
+          intro:
+            "Untuk menambahkan siswa melalui file  excel (.csv), guru dapat menekan tombol ini dan memilih file terkait.",
+        },
+        {
+          element: document.querySelector(".button-upload-csv"),
+          intro:
+            "setelah selesai memilih file, tekan tombol ini untuk mengunggah data.",
+        },
+        {
+          element: document.querySelector(".main-input"),
+          title: "MENAMBAHKAN SECARA MANUAL",
+          intro:
+            "Guru dapat mengisi formulir ini bila ingin menambahkan satu siswa saja.",
+          position: "top",
+        },
+        {
+          element: document.querySelector("#selesai"),
+          intro:
+            "Apabila sudah selesai mengisi formulir dapat langsung menekan tombol selesai",
+          position: "left",
+        },
+      ],
+    })
+    .start();
+
   const d = new Date();
   let text;
   text = d.toLocaleString("id-ID", {
@@ -66,4 +113,12 @@ $(document).ready(() => {
     });
   });
   // });
+  // IPNUT FILE DISABLE WHEN FILE NOT SELECTED
+  $("input[type=file]").change(function () {
+    if ($(this).val()) {
+      $("input:submit").attr("disabled", false);
+      // or, as has been pointed out elsewhere:
+      // $('input:submit').removeAttr('disabled');
+    }
+  });
 });
