@@ -10,7 +10,6 @@ $(document).ready(() => {
   // DATA SISWA
 
   const url = "/api/scores";
-  let datas;
   $.get(url, async (data, status) => {
     if (status == "success" && data.payload.datas.length !== 0) {
       $("#siswa-table").DataTable({
@@ -47,67 +46,72 @@ $(document).ready(() => {
             },
           },
         ],
+        // drawCallback: function () {
+        //   console.log("test");
+        // },
+        initComplete: function () {
+          setTimeout(() => {
+            introJs()
+              .setOptions({
+                dontShowAgainLabel: "Jangan tampilkan lagi",
+                tooltipClass: "customTooltip",
+                prevLabel: "Kembali",
+                nextLabel: "Lanjut",
+                dontShowAgainCookie: "siswaPage_intro",
+                dontShowAgain: true,
+                doneLabel: "Selesai",
+                steps: [
+                  {
+                    title: "Daftar siswa",
+                    intro:
+                      "Halaman ini berisi mengenai informasi siswa. Guru dapat melihat siswa yang telah terdaftar, menambahkan siswa baru, maupun menghapus siswa.",
+                  },
+                  {
+                    element: "#siswa-table_length",
+                    intro:
+                      "Bagian ini berfungsi untuk memunculkan berapa banyaknya jumlah siswa yang ingin ditampilkan pada tabel",
+                  },
+                  {
+                    element: "#siswa-table_filter input",
+                    intro:
+                      "Guru dapat mencari siswa dengan mengetik nama siswa pada kotak ini",
+                  },
+                  {
+                    element: ".checkbox-delete",
+                    intro:
+                      "Guru juga dapat menekan tombol ini untuk memilih satu atau lebih siswa.",
+                  },
+                  {
+                    element: "#selectAll",
+                    intro:
+                      "Tombol ini berfungsi untuk memilih semua siswa yang ditampilkan pada tabel",
+                  },
+                  {
+                    title: "Hapus Siswa",
+                    intro:
+                      "Setelah memilih siswa, guru dapat memilih untuk menghapus beberapa siswa secara bersamaan.",
+                  },
+                  {
+                    element: ".hapus-button",
+                    intro:
+                      "Guru dapat menekan tombol ini untuk menghapus siswa setelah selesai memilih",
+                  },
+                  {
+                    element: ".edit-siswa",
+                    intro:
+                      "Guru juga dapat mengubah data siswa dengan menekan tombol ini",
+                  },
+                  {
+                    element: ".tambah-button",
+                    intro:
+                      "Guru dapat menambahkan siswa baru dengan menekan tombol ini.",
+                  },
+                ],
+              })
+              .start();
+          }, 500);
+        },
       });
-      setTimeout(() => {
-        introJs()
-          .setOptions({
-            dontShowAgainLabel: "Jangan tampilkan lagi",
-            tooltipClass: "customTooltip",
-            prevLabel: "Kembali",
-            nextLabel: "Lanjut",
-            dontShowAgainCookie: "siswaPage_intro",
-            dontShowAgain: true,
-            doneLabel: "Selesai",
-            steps: [
-              {
-                title: "Daftar siswa",
-                intro:
-                  "Halaman ini berisi mengenai informasi siswa. Guru dapat melihat siswa yang telah terdaftar, menambahkan siswa baru, maupun menghapus siswa.",
-              },
-              {
-                element: "#siswa-table_length",
-                intro:
-                  "Bagian ini berfungsi untuk memunculkan berapa banyaknya jumlah siswa yang ingin ditampilkan pada tabel",
-              },
-              {
-                element: "#siswa-table_filter input",
-                intro:
-                  "Guru dapat mencari siswa dengan mengetik nama siswa pada kotak ini",
-              },
-              {
-                element: ".checkbox-delete",
-                intro:
-                  "Guru juga dapat menekan tombol ini untuk memilih satu atau lebih siswa.",
-              },
-              {
-                element: "#selectAll",
-                intro:
-                  "Tombol ini berfungsi untuk memilih semua siswa yang ditampilkan pada tabel",
-              },
-              {
-                title: "Hapus Siswa",
-                intro:
-                  "Setelah memilih siswa, guru dapat memilih untuk menghapus beberapa siswa secara bersamaan.",
-              },
-              {
-                element: ".hapus-button",
-                intro:
-                  "Guru dapat menekan tombol ini untuk menghapus siswa setelah selesai memilih",
-              },
-              {
-                element: ".edit-siswa",
-                intro:
-                  "Guru juga dapat mengubah data siswa dengan menekan tombol ini",
-              },
-              {
-                element: ".tambah-button",
-                intro:
-                  "Guru dapat menambahkan siswa baru dengan menekan tombol ini.",
-              },
-            ],
-          })
-          .start();
-      }, 1000);
       $("hr").remove();
     } else {
       $(".main-table-body").append([
