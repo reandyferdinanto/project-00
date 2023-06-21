@@ -215,12 +215,11 @@ async function userAuth(req, res) {
       });
     }
   } catch (error) {
-    response(
-      500,
-      "server failed to auth the user",
-      { error: error.message },
-      res
-    );
+    res.json({
+      ResultCode: 2,
+      Message: "Authentication failed. Wrong credentials.",
+      Status: "failed",
+    });
   }
 }
 
