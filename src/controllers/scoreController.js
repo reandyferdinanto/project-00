@@ -227,7 +227,7 @@ async function userAuth(req, res) {
 function dummyAuth(req, res) {
   res.json({
     ResultCode: 2,
-    Message: req.query,
+    Message: JSON.stringify(req.query),
     Status: "failed",
   });
 }
