@@ -217,7 +217,7 @@ async function userAuth(req, res) {
   } catch (error) {
     res.json({
       ResultCode: 2,
-      Message: "Authentication failed. Wrong credentials.",
+      Message: error.message,
       Status: "failed",
     });
   }
