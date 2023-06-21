@@ -27,7 +27,12 @@ $(document).ready(() => {
         $(".questions").append([
           `
             <div class="question">
-              <p>Soal ${index + 1}</p>
+              <div class="question-head">
+                <p><b>Soal ${index + 1}</b></p>
+                <p class="word-count">Jumlah kata: ${
+                  quest.question_text.length
+                } / 300</p>
+              </div>
               <div class="display_image"></div>
               <textarea name="question_text" class='soal-text' placeholder="Masukan Soal">${
                 quest.question_text
@@ -51,9 +56,12 @@ $(document).ready(() => {
                 <input type="hidden" name="row_id" class="row_id" value="${
                   quest.unique_id
                 }">
-                <label class="custom-file-upload">
-                  <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
-                </label>
+                <div class="upload-img">
+                  <label class="custom-file-upload">
+                    <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
+                    </label>
+                  <p>*PNG/JPG/JPEG max. 200 kb</p>
+                </div>
               </div>
               <div class="delete-quest" title="Hapus Soal" >
                 <span><i class="uil uil-trash-alt"></i></span>
@@ -122,6 +130,12 @@ $(document).ready(() => {
   $(".file-toolarge button").on("click", (e) => {
     e.preventDefault();
     $(".file-layer").css("visibility", "hidden");
+  });
+  $(".main-background").on("input", ".soal-text", function () {
+    $(this)
+      .parent()
+      .find(".question-head .word-count")
+      .html(`Jumlah kata: ${this.value.length} / 300`);
   });
 
   // IMAGE INPUT
