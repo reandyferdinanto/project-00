@@ -1,31 +1,43 @@
 $(document).ready(() => {
-  var first_intro = introJs();
-  first_intro.setOptions({
-    dontShowAgainCookie: "examCreate_intro",
-    steps: [
-      {
-        title: "Ujian Baru",
-        intro: "Halaman ini berfungsi untuk membuat ujian baru",
-      },
-      {
-        element: ".main-input",
-        intro: "Guru dapat mengisi formulir ini untuk menbuat ujian baru.",
-      },
-      {
-        element: ".main-create-question",
-        intro:
-          "Bila sudah selesai mengisi, tekan tombol ini untuk membuat soal",
-        position: "left",
-      },
-    ],
-  });
+  setTimeout(() => {
+    var first_intro = introJs();
+    first_intro.setOptions({
+      dontShowAgainCookie: "examCreate_intro",
+      dontShowAgainLabel: "Jangan tampilkan lagi",
+      tooltipClass: "customTooltip",
+      prevLabel: "Kembali",
+      nextLabel: "Lanjut",
+      doneLabel: "Selesai",
+      steps: [
+        {
+          title: "Ujian Baru",
+          intro: "Halaman ini berfungsi untuk membuat ujian baru",
+        },
+        {
+          element: ".main-input",
+          intro: "Guru dapat mengisi formulir ini untuk menbuat ujian baru.",
+        },
+        {
+          element: ".main-create-question",
+          intro:
+            "Bila sudah selesai mengisi, tekan tombol ini untuk membuat soal",
+          position: "left",
+        },
+      ],
+    });
 
-  first_intro.start();
+    first_intro.start();
+  }, 1000);
 
   var intro = introJs();
   intro.setOptions({
     dontShowAgainCookie: "examCreate_intro",
     dontShowAgain: true,
+    dontShowAgainLabel: "Jangan tampilkan lagi",
+    tooltipClass: "customTooltip",
+    prevLabel: "Kembali",
+    nextLabel: "Lanjut",
+    doneLabel: "Selesai",
     steps: [
       {
         element: ".soal-text",
@@ -112,7 +124,7 @@ $(document).ready(() => {
     setTimeout(() => {
       first_intro.exit();
       intro.start();
-    }, 500);
+    }, 1000);
   });
 
   // ADD MORE

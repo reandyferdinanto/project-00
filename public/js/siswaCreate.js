@@ -3,6 +3,11 @@ $(document).ready(() => {
     .setOptions({
       dontShowAgainCookie: "siswaCreate_intro",
       dontShowAgain: true,
+      dontShowAgainLabel: "Jangan tampilkan lagi",
+      tooltipClass: "customTooltip",
+      prevLabel: "Kembali",
+      nextLabel: "Lanjut",
+      doneLabel: "Selesai",
       steps: [
         {
           title: "Tambah Siswa",

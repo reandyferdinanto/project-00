@@ -12,6 +12,11 @@ $(document).ready(() => {
         // disableInteraction: true,
         // overlayOpacity: 1,
         // showStepNumbers: true,
+        dontShowAgainLabel: "Jangan tampilkan lagi",
+        tooltipClass: "customTooltip",
+        prevLabel: "Kembali",
+        nextLabel: "Lanjut",
+        doneLabel: "Selesai",
         dontShowAgainCookie: "berandaPage_intro",
         dontShowAgain: true,
         steps: [

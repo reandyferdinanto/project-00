@@ -1,28 +1,23 @@
 $(document).ready(() => {
   introJs()
     .setOptions({
+      dontShowAgainLabel: "Jangan tampilkan lagi",
+      tooltipClass: "customTooltip",
+      prevLabel: "Kembali",
+      nextLabel: "Lanjut",
+      dontShowAgainCookie: "siswaEdit_intro",
       dontShowAgain: true,
+      doneLabel: "Selesai",
       steps: [
         {
-          title: "Ubah data siswa?",
+          title: "Edit Siswa",
           intro:
-            "Halaman ini berfungsi untuk mengubah data siswa yang tersedia",
-        },
-        {
-          element: document.querySelector(".main-input"),
-          intro:
-            "Berikut adalah data yang tersimpan dari siswa yang dipilih, kalian dapat mengubahnya kapanpun",
-          position: "left",
+            "Halaman ini berfungsi untuk mengubah informasi siswa yang telah ada. Tampilan pada halaman ini mirip seperti pada saat membuat siswa baru secara manual sehingga guru dapat langsung mengubah informasi yang diinginkan.",
         },
         {
           element: document.querySelector(".exams-assign"),
           intro:
-            "form ini berisikan ujian apa yang terdaftar untuk siswa tersebut, semua ujian yang tersedia akan ditampilkan dalam form ini, centang untuk membuat siswa terdaftar diujian",
-        },
-        {
-          element: document.querySelector("#selesai"),
-          intro: "tekan selesai apabila yakin dengan perubahan",
-          position: "left",
+            "Pada halaman ini, akan muncul ujian yang telah dibuat. Guru dapat mengubah informasi ujian mana yang akan diikuti oleh siswa dengan menekan tombol di sebelah nama ujian yang ada.",
         },
       ],
     })
