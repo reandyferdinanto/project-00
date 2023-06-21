@@ -58,8 +58,9 @@ $(document).ready(() => {
                 }">
                 <div class="upload-img">
                   <label class="custom-file-upload">
-                    <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
-                    </label>
+                      <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
+                      <i class="uil uil-file-plus-alt"></i> Masukan Gambar
+                  </label>
                   <p>*PNG/JPG/JPEG max. 200 kb</p>
                 </div>
               </div>
