@@ -224,6 +224,13 @@ async function userAuth(req, res) {
   }
 }
 
+function dummyAuth(req, res) {
+  res.json({
+    ResultCode: 2,
+    Message: req.query,
+    Status: "failed",
+  });
+}
 module.exports = {
   getAllScore,
   getScoreById,
@@ -232,4 +239,5 @@ module.exports = {
   userEdit,
   addUser,
   userAuth,
+  dummyAuth,
 };
