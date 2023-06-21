@@ -188,18 +188,25 @@ async function userEdit(req, res, next) {
 async function userAuth(req, res) {
   const { nis, password } = req.body;
   try {
-    const user = await Score.findOne({
-      attributes: { exclude: ["createdAt", "updatedAt"] },
+    const user = await Score.findOne({      
       where: {
         nis,
       },
     });
+	var data = {
+		"uniqueID": user.uniqueID,
+		"username": user.username,
+		"nis": user.nis,
+		"class": user.class,
+		"major": user.major
+	};
+
     if (user) {
       if (user.password == password) {
         return res.json({
           ResultCode: 1,
           UserId: user.unique_id,
-          Data: user,
+          Data: data,
         });
       } else {
         return res.json({
