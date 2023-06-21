@@ -1,4 +1,75 @@
 $(document).ready(() => {
+  setTimeout(() => {
+    var first_intro = introJs();
+    first_intro.setOptions({
+      dontShowAgainCookie: "examCreate_intro",
+      dontShowAgainLabel: "Jangan tampilkan lagi",
+      tooltipClass: "customTooltip",
+      prevLabel: "Kembali",
+      nextLabel: "Lanjut",
+      doneLabel: "Selesai",
+      steps: [
+        {
+          title: "Ujian Baru",
+          intro: "Halaman ini berfungsi untuk membuat ujian baru",
+        },
+        {
+          element: ".main-input",
+          intro: "Guru dapat mengisi formulir ini untuk menbuat ujian baru.",
+        },
+        {
+          element: ".main-create-question",
+          intro:
+            "Bila sudah selesai mengisi, tekan tombol ini untuk membuat soal",
+          position: "left",
+        },
+      ],
+    });
+
+    first_intro.start();
+  }, 1000);
+
+  var intro = introJs();
+  intro.setOptions({
+    dontShowAgainCookie: "examCreate_intro",
+    dontShowAgain: true,
+    dontShowAgainLabel: "Jangan tampilkan lagi",
+    tooltipClass: "customTooltip",
+    prevLabel: "Kembali",
+    nextLabel: "Lanjut",
+    doneLabel: "Selesai",
+    steps: [
+      {
+        element: ".soal-text",
+        intro:
+          "Guru dapat mengetikkan soal pada kotak yang ini. Soal yang dibuat hanya terbatas sebanyak xxx kata.",
+      },
+      {
+        element: ".correct-answer",
+        intro: "Jawaban benar dimasukkan ke dalam kotak yang ini",
+      },
+      {
+        element: ".wrong-answer",
+        intro: " Untuk jawaban yang lain, dimasukan ke dalam kotak-kotak ini",
+      },
+      {
+        element: ".custom-file-upload",
+        intro:
+          "Guru juga dapat memasukkan gambar ke dalam soal dengan menekan tombol ini dan memilih gambar yang diinginkan. Gambar yang dipilih maksimal sebesar 200kb dalam bentuk JPG/ PNG",
+      },
+      {
+        element: ".delete-quest",
+        intro: "Guru dapat menghapus soal dengan menekan tombol yang ini.",
+      },
+      {
+        element: "#selesai",
+        intro: "Bila sudah selesai membuat semua soal, tekan tombol ini.",
+        position: "left",
+      },
+      // Tambahkan langkah-langkah tutorial lainnya sesuai kebutuhan Anda
+    ],
+  });
+
   const d = new Date();
   let text;
   text = d.toLocaleString("id-ID", {
@@ -16,19 +87,25 @@ $(document).ready(() => {
         <div class="questions-box">
           <div class="questions">
             <div class="question">
-              <p>Soal</p>
+              <div class="question-head">
+                <p><b>Soal 1</b></p>
+                <p class="word-count">Jumlah kata: 0 / 140</p>
+              </div>
               <div class="display_image"></div>
-              <textarea name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
+              <textarea maxlength="140" data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
               <div class="answers">
-                <input placeholder='jawaban benar' name='correct_answer' required class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
-                <label class="custom-file-upload">
-                    <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
-                    <i class="uil uil-file-plus-alt"></i> Masukan Gambar
-                </label>
+                <input maxlength="100" placeholder='jawaban benar' name='correct_answer' required class='answer correct-answer'/>
+                <input maxlength="100" placeholder='jawaban lain' name='wrong_answer' required class='answer wrong-answer'/>
+                <input maxlength="100" placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
+                <input maxlength="100" placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
+                <input maxlength="100" placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
+                <div class="upload-img">
+                  <label class="custom-file-upload">
+                      <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
+                      <i class="uil uil-file-plus-alt"></i> Masukan Gambar
+                  </label>
+                  <p>*PNG/JPG/JPEG max. 200 kb</p>
+                </div>
               </div>
               <div class="delete-quest" title="Hapus Soal">
                 <span><i class="uil uil-trash-alt"></i></span>
@@ -44,28 +121,40 @@ $(document).ready(() => {
         </div>
         `,
     ]);
+    setTimeout(() => {
+      first_intro.exit();
+      intro.start();
+    }, 1000);
   });
 
   // ADD MORE
+  let quest_length = 1;
 
   $(".main-background").on("click", "#add-more", () => {
     $(".questions").append([
       `
           <div class="question">
-            <p>Soal</p>
+          
+            <div class="question-head">
+              <p><b>Soal ${quest_length + 1}</b></p>
+              <p class="word-count">Jumlah kata: 0 / 140</p>
+            </div>
             <div class="display_image"></div>
-            <textarea name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
+            <textarea maxlength="140" data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
             <div class="answers">
-                <input placeholder='jawaban benar' name='correct_answer'required class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
-                <input placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
+                <input maxlength="100" placeholder='jawaban benar' name='correct_answer'required class='answer'/>
+                <input maxlength="100" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
+                <input maxlength="100" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
+                <input maxlength="100" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
+                <input maxlength="100" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
                 
-                <label class="custom-file-upload">
+                <div class="upload-img">
+                  <label class="custom-file-upload">
                       <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
                       <i class="uil uil-file-plus-alt"></i> Masukan Gambar
-                </label>
+                  </label>
+                  <p>*PNG/JPG/JPEG max. 200 kb</p>
+                </div>
             </div>
             <div class="delete-quest" title="Hapus Soal" >
               <span><i class="uil uil-trash-alt"></i></span>
@@ -73,6 +162,7 @@ $(document).ready(() => {
           </div>
         `,
     ]);
+    quest_length += 1;
   });
 
   $(".main-background").on("click", ".delete-quest", function () {
@@ -87,6 +177,25 @@ $(document).ready(() => {
   $(".file-toolarge button").on("click", (e) => {
     e.preventDefault();
     $(".file-layer").css("visibility", "hidden");
+  });
+  $(".main-background").on("input", ".soal-text", function () {
+    // document.querySelectorAll("textarea[data-max-words]").forEach((input) => {
+    //   let maxWords = parseInt(input.getAttribute("data-max-words") || 0);
+    //   input.addEventListener("keydown", (e) => {
+    //     let target = e.currentTarget;
+    //     let words = target.value.split(/\s+/).length;
+    //     if (!target.getAttribute("data-announce"))
+    //       words >= maxWords && e.keyCode == 32 && e.preventDefault();
+    //     else
+    //       words >= maxWords &&
+    //         e.keyCode == 32 &&
+    //         (e.preventDefault() || alert("Word Limit Reached"));
+    //   });
+    // });
+    $(this)
+      .parent()
+      .find(".question-head .word-count")
+      .html(`Jumlah kata: ${this.value.length} / 140`);
   });
 
   // IMAGE INPUT
@@ -156,7 +265,7 @@ $(document).ready(() => {
       contentType: false,
       encrypt: "multipart/form-data",
       processData: false,
-      success: (response) => {
+      done: (response) => {
         if (response.payload.status_code == 200) {
           window.location = "/ujian";
         } else if (response.payload.message == "you're not authenticated") {
@@ -166,5 +275,7 @@ $(document).ready(() => {
     });
   });
 });
+
+// Get all inputs that have a word limi
 
 // UPDATE FORM SUBMIT

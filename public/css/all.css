@@ -1,0 +1,14 @@
+.customTooltip * {
+  font-family: "Inter", sans-serif;
+}
+.customTooltip .introjs-bullets ul li a.active {
+  background-color: #358f6c;
+}
+.customTooltip .introjs-nextbutton {
+  background-color: #358f6c;
+  color: white;
+  text-shadow: none;
+}
+.customTooltip .introjs-tooltip-title {
+  color: #358f6c;
+}

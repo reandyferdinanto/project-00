@@ -102,6 +102,12 @@ main {
   background-color: #358f6c;
   margin: 0.3rem 0;
 }
-.tambah-ujian {
+.tambah-ujian,
+.tambah-ujian-baru {
   text-decoration: none;
 }
+
+/* .button-intro {
+  background-color: #358f6c;
+  color: white;
+} */

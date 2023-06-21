@@ -147,6 +147,10 @@ label {
   border-radius: 7px;
   font-family: "Inter", sans-serif;
 }
+.soal-text::placeholder {
+  color: #358f6c;
+  font-size: 0.85rem;
+}
 .answers {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -157,7 +161,7 @@ label {
   width: 100%;
   background-color: white;
   border-radius: 7px;
-  padding: 0.7rem 0.5rem;
+  padding: 1rem;
   border: 0.1px solid gray;
   font-family: "Inter", sans-serif;
 }
@@ -242,7 +246,7 @@ input[type="file"] {
 .custom-file-upload {
   border-radius: 7px;
   display: inline-block;
-  padding: 0.4rem 1.5rem;
+  padding: 0.6rem 1.5rem;
   font-size: 0.85rem;
   cursor: pointer;
   width: max-content;
@@ -348,4 +352,38 @@ input[type="file"] {
 }
 .delete-quest span i {
   font-size: 1.3rem;
+}
+
+input[name="correct_answer"] {
+  background-color: #2cc489;
+  border: 2px solid white;
+  color: white;
+}
+input[name="correct_answer"]:focus {
+  outline-color: white;
+}
+input[name="correct_answer"]::placeholder {
+  color: white;
+}
+input[name="wrong_answer"]::placeholder {
+  color: #358f6c;
+}
+
+.question-head {
+  display: flex;
+  justify-content: space-between;
+}
+.word-count {
+  font-size: 0.8rem;
+}
+.upload-img {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  align-items: flex-end;
+}
+.upload-img p {
+  font-size: 0.7rem;
+  margin: 0.4rem 0 0 0;
+  font-style: italic;
 }
