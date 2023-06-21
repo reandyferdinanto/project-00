@@ -186,8 +186,7 @@ async function userEdit(req, res, next) {
 }
 
 async function userAuth(req, res) {
-  const { nis, password } = req.query;
-  console.log(nis, password);
+  const { nis, password } = req.body;
   try {
     const user = await Score.findOne({
       where: {
@@ -204,7 +203,7 @@ async function userAuth(req, res) {
       } else {
         return res.json({
           ResultCode: 2,
-          Message: "Authentication failed. Wrong credentials.",
+          Message: "NIS and Password combination didn't match.",
           Status: "failed",
         });
       }
@@ -218,25 +217,10 @@ async function userAuth(req, res) {
   } catch (error) {
     res.json({
       ResultCode: 2,
-      Message: req.query,
+      Message: { error: error.message },
       Status: "failed",
     });
   }
-}
-
-function dummyAuth(req, res) {
-  res.json({
-    ResultCode: 2,
-    Message: JSON.stringify(req.body),
-    Status: "failed",
-  });
-}
-function dummyAuthDupe(req, res) {
-  res.json({
-    ResultCode: 2,
-    Message: req.body,
-    Status: "failed",
-  });
 }
 module.exports = {
   getAllScore,
@@ -246,6 +230,4 @@ module.exports = {
   userEdit,
   addUser,
   userAuth,
-  dummyAuth,
-  dummyAuthDupe,
 };
