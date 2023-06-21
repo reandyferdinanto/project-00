@@ -1,33 +1,31 @@
 $(document).ready(() => {
-  setTimeout(() => {
-    var first_intro = introJs();
-    first_intro.setOptions({
-      dontShowAgainCookie: "examCreate_intro",
-      dontShowAgainLabel: "Jangan tampilkan lagi",
-      tooltipClass: "customTooltip",
-      prevLabel: "Kembali",
-      nextLabel: "Lanjut",
-      doneLabel: "Selesai",
-      steps: [
-        {
-          title: "Ujian Baru",
-          intro: "Halaman ini berfungsi untuk membuat ujian baru",
-        },
-        {
-          element: ".main-input",
-          intro: "Guru dapat mengisi formulir ini untuk menbuat ujian baru.",
-        },
-        {
-          element: ".main-create-question",
-          intro:
-            "Bila sudah selesai mengisi, tekan tombol ini untuk membuat soal",
-          position: "left",
-        },
-      ],
-    });
+  var first_intro = introJs();
+  first_intro.setOptions({
+    dontShowAgainCookie: "examCreate_intro",
+    dontShowAgainLabel: "Jangan tampilkan lagi",
+    tooltipClass: "customTooltip",
+    prevLabel: "Kembali",
+    nextLabel: "Lanjut",
+    doneLabel: "Selesai",
+    steps: [
+      {
+        title: "Ujian Baru",
+        intro: "Halaman ini berfungsi untuk membuat ujian baru",
+      },
+      {
+        element: ".main-input",
+        intro: "Guru dapat mengisi formulir ini untuk menbuat ujian baru.",
+      },
+      {
+        element: ".main-create-question",
+        intro:
+          "Bila sudah selesai mengisi, tekan tombol ini untuk membuat soal",
+        position: "left",
+      },
+    ],
+  });
 
-    first_intro.start();
-  }, 1000);
+  first_intro.start();
 
   var intro = introJs();
   intro.setOptions({
@@ -89,16 +87,16 @@ $(document).ready(() => {
             <div class="question">
               <div class="question-head">
                 <p><b>Soal 1</b></p>
-                <p class="word-count">Jumlah kata: 0 / 140</p>
+                <p class="word-count">Jumlah kata: 0 / 300</p>
               </div>
               <div class="display_image"></div>
-              <textarea maxlength="140" data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
+              <textarea maxlength="300" data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
               <div class="answers">
-                <input maxlength="100" placeholder='jawaban benar' name='correct_answer' required class='answer correct-answer'/>
-                <input maxlength="100" placeholder='jawaban lain' name='wrong_answer' required class='answer wrong-answer'/>
-                <input maxlength="100" placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
-                <input maxlength="100" placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
-                <input maxlength="100" placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
+                <input maxlength="200" placeholder='jawaban benar' name='correct_answer' required class='answer correct-answer'/>
+                <input maxlength="200" placeholder='jawaban lain' name='wrong_answer' required class='answer wrong-answer'/>
+                <input maxlength="200" placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
+                <input maxlength="200" placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
+                <input maxlength="200" placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
                 <div class="upload-img">
                   <label class="custom-file-upload">
                       <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
@@ -121,10 +119,10 @@ $(document).ready(() => {
         </div>
         `,
     ]);
+    first_intro.exit();
     setTimeout(() => {
-      first_intro.exit();
       intro.start();
-    }, 1000);
+    }, 500);
   });
 
   // ADD MORE
@@ -137,16 +135,16 @@ $(document).ready(() => {
           
             <div class="question-head">
               <p><b>Soal ${quest_length + 1}</b></p>
-              <p class="word-count">Jumlah kata: 0 / 140</p>
+              <p class="word-count">Jumlah kata: 0 / 300</p>
             </div>
             <div class="display_image"></div>
-            <textarea maxlength="140" data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
+            <textarea maxlength="300" data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
             <div class="answers">
-                <input maxlength="100" placeholder='jawaban benar' name='correct_answer'required class='answer'/>
-                <input maxlength="100" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
-                <input maxlength="100" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
-                <input maxlength="100" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
-                <input maxlength="100" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
+                <input maxlength="200" placeholder='jawaban benar' name='correct_answer'required class='answer'/>
+                <input maxlength="200" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
+                <input maxlength="200" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
+                <input maxlength="200" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
+                <input maxlength="200" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
                 
                 <div class="upload-img">
                   <label class="custom-file-upload">
@@ -179,23 +177,10 @@ $(document).ready(() => {
     $(".file-layer").css("visibility", "hidden");
   });
   $(".main-background").on("input", ".soal-text", function () {
-    // document.querySelectorAll("textarea[data-max-words]").forEach((input) => {
-    //   let maxWords = parseInt(input.getAttribute("data-max-words") || 0);
-    //   input.addEventListener("keydown", (e) => {
-    //     let target = e.currentTarget;
-    //     let words = target.value.split(/\s+/).length;
-    //     if (!target.getAttribute("data-announce"))
-    //       words >= maxWords && e.keyCode == 32 && e.preventDefault();
-    //     else
-    //       words >= maxWords &&
-    //         e.keyCode == 32 &&
-    //         (e.preventDefault() || alert("Word Limit Reached"));
-    //   });
-    // });
     $(this)
       .parent()
       .find(".question-head .word-count")
-      .html(`Jumlah kata: ${this.value.length} / 140`);
+      .html(`Jumlah kata: ${this.value.length} / 300`);
   });
 
   // IMAGE INPUT

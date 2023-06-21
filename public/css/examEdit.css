@@ -158,7 +158,7 @@ label {
   width: 100%;
   background-color: white;
   border-radius: 7px;
-  padding: 0.7rem 0.5rem;
+  padding: 1rem;
   border: 0.1px solid gray;
 }
 .add-more {
@@ -376,4 +376,39 @@ input[type="file"] {
 }
 .input-file::file-selector-button {
   margin-right: 1rem;
+}
+
+.question-head {
+  display: flex;
+  justify-content: space-between;
+}
+.word-count {
+  font-size: 0.8rem;
+}
+
+input[name="correct_answer"] {
+  background-color: #2cc489;
+  border: 2px solid white;
+  color: white;
+}
+input[name="correct_answer"]:focus {
+  outline-color: white;
+}
+input[name="correct_answer"]::placeholder {
+  color: white;
+}
+input[name="wrong_answer"]::placeholder {
+  color: #358f6c;
+}
+
+.upload-img {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  align-items: flex-end;
+}
+.upload-img p {
+  font-size: 0.7rem;
+  margin: 0.4rem 0 0 0;
+  font-style: italic;
 }

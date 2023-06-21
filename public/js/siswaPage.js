@@ -18,6 +18,11 @@ $(document).ready(() => {
           url: "/api/scores",
           dataSrc: "payload.datas",
         },
+        pageLength: 20,
+        lengthMenu: [
+          [20, 50, 100, 200, -1],
+          [20, 50, 100, 200, "Semua"],
+        ],
         columns: [
           {
             data: null,
