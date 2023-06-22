@@ -17,6 +17,7 @@ if (env_type == "production") {
     {
       host: process.env.DB_HOST,
       dialect: "mysql",
+      logging: false,
       dialectOptions: {
         ssl: {
           rejectUnauthorized: true,

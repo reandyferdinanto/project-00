@@ -4,8 +4,18 @@ const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
 const cookieParse = require("cookie-parser");
+const fs = require("fs");
 
 const app = express();
+
+if (!fs.existsSync("public/files/uploads")) {
+  if (!fs.existsSync("public/files")) {
+    fs.mkdirSync("public/files");
+  }
+  if (!fs.existsSync("public/files/uploads")) {
+    fs.mkdirSync("public/files/uploads");
+  }
+}
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {

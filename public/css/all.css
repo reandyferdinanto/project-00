@@ -12,3 +12,54 @@
 .customTooltip .introjs-tooltip-title {
   color: #358f6c;
 }
+
+.load-layer,
+.complete-layer {
+  z-index: 30;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.load-background,
+.complete-background {
+  background-color: white;
+  padding: 3rem 5rem;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.complete-background button {
+  background-color: #358f6c;
+  color: white;
+  padding: 0.5rem 3rem;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+.hide {
+  visibility: hidden;
+}
+
+.custom-loader {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 8px solid;
+  border-color: #e4e4ed;
+  border-right-color: #358f6c;
+  animation: s2 1s infinite linear;
+}
+@keyframes s2 {
+  to {
+    transform: rotate(1turn);
+  }
+}
