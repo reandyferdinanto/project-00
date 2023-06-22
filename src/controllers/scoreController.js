@@ -186,24 +186,32 @@ async function userEdit(req, res, next) {
 }
 
 async function userAuth(req, res) {
-  const { nis, password } = req.query;
+  const { nis, password } = req.body;
   try {
-    const user = await Score.findOne({
+    const user = await Score.findOne({      
       where: {
         nis,
       },
     });
+	var data = {
+		"uniqueID": user.uniqueID,
+		"username": user.username,
+		"nis": user.nis,
+		"class": user.class,
+		"major": user.major
+	};
+
     if (user) {
       if (user.password == password) {
         return res.json({
           ResultCode: 1,
           UserId: user.unique_id,
-          Data: user,
+          Data: data,
         });
       } else {
         return res.json({
           ResultCode: 2,
-          Message: "Authentication failed. Wrong credentials.",
+          Message: "NIS and Password combination didn't match.",
           Status: "failed",
         });
       }
@@ -215,15 +223,13 @@ async function userAuth(req, res) {
       });
     }
   } catch (error) {
-    response(
-      500,
-      "server failed to auth the user",
-      { error: error.message },
-      res
-    );
+    res.json({
+      ResultCode: 2,
+      Message: { error: error.message },
+      Status: "failed",
+    });
   }
 }
-
 module.exports = {
   getAllScore,
   getScoreById,

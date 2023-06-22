@@ -412,3 +412,7 @@ input[name="wrong_answer"]::placeholder {
   margin: 0.4rem 0 0 0;
   font-style: italic;
 }
+
+input[type="file"] {
+  display: none;
+}
