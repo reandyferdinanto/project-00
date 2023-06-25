@@ -76,9 +76,9 @@ $(document).ready(() => {
                     let kkm = correct[0].kkm_point;
                     return kkm;
                   }
-                  return "0";
+                  return "-";
                 } else {
-                  return "0";
+                  return "-";
                 }
               },
             },
@@ -101,9 +101,9 @@ $(document).ready(() => {
                       return `<p style="color: #ff4c4c;margin:0;">${point}</p>`;
                     }
                   }
-                  return "0";
+                  return "-";
                 } else {
-                  return "0";
+                  return "-";
                 }
               },
             },
@@ -216,9 +216,9 @@ $(document).ready(() => {
                 let kkm = correct[0].kkm_point;
                 return kkm;
               }
-              return "0";
+              return "-";
             } else {
-              return "0";
+              return "-";
             }
           },
         },
@@ -242,9 +242,9 @@ $(document).ready(() => {
                   return `<p style="color: #ff4c4c;margin:0;">${point}</p>`;
                 }
               }
-              return "0";
+              return "-";
             } else {
-              return "0";
+              return "-";
             }
           },
         },
