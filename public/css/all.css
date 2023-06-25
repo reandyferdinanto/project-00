@@ -14,7 +14,9 @@
 }
 
 .load-layer,
-.complete-layer {
+.complete-layer,
+.load-layer-hapus,
+.complete-layer-hapus {
   z-index: 30;
   background-color: rgba(0, 0, 0, 0.5);
   position: fixed;

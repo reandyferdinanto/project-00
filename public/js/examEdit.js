@@ -138,6 +138,14 @@ $(document).ready(() => {
       .find(".question-head .word-count")
       .html(`Jumlah kata: ${this.value.length} / 300`);
   });
+  $("#complete-upload").on("click", function (e) {
+    e.preventDefault();
+    window.location = "/ujian";
+  });
+  $("#complete-hapus").on("click", function (e) {
+    e.preventDefault();
+    window.location = "/ujian";
+  });
 
   // IMAGE INPUT
   $(".main-background").on("change", ".input-file", function () {
@@ -219,9 +227,15 @@ $(document).ready(() => {
       contentType: false,
       encrypt: "multipart/form-data",
       processData: false,
+      beforeSend: function () {
+        $(".load-layer").removeClass("hide");
+        $(".submit-layer").css("visibility", "hidden");
+      },
       success: (response) => {
+        $(".submit-layer").css("visibility", "hidden");
         if (response.payload.status_code == 200) {
-          window.location = "/ujian";
+          $(".load-layer").addClass("hide");
+          $(".complete-layer").removeClass("hide");
         } else if (response.payload.message == "you're not authenticated") {
           window.location = "/login";
         }
@@ -243,9 +257,17 @@ $(document).ready(() => {
       contentType: false,
       encrypt: "multipart/form-data",
       processData: false,
+      beforeSend: function () {
+        $(".load-layer-hapus").removeClass("hide");
+        $(".submit-hapus").css("visibility", "hidden");
+      },
       success: (response) => {
+        $(".submit-hapus").css("visibility", "hidden");
         if (response.payload.status_code == 200) {
-          window.location = "/ujian";
+          $(".load-layer-hapus").addClass("hide");
+          $(".complete-layer-hapus").removeClass("hide");
+        } else if (response.payload.message == "you're not authenticated") {
+          window.location = "/login";
         }
       },
     });

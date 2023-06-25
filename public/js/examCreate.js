@@ -256,20 +256,14 @@ $(document).ready(() => {
       encrypt: "multipart/form-data",
       processData: false,
       beforeSend: function () {
-        if ($(".load-layer").hasClass("hide")) {
-          $(".load-layer").removeClass("hide");
-        }
+        $(".load-layer").removeClass("hide");
         $(".submit-layer").css("visibility", "hidden");
       },
       success: (response) => {
         $(".submit-layer").css("visibility", "hidden");
         if (response.payload.status_code == 200) {
-          if (!$(".load-layer").hasClass("hide")) {
-            $(".load-layer").addClass("hide");
-          }
-          if ($(".complete-layer").hasClass("hide")) {
-            $(".complete-layer").removeClass("hide");
-          }
+          $(".load-layer").addClass("hide");
+          $(".complete-layer").removeClass("hide");
         } else if (response.payload.message == "you're not authenticated") {
           window.location = "/login";
         }

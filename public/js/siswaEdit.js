@@ -95,6 +95,11 @@ $(document).ready(() => {
     }
   });
 
+  $("#complete-upload").on("click", function (e) {
+    e.preventDefault();
+    window.location = "/siswa";
+  });
+
   // SUBMIT
   const manualForm = document.getElementById("submit-form");
   manualForm.addEventListener("submit", (e) => {
@@ -110,9 +115,15 @@ $(document).ready(() => {
       contentType: false,
       encrypt: "multipart/form-data",
       processData: false,
+      beforeSend: function () {
+        $(".load-layer").removeClass("hide");
+        $(".submit-layer").css("visibility", "hidden");
+      },
       success: (response) => {
+        $(".submit-layer").css("visibility", "hidden");
         if (response.payload.status_code == 200) {
-          window.location = "/siswa";
+          $(".load-layer").addClass("hide");
+          $(".complete-layer").removeClass("hide");
         } else if (response.payload.message == "you're not authenticated") {
           window.location = "/login";
         }
