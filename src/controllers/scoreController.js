@@ -80,6 +80,15 @@ async function updatePoint(req, res) {
     const { point, remedial_point, exam_id } = req.body;
     const { id } = req.params;
 
+    if (id == undefined || exam_id == undefined) {
+      response(
+        400,
+        "id or exam_id cannot be undefined",
+        { error: "id or exam_id undefined" },
+        res
+      );
+    }
+
     ScoreExam.findOne({
       where: {
         score_id: id,
@@ -188,18 +197,18 @@ async function userEdit(req, res, next) {
 async function userAuth(req, res) {
   const { nis, password } = req.body;
   try {
-    const user = await Score.findOne({      
+    const user = await Score.findOne({
       where: {
         nis,
       },
     });
-	var data = {
-		"uniqueID": user.uniqueID,
-		"username": user.username,
-		"nis": user.nis,
-		"class": user.class,
-		"major": user.major
-	};
+    var data = {
+      uniqueID: user.uniqueID,
+      username: user.username,
+      nis: user.nis,
+      class: user.class,
+      major: user.major,
+    };
 
     if (user) {
       if (user.password == password) {

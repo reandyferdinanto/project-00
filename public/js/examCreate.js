@@ -2,6 +2,7 @@ $(document).ready(() => {
   var first_intro = introJs();
   first_intro.setOptions({
     dontShowAgainCookie: "examCreate_intro",
+    dontShowAgain: true,
     dontShowAgainLabel: "Jangan tampilkan lagi",
     tooltipClass: "customTooltip",
     prevLabel: "Kembali",
@@ -182,6 +183,10 @@ $(document).ready(() => {
       .find(".question-head .word-count")
       .html(`Jumlah kata: ${this.value.length} / 300`);
   });
+  $("#complete-upload").on("click", function (e) {
+    e.preventDefault();
+    window.location = "/ujian";
+  });
 
   // IMAGE INPUT
   $(".main-background").on("change", ".input-file", function () {
@@ -250,9 +255,15 @@ $(document).ready(() => {
       contentType: false,
       encrypt: "multipart/form-data",
       processData: false,
+      beforeSend: function () {
+        $(".load-layer").removeClass("hide");
+        $(".submit-layer").css("visibility", "hidden");
+      },
       success: (response) => {
+        $(".submit-layer").css("visibility", "hidden");
         if (response.payload.status_code == 200) {
-          window.location = "/ujian";
+          $(".load-layer").addClass("hide");
+          $(".complete-layer").removeClass("hide");
         } else if (response.payload.message == "you're not authenticated") {
           window.location = "/login";
         }
@@ -260,7 +271,3 @@ $(document).ready(() => {
     });
   });
 });
-
-// Get all inputs that have a word limi
-
-// UPDATE FORM SUBMIT

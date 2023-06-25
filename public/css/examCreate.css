@@ -313,7 +313,7 @@ input[type="file"] {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  z-index: 999;
+  z-index: 20;
 }
 .file-toolarge {
   background-color: white;

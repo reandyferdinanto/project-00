@@ -103,7 +103,7 @@ main {
 .table-body {
   display: grid;
   padding: 1rem 0;
-  grid-template-columns: 0.3fr 1fr 1fr 0.4fr;
+  grid-template-columns: 0.3fr 1fr 1fr 0.4fr 0.4fr;
   border: 0.1px solid lightgray;
   border-width: 0px 0 0.1px 0;
 }

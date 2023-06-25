@@ -73,7 +73,33 @@ $(document).ready(() => {
                     return e.unique_id == $("#exams-select").val();
                   });
                   if (correct.length !== 0) {
-                    return correct[0].ScoreExam.point;
+                    let kkm = correct[0].kkm_point;
+                    return kkm;
+                  }
+                  return "0";
+                } else {
+                  return "0";
+                }
+              },
+            },
+            {
+              data: "Exams",
+              render: function (data) {
+                if (data.length !== 0) {
+                  let correct = data.filter((e) => {
+                    return e.unique_id == $("#exams-select").val();
+                  });
+                  if (correct.length !== 0) {
+                    let kkm = correct[0].kkm_point;
+                    let point = correct[0].ScoreExam.point;
+                    let remedial_point = correct[0].ScoreExam.remedial_point;
+                    if (point > kkm) {
+                      return `<p style="color: #358f6c;margin:0;">${point}</p>`;
+                    } else if (point < kkm && remedial_point > kkm) {
+                      return `<p style="color: #358f6c;margin:0;">${kkm}</p>`;
+                    } else if (point < kkm && remedial_point < kkm) {
+                      return `<p style="color: #ff4c4c;margin:0;">${point}</p>`;
+                    }
                   }
                   return "0";
                 } else {
@@ -128,6 +154,7 @@ $(document).ready(() => {
             }, 500);
           },
         });
+        $("hr").remove();
       } else {
         $(".main-table-body").append([
           `
@@ -186,7 +213,34 @@ $(document).ready(() => {
                 return e.unique_id == $("#exams-select").val();
               });
               if (correct.length !== 0) {
-                return correct[0].ScoreExam.point;
+                let kkm = correct[0].kkm_point;
+                return kkm;
+              }
+              return "0";
+            } else {
+              return "0";
+            }
+          },
+        },
+        {
+          data: "Exams",
+          render: function (data) {
+            if (data.length !== 0) {
+              let correct = data.filter((e) => {
+                return e.unique_id == $("#exams-select").val();
+              });
+              if (correct.length !== 0) {
+                let kkm = correct[0].kkm_point;
+                let point = correct[0].ScoreExam.point;
+                let remedial_point = correct[0].ScoreExam.remedial_point;
+                if (point > kkm) {
+                  console.log("Ga remed");
+                  return `<p style="color: #358f6c;margin:0;">${point}</p>`;
+                } else if (point < kkm && remedial_point > kkm) {
+                  return `<p style="color: #358f6c;margin:0;">${kkm}</p>`;
+                } else if (point < kkm && remedial_point < kkm) {
+                  return `<p style="color: #ff4c4c;margin:0;">${point}</p>`;
+                }
               }
               return "0";
             } else {

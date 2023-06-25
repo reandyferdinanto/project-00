@@ -151,14 +151,9 @@ $(document).ready(() => {
     $(".ubah-button").on("click", () => {
       $(".submit-layer").css("visibility", "hidden");
     });
-    $(".main-table-title").on("click", ".checkbox-delete", function () {
-      alert("click");
-    });
     $("#selectAll").on("click", function () {
       if ($(this).is(":checked")) {
         $(".hapus-button").attr("disabled", false);
-        // or, as has been pointed out elsewhere:
-        // $('input:submit').removeAttr('disabled');
         $(".checkbox-delete").attr("checked", true);
       } else {
         $(".hapus-button").attr("disabled", true);
