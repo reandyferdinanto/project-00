@@ -257,6 +257,7 @@ $(document).ready(() => {
       processData: false,
       beforeSend: function () {
         $(".load-layer").removeClass("hide");
+        $(".load-layer").css("visibility", "visible");
         $(".submit-layer").css("visibility", "hidden");
       },
       success: (response) => {
