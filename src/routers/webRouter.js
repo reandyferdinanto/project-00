@@ -27,14 +27,22 @@ router.get("/siswa", validateRedirect, (req, res) => {
   });
 });
 router.get("/siswa/tambah", validateRedirect, (req, res) => {
-  res.render("siswaCreate", {
-    user: req.user,
-  });
+  if (req.user.role == "admin") {
+    res.render("siswaCreate", {
+      user: req.user,
+    });
+  } else {
+    res.redirect("/siswa");
+  }
 });
 router.get("/siswa/edit/:id", validateRedirect, (req, res) => {
-  res.render("siswaEdit", {
-    user: req.user,
-  });
+  if (req.user.role == "admin") {
+    res.render("siswaEdit", {
+      user: req.user,
+    });
+  } else {
+    res.redirect("/siswa");
+  }
 });
 router.get("/", validateRedirect, (req, res) => {
   res.render("berandaPage", {

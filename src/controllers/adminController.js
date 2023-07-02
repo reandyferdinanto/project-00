@@ -7,11 +7,12 @@ const { createToken } = require("../utils/JWT");
 
 function register(req, res) {
   try {
-    const { username, password } = req.body;
+    const { username, password, role } = req.body;
     bcrypt.hash(password, 10).then((hash) => {
       Admin.create({
         username,
         password: hash,
+        role,
       }).then((respon) => {
         response(201, "success create new user", respon, res);
       });
@@ -59,8 +60,19 @@ async function logout(req, res, next) {
   res.redirect("/login");
 }
 
+async function getAdmin(req, res) {
+  await Admin.findOne({
+    where: {
+      username: req.body.username,
+    },
+  }).then((result) => {
+    res.json(result);
+  });
+}
+
 module.exports = {
   register,
   login,
   logout,
+  getAdmin,
 };

@@ -8,6 +8,7 @@ $(document).ready(() => {
   $("#date").html(text);
 
   // DATA SISWA
+  let role = $("input[name=role]").val();
 
   const url = "/api/scores";
   $.get(url, async (data, status) => {
@@ -36,13 +37,21 @@ $(document).ready(() => {
           {
             data: "unique_id",
             render: function (data, type) {
-              return `<a href="/siswa/edit/${data}" class="edit-siswa"><i class="uil uil-edit"></i></a>`;
+              if (role == "admin") {
+                return `<a href="/siswa/edit/${data}" class="edit-siswa"><i class="uil uil-edit"></i></a>`;
+              } else {
+                return null;
+              }
             },
           },
           {
             data: "unique_id",
             render: function (data, type) {
-              return `<input type="checkbox" name="checkedSiswa" class="checkbox-delete" value="${data}" />`;
+              if (role == "admin") {
+                return `<input type="checkbox" name="checkedSiswa" class="checkbox-delete" value="${data}" />`;
+              } else {
+                return null;
+              }
             },
           },
         ],
@@ -169,4 +178,6 @@ $(document).ready(() => {
       }
     });
   });
+
+  // ROLE HANDLE
 });
