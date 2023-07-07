@@ -24,28 +24,32 @@
     </div>
     <div class="main-content">
       <div class="main-background">
-        <div class="main-title">
-          <h2>Daftar Guru</h2>
-          <a href="/guru/buat"
-            ><button class="buat-ujian-baru">+ Tambah Guru</button></a
-          >
-        </div>
-        <div class="main-table">
-          <div class="main-table-title">
-            <table id="siswa-table" class="display" style="width: 100%">
-              <thead>
-                <tr>
-                  <th>No.</th>
-                  <th>Nama Guru</th>
-                  <th></th>
-                  <th><input type="checkbox" name="" id="selectAll" /></th>
-                </tr>
-              </thead>
-            </table>
+        <form action="" id="form-delete">
+          <div class="main-title">
+            <h2>Daftar Guru</h2>
+            <div class="main-side">
+              <a href="/guru/buat"
+                ><button class="buat-ujian-baru">+ Tambah Guru</button></a
+              ><button class="hapus-button" disabled>Hapus</button>
+            </div>
           </div>
-          <hr />
-          <div class="main-table-body"></div>
-        </div>
+          <div class="main-table">
+            <div class="main-table-title">
+              <table id="siswa-table" class="display" style="width: 100%">
+                <thead>
+                  <tr>
+                    <th>No.</th>
+                    <th>Nama Guru</th>
+                    <th></th>
+                    <th><input type="checkbox" name="" id="selectAll" /></th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <hr />
+            <div class="main-table-body"></div>
+          </div>
+        </form>
       </div>
     </div>
   </main>
