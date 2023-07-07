@@ -115,31 +115,58 @@ async function updateAdmin(req, res) {
 }
 
 async function resetPassword(req, res) {
-  const { unique_id, password_lama, password_baru } = req.body;
-  await Admin.findByPk(unique_id).then((result) => {
-    if (!result) return res.json({ error: "user not found" });
-    const dbPassword = result.password;
-    bcrypt.compare(password_lama, dbPassword).then((match) => {
-      if (!match) {
-        return response(400, "password lama salah", [], res);
-      } else {
-        bcrypt.hash(password_baru, 10).then((hash) => {
-          Admin.update(
-            {
-              password: hash,
-            },
-            {
-              where: {
-                unique_id,
+  try {
+    const { unique_id, password_lama, password_baru } = req.body;
+    await Admin.findByPk(unique_id).then((result) => {
+      if (!result) return res.json({ error: "user not found" });
+      const dbPassword = result.password;
+      bcrypt.compare(password_lama, dbPassword).then((match) => {
+        if (!match) {
+          return response(400, "password lama salah", [], res);
+        } else {
+          bcrypt.hash(password_baru, 10).then((hash) => {
+            Admin.update(
+              {
+                password: hash,
               },
-            }
-          ).then(() => {
-            response(200, "success change admin password", [], res);
+              {
+                where: {
+                  unique_id,
+                },
+              }
+            ).then(() => {
+              response(200, "success change admin password", [], res);
+            });
           });
-        });
-      }
+        }
+      });
     });
-  });
+  } catch (error) {
+    response(500, "server failed to chang admin data", [], res);
+  }
+}
+
+async function deleteAdmin(req, res) {
+  try {
+    let checkedAdmin = req.body.checkedAdmin;
+    if (!checkedAdmin) return response(400, "body cant be undefined", [], res);
+    await Admin.destroy({
+      where: {
+        unique_id: checkedAdmin,
+      },
+    }).then((respon) => {
+      if (!respon)
+        return response(400, "delete failed, admin not found", respon, res);
+      return response(200, "success delete admin", respon, res);
+    });
+  } catch (error) {
+    response(
+      500,
+      "server failed to delete admin",
+      { error: error.message },
+      res
+    );
+  }
 }
 
 module.exports = {
@@ -150,4 +177,5 @@ module.exports = {
   getAdminById,
   updateAdmin,
   resetPassword,
+  deleteAdmin,
 };

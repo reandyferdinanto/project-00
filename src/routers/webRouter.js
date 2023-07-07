@@ -99,5 +99,17 @@ router.get("/tipe_ujian", validateRedirect, (req, res) => {
     user: req.user,
   });
 });
+router.get("/tipe_ujian/buat", validateRedirect, (req, res) => {
+  if (req.user.role !== "super_admin") return res.redirect("/");
+  res.render("superUjianCreate", {
+    user: req.user,
+  });
+});
+router.get("/tipe_ujian/edit/:id", validateRedirect, (req, res) => {
+  if (req.user.role !== "super_admin") return res.redirect("/");
+  res.render("superUjianUpdate", {
+    user: req.user,
+  });
+});
 
 module.exports = router;

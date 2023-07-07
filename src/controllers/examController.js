@@ -1,4 +1,4 @@
-const { Exam, Score, Question, ScoreExam } = require("../models");
+const { Exam, Score, Question, ScoreExam, ExamType } = require("../models");
 const response = require("./response");
 const fs = require("fs");
 
@@ -288,10 +288,26 @@ async function getExamById(req, res, next) {
   }
 }
 
+async function getExamType(req, res) {
+  try {
+    await ExamType.findAll().then((result) => {
+      response(200, "success get all exam type", result, res);
+    });
+  } catch (error) {
+    response(
+      500,
+      "server failed to get all exam type",
+      { error: error.message },
+      res
+    );
+  }
+}
+
 module.exports = {
   getAllExam,
   tambahExam,
   getExamById,
   updateExam,
   deleteExam,
+  getExamType,
 };

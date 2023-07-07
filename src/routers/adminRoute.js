@@ -8,5 +8,6 @@ router.post("/login", adminController.login);
 router.post("/logout", adminController.logout);
 router.put("/", adminController.updateAdmin);
 router.put("/password", adminController.resetPassword);
+router.delete("/", adminController.deleteAdmin);
 
 module.exports = router;

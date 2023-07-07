@@ -41,7 +41,7 @@ $(document).ready(() => {
           {
             data: "unique_id",
             render: function (data, type) {
-              return `<input type="checkbox" name="checkedSiswa" class="checkbox-delete" value="${data}" />`;
+              return `<input type="checkbox" name="checkedAdmin" class="checkbox-delete" value="${data}" />`;
             },
           },
         ],
@@ -85,7 +85,7 @@ $(document).ready(() => {
       e.preventDefault();
       let formData = new FormData(formDelete);
       $.ajax({
-        url: "/api/scores",
+        url: "/api/admin",
         type: "DELETE",
         data: formData,
         async: false,
@@ -95,7 +95,7 @@ $(document).ready(() => {
         processData: false,
         success: (response) => {
           if (response !== undefined) {
-            window.location = "/siswa";
+            window.location = "/guru";
           }
         },
       });

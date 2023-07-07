@@ -49,6 +49,7 @@ const indexRouter = require("./src/routers/indexRoute");
 const utilsRouter = require("./src/routers/utilsRoute");
 const examRouter = require("./src/routers/examRoute");
 const adminRouter = require("./src/routers/adminRoute");
+const examTypeRouter = require("./src/routers/examTypeRoute");
 const webRouter = require("./src/routers/webRouter");
 
 app.use("/", webRouter);
@@ -57,6 +58,7 @@ app.use("/api/scores", scoreRouter);
 app.use("/api/utils", utilsRouter);
 app.use("/api/exams", examRouter);
 app.use("/api/admin", adminRouter);
+app.use("/api/exam_type", examTypeRouter);
 
 // ERROR HANDLER
 app.all("*", (req, res, next) => {
