@@ -43,7 +43,7 @@ $(document).ready(() => {
             data: "unique_id",
             width: "5%",
             render: function (data, type) {
-              return `<input type="checkbox" name="checkedAdmin" class="checkbox-delete" value="${data}" />`;
+              return `<input type="checkbox" name="checkedExamType" class="checkbox-delete" value="${data}" />`;
             },
           },
         ],
@@ -87,7 +87,7 @@ $(document).ready(() => {
       e.preventDefault();
       let formData = new FormData(formDelete);
       $.ajax({
-        url: "/api/admin",
+        url: "/api/exam_type",
         type: "DELETE",
         data: formData,
         async: false,
@@ -97,7 +97,7 @@ $(document).ready(() => {
         processData: false,
         success: (response) => {
           if (response !== undefined) {
-            window.location = "/admin";
+            window.location = "/tipe_ujian";
           }
         },
       });

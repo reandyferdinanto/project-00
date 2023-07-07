@@ -27,7 +27,7 @@
       <div class="main-background">
         <div class="main-title">
           <h2>
-            Merubah Tipe Ujian
+            Mengubah Tipe Ujian
             <span style="color: #ff4c4c; font-size: 0.7rem">*harus diisi</span>
           </h2>
         </div>
@@ -40,8 +40,8 @@
               class="nama-input"
               required
               type="text"
-              name="tipe_ujian"
-              id=""
+              name="exam_type"
+              id="exam_type"
               placeholder="Masukan Tipe Ujian"
             />
           </div>
@@ -68,7 +68,7 @@
         <div class="complete-layer hide">
           <div class="complete-background">
             <img src="/img/check.png" width="50" alt="" />
-            <p>Admin berhasil di tambahkan</p>
+            <p>Data tipe ujian berhasil diubah</p>
             <button type="button" id="complete-upload">OK</button>
           </div>
         </div>
@@ -95,11 +95,10 @@
     manualForm.addEventListener("submit", (e) => {
       e.preventDefault();
       let formData = new FormData(manualForm);
-      formData.append("role", "admin");
-      formData.append("password", "123");
+      formData.append("unique_id", unique_id);
       $.ajax({
-        url: "/api/admin/register",
-        type: "POST",
+        url: "/api/exam_type",
+        type: "PUT",
         data: formData,
         async: false,
         cache: false,
@@ -113,7 +112,7 @@
         },
         success: (response) => {
           $(".submit-layer").css("visibility", "hidden");
-          if (response.payload.status_code == 201) {
+          if (response.payload.status_code == 200) {
             $(".load-layer").addClass("hide");
             $(".complete-layer").removeClass("hide");
           } else if (response.payload.message == "you're not authenticated") {
@@ -121,6 +120,16 @@
           }
         },
       });
+    });
+    let unique_id = window.location.href.substring(
+      window.location.href.lastIndexOf("/") + 1
+    );
+    let url = `/api/exam_type/${unique_id}`;
+    $.get(url, async (data, status) => {
+      let datas = data.payload.datas;
+      if (status == "success" && datas.length !== 0) {
+        $("#exam_type").val(datas.exam_type);
+      }
     });
   });
 </script>

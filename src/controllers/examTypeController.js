@@ -31,10 +31,29 @@ async function getExamTypeById(req, res) {
   }
 }
 async function updateExamType(req, res) {
-  // try {
-  //     await ExamType.update({},{})
-  // } catch (error) {
-  // }
+  try {
+    const { exam_type, unique_id } = req.body;
+    await ExamType.findByPk(unique_id).then((prev) => {
+      ExamType.update(
+        {
+          exam_type: exam_type,
+        },
+        {
+          where: {
+            unique_id,
+          },
+        }
+      );
+      response(200, "success update exam_type", [], res);
+    });
+  } catch (error) {
+    response(
+      500,
+      "server failed to update exam type",
+      { error: error.message },
+      res
+    );
+  }
 }
 
 async function createExamType(req, res) {
@@ -51,9 +70,34 @@ async function createExamType(req, res) {
   }
 }
 
+async function deleteExamType(req, res) {
+  try {
+    let checkedExamType = req.body.checkedExamType;
+    if (!checkedExamType)
+      return response(400, "body cant be undefined", [], res);
+    await ExamType.destroy({
+      where: {
+        unique_id: checkedExamType,
+      },
+    }).then((respon) => {
+      if (!respon)
+        return response(400, "delete failed, exam_type not found", respon, res);
+      return response(200, "success delete exam_type", respon, res);
+    });
+  } catch (error) {
+    response(
+      500,
+      "server failed to delete admin",
+      { error: error.message },
+      res
+    );
+  }
+}
+
 module.exports = {
   getExamType,
   getExamTypeById,
   updateExamType,
   createExamType,
+  deleteExamType,
 };
