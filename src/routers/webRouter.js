@@ -57,4 +57,47 @@ router.get("/login", (req, res) => {
   }
 });
 
+router.get("/admin", validateRedirect, (req, res) => {
+  if (req.user.role !== "super_admin") return res.redirect("/");
+  res.render("superPageAdmin", {
+    user: req.user,
+  });
+});
+router.get("/guru", validateRedirect, (req, res) => {
+  if (req.user.role !== "super_admin") return res.redirect("/");
+  res.render("superPageGuru", {
+    user: req.user,
+  });
+});
+router.get("/admin/buat", validateRedirect, (req, res) => {
+  if (req.user.role !== "super_admin") return res.redirect("/");
+  res.render("superCreateAdmin", {
+    user: req.user,
+  });
+});
+router.get("/guru/buat", validateRedirect, (req, res) => {
+  if (req.user.role !== "super_admin") return res.redirect("/");
+  res.render("superCreateGuru", {
+    user: req.user,
+  });
+});
+router.get("/admin/edit/:id", validateRedirect, (req, res) => {
+  if (req.user.role !== "super_admin") return res.redirect("/");
+  res.render("superUpdateAdmin", {
+    user: req.user,
+  });
+});
+router.get("/guru/edit/:id", validateRedirect, (req, res) => {
+  if (req.user.role !== "super_admin") return res.redirect("/");
+  res.render("superUpdateGuru", {
+    user: req.user,
+  });
+});
+router.get("/tipe_ujian", validateRedirect, (req, res) => {
+  if (req.user.role !== "super_admin") return res.redirect("/");
+  res.render("superUjianPage", {
+    user: req.user,
+  });
+});
+
 module.exports = router;

@@ -18,7 +18,11 @@
         </div>
         <div class="list-sidebar">
           <a href="/">Beranda</a>
-          <a href="/siswa" class="selected">Daftar Siswa</a>
+          <a href="/siswa" class="selected"><% if(user.role =="admin"){%>
+            Daftar Siswa
+          <%}else{%>
+            Data Siswa
+          <%} %></a>
           <a href="/ujian">Ujian</a>
           <a href="/nilai">Nilai</a>
         </div>
@@ -28,7 +32,11 @@
           <form action="" id="form-delete">
             <!-- FORM HAPUS STARTED -->
             <div class="main-title">
-              <h2>Daftar Siswa</h2>
+              <% if(user.role =="admin"){%>
+                <h2>Daftar Siswa</h2>
+              <%}else{%>
+                <h2>Data Siswa</h2>
+              <%} %>
               <% if (user.role == "admin") { %>
                 <div class="main-side">
                   <a href="/siswa/tambah"

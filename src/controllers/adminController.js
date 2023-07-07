@@ -7,12 +7,14 @@ const { createToken } = require("../utils/JWT");
 
 function register(req, res) {
   try {
-    const { username, password, role } = req.body;
+    const { username, password, role, email, nuptk } = req.body;
     bcrypt.hash(password, 10).then((hash) => {
       Admin.create({
         username,
         password: hash,
         role,
+        email,
+        nuptk,
       }).then((respon) => {
         response(201, "success create new user", respon, res);
       });
@@ -47,7 +49,11 @@ async function login(req, res) {
         res.cookie("access-token", accessToken, {
           maxAge: 3600000,
         });
-        res.status(200).json({ message: "LOGEDIN" });
+        if (admin.role == "super_admin") {
+          res.status(200).json({ route: "/admin" });
+        } else {
+          res.status(200).json({ route: "/" });
+        }
       }
     });
   } catch (error) {
@@ -61,12 +67,78 @@ async function logout(req, res, next) {
 }
 
 async function getAdmin(req, res) {
-  await Admin.findOne({
-    where: {
-      username: req.body.username,
-    },
-  }).then((result) => {
-    res.json(result);
+  try {
+    await Admin.findAll().then((result) => {
+      response(200, "success get all admin", result, res);
+    });
+  } catch (error) {
+    response(500, "server failed to get admin", { error: error.message }, res);
+  }
+}
+async function getAdminById(req, res) {
+  const pk = req.params.id;
+  try {
+    await Admin.findByPk(pk).then((result) => {
+      if (!result) return response(200, `no admin with id ${pk}`, [], res);
+      response(200, "success get all admin", result, res);
+    });
+  } catch (error) {
+    response(500, "server failed to get admin", { error: error.message }, res);
+  }
+}
+async function updateAdmin(req, res) {
+  try {
+    const { unique_id, email, nuptk, username } = req.body;
+    await Admin.findOne({
+      where: {
+        unique_id: unique_id,
+      },
+    }).then((prev) => {
+      if (!prev) return response(400, "user not found", [], res);
+      Admin.update(
+        {
+          username: username !== undefined ? username : prev.username,
+          email: email !== undefined ? email : prev.email,
+          nuptk: nuptk !== undefined ? nuptk : prev.nuptk,
+        },
+        {
+          where: {
+            unique_id,
+          },
+        }
+      );
+    });
+    response(200, "success update admin data", [], res);
+  } catch (error) {
+    response(200, "server failed to update admin data", req.body, res);
+  }
+}
+
+async function resetPassword(req, res) {
+  const { unique_id, password_lama, password_baru } = req.body;
+  await Admin.findByPk(unique_id).then((result) => {
+    if (!result) return res.json({ error: "user not found" });
+    const dbPassword = result.password;
+    bcrypt.compare(password_lama, dbPassword).then((match) => {
+      if (!match) {
+        return response(400, "password lama salah", [], res);
+      } else {
+        bcrypt.hash(password_baru, 10).then((hash) => {
+          Admin.update(
+            {
+              password: hash,
+            },
+            {
+              where: {
+                unique_id,
+              },
+            }
+          ).then(() => {
+            response(200, "success change admin password", [], res);
+          });
+        });
+      }
+    });
   });
 }
 
@@ -75,4 +147,7 @@ module.exports = {
   login,
   logout,
   getAdmin,
+  getAdminById,
+  updateAdmin,
+  resetPassword,
 };
