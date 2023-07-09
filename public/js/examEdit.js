@@ -15,9 +15,24 @@ $(document).ready(() => {
   let question_id = [];
   $.get(url_input, async (data, status) => {
     let datas = data.payload.datas;
+    // EXAM_TYPE
+    $.get("/api/exam_type", async (data, status) => {
+      if (status == "success" && data.payload.datas.length !== 0) {
+        let exam_datas = data.payload.datas;
+        exam_datas.forEach((data) => {
+          $(".exam-type").append([
+            `
+        <option value="${data.exam_type.toLowerCase()}">${
+              data.exam_type.charAt(0).toUpperCase() + data.exam_type.slice(1)
+            }</option>
+        `,
+          ]);
+          $("#exam_type").val(datas.exam_type).change();
+        });
+      }
+    });
     if (status == "success" && datas.length !== 0) {
       $("#exam_name").val(datas.exam_name);
-      $("#exam_type").val(datas.exam_type).change();
       $("#kkm_point").val(datas.kkm_point);
       $("#available_try").val(datas.available_try);
       //   QUESTION

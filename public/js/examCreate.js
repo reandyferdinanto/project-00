@@ -271,4 +271,22 @@ $(document).ready(() => {
       },
     });
   });
+
+  //GET EXAMS TYPE
+  $.get("/api/exam_type", async (data, status) => {
+    if (status == "success" && data.payload.datas.length !== 0) {
+      let datas = data.payload.datas;
+      console.log(datas);
+      datas.forEach((data) => {
+        $(".exam-type").append([
+          `
+        <option value="${data.exam_type.toLowerCase()}">${
+            data.exam_type.charAt(0).toUpperCase() + data.exam_type.slice(1)
+          }</option>
+        `,
+        ]);
+      });
+    } else {
+    }
+  });
 });
