@@ -288,8 +288,49 @@ $(document).ready(() => {
       },
     });
   });
-});
 
+  //ASSIGN
+  $.get("/api/scores", async (data, status) => {
+    if (status == "success" && data.payload.datas.length !== 0) {
+      $("#assign-table").DataTable({
+        ajax: {
+          url: "/api/scores",
+          dataSrc: "payload.datas",
+        },
+        pageLength: -1,
+        lengthMenu: [
+          [20, 50, 100, 200, -1],
+          [20, 50, 100, 200, "Semua"],
+        ],
+        columns: [
+          {
+            data: null,
+            width: "8%",
+            render: function (data, type, row, meta) {
+              return meta.row + meta.settings._iDisplayStart + 1;
+            },
+          },
+          { data: "nis" },
+          { data: "username" },
+          {
+            data: "unique_id",
+            // width: "20%",
+            render: function (data, type) {
+              return `<input type="checkbox" name="checkedSiswa" class="checkbox-delete" value="${data}" />`;
+            },
+          },
+        ],
+      });
+    }
+  });
+
+  $(".assign-bg .close").click(function () {
+    $(".assign-layer").css("visibility", "hidden");
+  });
+  $(".edit-button").click(function () {
+    $(".assign-layer").css("visibility", "visible");
+  });
+});
 function getImgBlob(url) {
   return new Promise((resolve, reject) => {
     $.ajax({

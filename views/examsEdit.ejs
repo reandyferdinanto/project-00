@@ -86,6 +86,13 @@
                 />
               </label>
             </div>
+            <div class="assign-container">
+              <label for="">Assign To</label>
+              <div class="assign-button">
+                <span>20 Siswa</span>
+                <span><i class="uil uil-edit edit-button"></i></span>
+              </div>
+            </div>
           </div>
           <div class="submit-layer">
             <div class="submit-question">
@@ -142,6 +149,25 @@
       </div>
     </div>
   </main>
+
+  <div class="assign-layer">
+    <div class="assign-bg">
+      <div class="close">X</div>
+      <h1>Assign Ujian Ke?</h1>
+      <p>
+        silahkan tentukan kelas atau siswa individu yang akan mengikuti ujian
+        ini
+      </p>
+      <table id="assign-table">
+        <thead>
+          <th>No</th>
+          <th>NIS</th>
+          <th>Nama</th>
+          <th>Mengikuti Ujian</th>
+        </thead>
+      </table>
+    </div>
+  </div>
 </body>
 <script src="/js/examEdit.js"></script>
 <%- include('./layouts/footer'); -%>

@@ -416,3 +416,70 @@ input[name="wrong_answer"]::placeholder {
 input[type="file"] {
   display: none;
 }
+
+.assign-container {
+  margin-top: 1rem;
+}
+
+.assign-button {
+  margin-top: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+  background-color: white;
+  color: #358f6c;
+  border-radius: 5px;
+  width: 25%;
+}
+.edit-button {
+  cursor: pointer;
+  font-size: 1rem;
+  color: black;
+}
+.assign-layer {
+  visibility: hidden;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+.assign-bg {
+  background-color: white;
+  padding: 2rem;
+  width: 75vw;
+  height: 80vh;
+  overflow: scroll;
+  /* border-radius: 15px; */
+}
+.assign-bg p {
+  font-size: 0.9rem;
+  color: #616161;
+  margin-bottom: 2rem;
+}
+.assign-bg .close {
+  cursor: pointer;
+  position: fixed;
+  top: calc(10vh - 15px);
+  right: calc(12vw - 15px);
+  background-color: #358f6c;
+  color: white;
+  width: 40px;
+  height: 40px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+}
+
+.dataTables_length label,
+.dataTables_filter label {
+  display: block;
+  gap: 1rem;
+}
