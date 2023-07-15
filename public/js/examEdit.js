@@ -344,6 +344,10 @@ $(document).ready(() => {
               $(this).val("on");
             }
           });
+          let checkedSiswa = document.querySelectorAll(
+            'input[type="checkbox"]:checked'
+          ).length;
+          $(".checkedSiswaExam").html(checkedSiswa + " Siswa");
         },
       });
     }
