@@ -7,6 +7,7 @@ $(document).ready(() => {
   $("#date").html(text);
 
   let question_with_img = [];
+  let users;
 
   let unique_id = window.location.href.substring(
     window.location.href.lastIndexOf("/") + 1
@@ -291,6 +292,8 @@ $(document).ready(() => {
 
   //ASSIGN
   $.get("/api/scores", async (data, status) => {
+    let index = 0;
+    users = data.payload.datas;
     if (status == "success" && data.payload.datas.length !== 0) {
       $("#assign-table").DataTable({
         ajax: {
@@ -298,10 +301,7 @@ $(document).ready(() => {
           dataSrc: "payload.datas",
         },
         pageLength: -1,
-        lengthMenu: [
-          [20, 50, 100, 200, -1],
-          [20, 50, 100, 200, "Semua"],
-        ],
+        lengthMenu: [[-1], ["Semua"]],
         columns: [
           {
             data: null,
@@ -315,11 +315,36 @@ $(document).ready(() => {
           {
             data: "unique_id",
             // width: "20%",
-            render: function (data, type) {
-              return `<input type="checkbox" name="checkedSiswa" class="checkbox-delete" value="${data}" />`;
+            render: function (data, type, row, meta) {
+              index = meta.row + meta.settings._iDisplayStart;
+              let score = users[index];
+              let score_id = score.unique_id;
+              let score_exam = score.Exams.map((e) => {
+                if (score.Exams.length == 0)
+                  return `<input type="checkbox" name="${score_id}" class="checkbox-delete" value="off" />`;
+                return e.unique_id;
+              });
+              let this_exam = unique_id;
+              if (score_exam.includes(this_exam)) {
+                return `<input type="checkbox" name="${score_id}" class="checkbox-delete" value="on" checked />`;
+              } else {
+                return `<input type="checkbox" name="${score_id}" class="checkbox-delete" value="off" />`;
+              }
             },
           },
         ],
+        initComplete: function () {
+          $(".assign-bg").on("change", ".checkbox-delete", function () {
+            if (!$(this).is(":checked")) {
+              let name = $(this).attr("name");
+              $(this).html(
+                `<input type="hidden" name="${name}" id="" value="off" />`
+              );
+            } else {
+              $(this).val("on");
+            }
+          });
+        },
       });
     }
   });

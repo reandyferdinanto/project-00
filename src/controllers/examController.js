@@ -125,6 +125,28 @@ async function updateExam(req, res) {
         },
       }
     );
+    // ASSIGN SISWA
+    let exam_unique_id = req.body.exam_unique_id;
+    let siswa_on = Object.keys(req.body).filter((key) => {
+      return req.body[key] === "on";
+    });
+    let siswa_off = Object.keys(req.body).filter((key) => {
+      return req.body[key] === "off";
+    });
+    siswa_on.forEach(async (siswa_id) => {
+      let exam = await Exam.findByPk(exam_unique_id);
+      let user = await Score.findByPk(siswa_id);
+      if (!(await exam.hasScore(user))) {
+        await exam.addScore(user);
+      }
+    });
+    siswa_off.forEach(async (siswa_id) => {
+      let exam = await Exam.findByPk(exam_unique_id);
+      let user = await Score.findByPk(siswa_id);
+      if (await exam.hasScore(user)) {
+        await exam.removeScore(user);
+      }
+    });
 
     // UPDATE QUESTION
     // IF QUESTION > 1
