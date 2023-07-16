@@ -50,9 +50,9 @@ async function login(req, res) {
           maxAge: 3600000,
         });
         if (admin.role == "super_admin") {
-          res.status(200).json({ route: "/admin" });
+          res.status(200).json({ route: "/admin", status: "success" });
         } else {
-          res.status(200).json({ route: "/" });
+          res.status(200).json({ route: "/", status: "success" });
         }
       }
     });

@@ -17,7 +17,9 @@ $(document).ready(() => {
         if (response.error) {
           $(".error-password").html(response.error);
         }
-        window.location = response.route;
+        if (response.status == "success") {
+          window.location = response.route;
+        }
       },
     });
   });
