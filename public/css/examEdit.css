@@ -483,3 +483,12 @@ input[type="file"] {
   display: block;
   gap: 1rem;
 }
+
+.nothing {
+  height: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

@@ -292,78 +292,96 @@ $(document).ready(() => {
 
   //ASSIGN
   $.get("/api/scores", async (data, status) => {
-    let index = 0;
-    users = data.payload.datas;
     if (status == "success" && data.payload.datas.length !== 0) {
-      $("#assign-table").DataTable({
-        ajax: {
-          url: "/api/scores",
-          dataSrc: "payload.datas",
-        },
-        pageLength: -1,
-        lengthMenu: [[-1], ["Semua"]],
-        columns: [
-          {
-            data: null,
-            width: "8%",
-            render: function (data, type, row, meta) {
-              return meta.row + meta.settings._iDisplayStart + 1;
-            },
+      let index = 0;
+      users = data.payload.datas;
+      if (status == "success" && data.payload.datas.length !== 0) {
+        $("#assign-table").DataTable({
+          ajax: {
+            url: "/api/scores",
+            dataSrc: "payload.datas",
           },
-          { data: "nis" },
-          { data: "username" },
-          {
-            data: "unique_id",
-            // width: "20%",
-            render: function (data, type, row, meta) {
-              index = meta.row + meta.settings._iDisplayStart;
-              let score = users[index];
-              let score_id = score.unique_id;
-              let score_exam = score.Exams.map((e) => {
-                if (score.Exams.length == 0)
+          pageLength: -1,
+          lengthMenu: [[-1], ["Semua"]],
+          columns: [
+            {
+              data: null,
+              width: "8%",
+              render: function (data, type, row, meta) {
+                return meta.row + meta.settings._iDisplayStart + 1;
+              },
+            },
+            { data: "nis" },
+            { data: "username" },
+            {
+              data: "unique_id",
+              // width: "20%",
+              render: function (data, type, row, meta) {
+                index = meta.row + meta.settings._iDisplayStart;
+                let score = users[index];
+                let score_id = score.unique_id;
+                let score_exam = score.Exams.map((e) => {
+                  if (score.Exams.length == 0)
+                    return `<input type="checkbox" name="${score_id}" class="checkbox-delete" value="off" />`;
+                  return e.unique_id;
+                });
+                let this_exam = unique_id;
+                if (score_exam.includes(this_exam)) {
+                  return `<input type="checkbox" name="${score_id}" class="checkbox-delete" value="on" checked />`;
+                } else {
                   return `<input type="checkbox" name="${score_id}" class="checkbox-delete" value="off" />`;
-                return e.unique_id;
-              });
-              let this_exam = unique_id;
-              if (score_exam.includes(this_exam)) {
-                return `<input type="checkbox" name="${score_id}" class="checkbox-delete" value="on" checked />`;
-              } else {
-                return `<input type="checkbox" name="${score_id}" class="checkbox-delete" value="off" />`;
-              }
+                }
+              },
             },
-          },
-        ],
-        initComplete: function () {
-          $(".assign-bg").on("change", ".checkbox-delete", function () {
-            if (!$(this).is(":checked")) {
-              let name = $(this).attr("name");
-              $(this).html(
-                `<input type="hidden" name="${name}" id="" value="off" />`
-              );
-            } else {
-              $(this).val("on");
-            }
-          });
-          let checkedSiswa = document.querySelectorAll(
-            'input[type="checkbox"]:checked'
-          ).length;
-          $(".checkedSiswaExam").html(checkedSiswa + " Siswa");
+          ],
+          initComplete: function () {
+            $(".assign-bg").on("change", ".checkbox-delete", function () {
+              if (!$(this).is(":checked")) {
+                let name = $(this).attr("name");
+                $(this).html(
+                  `<input type="hidden" name="${name}" id="" value="off" />`
+                );
+              } else {
+                $(this).val("on");
+              }
+            });
+            let checkedSiswa = document.querySelectorAll(
+              'input[type="checkbox"]:checked'
+            ).length;
+            $(".checkedSiswaExam").html(checkedSiswa + " Siswa");
 
-          // SelectALL
-          $("#selectAll").on("click", function () {
-            if (this.checked) {
-              // Iterate each checkbox
-              $(":checkbox").each(function () {
-                this.checked = true;
-              });
-            } else {
-              $(":checkbox").each(function () {
-                this.checked = false;
-              });
-            }
-          });
-        },
-      });
+            // SelectALL
+            $("#selectAll").on("click", function () {
+              if (this.checked) {
+                // Iterate each checkbox
+                $(":checkbox").each(function () {
+                  this.checked = true;
+                  $(this).val("on");
+                });
+              } else {
+                $(":checkbox").each(function () {
+                  this.checked = false;
+                  let name = $(this).attr("name");
+                  $(this).html(
+                    `<input type="hidden" name="${name}" id="" value="off" />`
+                  );
+                });
+              }
+            });
+          },
+        });
+      }
+    } else {
+      $("#assign-table").remove();
+      $(".assign-bg-head").remove();
+      $(".assign-bg").append([
+        `
+        <div class="nothing">
+          <img src="/img/nothing.png" alt="" />
+          <p>Belum ada siswa</p>
+        </div>
+          `,
+      ]);
     }
   });
 
