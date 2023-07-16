@@ -58,7 +58,6 @@ router.get("/", validateRedirect, (req, res) => {
   });
 });
 router.get("/login", (req, res) => {
-  if (req.user.role == "super_admin") return res.redirect("/admin");
   if (req.cookies["access-token"]) {
     res.redirect("/");
   } else {
