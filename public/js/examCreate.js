@@ -87,23 +87,58 @@ $(document).ready(() => {
           <div class="questions">
             <div class="question">
               <div class="question-head">
-                <p><b>Soal 1</b></p>
-                <p class="word-count">Jumlah kata: 0 / 300</p>
+                <div class="question-head-info">
+                  <p><b>Soal 1</b></p>
+                </div>
+                <select name="question_type" id="jenis-ujian">
+                    <option value="pilihan_ganda">Pilihan Ganda</option>
+                    <option value="kartu">Soal Kartu</option>
+                    <option value="praktik">Praktik In Game</option>
+                    <option value="esai">Esai</option>
+                </select>
               </div>
-              <div class="display_image"></div>
-              <textarea maxlength="300" data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
-              <div class="answers">
-                <input maxlength="200" placeholder='jawaban benar' name='correct_answer' required class='answer correct-answer'/>
-                <input maxlength="200" placeholder='jawaban lain' name='wrong_answer' required class='answer wrong-answer'/>
-                <input maxlength="200" placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
-                <input maxlength="200" placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
-                <input maxlength="200" placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
-                <div class="upload-img">
-                  <label class="custom-file-upload">
-                      <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
-                      <i class="uil uil-file-plus-alt"></i> Masukan Gambar
-                  </label>
-                  <p>*PNG/JPG/JPEG max. 200 kb</p>
+              
+              <div class="question_pilgan">  
+                <div class="display_image"></div>
+                <textarea maxlength="300" data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
+                <div class="answers">
+                  <input maxlength="200" placeholder='jawaban benar' name='correct_answer' required class='answer correct-answer'/>
+                  <input maxlength="200" placeholder='jawaban lain' name='wrong_answer' required class='answer wrong-answer'/>
+                  <input maxlength="200" placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
+                  <input maxlength="200" placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
+                  <input maxlength="200" placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
+                  <div class="upload-img">
+                    <label class="custom-file-upload">
+                        <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
+                        <i class="uil uil-file-plus-alt"></i> Masukan Gambar
+                    </label>
+                    <p>*PNG/JPG/JPEG max. 200 kb</p>
+                  </div>
+                </div>
+              </div>
+              <div class="question_kartu">  
+                <div class="display_image"></div>
+                <textarea maxlength="300" data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
+                <div class="upload-img" style="margin-top:1rem">
+                    <label class="custom-file-upload">
+                        <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
+                        <i class="uil uil-file-plus-alt"></i> Masukan Gambar
+                    </label>
+                    <p>*PNG/JPG/JPEG max. 200 kb</p>
+                </div>
+                <div class="answers-card">
+                  <div class="answer-card">
+                    <input type="text" placeholder='Kartu'/>
+                  </div>
+                  <div class="answer-card">
+                    <input type="text" placeholder='Kartu'/>
+                  </div>
+                  <div class="answer-card">
+                    <input type="text" placeholder='Kartu'/>
+                  </div>
+                  <div class="answer-card-add">
+                    <img src="/img/plus.png" alt="" width="40" />
+                  </div>
                 </div>
               </div>
               <div class="delete-quest" title="Hapus Soal">
@@ -135,8 +170,15 @@ $(document).ready(() => {
           <div class="question">
           
             <div class="question-head">
-              <p><b>Soal ${quest_length + 1}</b></p>
-              <p class="word-count">Jumlah kata: 0 / 300</p>
+              <div class="question-head-info">
+              <p><b>Soal 1</b></p>
+            </div>
+            <select name="question_type" id="jenis-ujian">
+                <option value="pilihan_ganda">Pilihan Ganda</option>
+                <option value="kartu">Soal Kartu</option>
+                <option value="praktik">Praktik In Game</option>
+                <option value="esai">Esai</option>
+            </select>
             </div>
             <div class="display_image"></div>
             <textarea maxlength="300" data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
@@ -177,15 +219,13 @@ $(document).ready(() => {
     e.preventDefault();
     $(".file-layer").css("visibility", "hidden");
   });
-  $(".main-background").on("input", ".soal-text", function () {
-    $(this)
-      .parent()
-      .find(".question-head .word-count")
-      .html(`Jumlah kata: ${this.value.length} / 300`);
-  });
+
   $("#complete-upload").on("click", function (e) {
     e.preventDefault();
     window.location = "/ujian";
+  });
+  $(".main-background").on("change", "#jenis-ujian", function () {
+    console.log($(this).find(":selected").text());
   });
 
   // IMAGE INPUT

@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     question_img: DataTypes.STRING,
     correct_answer: DataTypes.STRING,
     wrong_answer: DataTypes.TEXT,
+    question_type: DataTypes.STRING,
   });
   return Questions;
 };
