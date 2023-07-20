@@ -1,7 +1,6 @@
 $(document).ready(() => {
   const d = new Date();
-  let text;
-  text = d.toLocaleString("id-ID", {
+  let text = d.toLocaleString("id-ID", {
     dateStyle: "medium",
   });
   $("#date").html(text);
@@ -80,13 +79,13 @@ $(document).ready(() => {
   let question_pilgan = `
   <div class="question_pilgan">  
     <div class="display_image"></div>
-    <textarea maxlength="300" data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
+    <textarea data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
     <div class="answers">
-      <input maxlength="200" placeholder='jawaban benar' name='correct_answer'  class='answer correct-answer'/>
-      <input maxlength="200" placeholder='jawaban lain' name='wrong_answer'  class='answer wrong-answer'/>
-      <input maxlength="200" placeholder='jawaban lain' name='wrong_answer'  class='answer'/>
-      <input maxlength="200" placeholder='jawaban lain' name='wrong_answer'  class='answer'/>
-      <input maxlength="200" placeholder='jawaban lain' name='wrong_answer'  class='answer'/>
+      <input placeholder='jawaban benar' name='correct_answer'  class='answer correct-answer'/>
+      <input placeholder='jawaban lain' name='wrong_answer'  class='answer wrong-answer'/>
+      <input placeholder='jawaban lain' name='wrong_answer'  class='answer'/>
+      <input placeholder='jawaban lain' name='wrong_answer'  class='answer'/>
+      <input placeholder='jawaban lain' name='wrong_answer'  class='answer'/>
       <div class="upload-img">
         <label class="custom-file-upload">
             <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>

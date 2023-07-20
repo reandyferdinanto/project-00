@@ -28,7 +28,12 @@ $(document).ready(() => {
             },
           },
           { data: "exam_name" },
-          { data: "exam_type" },
+          {
+            data: "exam_type",
+            render: function (data, type) {
+              return data.charAt(0).toUpperCase() + data.slice(1);
+            },
+          },
           { data: "kkm_point" },
           { data: "available_try" },
           {

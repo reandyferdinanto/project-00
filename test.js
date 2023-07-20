@@ -1,4 +1,4 @@
 let parser = JSON.parse(
-  '{"answers":[{"index":0,"value":"uyf"},{"index":1,"value":"ugh"},{"index":2,"value":"yug"},{"index":3,"value":"uiy"}]}'
+  '{"correct_answer":"yuig","wrong_answer":"iug|iugui|giu|giu"}'
 );
 console.log(parser);

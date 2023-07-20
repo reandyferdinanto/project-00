@@ -137,7 +137,7 @@ label {
   font-size: 0.9rem;
 }
 .question {
-  padding: 1rem 2rem;
+  padding: 2rem;
   position: relative;
 }
 .soal-text {
@@ -491,4 +491,47 @@ input[type="file"] {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+.answers-card {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: space-between;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+.answer-card {
+  cursor: grab;
+  height: 150px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid gray;
+  background-color: white;
+}
+.answer-card input {
+  background-color: transparent;
+  text-align: center;
+  border-width: 0 0 1.5px 0;
+  border-color: lightgray;
+  outline: none;
+}
+.answer-card-add {
+  cursor: pointer;
+  height: 150px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  background-color: rgba(219, 219, 219, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.question-head select {
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  min-height: 35px;
+  padding: 0 1rem;
+  color: #358f6c;
+  width: 300px;
 }
