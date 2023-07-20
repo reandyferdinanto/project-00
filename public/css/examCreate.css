@@ -405,7 +405,7 @@ input[name="wrong_answer"]::placeholder {
   width: 300px;
 }
 
-.question_pilgan {
+.question_kartu {
   display: none;
 }
 .answers-card {
@@ -416,7 +416,7 @@ input[name="wrong_answer"]::placeholder {
   margin-top: 1rem;
 }
 .answer-card {
-  cursor: pointer;
+  cursor: grab;
   height: 150px;
   border-radius: 5px;
   display: flex;

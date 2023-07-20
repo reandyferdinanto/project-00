@@ -77,6 +77,7 @@ $(document).ready(() => {
   $("#date").html(text);
 
   let question_with_img = [];
+  let tempArray = [];
 
   // ADD SOAL
   $("#add-question").on("click", () => {
@@ -90,11 +91,11 @@ $(document).ready(() => {
                 <div class="question-head-info">
                   <p><b>Soal 1</b></p>
                 </div>
-                <select name="question_type" id="jenis-ujian">
+                <select name="question_type" class="jenis-ujian">
                     <option value="pilihan_ganda">Pilihan Ganda</option>
                     <option value="kartu">Soal Kartu</option>
-                    <option value="praktik">Praktik In Game</option>
-                    <option value="esai">Esai</option>
+                    <option value="praktik" disabled>Praktik In Game</option>
+                    <option value="esai" disabled>Esai</option>
                 </select>
               </div>
               
@@ -128,13 +129,13 @@ $(document).ready(() => {
                 </div>
                 <div class="answers-card">
                   <div class="answer-card">
-                    <input type="text" placeholder='Kartu'/>
+                    <input type="text" placeholder='Kartu 1'/>
                   </div>
                   <div class="answer-card">
-                    <input type="text" placeholder='Kartu'/>
+                    <input type="text" placeholder='Kartu 2'/>
                   </div>
                   <div class="answer-card">
-                    <input type="text" placeholder='Kartu'/>
+                    <input type="text" placeholder='Kartu 3'/>
                   </div>
                   <div class="answer-card-add">
                     <img src="/img/plus.png" alt="" width="40" />
@@ -155,6 +156,25 @@ $(document).ready(() => {
         </div>
         `,
     ]);
+    $(".answers-card").sortable({
+      containment: "parent",
+      opacity: 0.75,
+      distance: 25,
+      tolerance: "pointer",
+      items: "> .answer-card",
+      update: function (event, ui) {
+        // Mendapatkan semua elemen anak yang telah diurutkan
+        let sortedElements = $(this).find("> .answer-card");
+        tempArray = [];
+
+        // Loop melalui setiap elemen dan mendapatkan indeksnya
+        sortedElements.each(function (index) {
+          let value = $(this).find("input").val();
+          tempArray.push({ urutan: index, jawaban: value });
+        });
+        console.log(tempArray);
+      },
+    });
     first_intro.exit();
     setTimeout(() => {
       intro.start();
@@ -173,30 +193,57 @@ $(document).ready(() => {
               <div class="question-head-info">
               <p><b>Soal 1</b></p>
             </div>
-            <select name="question_type" id="jenis-ujian">
+            <select name="question_type" class="jenis-ujian">
                 <option value="pilihan_ganda">Pilihan Ganda</option>
                 <option value="kartu">Soal Kartu</option>
-                <option value="praktik">Praktik In Game</option>
-                <option value="esai">Esai</option>
+                <option value="praktik" disabled>Praktik In Game</option>
+                <option value="esai" disabled>Esai</option>
             </select>
             </div>
-            <div class="display_image"></div>
-            <textarea maxlength="300" data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
-            <div class="answers">
-                <input maxlength="200" placeholder='jawaban benar' name='correct_answer'required class='answer'/>
-                <input maxlength="200" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
-                <input maxlength="200" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
-                <input maxlength="200" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
-                <input maxlength="200" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
-                
-                <div class="upload-img">
-                  <label class="custom-file-upload">
-                      <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
-                      <i class="uil uil-file-plus-alt"></i> Masukan Gambar
-                  </label>
-                  <p>*PNG/JPG/JPEG max. 200 kb</p>
-                </div>
+            <div class="question_pilgan"> 
+              <div class="display_image"></div>
+              <textarea maxlength="300" data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
+              <div class="answers">
+                  <input maxlength="200" placeholder='jawaban benar' name='correct_answer'required class='answer'/>
+                  <input maxlength="200" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
+                  <input maxlength="200" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
+                  <input maxlength="200" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
+                  <input maxlength="200" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
+                  
+                  <div class="upload-img">
+                    <label class="custom-file-upload">
+                        <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
+                        <i class="uil uil-file-plus-alt"></i> Masukan Gambar
+                    </label>
+                    <p>*PNG/JPG/JPEG max. 200 kb</p>
+                  </div>
+              </div>
             </div>
+            <div class="question_kartu">  
+                <div class="display_image"></div>
+                <textarea maxlength="300" data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
+                <div class="upload-img" style="margin-top:1rem">
+                    <label class="custom-file-upload">
+                        <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
+                        <i class="uil uil-file-plus-alt"></i> Masukan Gambar
+                    </label>
+                    <p>*PNG/JPG/JPEG max. 200 kb</p>
+                </div>
+                <div class="answers-card">
+                  <div class="answer-card">
+                    <input type="text" placeholder='Kartu 1'/>
+                  </div>
+                  <div class="answer-card">
+                    <input type="text" placeholder='Kartu 2'/>
+                  </div>
+                  <div class="answer-card">
+                    <input type="text" placeholder='Kartu 3'/>
+                  </div>
+                  <div class="answer-card-add">
+                    <img src="/img/plus.png" alt="" width="40" />
+                  </div>
+                </div>
+              </div>
             <div class="delete-quest" title="Hapus Soal" >
               <span><i class="uil uil-trash-alt"></i></span>
             </div>
@@ -219,13 +266,33 @@ $(document).ready(() => {
     e.preventDefault();
     $(".file-layer").css("visibility", "hidden");
   });
+  $(".main-background").on("click", ".answer-card-add", function () {
+    $(".answers-card").prepend([
+      `<div class="answer-card">
+        <input type="text" placeholder='Kartu'/>
+      </div>`,
+    ]);
+  });
+  $(".main-background").on("change", ".jenis-ujian", function () {
+    let jenis_ujian = $(this).find(":selected").val();
+    switch (jenis_ujian) {
+      case "pilihan_ganda":
+        $(this).parent().parent().find(".question_pilgan").show();
+        $(this).parent().parent().find(".question_kartu").hide();
+        break;
+      case "kartu":
+        $(this).parent().parent().find(".question_pilgan").hide();
+        $(this).parent().parent().find(".question_kartu").show();
+        break;
+
+      default:
+        break;
+    }
+  });
 
   $("#complete-upload").on("click", function (e) {
     e.preventDefault();
     window.location = "/ujian";
-  });
-  $(".main-background").on("change", "#jenis-ujian", function () {
-    console.log($(this).find(":selected").text());
   });
 
   // IMAGE INPUT
@@ -316,7 +383,6 @@ $(document).ready(() => {
   $.get("/api/exam_type", async (data, status) => {
     if (status == "success" && data.payload.datas.length !== 0) {
       let datas = data.payload.datas;
-      console.log(datas);
       datas.forEach((data) => {
         $(".exam-type").append([
           `
