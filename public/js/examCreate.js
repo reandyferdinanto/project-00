@@ -1,6 +1,12 @@
 $(document).ready(() => {
-  var first_intro = introJs();
-  first_intro.setOptions({
+  const d = new Date();
+  let text;
+  text = d.toLocaleString("id-ID", {
+    dateStyle: "medium",
+  });
+  $("#date").html(text);
+
+  let first_intro = initializeIntro({
     dontShowAgainCookie: "examCreate_intro",
     dontShowAgain: true,
     dontShowAgainLabel: "Jangan tampilkan lagi",
@@ -25,11 +31,9 @@ $(document).ready(() => {
       },
     ],
   });
-
   first_intro.start();
 
-  var intro = introJs();
-  intro.setOptions({
+  let intro = initializeIntro({
     dontShowAgainCookie: "examCreate_intro",
     dontShowAgain: true,
     dontShowAgainLabel: "Jangan tampilkan lagi",
@@ -69,84 +73,100 @@ $(document).ready(() => {
     ],
   });
 
-  const d = new Date();
-  let text;
-  text = d.toLocaleString("id-ID", {
-    dateStyle: "medium",
-  });
-  $("#date").html(text);
-
+  let queuedImagesArray = [];
   let question_with_img = [];
-  let tempArray = [];
+  let allDataArray = [];
+  let quest_length = 1;
+  let question_pilgan = `
+  <div class="question_pilgan">  
+    <div class="display_image"></div>
+    <textarea maxlength="300" data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
+    <div class="answers">
+      <input maxlength="200" placeholder='jawaban benar' name='correct_answer'  class='answer correct-answer'/>
+      <input maxlength="200" placeholder='jawaban lain' name='wrong_answer'  class='answer wrong-answer'/>
+      <input maxlength="200" placeholder='jawaban lain' name='wrong_answer'  class='answer'/>
+      <input maxlength="200" placeholder='jawaban lain' name='wrong_answer'  class='answer'/>
+      <input maxlength="200" placeholder='jawaban lain' name='wrong_answer'  class='answer'/>
+      <div class="upload-img">
+        <label class="custom-file-upload">
+            <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
+            <i class="uil uil-file-plus-alt"></i> Masukan Gambar
+        </label>
+        <p>*PNG/JPG/JPEG max. 200 kb</p>
+      </div>
+    </div>
+  </div>
+`;
+  let question_card = `
+  <div class="question_kartu">  
+    <div class="display_image"></div>
+    <textarea maxlength="300" data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
+    <div class="upload-img" style="margin-top:1rem">
+        <label class="custom-file-upload">
+            <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
+            <i class="uil uil-file-plus-alt"></i> Masukan Gambar
+        </label>
+        <p>*PNG/JPG/JPEG max. 200 kb</p>
+    </div>
+    <div class="answers-card">
+      <div class="answer-card">
+        <input  type="text" placeholder='Kartu 1'/>
+      </div>
+      <div class="answer-card">
+        <input  type="text" placeholder='Kartu 2'/>
+      </div>
+      <div class="answer-card-add">
+        <img src="/img/plus.png" alt="" width="40" />
+      </div>
+    </div>
+  </div>
+`;
 
-  // ADD SOAL
-  $("#add-question").on("click", () => {
+  function initializeIntro(stepConfig) {
+    const intro = introJs();
+    intro.setOptions(stepConfig);
+    return intro;
+  }
+  function initializeSortable() {
+    $(".answers-card").sortable({
+      // containment: "parent",
+      opacity: 0.75,
+      distance: 25,
+      tolerance: "intersect",
+      items: "> .answer-card",
+      update: function (event, ui) {
+        const sortedElements = $(this).find("> .answer-card");
+        const tempArray = [];
+
+        sortedElements.each(function (index) {
+          const value = $(this).find("input").val();
+          tempArray.push({ index, value });
+        });
+        // Get the questionId from the data attribute of the current question
+        const questionId = $(this).closest(".question").data("question-id");
+
+        // Find the index of the question in the allDataArray (if it exists)
+        const questionIndex = allDataArray.findIndex(function (item) {
+          return item.questionId === questionId;
+        });
+
+        // If the question exists in the allDataArray, update its answers, otherwise add it as a new question
+        if (questionIndex !== -1) {
+          allDataArray[questionIndex].answers = tempArray;
+        } else {
+          allDataArray.push({
+            answers: tempArray,
+          });
+        }
+      },
+    });
+  }
+  function addQuestionBox() {
     $("#add-question").remove();
     $("#submit-form").append([
       `
         <div class="questions-box">
-          <div class="questions">
-            <div class="question">
-              <div class="question-head">
-                <div class="question-head-info">
-                  <p><b>Soal 1</b></p>
-                </div>
-                <select name="question_type" class="jenis-ujian">
-                    <option value="pilihan_ganda">Pilihan Ganda</option>
-                    <option value="kartu">Soal Kartu</option>
-                    <option value="praktik" disabled>Praktik In Game</option>
-                    <option value="esai" disabled>Esai</option>
-                </select>
-              </div>
-              
-              <div class="question_pilgan">  
-                <div class="display_image"></div>
-                <textarea maxlength="300" data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
-                <div class="answers">
-                  <input maxlength="200" placeholder='jawaban benar' name='correct_answer' required class='answer correct-answer'/>
-                  <input maxlength="200" placeholder='jawaban lain' name='wrong_answer' required class='answer wrong-answer'/>
-                  <input maxlength="200" placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
-                  <input maxlength="200" placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
-                  <input maxlength="200" placeholder='jawaban lain' name='wrong_answer' required class='answer'/>
-                  <div class="upload-img">
-                    <label class="custom-file-upload">
-                        <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
-                        <i class="uil uil-file-plus-alt"></i> Masukan Gambar
-                    </label>
-                    <p>*PNG/JPG/JPEG max. 200 kb</p>
-                  </div>
-                </div>
-              </div>
-              <div class="question_kartu">  
-                <div class="display_image"></div>
-                <textarea maxlength="300" data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
-                <div class="upload-img" style="margin-top:1rem">
-                    <label class="custom-file-upload">
-                        <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
-                        <i class="uil uil-file-plus-alt"></i> Masukan Gambar
-                    </label>
-                    <p>*PNG/JPG/JPEG max. 200 kb</p>
-                </div>
-                <div class="answers-card">
-                  <div class="answer-card">
-                    <input type="text" placeholder='Kartu 1'/>
-                  </div>
-                  <div class="answer-card">
-                    <input type="text" placeholder='Kartu 2'/>
-                  </div>
-                  <div class="answer-card">
-                    <input type="text" placeholder='Kartu 3'/>
-                  </div>
-                  <div class="answer-card-add">
-                    <img src="/img/plus.png" alt="" width="40" />
-                  </div>
-                </div>
-              </div>
-              <div class="delete-quest" title="Hapus Soal">
-                <span><i class="uil uil-trash-alt"></i></span>
-              </div>
-            </div>
-          </div>
+          <div class="questions"></div>
           <div class="add-more">
             <button id="add-more" type="button">Tambah Soal</button>
           </div>
@@ -156,102 +176,58 @@ $(document).ready(() => {
         </div>
         `,
     ]);
-    $(".answers-card").sortable({
-      containment: "parent",
-      opacity: 0.75,
-      distance: 25,
-      tolerance: "pointer",
-      items: "> .answer-card",
-      update: function (event, ui) {
-        // Mendapatkan semua elemen anak yang telah diurutkan
-        let sortedElements = $(this).find("> .answer-card");
-        tempArray = [];
-
-        // Loop melalui setiap elemen dan mendapatkan indeksnya
-        sortedElements.each(function (index) {
-          let value = $(this).find("input").val();
-          tempArray.push({ urutan: index, jawaban: value });
-        });
-        console.log(tempArray);
-      },
-    });
+    addMoreQuestion();
     first_intro.exit();
     setTimeout(() => {
       intro.start();
     }, 500);
-  });
-
-  // ADD MORE
-  let quest_length = 1;
-
-  $(".main-background").on("click", "#add-more", () => {
+  }
+  function addMoreQuestion() {
     $(".questions").append([
       `
           <div class="question">
-          
             <div class="question-head">
               <div class="question-head-info">
-              <p><b>Soal 1</b></p>
-            </div>
-            <select name="question_type" class="jenis-ujian">
-                <option value="pilihan_ganda">Pilihan Ganda</option>
-                <option value="kartu">Soal Kartu</option>
-                <option value="praktik" disabled>Praktik In Game</option>
-                <option value="esai" disabled>Esai</option>
-            </select>
-            </div>
-            <div class="question_pilgan"> 
-              <div class="display_image"></div>
-              <textarea maxlength="300" data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
-              <div class="answers">
-                  <input maxlength="200" placeholder='jawaban benar' name='correct_answer'required class='answer'/>
-                  <input maxlength="200" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
-                  <input maxlength="200" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
-                  <input maxlength="200" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
-                  <input maxlength="200" placeholder='jawaban lain' name='wrong_answer'required class='answer'/>
-                  
-                  <div class="upload-img">
-                    <label class="custom-file-upload">
-                        <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
-                        <i class="uil uil-file-plus-alt"></i> Masukan Gambar
-                    </label>
-                    <p>*PNG/JPG/JPEG max. 200 kb</p>
-                  </div>
+                <p><b>Soal ${quest_length}</b></p>
               </div>
+              <select name="question_type" class="jenis-ujian">
+                  <option value="pilihan_ganda">Pilihan Ganda</option>
+                  <option value="kartu">Soal Kartu</option>
+                  <option value="praktik" disabled>Praktik In Game</option>
+                  <option value="esai" disabled>Esai</option>
+              </select>
             </div>
-            <div class="question_kartu">  
-                <div class="display_image"></div>
-                <textarea maxlength="300" data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
-                <div class="upload-img" style="margin-top:1rem">
-                    <label class="custom-file-upload">
-                        <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
-                        <i class="uil uil-file-plus-alt"></i> Masukan Gambar
-                    </label>
-                    <p>*PNG/JPG/JPEG max. 200 kb</p>
-                </div>
-                <div class="answers-card">
-                  <div class="answer-card">
-                    <input type="text" placeholder='Kartu 1'/>
-                  </div>
-                  <div class="answer-card">
-                    <input type="text" placeholder='Kartu 2'/>
-                  </div>
-                  <div class="answer-card">
-                    <input type="text" placeholder='Kartu 3'/>
-                  </div>
-                  <div class="answer-card-add">
-                    <img src="/img/plus.png" alt="" width="40" />
-                  </div>
-                </div>
-              </div>
+            ${question_pilgan}
             <div class="delete-quest" title="Hapus Soal" >
               <span><i class="uil uil-trash-alt"></i></span>
             </div>
           </div>
         `,
     ]);
+    const questionId = "card_answer_" + quest_length;
+    $(".question:last-child").attr("data-question-id", questionId);
+    initializeSortable();
     quest_length += 1;
-  });
+  }
+  function displayQueuedImages() {
+    let img = "";
+    queuedImagesArray.forEach((image, index) => {
+      if (image.length != 0) {
+        img = `
+        <img src="${URL.createObjectURL(image[0])}" alt="no img" />
+        <span title="Hapus Gambar" class="deleteImg"><i class="uil uil-times"></i></span>
+        `;
+      } else {
+        img = "";
+      }
+      document.querySelectorAll(".display_image")[index].innerHTML = img;
+    });
+  }
+
+  // ADD QUESTION BOX
+  $("#add-question").on("click", addQuestionBox);
+  // ADD MORE QUESTION
+  $(".main-background").on("click", "#add-more", addMoreQuestion);
 
   $(".main-background").on("click", ".delete-quest", function () {
     $(this).parent().remove();
@@ -269,7 +245,7 @@ $(document).ready(() => {
   $(".main-background").on("click", ".answer-card-add", function () {
     $(".answers-card").prepend([
       `<div class="answer-card">
-        <input type="text" placeholder='Kartu'/>
+        <input  type="text" placeholder='Kartu'/>
       </div>`,
     ]);
   });
@@ -277,24 +253,23 @@ $(document).ready(() => {
     let jenis_ujian = $(this).find(":selected").val();
     switch (jenis_ujian) {
       case "pilihan_ganda":
-        $(this).parent().parent().find(".question_pilgan").show();
-        $(this).parent().parent().find(".question_kartu").hide();
+        $(this).parent().parent().find(".question_kartu").remove();
+        $(this).parent().parent().append([question_pilgan]);
         break;
       case "kartu":
-        $(this).parent().parent().find(".question_pilgan").hide();
-        $(this).parent().parent().find(".question_kartu").show();
+        $(this).parent().parent().find(".question_pilgan").remove();
+        $(this).parent().parent().append([question_card]);
+        initializeSortable();
         break;
 
       default:
         break;
     }
   });
-
   $("#complete-upload").on("click", function (e) {
     e.preventDefault();
     window.location = "/ujian";
   });
-
   // IMAGE INPUT
   $(".main-background").on("change", ".input-file", function () {
     let input_file = document.querySelectorAll(".input-file");
@@ -317,23 +292,6 @@ $(document).ready(() => {
     displayQueuedImages();
   });
 
-  let queuedImagesArray = [];
-
-  function displayQueuedImages() {
-    let img = "";
-    queuedImagesArray.forEach((image, index) => {
-      if (image.length != 0) {
-        img = `
-        <img src="${URL.createObjectURL(image[0])}" alt="no img" />
-        <span title="Hapus Gambar" class="deleteImg"><i class="uil uil-times"></i></span>
-        `;
-      } else {
-        img = "";
-      }
-      document.querySelectorAll(".display_image")[index].innerHTML = img;
-    });
-  }
-
   $(".main-background").on("click", ".deleteImg", function (e) {
     let input_file = document.querySelectorAll(".input-file");
     let index = $(".display_image").index($(this).parent());
@@ -352,6 +310,7 @@ $(document).ready(() => {
   manualForm.addEventListener("submit", (e) => {
     let formData = new FormData(manualForm);
     formData.append("index_deleted", question_with_img);
+    formData.append("card_answers", JSON.stringify(allDataArray));
     e.preventDefault();
     $.ajax({
       url: "/api/exams",

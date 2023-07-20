@@ -404,10 +404,6 @@ input[name="wrong_answer"]::placeholder {
   color: #358f6c;
   width: 300px;
 }
-
-.question_kartu {
-  display: none;
-}
 .answers-card {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

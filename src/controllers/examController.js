@@ -31,7 +31,12 @@ async function tambahExam(req, res) {
       available_try,
       question_text,
       correct_answer,
+      question_type,
+      card_answers,
     } = req.body;
+
+    let card_answer_index = 0;
+    card_answers = JSON.parse(card_answers);
 
     const score = await Score.findAll();
     const exam = await Exam.create({
@@ -45,43 +50,94 @@ async function tambahExam(req, res) {
       let question_with_img = req.body.index_deleted.split(",");
       let count = 0;
       question_text.forEach(async (qt, index) => {
-        let wrong_answer = req.body.wrong_answer
-          .slice(index * 4, (index + 1) * 4)
-          .join("|");
-        let img = "";
-        if (question_with_img.includes(index.toString())) {
-          img = `${req.protocol + "://" + req.get("host")}/files/uploads/${
-            req.files[count].filename
-          }`;
-          count += 1;
-        } else {
-          img = null;
-        }
+        if (question_type[index] == "pilihan_ganda") {
+          let wrong_answer = req.body.wrong_answer
+            .slice(index * 4, (index + 1) * 4)
+            .join("|");
+          let img = "";
+          if (question_with_img.includes(index.toString())) {
+            img = `${req.protocol + "://" + req.get("host")}/files/uploads/${
+              req.files[count].filename
+            }`;
+            count += 1;
+          } else {
+            img = null;
+          }
 
-        const question = await Question.create({
-          question_text: question_text[index],
-          question_img: img,
-          correct_answer: correct_answer[index],
-          wrong_answer: wrong_answer,
-        });
-        exam.addQuestions(question);
+          let pilgan_answers = JSON.stringify({
+            wrong_answer,
+            correct_answer: correct_answer[index],
+          });
+
+          const question = await Question.create({
+            question_text: question_text[index],
+            question_img: img,
+            pilgan_answers,
+            question_type: question_type[index],
+          });
+          exam.addQuestions(question);
+        } else if (question_type[index] == "kartu") {
+          let img = "";
+          if (question_with_img.includes(index.toString())) {
+            img = `${req.protocol + "://" + req.get("host")}/files/uploads/${
+              req.files[count].filename
+            }`;
+            count += 1;
+          } else {
+            img = null;
+          }
+
+          let new_card_answer = card_answers[card_answer_index];
+          card_answer_index += 1;
+          let stringify_card_answer = JSON.stringify(new_card_answer);
+          console.log(stringify_card_answer);
+          const question = await Question.create({
+            question_text: question_text[index],
+            question_img: img,
+            question_type: question_type[index],
+            card_answers: stringify_card_answer,
+          });
+          exam.addQuestions(question);
+        }
       });
       exam.addScores(score);
     } else {
-      let wrong_answer = req.body.wrong_answer.join("|");
-      const question = await Question.create({
-        question_text,
-        question_img:
-          req.files[0] !== undefined
-            ? `${req.protocol + "://" + req.get("host")}/files/uploads/${
-                req.files[0].filename
-              }`
-            : null,
-        correct_answer,
-        wrong_answer,
-      });
-      exam.addQuestions(question);
-      exam.addScores(score);
+      if (question_type == "pilihan_ganda") {
+        let wrong_answer = req.body.wrong_answer.join("|");
+        let pilgan_answers = {
+          correct_answer,
+          wrong_answer,
+        };
+        pilgan_answers = JSON.stringify(pilgan_answers);
+        const question = await Question.create({
+          question_text,
+          question_img:
+            req.files[0] !== undefined
+              ? `${req.protocol + "://" + req.get("host")}/files/uploads/${
+                  req.files[0].filename
+                }`
+              : null,
+          pilgan_answers,
+          question_type,
+        });
+        exam.addQuestions(question);
+        exam.addScores(score);
+      } else if (question_type == "kartu") {
+        card_answers = JSON.stringify(card_answers[0]);
+        const question = await Question.create({
+          question_text,
+          question_img:
+            req.files[0] !== undefined
+              ? `${req.protocol + "://" + req.get("host")}/files/uploads/${
+                  req.files[0].filename
+                }`
+              : null,
+          card_answers,
+          question_type,
+        });
+        exam.addQuestions(question);
+        exam.addScores(score);
+      }
     }
     return response(200, "success create new exam", [], res);
   } catch (error) {

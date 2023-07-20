@@ -6,11 +6,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true,
     },
-    question_text: DataTypes.STRING,
-    question_img: DataTypes.STRING,
-    correct_answer: DataTypes.STRING,
-    wrong_answer: DataTypes.TEXT,
     question_type: DataTypes.STRING,
+    question_text: DataTypes.TEXT,
+    question_img: DataTypes.STRING,
+    pilgan_answers: DataTypes.TEXT,
+    card_answers: DataTypes.TEXT,
   });
   return Questions;
 };
