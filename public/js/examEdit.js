@@ -14,6 +14,7 @@ $(document).ready(() => {
   let url_input = `/api/exams/${unique_id}`;
   let question_id = [];
   let queuedImagesArray = [];
+  let allDataArray = [];
 
   function initializeSortable() {
     $(".answers-card").sortable({
@@ -124,6 +125,7 @@ $(document).ready(() => {
             <div class="question_pilgan">  
             <div class="display_image"></div>
             <textarea name="question_text" class='soal-text' placeholder="Masukan Soal">${quest.question_text}</textarea>
+            <input type="hidden" name="question_type" value="pilihan_ganda">
             <div class="answers">
               <input placeholder='jawaban benar' name='correct_answer' class='answer' required value="${correct_answer}"/>
               <input placeholder='jawaban lain' name='wrong_answer' class='answer' required value="${wrong_answer[0]}"/>
@@ -148,12 +150,6 @@ $(document).ready(() => {
                 <div class="question-head-info">
                   <p><b>Soal ${index + 1}</b></p>
                 </div>
-                <select name="question_type" class="jenis-ujian">
-                    <option value="pilihan_ganda" selected="selected">Pilihan Ganda</option>
-                    <option value="kartu">Soal Kartu</option>
-                    <option value="praktik" disabled>Praktik In Game</option>
-                    <option value="esai" disabled>Esai</option>
-                </select>
               </div>
               ${question_pilgan}
               <div class="delete-quest" title="Hapus Soal" >
@@ -175,6 +171,7 @@ $(document).ready(() => {
                   </label>
                   <p>*PNG/JPG/JPEG max. 200 kb</p>
               </div>
+              <input type="hidden" name="question_type" value="kartu">
               <div class="answers-card">
                 <div class="answer-card-add">
                   <img src="/img/plus.png" alt="" width="40" />
@@ -189,12 +186,6 @@ $(document).ready(() => {
                 <div class="question-head-info">
                   <p><b>Soal ${index + 1}</b></p>
                 </div>
-                <select name="question_type" class="jenis-ujian">
-                    <option value="pilihan_ganda">Pilihan Ganda</option>
-                    <option value="kartu" selected="selected">Soal Kartu</option>
-                    <option value="praktik" disabled>Praktik In Game</option>
-                    <option value="esai" disabled>Esai</option>
-                </select>
               </div>
               ${question_card}
               <div class="delete-quest" title="Hapus Soal" >
@@ -394,23 +385,6 @@ $(document).ready(() => {
       </div>`,
     ]);
   });
-  $(".main-background").on("change", ".jenis-ujian", function () {
-    let jenis_ujian = $(this).find(":selected").val();
-    switch (jenis_ujian) {
-      case "pilihan_ganda":
-        $(this).parent().parent().find(".question_kartu").remove();
-        $(this).parent().parent().append([question_pilgan]);
-        break;
-      case "kartu":
-        $(this).parent().parent().find(".question_pilgan").remove();
-        $(this).parent().parent().append([question_card]);
-        initializeSortable();
-        break;
-
-      default:
-        break;
-    }
-  });
 
   // IMAGE INPUT
   $(".main-background").on("change", ".input-file", function () {
@@ -456,6 +430,7 @@ $(document).ready(() => {
     formData.append("exam_unique_id", unique_id);
     formData.append("question_unique_id", question_id);
     formData.append("index_deleted", question_with_img);
+    formData.append("card_answers", JSON.stringify(allDataArray));
     e.preventDefault();
     $.ajax({
       url: "/api/exams",

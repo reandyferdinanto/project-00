@@ -76,6 +76,7 @@ $(document).ready(() => {
   let question_with_img = [];
   let allDataArray = [];
   let quest_length = 1;
+  let tempArray = [];
   let question_pilgan = `
   <div class="question_pilgan">  
     <div class="display_image"></div>
@@ -109,10 +110,10 @@ $(document).ready(() => {
     </div>
     <div class="answers-card">
       <div class="answer-card">
-        <input  type="text" placeholder='Kartu 1'/>
+        <input type="text" placeholder='Kartu 1'/>
       </div>
       <div class="answer-card">
-        <input  type="text" placeholder='Kartu 2'/>
+        <input type="text" placeholder='Kartu 2'/>
       </div>
       <div class="answer-card-add">
         <img src="/img/plus.png" alt="" width="40" />
@@ -135,7 +136,7 @@ $(document).ready(() => {
       items: "> .answer-card",
       update: function (event, ui) {
         const sortedElements = $(this).find("> .answer-card");
-        const tempArray = [];
+        tempArray = [];
 
         sortedElements.each(function (index) {
           const value = $(this).find("input").val();
@@ -154,9 +155,11 @@ $(document).ready(() => {
           allDataArray[questionIndex].answers = tempArray;
         } else {
           allDataArray.push({
+            questionId,
             answers: tempArray,
           });
         }
+        console.log(allDataArray);
       },
     });
   }
@@ -269,6 +272,28 @@ $(document).ready(() => {
     e.preventDefault();
     window.location = "/ujian";
   });
+  // $(".main-background").on("change", ".answer-card input", function () {
+  //   let index = $(this).parent().index();
+  //   let value = $(this).val();
+  //   const questionId = $(this).closest(".question").data("question-id");
+  //   tempArray.push({ index, value });
+
+  //   const questionIndex = allDataArray.findIndex(function (item) {
+  //     return item.questionId === questionId;
+  //   });
+
+  //   // If the question exists in the allDataArray, update its answers, otherwise add it as a new question
+  //   if (questionIndex !== -1) {
+  //     allDataArray[questionIndex].questionId = questionId;
+  //     allDataArray[questionIndex].answers = tempArray;
+  //   } else {
+  //     allDataArray.push({
+  //       questionId,
+  //       answers: tempArray,
+  //     });
+  //   }
+  //   console.log(allDataArray);
+  // });
   // IMAGE INPUT
   $(".main-background").on("change", ".input-file", function () {
     let input_file = document.querySelectorAll(".input-file");

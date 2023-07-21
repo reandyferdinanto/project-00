@@ -159,7 +159,12 @@ async function updateExam(req, res) {
       available_try,
       question_text,
       correct_answer,
+      question_type,
+      card_answers,
     } = req.body;
+
+    let card_answer_index = 0;
+    card_answers = JSON.parse(card_answers);
     let question_id = req.body.question_unique_id.split(",");
     const exam = await Exam.findOne({
       where: {
@@ -255,34 +260,59 @@ async function updateExam(req, res) {
 
       // IF QUESTION == 1
     } else {
-      const question = await Question.findOne({
-        where: {
-          unique_id: question_id,
-        },
-      });
-      let wrong_answer = req.body.wrong_answer.join("|");
-      let newBody = {
-        question_text,
-        question_img:
-          req.files[0] !== undefined
-            ? `${req.protocol + "://" + req.get("host")}/files/uploads/${
-                req.files[0].filename
-              }`
-            : null,
-        correct_answer,
-        wrong_answer,
-      };
-      await Question.update(newBody, {
-        where: {
-          unique_id: question_id,
-        },
-      })
-        .then(() => {
-          return Question.findOne({ where: { unique_id: question_id } });
-        })
-        .then((result) => {
-          exam.setQuestions(result);
+      if (question_type == "pilihan_ganda") {
+        let wrong_answer = req.body.wrong_answer.join("|");
+        let pilgan_answers = JSON.stringify({
+          correct_answer,
+          wrong_answer,
         });
+        let newBody = {
+          question_text,
+          question_img:
+            req.files[0] !== undefined
+              ? `${req.protocol + "://" + req.get("host")}/files/uploads/${
+                  req.files[0].filename
+                }`
+              : null,
+          question_type,
+          pilgan_answers,
+        };
+        await Question.update(newBody, {
+          where: {
+            unique_id: question_id,
+          },
+        })
+          .then(() => {
+            return Question.findOne({ where: { unique_id: question_id } });
+          })
+          .then((result) => {
+            exam.setQuestions(result);
+          });
+      } else if (question_type == "kartu") {
+        card_answers = JSON.stringify(card_answers);
+        let newBody = {
+          question_text,
+          question_img:
+            req.files[0] !== undefined
+              ? `${req.protocol + "://" + req.get("host")}/files/uploads/${
+                  req.files[0].filename
+                }`
+              : null,
+          question_type,
+          card_answers,
+        };
+        await Question.update(newBody, {
+          where: {
+            unique_id: question_id,
+          },
+        })
+          .then(() => {
+            return Question.findOne({ where: { unique_id: question_id } });
+          })
+          .then((result) => {
+            exam.setQuestions(result);
+          });
+      }
     }
     response(200, "updated exams success", [], res);
   } catch (error) {
