@@ -148,6 +148,7 @@ main {
   font-size: 0.85rem;
   border-radius: 7px;
   font-family: "Inter", sans-serif;
+  margin-top: 1rem;
 }
 .soal-text::placeholder {
   color: #358f6c;
@@ -374,6 +375,7 @@ input[name="wrong_answer"]::placeholder {
 .question-head {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 .word-count {
   font-size: 0.8rem;
@@ -388,4 +390,51 @@ input[name="wrong_answer"]::placeholder {
   font-size: 0.7rem;
   margin: 0.4rem 0 0 0;
   font-style: italic;
+}
+.question-head-info p {
+  margin: 0.4rem 0;
+}
+.question-head-info {
+  margin-bottom: 0.75rem;
+}
+.question-head select {
+  border-radius: 10px;
+  min-height: 35px;
+  padding: 0 1rem;
+  color: #358f6c;
+  width: 300px;
+}
+.answers-card {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: space-between;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+.answer-card {
+  cursor: grab;
+  height: 150px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid gray;
+  background-color: white;
+}
+.answer-card input {
+  background-color: transparent;
+  text-align: center;
+  border-width: 0 0 1.5px 0;
+  border-color: lightgray;
+  outline: none;
+}
+.answer-card-add {
+  cursor: pointer;
+  height: 150px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  background-color: rgba(219, 219, 219, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

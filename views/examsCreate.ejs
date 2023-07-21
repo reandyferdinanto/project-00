@@ -13,7 +13,7 @@
         </div>
         <div class="profile-info">
           <p><b><%= user.username %></b></p>
-          <p>Guru</p>
+          <p><%= user.role %></p>
         </div>
       </div>
       <div class="list-sidebar">
@@ -48,14 +48,11 @@
               placeholder="masukan nama ujian"
             />
             <label for=""
-              >Tipe Ujian<span style="color: #ff4c4c"> *</span></label
+              >Topik Ujian<span style="color: #ff4c4c"> *</span></label
             >
 
             <select name="exam_type" class="exam-type" required>
               <option value="">--pilih ujian--</option>
-              <option value="manasik">Manasik</option>
-              <option value="jenazah">Jenazah</option>
-              <option value="zakat">Zakat</option>
             </select>
             <div class="main-input-config">
               <div class="">
@@ -107,13 +104,13 @@
           <div class="load-layer hide">
             <div class="load-background">
               <div class="custom-loader"></div>
-              <p>Sedang Mengupload</p>
+              <p>Sedang menyimpan</p>
             </div>
           </div>
           <div class="complete-layer hide">
             <div class="complete-background">
               <img src="/img/check.png" width="50" alt="" />
-              <p>Ujian berhasil di upload</p>
+              <p>Ujian berhasil diunggah</p>
               <button type="button" id="complete-upload">OK</button>
             </div>
           </div>

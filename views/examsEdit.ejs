@@ -13,7 +13,7 @@
         </div>
         <div class="profile-info">
           <p><b><%= user.username %></b></p>
-          <p>Guru</p>
+          <p><%= user.role %></p>
         </div>
       </div>
       <div class="list-sidebar">
@@ -54,17 +54,14 @@
                 required
                 placeholder="masukan nama ujian"
               />
-              Tipe Ujian
+              Topik Ujian
               <select
                 name="exam_type"
                 class="exam-type"
                 required
                 id="exam_type"
               >
-                <option value="">--Please choose an option--</option>
-                <option value="manasik">Manasik</option>
-                <option value="jenazah">Jenazah</option>
-                <option value="zakat">Zakat</option>
+                <option value="">--pilih ujian--</option>
               </select>
             </label>
             <div class="main-input-config">
@@ -88,6 +85,13 @@
                   value="2"
                 />
               </label>
+            </div>
+            <div class="assign-container">
+              <label for="">Diujikan ke...</label>
+              <div class="assign-button">
+                <span class="checkedSiswaExam">0 Siswa</span>
+                <span><i class="uil uil-edit edit-button"></i></span>
+              </div>
             </div>
           </div>
           <div class="submit-layer">
@@ -114,6 +118,29 @@
 
           <div class="submit-input">
             <button type="button" id="selesai">Selesai</button>
+          </div>
+
+          <div class="assign-layer">
+            <div class="assign-bg">
+              <div class="close">X</div>
+              <div class="assign-bg-head">
+                <h1>Diujian ke...</h1>
+                <p>
+                  silakan tentukan kelas atau siswa individu yang akan mengikuti
+                  ujian ini
+                </p>
+              </div>
+              <table id="assign-table">
+                <thead>
+                  <th>No</th>
+                  <th>NIS</th>
+                  <th>Nama</th>
+                  <th>Kelas</th>
+                  <th>Jurusan</th>
+                  <th><input type="checkbox" name="" id="selectAll" /></th>
+                </thead>
+              </table>
+            </div>
           </div>
         </form>
         <div class="load-layer hide">

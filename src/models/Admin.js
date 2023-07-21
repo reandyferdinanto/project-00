@@ -9,6 +9,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     username: DataTypes.STRING,
     password: DataTypes.STRING,
+    role: DataTypes.STRING,
+    email: DataTypes.STRING,
+    nuptk: DataTypes.STRING,
   });
   return Admin;
 };

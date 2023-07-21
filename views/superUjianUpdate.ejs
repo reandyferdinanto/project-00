@@ -1,0 +1,136 @@
+<%- include('./layouts/header'); -%>
+<link rel="stylesheet" href="/css/siswaCreate.css" />
+<body>
+  <!-- NAV -->
+  <%- include('./layouts/navbar'); -%>
+
+  <!-- MAIN -->
+  <main>
+    <div class="main-sidebar">
+      <div class="profile-sidebar">
+        <div class="profile-img">
+          <img src="" alt="" />
+        </div>
+        <div class="profile-info">
+          <p><b><%= user.username %></b></p>
+          <p><%= user.role %></p>
+        </div>
+      </div>
+      <div class="list-sidebar">
+        <a href="/admin">Daftar Admin</a>
+        <a href="/guru">Daftar Guru</a>
+        <a href="/tipe_ujian" class="selected">Topik Ujian</a>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="main-background">
+        <div class="main-title">
+          <h2>
+            Mengubah Topik Ujian
+            <span style="color: #ff4c4c; font-size: 0.7rem">*harus diisi</span>
+          </h2>
+        </div>
+        <form id="submit-form">
+          <div class="main-input">
+            <label for=""
+              >Topik Ujian<span style="color: #ff4c4c"> *</span></label
+            >
+            <input
+              class="nama-input"
+              required
+              type="text"
+              name="exam_type"
+              id="exam_type"
+              placeholder="Masukan Tipe Ujian"
+            />
+          </div>
+          <div class="submit-input">
+            <button type="button" id="selesai">Selesai</button>
+          </div>
+          <div class="submit-layer">
+            <div class="submit-question">
+              <img src="/img/warning-alt.png" alt="" width="150" />
+              <p>Apakah anda sudah yakin selesai?</p>
+              <div class="submit-buttons">
+                <button class="ubah-button" type="button">Ubah</button>
+                <button class="selesai-button" type="submit">Selesai</button>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="load-layer hide">
+          <div class="load-background">
+            <div class="custom-loader"></div>
+            <p>Sedang menambahkan</p>
+          </div>
+        </div>
+        <div class="complete-layer hide">
+          <div class="complete-background">
+            <img src="/img/check.png" width="50" alt="" />
+            <p>Data topik ujian berhasil diubah</p>
+            <button type="button" id="complete-upload">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+<script>
+  $(document).ready(() => {
+    $("#complete-upload").on("click", function (e) {
+      e.preventDefault();
+      window.location = "/tipe_ujian";
+    });
+    $("#selesai").on("click", () => {
+      $(".submit-layer").css("visibility", "visible");
+    });
+
+    $(".ubah-button").on("click", () => {
+      $(".submit-layer").css("visibility", "hidden");
+    });
+
+    // UPLOAD
+    const manualForm = document.getElementById("submit-form");
+    manualForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      let formData = new FormData(manualForm);
+      formData.append("unique_id", unique_id);
+      $.ajax({
+        url: "/api/exam_type",
+        type: "PUT",
+        data: formData,
+        async: false,
+        cache: false,
+        contentType: false,
+        encrypt: "multipart/form-data",
+        processData: false,
+        beforeSend: function () {
+          $(".load-layer").removeClass("hide");
+          $(".load-layer").css("visibility", "visible");
+          $(".submit-layer").css("visibility", "hidden");
+        },
+        success: (response) => {
+          $(".submit-layer").css("visibility", "hidden");
+          if (response.payload.status_code == 200) {
+            $(".load-layer").addClass("hide");
+            $(".complete-layer").removeClass("hide");
+          } else if (response.payload.message == "you're not authenticated") {
+            window.location = "/tipe_ujian";
+          }
+        },
+      });
+    });
+    let unique_id = window.location.href.substring(
+      window.location.href.lastIndexOf("/") + 1
+    );
+    let url = `/api/exam_type/${unique_id}`;
+    $.get(url, async (data, status) => {
+      let datas = data.payload.datas;
+      if (status == "success" && datas.length !== 0) {
+        $("#exam_type").val(datas.exam_type);
+      }
+    });
+  });
+</script>
+<%- include('./layouts/footer'); -%>

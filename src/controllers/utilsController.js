@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const { Score, Exam } = require("../models");
 const response = require("./response");
+const { convertCsvToXlsx } = require("@aternus/csv-to-xlsx");
 
 async function uploadCSV(req, res) {
   try {
@@ -67,10 +68,17 @@ async function exportCSV(req, res) {
     `public/files/exports/nilai-siswa.csv`
   );
   writableStream.on("finish", () => {
-    res.json({
-      status_code: 200,
-      downloadURL: `public/files/exports/nilai-siswa.csv`,
-    });
+    try {
+      let source = "public/files/exports/nilai-siswa.csv";
+      let destination = "public/files/exports/nilai-siswa.xlsx";
+      convertCsvToXlsx(source, destination);
+      res.json({
+        status_code: 200,
+        downloadURL: `public/files/exports/nilai-siswa.xlsx`,
+      });
+    } catch (error) {
+      response(500, "server failed to generate report", error.message, res);
+    }
   });
   csvStream.pipe(writableStream);
   if (users.length > 0) {

@@ -13,7 +13,7 @@
         </div>
         <div class="profile-info">
           <p><b><%= user.username %></b></p>
-          <p>Guru</p>
+          <p><%= user.role %></p>
         </div>
       </div>
       <div class="list-sidebar">
@@ -30,7 +30,7 @@
           <form id="download-form" method="post">
             <a href="/exams/create"
               ><button class="download-csv-button" type="submit">
-                Download CSV
+                Download Data
               </button></a
             >
           </form>

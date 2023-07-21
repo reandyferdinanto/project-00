@@ -266,7 +266,7 @@ $(document).ready(() => {
       processData: false,
       success: (response) => {
         if (response.status_code == 200) {
-          window.location.href = "files/exports/nilai-siswa.csv";
+          window.location.href = "files/exports/nilai-siswa.xlsx";
         } else if (response.payload.message == "you're not authenticated") {
           window.location = "/login";
         }

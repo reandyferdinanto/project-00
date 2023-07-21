@@ -14,13 +14,11 @@ $(document).ready(() => {
       encrypt: "multipart/form-data",
       processData: false,
       success: (response) => {
-        if (response.message == "LOGEDIN") {
-          window.location = "/";
-        }
         if (response.error) {
           $(".error-password").html(response.error);
-        } else if (response.payload.message == "you're not authenticated") {
-          window.location = "/login";
+        }
+        if (response.status == "success") {
+          window.location = response.route;
         }
       },
     });

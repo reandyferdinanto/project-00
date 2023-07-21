@@ -3,7 +3,7 @@
   <body>
     <!-- NAV -->
     <%- include('./layouts/navbar'); -%>
-
+    <input type="hidden" name="role" value="<%= user.role %>">
     <!-- MAIN -->
     <main>
       <div class="main-sidebar">
@@ -13,12 +13,16 @@
           </div>
           <div class="profile-info">
             <p><b><%= user.username %></b></p>
-            <p>Guru</p>
+            <p><%= user.role %></p>
           </div>
         </div>
         <div class="list-sidebar">
           <a href="/">Beranda</a>
-          <a href="/siswa" class="selected">Daftar Siswa</a>
+          <a href="/siswa" class="selected"><% if(user.role =="admin"){%>
+            Daftar Siswa
+          <%}else{%>
+            Data Siswa
+          <%} %></a>
           <a href="/ujian">Ujian</a>
           <a href="/nilai">Nilai</a>
         </div>
@@ -28,15 +32,21 @@
           <form action="" id="form-delete">
             <!-- FORM HAPUS STARTED -->
             <div class="main-title">
-              <h2>Daftar Siswa</h2>
-              <div class="main-side">
-                <a href="/siswa/tambah"
-                  ><button class="tambah-button" type="button">
-                    Tambah Siswa
-                  </button></a
-                >
-                <button class="hapus-button" disabled>Hapus</button>
-              </div>
+              <% if(user.role =="admin"){%>
+                <h2>Daftar Siswa</h2>
+              <%}else{%>
+                <h2>Data Siswa</h2>
+              <%} %>
+              <% if (user.role == "admin") { %>
+                <div class="main-side">
+                  <a href="/siswa/tambah"
+                    ><button class="tambah-button" type="button">
+                      Tambah Siswa
+                    </button></a
+                  >
+                  <button class="hapus-button" disabled>Hapus</button>
+                </div>
+              <% } %>
             </div>
             <div class="main-table">
               <div class="main-table-title">
@@ -49,7 +59,11 @@
                       <th>Kelas</th>
                       <th>Jurusan</th>
                       <th></th>
-                      <th><input type="checkbox" name="" id="selectAll" /></th>
+                      <th>
+                        <% if (user.role == "admin") { %>
+                          <input type="checkbox" name="" id="selectAll" />
+                        <%}%>
+                      </th>
                     </tr>
                   </thead>
                 </table>
@@ -71,9 +85,11 @@
             <!-- FORM HAPUS ENDED -->
           </form>
         </div>
-        
       </div>
     </main>
   </body>
   <script src="/js/siswaPage.js"></script>
+  <script>
+    console.log();
+  </script>
 <%- include('./layouts/footer'); -%>

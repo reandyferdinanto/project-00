@@ -7,68 +7,204 @@ $(document).ready(() => {
   $("#date").html(text);
 
   let question_with_img = [];
-
+  let users;
   let unique_id = window.location.href.substring(
     window.location.href.lastIndexOf("/") + 1
   );
   let url_input = `/api/exams/${unique_id}`;
   let question_id = [];
+  let queuedImagesArray = [];
+  let allDataArray = [];
+
+  function initializeSortable() {
+    $(".answers-card").sortable({
+      // containment: "parent",
+      opacity: 0.75,
+      distance: 25,
+      tolerance: "intersect",
+      items: "> .answer-card",
+      update: function (event, ui) {
+        const sortedElements = $(this).find("> .answer-card");
+        const tempArray = [];
+
+        sortedElements.each(function (index) {
+          const value = $(this).find("input").val();
+          tempArray.push({ index, value });
+        });
+        // Get the questionId from the data attribute of the current question
+        const questionId = $(this).closest(".question").data("question-id");
+
+        // Find the index of the question in the allDataArray (if it exists)
+        const questionIndex = allDataArray.findIndex(function (item) {
+          return item.questionId === questionId;
+        });
+
+        // If the question exists in the allDataArray, update its answers, otherwise add it as a new question
+        if (questionIndex !== -1) {
+          allDataArray[questionIndex].answers = tempArray;
+        } else {
+          allDataArray.push({
+            answers: tempArray,
+          });
+        }
+      },
+    });
+  }
+  function displayQueuedImages() {
+    let img = "";
+    queuedImagesArray.forEach((image, index) => {
+      if (image.length !== 0) {
+        const file = document.querySelectorAll(".input-file")[index].files[0];
+        if (file && file.type.includes("image/")) {
+          img = `
+            <img src="" alt="no img" />
+            <span title="Hapus Gambar" class="deleteImg"><i class="uil uil-times"></i></span>
+          `;
+          let displayImageContainer =
+            document.querySelectorAll(".display_image")[index];
+          displayImageContainer.style.display = "flex";
+          displayImageContainer.innerHTML = img;
+          let reader = new FileReader();
+          reader.onload = function (e) {
+            displayImageContainer.querySelector("img").src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+    });
+  }
+  function getImgBlob(url) {
+    return new Promise((resolve, reject) => {
+      $.ajax({
+        url: url,
+        method: "GET",
+        xhrFields: {
+          responseType: "blob",
+        },
+        success: function (response) {
+          resolve(response);
+        },
+        error: function (error) {
+          reject(error);
+        },
+      });
+    });
+  }
+
+  // INIT
   $.get(url_input, async (data, status) => {
     let datas = data.payload.datas;
+    // EXAM_TYPE
+    $.get("/api/exam_type", async (data, status) => {
+      if (status == "success" && data.payload.datas.length !== 0) {
+        let exam_datas = data.payload.datas;
+        exam_datas.forEach((data) => {
+          $(".exam-type").append([
+            `
+        <option value="${data.exam_type.toLowerCase()}">${
+              data.exam_type.charAt(0).toUpperCase() + data.exam_type.slice(1)
+            }</option>
+        `,
+          ]);
+          $("#exam_type").val(datas.exam_type).change();
+        });
+      }
+    });
     if (status == "success" && datas.length !== 0) {
       $("#exam_name").val(datas.exam_name);
-      $("#exam_type").val(datas.exam_type).change();
       $("#kkm_point").val(datas.kkm_point);
       $("#available_try").val(datas.available_try);
       //   QUESTION
       for (const [index, quest] of datas.Questions.entries()) {
         question_id.push(quest.unique_id);
-        let w_ans = quest.wrong_answer.split("|");
-        $(".questions").append([
-          `
+        if (quest.question_type == "pilihan_ganda") {
+          let pilgan_answers = JSON.parse(quest.pilgan_answers);
+          let wrong_answer = pilgan_answers.wrong_answer.split("|");
+          let correct_answer = pilgan_answers.correct_answer;
+          let question_pilgan = `
+            <div class="question_pilgan">  
+            <div class="display_image"></div>
+            <textarea name="question_text" class='soal-text' placeholder="Masukan Soal">${quest.question_text}</textarea>
+            <input type="hidden" name="question_type" value="pilihan_ganda">
+            <div class="answers">
+              <input placeholder='jawaban benar' name='correct_answer' class='answer' required value="${correct_answer}"/>
+              <input placeholder='jawaban lain' name='wrong_answer' class='answer' required value="${wrong_answer[0]}"/>
+              <input placeholder='jawaban lain' name='wrong_answer' class='answer' required value="${wrong_answer[1]}"/>
+              <input placeholder='jawaban lain' name='wrong_answer' class='answer' required value="${wrong_answer[2]}"/>
+              <input placeholder='jawaban lain' name='wrong_answer' class='answer' required value="${wrong_answer[3]}"/>
+              <input type="hidden" name="row_id" class="row_id" value="${quest.unique_id}">
+              <div class="upload-img">
+                <label class="custom-file-upload">
+                    <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
+                    <i class="uil uil-file-plus-alt"></i> Masukan Gambar
+                </label>
+                <p>*PNG/JPG/JPEG max. 200 kb</p>
+              </div>
+            </div>
+            </div>
+          `;
+          $(".questions").append([
+            `
             <div class="question">
               <div class="question-head">
-                <p><b>Soal ${index + 1}</b></p>
-                <p class="word-count">Jumlah kata: ${
-                  quest.question_text.length
-                } / 300</p>
+                <div class="question-head-info">
+                  <p><b>Soal ${index + 1}</b></p>
+                </div>
               </div>
+              ${question_pilgan}
+              <div class="delete-quest" title="Hapus Soal" >
+                <span><i class="uil uil-trash-alt"></i></span>
+              </div>
+            </div>
+            `,
+          ]);
+        } else if (quest.question_type == "kartu") {
+          let card_answers = JSON.parse(quest.card_answers).answers;
+          let question_card = `
+            <div class="question_kartu">  
               <div class="display_image"></div>
-              <textarea name="question_text" class='soal-text' placeholder="Masukan Soal">${
-                quest.question_text
-              }</textarea>
-              <div class="answers">
-                <input placeholder='jawaban benar' name='correct_answer' class='answer' required value="${
-                  quest.correct_answer
-                }"/>
-                <input placeholder='jawaban lain' name='wrong_answer' class='answer' required value="${
-                  w_ans[0]
-                }"/>
-                <input placeholder='jawaban lain' name='wrong_answer' class='answer' required value="${
-                  w_ans[1]
-                }"/>
-                <input placeholder='jawaban lain' name='wrong_answer' class='answer' required value="${
-                  w_ans[2]
-                }"/>
-                <input placeholder='jawaban lain' name='wrong_answer' class='answer' required value="${
-                  w_ans[3]
-                }"/>
-                <input type="hidden" name="row_id" class="row_id" value="${
-                  quest.unique_id
-                }">
-                <div class="upload-img">
+              <textarea maxlength="300" data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal">${quest.question_text}</textarea>
+              <div class="upload-img" style="margin-top:1rem">
                   <label class="custom-file-upload">
                       <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
                       <i class="uil uil-file-plus-alt"></i> Masukan Gambar
                   </label>
                   <p>*PNG/JPG/JPEG max. 200 kb</p>
+              </div>
+              <input type="hidden" name="question_type" value="kartu">
+              <div class="answers-card">
+                <div class="answer-card-add">
+                  <img src="/img/plus.png" alt="" width="40" />
                 </div>
               </div>
+            </div>
+          `;
+          $(".questions").append([
+            `
+            <div class="question">
+              <div class="question-head">
+                <div class="question-head-info">
+                  <p><b>Soal ${index + 1}</b></p>
+                </div>
+              </div>
+              ${question_card}
               <div class="delete-quest" title="Hapus Soal" >
                 <span><i class="uil uil-trash-alt"></i></span>
               </div>
-            </div>`,
-        ]);
+            </div>
+            `,
+          ]);
+          card_answers.forEach((answer) => {
+            $(".answers-card").prepend([
+              `
+              <div class="answer-card">
+                <input  type="text" placeholder='Kartu' value="${answer.value}"/>
+              </div>
+              `,
+            ]);
+          });
+          initializeSortable();
+        }
         (async () => {
           try {
             const imageUrl = quest.question_img;
@@ -103,6 +239,102 @@ $(document).ready(() => {
           }
         })();
       }
+    }
+  });
+  //ASSIGN
+  $.get("/api/scores", async (data, status) => {
+    if (status == "success" && data.payload.datas.length !== 0) {
+      let index = 0;
+      users = data.payload.datas;
+      if (status == "success" && data.payload.datas.length !== 0) {
+        $("#assign-table").DataTable({
+          ajax: {
+            url: "/api/scores",
+            dataSrc: "payload.datas",
+          },
+          pageLength: -1,
+          lengthMenu: [[-1], ["Semua"]],
+          columns: [
+            {
+              data: null,
+              width: "8%",
+              render: function (data, type, row, meta) {
+                return meta.row + meta.settings._iDisplayStart + 1;
+              },
+            },
+            { data: "nis" },
+            { data: "username" },
+            { data: "class" },
+            { data: "major" },
+            {
+              data: "unique_id",
+              // width: "20%",
+              render: function (data, type, row, meta) {
+                index = meta.row + meta.settings._iDisplayStart;
+                let score = users[index];
+                let score_id = score.unique_id;
+                let score_exam = score.Exams.map((e) => {
+                  if (score.Exams.length == 0)
+                    return `<input type="checkbox" name="${score_id}" class="checkbox-delete" value="off" />`;
+                  return e.unique_id;
+                });
+                let this_exam = unique_id;
+                if (score_exam.includes(this_exam)) {
+                  return `<input type="checkbox" name="${score_id}" class="checkbox-delete" value="on" checked />`;
+                } else {
+                  return `<input type="checkbox" name="${score_id}" class="checkbox-delete" value="off" />`;
+                }
+              },
+            },
+          ],
+          initComplete: function () {
+            $(".assign-bg").on("change", ".checkbox-delete", function () {
+              if (!$(this).is(":checked")) {
+                let name = $(this).attr("name");
+                $(this).html(
+                  `<input type="hidden" name="${name}" id="" value="off" />`
+                );
+              } else {
+                $(this).val("on");
+              }
+            });
+            let checkedSiswa = document.querySelectorAll(
+              'input[type="checkbox"]:checked'
+            ).length;
+            $(".checkedSiswaExam").html(checkedSiswa + " Siswa");
+
+            // SelectALL
+            $("#selectAll").on("click", function () {
+              if (this.checked) {
+                // Iterate each checkbox
+                $(":checkbox").each(function () {
+                  this.checked = true;
+                  $(this).val("on");
+                });
+              } else {
+                $(":checkbox").each(function () {
+                  this.checked = false;
+                  let name = $(this).attr("name");
+                  $(this).html(
+                    `<input type="hidden" name="${name}" id="" value="off" />`
+                  );
+                });
+              }
+            });
+          },
+        });
+      }
+    } else {
+      $("#assign-table").remove();
+      $(".assign-bg-head").remove();
+      $(".assign-bg").append([
+        `
+        <div class="nothing">
+          <img src="/img/nothing.png" alt="" />
+          <p>Belum ada siswa</p>
+        </div>
+          `,
+      ]);
     }
   });
 
@@ -146,6 +378,13 @@ $(document).ready(() => {
     e.preventDefault();
     window.location = "/ujian";
   });
+  $(".main-background").on("click", ".answer-card-add", function () {
+    $(".answers-card").prepend([
+      `<div class="answer-card">
+        <input  type="text" placeholder='Kartu'/>
+      </div>`,
+    ]);
+  });
 
   // IMAGE INPUT
   $(".main-background").on("change", ".input-file", function () {
@@ -169,32 +408,6 @@ $(document).ready(() => {
     displayQueuedImages();
   });
 
-  let queuedImagesArray = [];
-
-  function displayQueuedImages() {
-    let img = "";
-    queuedImagesArray.forEach((image, index) => {
-      if (image.length !== 0) {
-        const file = document.querySelectorAll(".input-file")[index].files[0];
-        if (file && file.type.includes("image/")) {
-          img = `
-            <img src="" alt="no img" />
-            <span title="Hapus Gambar" class="deleteImg"><i class="uil uil-times"></i></span>
-          `;
-          let displayImageContainer =
-            document.querySelectorAll(".display_image")[index];
-          displayImageContainer.style.display = "flex";
-          displayImageContainer.innerHTML = img;
-          let reader = new FileReader();
-          reader.onload = function (e) {
-            displayImageContainer.querySelector("img").src = e.target.result;
-          };
-          reader.readAsDataURL(file);
-        }
-      }
-    });
-  }
-
   $(".main-background").on("click", ".deleteImg", function (e) {
     let input_file = document.querySelectorAll(".input-file");
     let index = $(".display_image").index($(this).parent());
@@ -217,6 +430,7 @@ $(document).ready(() => {
     formData.append("exam_unique_id", unique_id);
     formData.append("question_unique_id", question_id);
     formData.append("index_deleted", question_with_img);
+    formData.append("card_answers", JSON.stringify(allDataArray));
     e.preventDefault();
     $.ajax({
       url: "/api/exams",
@@ -229,6 +443,7 @@ $(document).ready(() => {
       processData: false,
       beforeSend: function () {
         $(".load-layer").removeClass("hide");
+        $(".load-layer").css("visibility", "visible");
         $(".submit-layer").css("visibility", "hidden");
       },
       success: (response) => {
@@ -272,22 +487,11 @@ $(document).ready(() => {
       },
     });
   });
-});
 
-function getImgBlob(url) {
-  return new Promise((resolve, reject) => {
-    $.ajax({
-      url: url,
-      method: "GET",
-      xhrFields: {
-        responseType: "blob",
-      },
-      success: function (response) {
-        resolve(response);
-      },
-      error: function (error) {
-        reject(error);
-      },
-    });
+  $(".assign-bg .close").click(function () {
+    $(".assign-layer").css("visibility", "hidden");
   });
-}
+  $(".edit-button").click(function () {
+    $(".assign-layer").css("visibility", "visible");
+  });
+});

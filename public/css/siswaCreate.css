@@ -292,3 +292,13 @@ input[type="file"]::file-selector-button {
   font-size: 0.8rem;
   color: #358f6c;
 }
+
+.ubah-katasandi {
+  margin-left: 2rem;
+  padding: 0.5rem 1.5rem;
+  background-color: #ff4c4c;
+  color: white;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+}
