@@ -15,6 +15,7 @@ $(document).ready(() => {
   let question_id = [];
   let queuedImagesArray = [];
   let allDataArray = [];
+  let tempArray = [];
 
   function initializeSortable() {
     $(".answers-card").sortable({
@@ -23,15 +24,14 @@ $(document).ready(() => {
       distance: 25,
       tolerance: "intersect",
       items: "> .answer-card",
-      update: function (event, ui) {
+      create: function (event, ui) {
         const sortedElements = $(this).find("> .answer-card");
-        const tempArray = [];
+        tempArray = [];
 
         sortedElements.each(function (index) {
           const value = $(this).find("input").val();
           tempArray.push({ index, value });
         });
-        // Get the questionId from the data attribute of the current question
         const questionId = $(this).closest(".question").data("question-id");
 
         // Find the index of the question in the allDataArray (if it exists)
@@ -47,6 +47,31 @@ $(document).ready(() => {
             answers: tempArray,
           });
         }
+      },
+      update: function (event, ui) {
+        const sortedElements = $(this).find("> .answer-card");
+        tempArray = [];
+
+        sortedElements.each(function (index) {
+          const value = $(this).find("input").val();
+          tempArray.push({ index, value });
+        });
+        const questionId = $(this).closest(".question").data("question-id");
+
+        // Find the index of the question in the allDataArray (if it exists)
+        const questionIndex = allDataArray.findIndex(function (item) {
+          return item.questionId === questionId;
+        });
+
+        // If the question exists in the allDataArray, update its answers, otherwise add it as a new question
+        if (questionIndex !== -1) {
+          allDataArray[questionIndex].answers = tempArray;
+        } else {
+          allDataArray.push({
+            answers: tempArray,
+          });
+        }
+        console.log(allDataArray);
       },
     });
   }
@@ -159,7 +184,7 @@ $(document).ready(() => {
             `,
           ]);
         } else if (quest.question_type == "kartu") {
-          let card_answers = JSON.parse(quest.card_answers).answers;
+          let card_answers = JSON.parse(quest.card_answers).answers.reverse();
           let question_card = `
             <div class="question_kartu">  
               <div class="display_image"></div>

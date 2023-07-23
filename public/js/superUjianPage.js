@@ -58,7 +58,7 @@ $(document).ready(() => {
       $(".main-table-body").append([
         `
                   <img src="/img/nothing.png" alt="" />
-                  <p>Belum ada ujian</p>
+                  <p>Belum ada topik ujian</p>
                 `,
       ]);
     }
