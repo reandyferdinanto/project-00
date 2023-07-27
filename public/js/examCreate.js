@@ -82,11 +82,11 @@ $(document).ready(() => {
     <div class="display_image"></div>
     <textarea data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
     <div class="answers">
-      <input placeholder='jawaban benar' name='correct_answer'  class='answer correct-answer'/>
-      <input placeholder='jawaban lain' name='wrong_answer'  class='answer wrong-answer'/>
-      <input placeholder='jawaban lain' name='wrong_answer'  class='answer'/>
-      <input placeholder='jawaban lain' name='wrong_answer'  class='answer'/>
-      <input placeholder='jawaban lain' name='wrong_answer'  class='answer'/>
+      <input placeholder='jawaban benar' name='correct_answer' required  class='answer correct-answer'/>
+      <input placeholder='jawaban lain' name='wrong_answer' required  class='answer wrong-answer'/>
+      <input placeholder='jawaban lain' name='wrong_answer' required  class='answer'/>
+      <input placeholder='jawaban lain' name='wrong_answer' required  class='answer'/>
+      <input placeholder='jawaban lain' name='wrong_answer' required  class='answer'/>
       <div class="upload-img">
         <label class="custom-file-upload">
             <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
@@ -116,7 +116,7 @@ $(document).ready(() => {
           <span style="color:transparent">#1</span>
         </div>
         <div class="answer-card-input">
-          <input type="text" placeholder='Kartu'/>
+          <input name="kartu" required type="text" placeholder='Kartu'/>
         </div>
       </div>
       <div class="answer-card">
@@ -126,7 +126,7 @@ $(document).ready(() => {
           <span style="color:transparent">#1</span>
         </div>
         <div class="answer-card-input">
-          <input type="text" placeholder='Kartu'/>
+          <input name="kartu" required type="text" placeholder='Kartu'/>
         </div>
       </div>
       <div class="answer-card-add">
@@ -155,6 +155,9 @@ $(document).ready(() => {
         sortedElements.each(function (index) {
           const value = $(this).find("input").val();
           tempArray.push({ index, value });
+          $(this)
+            .find("span")
+            .html(`#${index + 1}`);
         });
         // Get the questionId from the data attribute of the current question
         const questionId = $(this).closest(".question").data("question-id");
@@ -173,11 +176,6 @@ $(document).ready(() => {
             answers: tempArray,
           });
         }
-        $(".answer-card").each(function (index) {
-          $(this)
-            .find("span")
-            .html(`#${index + 1}`);
-        });
         console.log(allDataArray);
       },
     });
@@ -204,6 +202,7 @@ $(document).ready(() => {
     }, 500);
   }
   function addMoreQuestion() {
+    // if (validateForm() == false) return;
     $(".questions").append([
       `
           <div class="question">
@@ -245,6 +244,27 @@ $(document).ready(() => {
       document.querySelectorAll(".display_image")[index].innerHTML = img;
     });
   }
+  function validateForm() {
+    if ($("input[name=kartu]") == null) return true;
+    if ($("input[name=wrong_answer]") == null) return true;
+    if ($("input[name=correct_answer]") == null) return true;
+
+    if ($("input[name=kartu]").val() === "") {
+      alert("Kartu harus diisi!");
+      $("input[name=kartu]").focus();
+      return false;
+    }
+    if ($("input[name=wrong_answer]").val() === "") {
+      alert("Jawaban Lain harus diisi!");
+      $("input[name=kartu]").focus();
+      return false;
+    }
+    if ($("input[name=correct_answer]").val() === "") {
+      alert("Jawaban benar harus diisi!");
+      $("input[name=kartu]").focus();
+      return false;
+    }
+  }
 
   // ADD QUESTION BOX
   $("#add-question").on("click", addQuestionBox);
@@ -265,23 +285,28 @@ $(document).ready(() => {
     $(".file-layer").css("visibility", "hidden");
   });
   $(".main-background").on("click", ".answer-card-add", function () {
-    $(".answers-card").prepend([
-      `<div class="answer-card">
+    $(this)
+      .parent()
+      .prepend([
+        `<div class="answer-card">
         <div class="answer-card-head">
           <span>#1</span>
           <i class="uil uil-draggabledots"></i>
           <span style="color:transparent">#1</span>
         </div>
         <div class="answer-card-input">
-          <input type="text" placeholder='Kartu'/>
+          <input required type="text" placeholder='Kartu'/>
         </div>
       </div>`,
-    ]);
-    $(".answer-card").each(function (index) {
-      $(this)
-        .find("span")
-        .html(`#${index + 1}`);
-    });
+      ]);
+    $(this)
+      .parent()
+      .find(".answer-card")
+      .each(function (index) {
+        $(this)
+          .find("span")
+          .html(`#${index + 1}`);
+      });
   });
   $(".main-background").on("change", ".jenis-ujian", function () {
     let jenis_ujian = $(this).find(":selected").val();
@@ -304,7 +329,7 @@ $(document).ready(() => {
     e.preventDefault();
     window.location = "/ujian";
   });
-  $(".main-background").on("focusout", ".answer-card input", function () {
+  $(".main-background").on("change", ".answer-card input", function () {
     let index = $(this).parent().parent().index(); //answer card
     let value = $(this).val(); //value input
     const questionId = $(this).closest(".question").data("question-id");
