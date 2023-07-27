@@ -6,7 +6,7 @@ $(document).ready(() => {
   });
   $("#date").html(text);
 
-  const url = "/api/exams";
+  const url = "/api/admin";
 
   $.get(url, async (data, status) => {
     if (status == "success" && data.payload.datas.length !== 0) {
@@ -56,7 +56,7 @@ $(document).ready(() => {
       $(".main-table-body").append([
         `
                     <img src="/img/nothing.png" alt="" />
-                    <p>Belum ada ujian</p>
+                    <p>Belum ada guru</p>
                   `,
       ]);
     }

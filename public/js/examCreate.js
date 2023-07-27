@@ -82,11 +82,11 @@ $(document).ready(() => {
     <div class="display_image"></div>
     <textarea data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
     <div class="answers">
-      <input placeholder='jawaban benar' name='correct_answer'  class='answer correct-answer'/>
-      <input placeholder='jawaban lain' name='wrong_answer'  class='answer wrong-answer'/>
-      <input placeholder='jawaban lain' name='wrong_answer'  class='answer'/>
-      <input placeholder='jawaban lain' name='wrong_answer'  class='answer'/>
-      <input placeholder='jawaban lain' name='wrong_answer'  class='answer'/>
+      <input placeholder='jawaban benar' name='correct_answer' required  class='answer correct-answer'/>
+      <input placeholder='jawaban lain' name='wrong_answer' required  class='answer wrong-answer'/>
+      <input placeholder='jawaban lain' name='wrong_answer' required  class='answer'/>
+      <input placeholder='jawaban lain' name='wrong_answer' required  class='answer'/>
+      <input placeholder='jawaban lain' name='wrong_answer' required  class='answer'/>
       <div class="upload-img">
         <label class="custom-file-upload">
             <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
@@ -110,10 +110,26 @@ $(document).ready(() => {
     </div>
     <div class="answers-card">
       <div class="answer-card">
-        <input type="text" placeholder='Kartu 1'/>
+        <div class="answer-card-head">
+          <span>#1</span>
+          <i class="uil uil-draggabledots"></i>
+          <span style="color:transparent">#1</span>
+        </div>
+        <div class="answer-card-input">
+          <input name="kartu" required type="text" placeholder='Kartu'/>
+          <div class="delete-card">x</div>
+        </div>
       </div>
       <div class="answer-card">
-        <input type="text" placeholder='Kartu 2'/>
+        <div class="answer-card-head">
+          <span>#2</span>
+          <i class="uil uil-draggabledots"></i>
+          <span style="color:transparent">#1</span>
+        </div>
+        <div class="answer-card-input">
+          <input name="kartu" required type="text" placeholder='Kartu'/>
+          <div class="delete-card">x</div>
+        </div>
       </div>
       <div class="answer-card-add">
         <img src="/img/plus.png" alt="" width="40" />
@@ -141,6 +157,9 @@ $(document).ready(() => {
         sortedElements.each(function (index) {
           const value = $(this).find("input").val();
           tempArray.push({ index, value });
+          $(this)
+            .find("span")
+            .html(`#${index + 1}`);
         });
         // Get the questionId from the data attribute of the current question
         const questionId = $(this).closest(".question").data("question-id");
@@ -185,6 +204,7 @@ $(document).ready(() => {
     }, 500);
   }
   function addMoreQuestion() {
+    // if (validateForm() == false) return;
     $(".questions").append([
       `
           <div class="question">
@@ -210,6 +230,7 @@ $(document).ready(() => {
     $(".question:last-child").attr("data-question-id", questionId);
     initializeSortable();
     quest_length += 1;
+    tempArray = [];
   }
   function displayQueuedImages() {
     let img = "";
@@ -224,6 +245,50 @@ $(document).ready(() => {
       }
       document.querySelectorAll(".display_image")[index].innerHTML = img;
     });
+  }
+  function validateForm() {
+    if ($("input[name=kartu]") == null) return true;
+    if ($("input[name=wrong_answer]") == null) return true;
+    if ($("input[name=correct_answer]") == null) return true;
+
+    if ($("input[name=kartu]").val() === "") {
+      alert("Kartu harus diisi!");
+      $("input[name=kartu]").focus();
+      return false;
+    }
+    if ($("input[name=wrong_answer]").val() === "") {
+      alert("Jawaban Lain harus diisi!");
+      $("input[name=kartu]").focus();
+      return false;
+    }
+    if ($("input[name=correct_answer]").val() === "") {
+      alert("Jawaban benar harus diisi!");
+      $("input[name=kartu]").focus();
+      return false;
+    }
+  }
+  function saveSort() {
+    tempArray = [];
+    let arr = $(this).parent().parent().parent().find("> .answer-card");
+    arr.each(function (index) {
+      tempArray.push({ index, value: $(this).find("input").val() });
+    });
+
+    const questionId = $(this).closest(".question").data("question-id");
+    const questionIndex = allDataArray.findIndex(function (item) {
+      return item.questionId === questionId;
+    });
+    // If the question exists in the allDataArray, update its answers, otherwise add it as a new question
+    if (questionIndex !== -1) {
+      allDataArray[questionIndex].questionId = questionId;
+      allDataArray[questionIndex].answers = tempArray;
+    } else {
+      allDataArray.push({
+        questionId,
+        answers: tempArray,
+      });
+    }
+    console.log(allDataArray);
   }
 
   // ADD QUESTION BOX
@@ -244,12 +309,46 @@ $(document).ready(() => {
     e.preventDefault();
     $(".file-layer").css("visibility", "hidden");
   });
+  $(".main-background").on("mouseover", ".answer-card", function () {
+    $(this).find(".delete-card").css("visibility", "visible");
+  });
+  $(".main-background").on("click", ".delete-card", function () {
+    $(this).parent().parent().remove();
+    $(".answers-card")
+      .find(".answer-card")
+      .each(function (index) {
+        $(this)
+          .find("span")
+          .html(`#${index + 1}`);
+      });
+  });
+  $(".main-background").on("mouseleave", ".answer-card", function () {
+    $(this).find(".delete-card").css("visibility", "hidden");
+  });
   $(".main-background").on("click", ".answer-card-add", function () {
-    $(".answers-card").prepend([
-      `<div class="answer-card">
-        <input  type="text" placeholder='Kartu'/>
+    $(this)
+      .parent()
+      .prepend([
+        `<div class="answer-card">
+        <div class="answer-card-head">
+          <span>#1</span>
+          <i class="uil uil-draggabledots"></i>
+          <span style="color:transparent">#1</span>
+        </div>
+        <div class="answer-card-input">
+          <input required type="text" placeholder='Kartu'/>
+          <div class="delete-card">x</div>
+        </div>
       </div>`,
-    ]);
+      ]);
+    $(this)
+      .parent()
+      .find(".answer-card")
+      .each(function (index) {
+        $(this)
+          .find("span")
+          .html(`#${index + 1}`);
+      });
   });
   $(".main-background").on("change", ".jenis-ujian", function () {
     let jenis_ujian = $(this).find(":selected").val();
@@ -272,28 +371,7 @@ $(document).ready(() => {
     e.preventDefault();
     window.location = "/ujian";
   });
-  // $(".main-background").on("change", ".answer-card input", function () {
-  //   let index = $(this).parent().index();
-  //   let value = $(this).val();
-  //   const questionId = $(this).closest(".question").data("question-id");
-  //   tempArray.push({ index, value });
-
-  //   const questionIndex = allDataArray.findIndex(function (item) {
-  //     return item.questionId === questionId;
-  //   });
-
-  //   // If the question exists in the allDataArray, update its answers, otherwise add it as a new question
-  //   if (questionIndex !== -1) {
-  //     allDataArray[questionIndex].questionId = questionId;
-  //     allDataArray[questionIndex].answers = tempArray;
-  //   } else {
-  //     allDataArray.push({
-  //       questionId,
-  //       answers: tempArray,
-  //     });
-  //   }
-  //   console.log(allDataArray);
-  // });
+  $(".main-background").on("change", ".answer-card input", saveSort);
   // IMAGE INPUT
   $(".main-background").on("change", ".input-file", function () {
     let input_file = document.querySelectorAll(".input-file");

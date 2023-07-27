@@ -424,12 +424,15 @@ input[type="file"] {
 .assign-button {
   margin-top: 0.75rem;
   display: flex;
+  align-items: center;
   justify-content: space-between;
   padding: 0.5rem;
   background-color: white;
-  color: #358f6c;
+  font-size: 0.85rem;
+  color: black;
   border-radius: 5px;
   width: 25%;
+  font-family: "Arial", sans-serif;
 }
 .edit-button {
   cursor: pointer;
@@ -498,16 +501,33 @@ input[type="file"] {
   justify-content: space-between;
   gap: 2rem;
   margin-top: 1rem;
+  color: black;
 }
 .answer-card {
   cursor: grab;
   height: 150px;
   border-radius: 5px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   border: 1px solid gray;
   background-color: white;
+}
+
+.answer-card-head {
+  padding: 0.3rem 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+.answer-card-head i {
+  font-size: 1rem;
+  transform: rotate(90deg);
+}
+.answer-card-input {
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 .answer-card input {
   background-color: transparent;

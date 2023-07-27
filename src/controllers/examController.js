@@ -49,10 +49,11 @@ async function tambahExam(req, res) {
     if (Array.isArray(question_text)) {
       let question_with_img = req.body.index_deleted.split(",");
       let count = 0;
+      let answer_count = 0;
       question_text.forEach(async (qt, index) => {
         if (question_type[index] == "pilihan_ganda") {
           let wrong_answer = req.body.wrong_answer
-            .slice(index * 4, (index + 1) * 4)
+            .slice(answer_count * 4, (answer_count + 1) * 4)
             .join("|");
           let img = "";
           if (question_with_img.includes(index.toString())) {
@@ -65,9 +66,10 @@ async function tambahExam(req, res) {
           }
 
           let pilgan_answers = JSON.stringify({
-            wrong_answer,
-            correct_answer: correct_answer[index],
+            wrong_answer: wrong_answer,
+            correct_answer: correct_answer[answer_count],
           });
+          answer_count += 1;
 
           const question = await Question.create({
             question_text: question_text[index],
@@ -90,7 +92,6 @@ async function tambahExam(req, res) {
           let new_card_answer = card_answers[card_answer_index];
           card_answer_index += 1;
           let stringify_card_answer = JSON.stringify(new_card_answer);
-          console.log(stringify_card_answer);
           const question = await Question.create({
             question_text: question_text[index],
             question_img: img,
@@ -161,6 +162,7 @@ async function updateExam(req, res) {
       correct_answer,
       question_type,
       card_answers,
+      wrong_answer,
     } = req.body;
 
     let card_answer_index = 0;
@@ -214,38 +216,62 @@ async function updateExam(req, res) {
     if (Array.isArray(question_text)) {
       let question_with_img = req.body.index_deleted.split(",");
       let count = 0;
-      let bulkNewBody = [];
-      for (const [index, quest_id] of question_id.entries()) {
-        let wrong_answer = req.body.wrong_answer
-          .slice(index * 4, (index + 1) * 4)
-          .join("|");
-        let img = "";
-        if (question_with_img.includes(index.toString())) {
-          img = `${req.protocol + "://" + req.get("host")}/files/uploads/${
-            req.files[count].filename
-          }`;
-          count += 1;
-        } else {
-          img = null;
-        }
+      let wans_count = 0;
+      const bulkNewBody = await Promise.all(
+        question_id.map(async (quest_id, index) => {
+          let img = "";
+          if (question_with_img.includes(index.toString())) {
+            img = `${req.protocol}://${req.get("host")}/files/uploads/${
+              req.files[count].filename
+            }`;
+            count += 1;
+          } else {
+            img = null;
+          }
 
-        await Question.findOne({
-          where: {
-            unique_id: quest_id,
-          },
-        })
-          .then(() => {
+          if (question_type[index] === "pilihan_ganda") {
+            let newWrongAnswer = wrong_answer
+              .slice(wans_count * 4, (wans_count + 1) * 4)
+              .join("|");
+            wans_count += 1;
+            let c_answer_occur = question_type.filter(
+              (type) => type === "pilihan_ganda"
+            );
+            let newPilganAnswers;
+            if (c_answer_occur.length === 1) {
+              newPilganAnswers = JSON.stringify({
+                correct_answer: correct_answer,
+                wrong_answer: newWrongAnswer,
+              });
+            } else if (c_answer_occur.length > 1) {
+              newPilganAnswers = JSON.stringify({
+                correct_answer: correct_answer[index],
+                wrong_answer: newWrongAnswer,
+              });
+            }
+
+            return {
+              question_text: question_text[index],
+              question_img: img,
+              pilgan_answers: newPilganAnswers,
+              question_type: question_type[index],
+            };
+          } else if (question_type[index] == "kartu") {
+            let newCradAnswers = JSON.stringify(
+              card_answers[card_answer_index]
+            );
+            card_answer_index += 1;
             return (newBody = {
               question_text: question_text[index],
               question_img: img,
-              correct_answer: correct_answer[index],
-              wrong_answer: wrong_answer,
+              card_answers: newCradAnswers,
+              question_type: question_type[index],
             });
-          })
-          .then((newBody) => {
-            bulkNewBody.push(newBody);
-          });
-      }
+          }
+        })
+      );
+
+      // At this point, bulkNewBody should be an array of objects with the information you need.
 
       await Question.bulkCreate(bulkNewBody, {
         updateOnDuplicate: ["unique_id"],
