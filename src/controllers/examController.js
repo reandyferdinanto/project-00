@@ -49,10 +49,11 @@ async function tambahExam(req, res) {
     if (Array.isArray(question_text)) {
       let question_with_img = req.body.index_deleted.split(",");
       let count = 0;
+      let answer_count = 0;
       question_text.forEach(async (qt, index) => {
         if (question_type[index] == "pilihan_ganda") {
           let wrong_answer = req.body.wrong_answer
-            .slice(index * 4, (index + 1) * 4)
+            .slice(answer_count * 4, (answer_count + 1) * 4)
             .join("|");
           let img = "";
           if (question_with_img.includes(index.toString())) {
@@ -66,8 +67,9 @@ async function tambahExam(req, res) {
 
           let pilgan_answers = JSON.stringify({
             wrong_answer: wrong_answer,
-            correct_answer: correct_answer[index],
+            correct_answer: correct_answer[answer_count],
           });
+          answer_count += 1;
 
           const question = await Question.create({
             question_text: question_text[index],
@@ -90,7 +92,6 @@ async function tambahExam(req, res) {
           let new_card_answer = card_answers[card_answer_index];
           card_answer_index += 1;
           let stringify_card_answer = JSON.stringify(new_card_answer);
-          console.log(stringify_card_answer);
           const question = await Question.create({
             question_text: question_text[index],
             question_img: img,

@@ -4,35 +4,21 @@ const path = require("path");
 require("dotenv").config({ path: path.resolve(__dirname + "/./../../.env") });
 const Sequelize = require("sequelize");
 const basename = path.basename(__filename);
+let env = process.env.ENV_TYPE || "development";
+const config = require(__dirname + "/../config/dbConfig.json")[env];
 const db = {};
 
-let env_type = process.env.ENV_TYPE || "development";
 let sequelize;
 
-if (env_type == "production") {
-  sequelize = new Sequelize(
-    process.env.DB_NAME,
-    process.env.DB_USERNAME,
-    process.env.DB_PASSWORD,
-    {
-      host: process.env.DB_HOST,
-      dialect: "mysql",
-      logging: false,
-      dialectOptions: {
-        ssl: {
-          rejectUnauthorized: true,
-        },
-      },
-    }
-  );
-  console.log("db run on host");
+if (config.use_env_variable) {
+  sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
-  sequelize = new Sequelize("muslim-maya", "root", "181001", {
-    host: "localhost",
-    dialect: "mysql",
-    logging: false,
-  });
-  console.log("db run on local");
+  sequelize = new Sequelize(
+    config.database,
+    config.username,
+    config.password,
+    config
+  );
 }
 
 fs.readdirSync(__dirname)

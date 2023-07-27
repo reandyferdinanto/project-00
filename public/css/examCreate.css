@@ -410,16 +410,32 @@ input[name="wrong_answer"]::placeholder {
   justify-content: space-between;
   gap: 2rem;
   margin-top: 1rem;
+  color: black;
 }
 .answer-card {
   cursor: grab;
   height: 150px;
   border-radius: 5px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   border: 1px solid gray;
   background-color: white;
+}
+.answer-card-head {
+  padding: 0.3rem 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+.answer-card-head i {
+  font-size: 1rem;
+  transform: rotate(90deg);
+}
+.answer-card-input {
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 .answer-card input {
   background-color: transparent;

@@ -110,10 +110,24 @@ $(document).ready(() => {
     </div>
     <div class="answers-card">
       <div class="answer-card">
-        <input type="text" placeholder='Kartu 1'/>
+        <div class="answer-card-head">
+          <span>#1</span>
+          <i class="uil uil-draggabledots"></i>
+          <span style="color:transparent">#1</span>
+        </div>
+        <div class="answer-card-input">
+          <input type="text" placeholder='Kartu'/>
+        </div>
       </div>
       <div class="answer-card">
-        <input type="text" placeholder='Kartu 2'/>
+        <div class="answer-card-head">
+          <span>#2</span>
+          <i class="uil uil-draggabledots"></i>
+          <span style="color:transparent">#1</span>
+        </div>
+        <div class="answer-card-input">
+          <input type="text" placeholder='Kartu'/>
+        </div>
       </div>
       <div class="answer-card-add">
         <img src="/img/plus.png" alt="" width="40" />
@@ -159,6 +173,11 @@ $(document).ready(() => {
             answers: tempArray,
           });
         }
+        $(".answer-card").each(function (index) {
+          $(this)
+            .find("span")
+            .html(`#${index + 1}`);
+        });
         console.log(allDataArray);
       },
     });
@@ -210,6 +229,7 @@ $(document).ready(() => {
     $(".question:last-child").attr("data-question-id", questionId);
     initializeSortable();
     quest_length += 1;
+    tempArray = [];
   }
   function displayQueuedImages() {
     let img = "";
@@ -247,9 +267,21 @@ $(document).ready(() => {
   $(".main-background").on("click", ".answer-card-add", function () {
     $(".answers-card").prepend([
       `<div class="answer-card">
-        <input  type="text" placeholder='Kartu'/>
+        <div class="answer-card-head">
+          <span>#1</span>
+          <i class="uil uil-draggabledots"></i>
+          <span style="color:transparent">#1</span>
+        </div>
+        <div class="answer-card-input">
+          <input type="text" placeholder='Kartu'/>
+        </div>
       </div>`,
     ]);
+    $(".answer-card").each(function (index) {
+      $(this)
+        .find("span")
+        .html(`#${index + 1}`);
+    });
   });
   $(".main-background").on("change", ".jenis-ujian", function () {
     let jenis_ujian = $(this).find(":selected").val();
@@ -272,28 +304,26 @@ $(document).ready(() => {
     e.preventDefault();
     window.location = "/ujian";
   });
-  // $(".main-background").on("change", ".answer-card input", function () {
-  //   let index = $(this).parent().index();
-  //   let value = $(this).val();
-  //   const questionId = $(this).closest(".question").data("question-id");
-  //   tempArray.push({ index, value });
-
-  //   const questionIndex = allDataArray.findIndex(function (item) {
-  //     return item.questionId === questionId;
-  //   });
-
-  //   // If the question exists in the allDataArray, update its answers, otherwise add it as a new question
-  //   if (questionIndex !== -1) {
-  //     allDataArray[questionIndex].questionId = questionId;
-  //     allDataArray[questionIndex].answers = tempArray;
-  //   } else {
-  //     allDataArray.push({
-  //       questionId,
-  //       answers: tempArray,
-  //     });
-  //   }
-  //   console.log(allDataArray);
-  // });
+  $(".main-background").on("focusout", ".answer-card input", function () {
+    let index = $(this).parent().parent().index(); //answer card
+    let value = $(this).val(); //value input
+    const questionId = $(this).closest(".question").data("question-id");
+    tempArray.push({ index, value });
+    const questionIndex = allDataArray.findIndex(function (item) {
+      return item.questionId === questionId;
+    });
+    // If the question exists in the allDataArray, update its answers, otherwise add it as a new question
+    if (questionIndex !== -1) {
+      allDataArray[questionIndex].questionId = questionId;
+      allDataArray[questionIndex].answers = tempArray;
+    } else {
+      allDataArray.push({
+        questionId,
+        answers: tempArray,
+      });
+    }
+    console.log(allDataArray);
+  });
   // IMAGE INPUT
   $(".main-background").on("change", ".input-file", function () {
     let input_file = document.querySelectorAll(".input-file");
