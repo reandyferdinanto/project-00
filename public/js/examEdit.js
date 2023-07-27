@@ -219,11 +219,22 @@ $(document).ready(() => {
             </div>
             `,
           ]);
-          card_answers.forEach((answer) => {
+          card_answers.forEach((answer, index) => {
             $(".answers-card").prepend([
               `
               <div class="answer-card">
-                <input  type="text" placeholder='Kartu' value="${answer.value}"/>
+                <div class="answer-card-head">
+                  <span>#${card_answers.length - index}</span>
+                  <i class="uil uil-draggabledots"></i>
+                  <span style="color:transparent">#${
+                    card_answers.length - index
+                  }</span>
+                </div>
+                <div class="answer-card-input">
+                  <input name="kartu" required type="text" placeholder='Kartu' value="${
+                    answer.value
+                  }"/>
+                </div>
               </div>
               `,
             ]);
@@ -404,11 +415,28 @@ $(document).ready(() => {
     window.location = "/ujian";
   });
   $(".main-background").on("click", ".answer-card-add", function () {
-    $(".answers-card").prepend([
-      `<div class="answer-card">
-        <input  type="text" placeholder='Kartu'/>
-      </div>`,
-    ]);
+    $(this)
+      .parent()
+      .prepend([
+        `<div class="answer-card">
+          <div class="answer-card-head">
+            <span>#1</span>
+            <i class="uil uil-draggabledots"></i>
+            <span style="color:transparent">#1</span>
+          </div>
+          <div class="answer-card-input">
+            <input required type="text" placeholder='Kartu'/>
+          </div>
+        </div>`,
+      ]);
+    $(this)
+      .parent()
+      .find(".answer-card")
+      .each(function (index) {
+        $(this)
+          .find("span")
+          .html(`#${index + 1}`);
+      });
   });
 
   // IMAGE INPUT
