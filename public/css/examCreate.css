@@ -415,22 +415,30 @@ input[name="wrong_answer"]::placeholder {
 .answer-card {
   cursor: grab;
   height: 150px;
-  border-radius: 5px;
+  width: 100%;
+  border-radius: 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
   border: 1px solid gray;
   background-color: white;
+  position: relative;
 }
 .answer-card-head {
-  padding: 0.3rem 0;
+  padding: 0.3rem 1rem;
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  align-items: center;
 }
 .answer-card-head i {
-  font-size: 1rem;
+  color: rgba(53, 143, 108, 0.7);
+  font-size: 1.5rem;
   transform: rotate(90deg);
+}
+.answer-card-head span {
+  color: rgba(53, 143, 108, 0.9);
+  font-size: 1.1rem;
 }
 .answer-card-input {
   display: flex;
@@ -453,4 +461,20 @@ input[name="wrong_answer"]::placeholder {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.delete-card {
+  visibility: hidden;
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }

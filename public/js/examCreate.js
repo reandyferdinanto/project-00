@@ -117,6 +117,7 @@ $(document).ready(() => {
         </div>
         <div class="answer-card-input">
           <input name="kartu" required type="text" placeholder='Kartu'/>
+          <div class="delete-card">x</div>
         </div>
       </div>
       <div class="answer-card">
@@ -127,6 +128,7 @@ $(document).ready(() => {
         </div>
         <div class="answer-card-input">
           <input name="kartu" required type="text" placeholder='Kartu'/>
+          <div class="delete-card">x</div>
         </div>
       </div>
       <div class="answer-card-add">
@@ -265,6 +267,29 @@ $(document).ready(() => {
       return false;
     }
   }
+  function saveSort() {
+    tempArray = [];
+    let arr = $(this).parent().parent().parent().find("> .answer-card");
+    arr.each(function (index) {
+      tempArray.push({ index, value: $(this).find("input").val() });
+    });
+
+    const questionId = $(this).closest(".question").data("question-id");
+    const questionIndex = allDataArray.findIndex(function (item) {
+      return item.questionId === questionId;
+    });
+    // If the question exists in the allDataArray, update its answers, otherwise add it as a new question
+    if (questionIndex !== -1) {
+      allDataArray[questionIndex].questionId = questionId;
+      allDataArray[questionIndex].answers = tempArray;
+    } else {
+      allDataArray.push({
+        questionId,
+        answers: tempArray,
+      });
+    }
+    console.log(allDataArray);
+  }
 
   // ADD QUESTION BOX
   $("#add-question").on("click", addQuestionBox);
@@ -284,6 +309,22 @@ $(document).ready(() => {
     e.preventDefault();
     $(".file-layer").css("visibility", "hidden");
   });
+  $(".main-background").on("mouseover", ".answer-card", function () {
+    $(this).find(".delete-card").css("visibility", "visible");
+  });
+  $(".main-background").on("click", ".delete-card", function () {
+    $(this).parent().parent().remove();
+    $(".answers-card")
+      .find(".answer-card")
+      .each(function (index) {
+        $(this)
+          .find("span")
+          .html(`#${index + 1}`);
+      });
+  });
+  $(".main-background").on("mouseleave", ".answer-card", function () {
+    $(this).find(".delete-card").css("visibility", "hidden");
+  });
   $(".main-background").on("click", ".answer-card-add", function () {
     $(this)
       .parent()
@@ -296,6 +337,7 @@ $(document).ready(() => {
         </div>
         <div class="answer-card-input">
           <input required type="text" placeholder='Kartu'/>
+          <div class="delete-card">x</div>
         </div>
       </div>`,
       ]);
@@ -329,26 +371,7 @@ $(document).ready(() => {
     e.preventDefault();
     window.location = "/ujian";
   });
-  $(".main-background").on("change", ".answer-card input", function () {
-    let index = $(this).parent().parent().index(); //answer card
-    let value = $(this).val(); //value input
-    const questionId = $(this).closest(".question").data("question-id");
-    tempArray.push({ index, value });
-    const questionIndex = allDataArray.findIndex(function (item) {
-      return item.questionId === questionId;
-    });
-    // If the question exists in the allDataArray, update its answers, otherwise add it as a new question
-    if (questionIndex !== -1) {
-      allDataArray[questionIndex].questionId = questionId;
-      allDataArray[questionIndex].answers = tempArray;
-    } else {
-      allDataArray.push({
-        questionId,
-        answers: tempArray,
-      });
-    }
-    console.log(allDataArray);
-  });
+  $(".main-background").on("change", ".answer-card input", saveSort);
   // IMAGE INPUT
   $(".main-background").on("change", ".input-file", function () {
     let input_file = document.querySelectorAll(".input-file");
