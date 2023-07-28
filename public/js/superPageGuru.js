@@ -62,12 +62,17 @@ $(document).ready(() => {
     }
   });
   $("#selectAll").on("click", function () {
-    if ($(this).is(":checked")) {
+    if (this.checked) {
+      // Iterate each checkbox
       $(".hapus-button").attr("disabled", false);
-      $(".checkbox-delete").attr("checked", true);
+      $(":checkbox").each(function () {
+        this.checked = true;
+      });
     } else {
       $(".hapus-button").attr("disabled", true);
-      $(".checkbox-delete").attr("checked", false);
+      $(":checkbox").each(function () {
+        this.checked = false;
+      });
     }
   });
   $(".main-table-title").on("click", ".checkbox-delete", function () {

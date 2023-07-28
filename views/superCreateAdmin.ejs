@@ -69,13 +69,7 @@
             </div>
           </div>
         </form>
-        <div class="load-layer hide">
-          <div class="load-background">
-            <div class="custom-loader"></div>
-            <p>Sedang menambahkan</p>
-          </div>
-        </div>
-        <div class="complete-layer hide">
+        <div class="complete-layer">
           <div class="complete-background">
             <img src="/img/check.png" width="50" alt="" />
             <p>Admin berhasil di tambahkan</p>
@@ -116,16 +110,11 @@
         contentType: false,
         encrypt: "multipart/form-data",
         processData: false,
-        beforeSend: function () {
-          $(".load-layer").removeClass("hide");
-          $(".load-layer").css("visibility", "visible");
-          $(".submit-layer").css("visibility", "hidden");
-        },
         success: (response) => {
           $(".submit-layer").css("visibility", "hidden");
           if (response.payload.status_code == 201) {
-            $(".load-layer").addClass("hide");
             $(".complete-layer").removeClass("hide");
+            $(".complete-layer").css("visibility", "visible");
           } else if (response.payload.message == "you're not authenticated") {
             window.location = "/login";
           }
