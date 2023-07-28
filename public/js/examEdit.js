@@ -494,16 +494,11 @@ $(document).ready(() => {
       contentType: false,
       encrypt: "multipart/form-data",
       processData: false,
-      beforeSend: function () {
-        $(".load-layer").removeClass("hide");
-        $(".load-layer").css("visibility", "visible");
-        $(".submit-layer").css("visibility", "hidden");
-      },
       success: (response) => {
         $(".submit-layer").css("visibility", "hidden");
         if (response.payload.status_code == 200) {
-          $(".load-layer").addClass("hide");
           $(".complete-layer").removeClass("hide");
+          $(".complete-layer").css("visibility", "visible");
         } else if (response.payload.message == "you're not authenticated") {
           window.location = "/login";
         }
@@ -525,15 +520,11 @@ $(document).ready(() => {
       contentType: false,
       encrypt: "multipart/form-data",
       processData: false,
-      beforeSend: function () {
-        $(".load-layer-hapus").removeClass("hide");
-        $(".submit-hapus").css("visibility", "hidden");
-      },
       success: (response) => {
         $(".submit-hapus").css("visibility", "hidden");
         if (response.payload.status_code == 200) {
-          $(".load-layer-hapus").addClass("hide");
           $(".complete-layer-hapus").removeClass("hide");
+          $(".complete-layer-hapus").css("visibility", "visible");
         } else if (response.payload.message == "you're not authenticated") {
           window.location = "/login";
         }

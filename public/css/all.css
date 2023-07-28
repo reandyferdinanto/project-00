@@ -12,6 +12,10 @@
 .customTooltip .introjs-tooltip-title {
   color: #358f6c;
 }
+.complete-layer,
+.complete-layer-hapus {
+  visibility: hidden;
+}
 
 .load-layer,
 .complete-layer,

@@ -82,15 +82,11 @@ $(document).ready(() => {
       contentType: false,
       encrypt: "multipart/form-data",
       processData: false,
-      beforeSend: function () {
-        $(".load-layer").removeClass("hide");
-        $(".submit-layer").css("visibility", "hidden");
-      },
       success: (response) => {
         $(".submit-layer").css("visibility", "hidden");
         if (response.payload.status_code == 201) {
-          $(".load-layer").addClass("hide");
           $(".complete-layer").removeClass("hide");
+          $(".complete-layer").css("visibility", "visible");
         } else if (response.payload.message == "you're not authenticated") {
           window.location = "/login";
         }
@@ -113,16 +109,11 @@ $(document).ready(() => {
       contentType: false,
       encrypt: "multipart/form-data",
       processData: false,
-      beforeSend: function () {
-        $(".load-layer").removeClass("hide");
-        $(".load-layer").css("visibility", "visible");
-        $(".submit-layer").css("visibility", "hidden");
-      },
       success: (response) => {
         $(".submit-layer").css("visibility", "hidden");
         if (response.payload.status_code == 201) {
-          $(".load-layer").addClass("hide");
           $(".complete-layer").removeClass("hide");
+          $(".complete-layer").css("visibility", "visible");
         } else if (response.payload.message == "you're not authenticated") {
           window.location = "/login";
         }
