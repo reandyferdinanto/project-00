@@ -178,7 +178,6 @@ $(document).ready(() => {
             answers: tempArray,
           });
         }
-        console.log(allDataArray);
       },
     });
   }
@@ -246,50 +245,6 @@ $(document).ready(() => {
       document.querySelectorAll(".display_image")[index].innerHTML = img;
     });
   }
-  function validateForm() {
-    if ($("input[name=kartu]") == null) return true;
-    if ($("input[name=wrong_answer]") == null) return true;
-    if ($("input[name=correct_answer]") == null) return true;
-
-    if ($("input[name=kartu]").val() === "") {
-      alert("Kartu harus diisi!");
-      $("input[name=kartu]").focus();
-      return false;
-    }
-    if ($("input[name=wrong_answer]").val() === "") {
-      alert("Jawaban Lain harus diisi!");
-      $("input[name=kartu]").focus();
-      return false;
-    }
-    if ($("input[name=correct_answer]").val() === "") {
-      alert("Jawaban benar harus diisi!");
-      $("input[name=kartu]").focus();
-      return false;
-    }
-  }
-  function saveSort() {
-    tempArray = [];
-    let arr = $(this).parent().parent().parent().find("> .answer-card");
-    arr.each(function (index) {
-      tempArray.push({ index, value: $(this).find("input").val() });
-    });
-
-    const questionId = $(this).closest(".question").data("question-id");
-    const questionIndex = allDataArray.findIndex(function (item) {
-      return item.questionId === questionId;
-    });
-    // If the question exists in the allDataArray, update its answers, otherwise add it as a new question
-    if (questionIndex !== -1) {
-      allDataArray[questionIndex].questionId = questionId;
-      allDataArray[questionIndex].answers = tempArray;
-    } else {
-      allDataArray.push({
-        questionId,
-        answers: tempArray,
-      });
-    }
-    console.log(allDataArray);
-  }
 
   // ADD QUESTION BOX
   $("#add-question").on("click", addQuestionBox);
@@ -313,6 +268,7 @@ $(document).ready(() => {
     $(this).find(".delete-card").css("visibility", "visible");
   });
   $(".main-background").on("click", ".delete-card", function () {
+    let arr = $(this).closest(".answers-card");
     $(this).parent().parent().remove();
     $(".answers-card")
       .find(".answer-card")
@@ -321,6 +277,26 @@ $(document).ready(() => {
           .find("span")
           .html(`#${index + 1}`);
       });
+    tempArray = [];
+    arr = arr.find(".answer-card");
+    arr.each(function (index) {
+      tempArray.push({ index, value: $(this).find("input").val() });
+    });
+
+    const questionId = $(arr[0]).closest(".question").data("question-id");
+    const questionIndex = allDataArray.findIndex(function (item) {
+      return item.questionId === questionId;
+    });
+    // If the question exists in the allDataArray, update its answers, otherwise add it as a new question
+    if (questionIndex !== -1) {
+      allDataArray[questionIndex].questionId = questionId;
+      allDataArray[questionIndex].answers = tempArray;
+    } else {
+      allDataArray.push({
+        questionId,
+        answers: tempArray,
+      });
+    }
   });
   $(".main-background").on("mouseleave", ".answer-card", function () {
     $(this).find(".delete-card").css("visibility", "hidden");
@@ -371,7 +347,28 @@ $(document).ready(() => {
     e.preventDefault();
     window.location = "/ujian";
   });
-  $(".main-background").on("change", ".answer-card input", saveSort);
+  $(".main-background").on("change", ".answer-card input", function () {
+    tempArray = [];
+    let arr = $(this).parent().parent().parent().find("> .answer-card");
+    arr.each(function (index) {
+      tempArray.push({ index, value: $(this).find("input").val() });
+    });
+
+    const questionId = $(this).closest(".question").data("question-id");
+    const questionIndex = allDataArray.findIndex(function (item) {
+      return item.questionId === questionId;
+    });
+    // If the question exists in the allDataArray, update its answers, otherwise add it as a new question
+    if (questionIndex !== -1) {
+      allDataArray[questionIndex].questionId = questionId;
+      allDataArray[questionIndex].answers = tempArray;
+    } else {
+      allDataArray.push({
+        questionId,
+        answers: tempArray,
+      });
+    }
+  });
   // IMAGE INPUT
   $(".main-background").on("change", ".input-file", function () {
     let input_file = document.querySelectorAll(".input-file");
@@ -393,7 +390,6 @@ $(document).ready(() => {
     });
     displayQueuedImages();
   });
-
   $(".main-background").on("click", ".deleteImg", function (e) {
     let input_file = document.querySelectorAll(".input-file");
     let index = $(".display_image").index($(this).parent());
