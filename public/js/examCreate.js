@@ -73,7 +73,9 @@ $(document).ready(() => {
   });
 
   let queuedImagesArray = [];
+  let queuedImagesArrayAnswer = [];
   let question_with_img = [];
+  let answer_with_img = [];
   let allDataArray = [];
   let quest_length = 1;
   let tempArray = [];
@@ -82,15 +84,60 @@ $(document).ready(() => {
     <div class="display_image"></div>
     <textarea data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
     <div class="answers">
-      <input placeholder='jawaban benar' name='correct_answer' required  class='answer correct-answer'/>
-      <input placeholder='jawaban lain' name='wrong_answer' required  class='answer wrong-answer'/>
-      <input placeholder='jawaban lain' name='wrong_answer' required  class='answer'/>
-      <input placeholder='jawaban lain' name='wrong_answer' required  class='answer'/>
-      <input placeholder='jawaban lain' name='wrong_answer' required  class='answer'/>
+      <div class="answer-container" style="background-color:#2cc489;border: 2px solid white;">
+        <div class="answer-container-flex">
+          <input placeholder='jawaban benar' name='correct_answer' required  class='answer correct-answer'/>
+          <label class="custom-file-upload-question">
+            <input type="file" class="input-file-answer" multiple="multiple" name="answer_image_${quest_length}" accept="image/*"/>
+            <i class="uil uil-image-v" style="color:white"></i>
+          </label>
+        </div>
+        <div class="display_image_answer"></div>
+      </div>
+      <div class="answer-container">
+        <div class="answer-container-flex">
+          <input placeholder='jawaban lain' name='wrong_answer' required  class='answer'/>
+          <label class="custom-file-upload-question">
+            <input type="file" class="input-file-answer" multiple="multiple" name="answer_image_${quest_length}" accept="image/*"/>
+            <i class="uil uil-image-v"></i>
+          </label>
+        </div>
+        <div class="display_image_answer"></div>
+      </div>
+      <div class="answer-container">
+        <div class="answer-container-flex">
+          <input placeholder='jawaban lain' name='wrong_answer' required  class='answer'/>
+          <label class="custom-file-upload-question">
+            <input type="file" class="input-file-answer" multiple="multiple" name="answer_image_${quest_length}" accept="image/*"/>
+            <i class="uil uil-image-v"></i>
+          </label>
+        </div>
+        <div class="display_image_answer"></div>
+      </div>
+      <div class="answer-container">
+        <div class="answer-container-flex">
+          <input placeholder='jawaban lain' name='wrong_answer' required  class='answer'/>
+          <label class="custom-file-upload-question">
+            <input type="file" class="input-file-answer" multiple="multiple" name="answer_image_${quest_length}" accept="image/*"/>
+            <i class="uil uil-image-v"></i>
+          </label>
+        </div>
+        <div class="display_image_answer"></div>
+      </div>
+      <div class="answer-container">
+        <div class="answer-container-flex">
+          <input placeholder='jawaban lain' name='wrong_answer' required  class='answer'/>
+          <label class="custom-file-upload-question">
+            <input type="file" class="input-file-answer" multiple="multiple" name="answer_image_${quest_length}" accept="image/*"/>
+            <i class="uil uil-image-v"></i>
+          </label>
+        </div>
+        <div class="display_image_answer"></div>
+      </div>
       <div class="upload-img">
         <label class="custom-file-upload">
-            <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
-            <i class="uil uil-file-plus-alt"></i> Masukan Gambar
+          <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
+          <i class="uil uil-file-plus-alt"></i> Masukan Gambar
         </label>
         <p>*PNG/JPG/JPEG max. 200 kb</p>
       </div>
@@ -202,7 +249,7 @@ $(document).ready(() => {
       intro.start();
     }, 500);
   }
-  function addMoreQuestion() {
+  function addMoreQuestion(event) {
     // if (validateForm() == false) return;
     $(".questions").append([
       `
@@ -390,6 +437,44 @@ $(document).ready(() => {
     });
     displayQueuedImages();
   });
+  $(".main-background").on("change", ".input-file-answer", function () {
+    queuedImagesArrayAnswer = [];
+    answer_with_img.push(
+      `${$(this).closest(".question").index()},${$(this)
+        .closest(".answer-container")
+        .index()}`
+    );
+    $(this).attr(
+      "name",
+      `answer_image_${$(this).closest(".question").index()}`
+    );
+    let input_file_answer = $(this)
+      .closest(".question")
+      .find(".input-file-answer");
+    input_file_answer.each(function () {
+      queuedImagesArrayAnswer.push($(this).prop("files")[0]);
+    });
+    // DISPLAY IMG
+    let img = "";
+    queuedImagesArrayAnswer.forEach((image, index) => {
+      if (image !== undefined) {
+        img = `
+        <img src="${URL.createObjectURL(
+          image
+        )}" alt="no img" style="margin:1rem 0" />
+        <span title="Hapus Gambar" class="deleteImg"><i class="uil uil-times"></i></span>
+        `;
+      } else {
+        img = "";
+      }
+      let display_image_answer = $(this)
+        .closest(".question")
+        .find(".display_image_answer");
+      if (img !== "") {
+        display_image_answer[index].innerHTML = img;
+      }
+    });
+  });
   $(".main-background").on("click", ".deleteImg", function (e) {
     let input_file = document.querySelectorAll(".input-file");
     let index = $(".display_image").index($(this).parent());
@@ -408,6 +493,7 @@ $(document).ready(() => {
   manualForm.addEventListener("submit", (e) => {
     let formData = new FormData(manualForm);
     formData.append("index_deleted", question_with_img);
+    formData.append("answer_with_image", JSON.stringify(answer_with_img));
     formData.append("card_answers", JSON.stringify(allDataArray));
     e.preventDefault();
     $.ajax({

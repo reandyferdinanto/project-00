@@ -59,9 +59,9 @@ $(document).ready(() => {
                   if (correct.length !== 0) {
                     return correct[0].exam_name;
                   }
-                  return "Belum mengambil ujian";
+                  return `<p style="color: #ff4c4c;margin:0;">Belum Mengambil Ujian</p>`;
                 } else {
-                  return "Belum mengambil ujian";
+                  return `<p style="color: #ff4c4c;margin:0;">Belum Mengambil Ujian</p>`;
                 }
               },
             },
@@ -199,9 +199,9 @@ $(document).ready(() => {
               if (correct.length !== 0) {
                 return correct[0].exam_name;
               }
-              return "Belum mengambil ujian";
+              return `<p style="color: #ff4c4c;margin:0;">Belum Mengambil Ujian</p>`;
             } else {
-              return "Belum mengambil ujian";
+              return `<p style="color: #ff4c4c;margin:0;">Belum Mengambil Ujian</p>`;
             }
           },
         },

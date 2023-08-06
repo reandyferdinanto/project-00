@@ -91,6 +91,9 @@ $(document).ready(() => {
           window.location = "/login";
         }
       },
+      error: function (request, status, error) {
+        alert("Error: " + request.responseJSON.payload.message);
+      },
     });
   });
 
