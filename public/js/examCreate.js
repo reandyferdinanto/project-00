@@ -462,7 +462,7 @@ $(document).ready(() => {
         <img src="${URL.createObjectURL(
           image
         )}" alt="no img" style="margin:1rem 0" />
-        <span title="Hapus Gambar" class="deleteImg"><i class="uil uil-times"></i></span>
+        <span title="Hapus Gambar" class="deleteImgAnswer"><i class="uil uil-times"></i></span>
         `;
       } else {
         img = "";
@@ -487,6 +487,14 @@ $(document).ready(() => {
       question_with_img.splice(index_deleted, 1);
     }
     document.querySelectorAll(".display_image")[index].style.display = "none";
+  });
+  $(".main-background").on("click", ".deleteImgAnswer", function (e) {
+    $(this)
+      .closest(".answer-container")
+      .find(".input-file-answer")
+      .prop("type", "text")
+      .prop("type", "file");
+    $(this).closest(".display_image_answer").html("");
   });
 
   const manualForm = document.getElementById("submit-form");
