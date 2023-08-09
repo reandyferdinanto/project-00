@@ -438,6 +438,7 @@ $(document).ready(() => {
     displayQueuedImages();
   });
   $(".main-background").on("change", ".input-file-answer", function () {
+    $(this).closest(".answer-container").find(".answer").prop('required',false);
     queuedImagesArrayAnswer = [];
     answer_with_img.push(
       `${$(this).closest(".question").index()},${$(this)

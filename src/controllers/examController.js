@@ -55,9 +55,6 @@ async function tambahExam(req, res) {
       // LOOP THROUGH QUESTION
       question_text.forEach(async (qt, index) => {
         if (question_type[index] == "pilihan_ganda") {
-          let wrong_answer = req.body.wrong_answer
-            .slice(answer_count * 4, (answer_count + 1) * 4)
-            .join("|");
           let img = "";
           if (question_with_img.includes(index.toString())) {
             img = `${req.protocol + "://" + req.get("host")}/files/uploads/${
@@ -72,31 +69,24 @@ async function tambahExam(req, res) {
           const filteredData = req.files.filter(
             (item) => item.fieldname === `answer_image_${index}`
           );
-          const filtered_answer_with_image = answer_with_image.filter(
-            (item) => {
-              return item.startsWith(`${index},`);
-            }
-          );
-          let answer_image = filteredData.map((img, index_map) => {
-            return {
-              index: filtered_answer_with_image[index_map].split(",")[1],
-              value: `${req.protocol + "://" + req.get("host")}/files/uploads/${
-                img.filename
-              }`,
-            };
-          });
 
-          let pilgan_answers = JSON.stringify({
-            wrong_answer: wrong_answer,
-            correct_answer: correct_answer[answer_count],
-            image_answer: answer_image,
-          });
+          let answers = [...correct_answer, ...req.body.wrong_answer]
+          let pilgan_answers = answers.slice(answer_count * 5, (answer_count + 1) * 5).map((ans, index_ans) => {
+            return {
+              index: index_ans,
+              answer: ans,
+              image: filteredData[index_ans] !== undefined ? `${req.protocol + "://" + req.get("host")}/files/uploads/${
+                filteredData[index_ans].filename
+              }` : null
+            }
+          })
           answer_count += 1;
+          console.log(pilgan_answers);
 
           const question = await Question.create({
             question_text: question_text[index],
             question_img: img,
-            pilgan_answers,
+            pilgan_answers: JSON.stringify(pilgan_answers),
             question_type: question_type[index],
           });
           exam.addQuestions(question);
@@ -126,33 +116,23 @@ async function tambahExam(req, res) {
       exam.addScores(score);
     } else {
       if (question_type == "pilihan_ganda") {
-        let wrong_answer = req.body.wrong_answer.join("|");
-        // -----------ANSWER IMAGE HANDLE-----------
+        // // -----------ANSWER IMAGE HANDLE-----------
         const filteredData = req.files.filter(
           (item) => item.fieldname === `answer_image_0`
         );
-        console.log(filteredData);
-        console.log(answer_with_image);
-        const filtered_answer_with_image = answer_with_image.filter((item) =>
-          item.startsWith(`0,`)
-        );
-        console.log(filtered_answer_with_image);
-        let answer_image = filteredData.map((img, index_map) => {
+
+        let answers = [correct_answer, ...req.body.wrong_answer]
+        let pilgan_answers = answers.map((ans,index) => {
           return {
-            index: filtered_answer_with_image[index_map].split(",")[1],
-            value: `${req.protocol + "://" + req.get("host")}/files/uploads/${
-              img.filename
-            }`,
-          };
-        });
-        console.log(answer_image);
+            index,
+            answer: ans,
+            image: filteredData[index] !== undefined ? `${req.protocol + "://" + req.get("host")}/files/uploads/${
+              filteredData[index].filename
+            }` : null
+          }
+        })
 
         // ----------END HANDLE---------------
-        let pilgan_answers = {
-          correct_answer,
-          wrong_answer,
-          image_answer: answer_image,
-        };
         pilgan_answers = JSON.stringify(pilgan_answers);
         const question = await Question.create({
           question_text,
