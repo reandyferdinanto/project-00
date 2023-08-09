@@ -70,8 +70,9 @@ async function tambahExam(req, res) {
             (item) => item.fieldname === `answer_image_${index}`
           );
 
-          let answers = [...correct_answer, ...req.body.wrong_answer]
-          let pilgan_answers = answers.slice(answer_count * 5, (answer_count + 1) * 5).map((ans, index_ans) => {
+          let answers = [correct_answer[answer_count], ...req.body.wrong_answer.slice(answer_count * 4, (answer_count + 1) * 4)]
+          console.log(answers);
+          let pilgan_answers = answers.map((ans, index_ans) => {
             return {
               index: index_ans,
               answer: ans,
@@ -81,7 +82,6 @@ async function tambahExam(req, res) {
             }
           })
           answer_count += 1;
-          console.log(pilgan_answers);
 
           const question = await Question.create({
             question_text: question_text[index],
