@@ -292,10 +292,20 @@ input[type="file"] {
 .display_image {
   width: 100%;
   height: 300px;
+  /* border: 1px solid white; */
+  border-radius: 15px;
   margin-bottom: 1rem;
-  display: none;
   justify-content: center;
   align-items: center;
+  display: none;
+}
+.display_image_answer {
+  /* border: 1px solid white; */
+  border-radius: 15px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  position: relative;
 }
 
 .display_image img {
@@ -303,7 +313,11 @@ input[type="file"] {
   height: 90%;
   object-fit: contain;
 }
-
+.display_image_answer img {
+  height: 200px;
+  object-fit: contain;
+  margin: 1rem 0;
+}
 .display_image span {
   margin-bottom: auto;
   margin-left: -15px;
@@ -319,6 +333,21 @@ input[type="file"] {
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   transition: 0.3s;
+}
+.display_image_answer span {
+  position: absolute;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f6f6f6;
+  color: #358f6c;
+  width: 30px;
+  height: 30px;
+  /* padding: 0.3rem; */
+  border-radius: 100%;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 .display_image span:hover {
   transform: scale(1.1);

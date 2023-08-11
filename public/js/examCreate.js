@@ -82,13 +82,13 @@ $(document).ready(() => {
   let question_pilgan = `
   <div class="question_pilgan">  
     <div class="display_image"></div>
-    <textarea data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
+    <textarea data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal" required></textarea>
     <div class="answers">
       <div class="answer-container" style="background-color:#2cc489;border: 2px solid white;">
         <div class="answer-container-flex">
-          <input placeholder='jawaban benar' name='correct_answer' required  class='answer correct-answer'/>
+          <input placeholder='jawaban benar' name='correct_answer' class='answer correct-answer'/>
           <label class="custom-file-upload-question">
-            <input type="file" class="input-file-answer" multiple="multiple" name="answer_image_${quest_length}" accept="image/*"/>
+            <input type="file" class="input-file-answer" multiple="multiple" name="answer_image_${quest_length}0" accept="image/*"/>
             <i class="uil uil-image-v" style="color:white"></i>
           </label>
         </div>
@@ -96,9 +96,9 @@ $(document).ready(() => {
       </div>
       <div class="answer-container">
         <div class="answer-container-flex">
-          <input placeholder='jawaban lain' name='wrong_answer' required  class='answer'/>
+          <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
           <label class="custom-file-upload-question">
-            <input type="file" class="input-file-answer" multiple="multiple" name="answer_image_${quest_length}" accept="image/*"/>
+            <input type="file" class="input-file-answer" multiple="multiple" name="answer_image_${quest_length}1" accept="image/*"/>
             <i class="uil uil-image-v"></i>
           </label>
         </div>
@@ -106,9 +106,9 @@ $(document).ready(() => {
       </div>
       <div class="answer-container">
         <div class="answer-container-flex">
-          <input placeholder='jawaban lain' name='wrong_answer' required  class='answer'/>
+          <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
           <label class="custom-file-upload-question">
-            <input type="file" class="input-file-answer" multiple="multiple" name="answer_image_${quest_length}" accept="image/*"/>
+            <input type="file" class="input-file-answer" multiple="multiple" name="answer_image_${quest_length}2" accept="image/*"/>
             <i class="uil uil-image-v"></i>
           </label>
         </div>
@@ -116,9 +116,9 @@ $(document).ready(() => {
       </div>
       <div class="answer-container">
         <div class="answer-container-flex">
-          <input placeholder='jawaban lain' name='wrong_answer' required  class='answer'/>
+          <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
           <label class="custom-file-upload-question">
-            <input type="file" class="input-file-answer" multiple="multiple" name="answer_image_${quest_length}" accept="image/*"/>
+            <input type="file" class="input-file-answer" multiple="multiple" name="answer_image_${quest_length}3" accept="image/*"/>
             <i class="uil uil-image-v"></i>
           </label>
         </div>
@@ -126,9 +126,9 @@ $(document).ready(() => {
       </div>
       <div class="answer-container">
         <div class="answer-container-flex">
-          <input placeholder='jawaban lain' name='wrong_answer' required  class='answer'/>
+          <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
           <label class="custom-file-upload-question">
-            <input type="file" class="input-file-answer" multiple="multiple" name="answer_image_${quest_length}" accept="image/*"/>
+            <input type="file" class="input-file-answer" multiple="multiple" name="answer_image_${quest_length}4" accept="image/*"/>
             <i class="uil uil-image-v"></i>
           </label>
         </div>
@@ -438,7 +438,6 @@ $(document).ready(() => {
     displayQueuedImages();
   });
   $(".main-background").on("change", ".input-file-answer", function () {
-    $(this).closest(".answer-container").find(".answer").prop('required',false);
     queuedImagesArrayAnswer = [];
     answer_with_img.push(
       `${$(this).closest(".question").index()},${$(this)
@@ -447,7 +446,7 @@ $(document).ready(() => {
     );
     $(this).attr(
       "name",
-      `answer_image_${$(this).closest(".question").index()}`
+      `answer_image_${$(this).closest(".question").index()}${$(this).closest(".question").find(".input-file-answer").index($(this))}`
     );
     let input_file_answer = $(this)
       .closest(".question")

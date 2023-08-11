@@ -9,17 +9,19 @@ $(document).ready(() => {
   let unique_id = window.location.href.substring(
     window.location.href.lastIndexOf("/") + 1
   );
+  let promisesAnswerImage
   let question_id = [];
   let allDataArray = [];
   let tempArray = [];
+  let question_type = []
   let question_pilgan = `
   <div class="question_pilgan">  
     <div class="display_image"></div>
-    <textarea data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
+    <textarea data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal" required></textarea>
     <div class="answers">
       <div class="answer-container" style="background-color:#2cc489;border: 2px solid white;">
         <div class="answer-container-flex">
-          <input placeholder='jawaban benar' name='correct_answer' required  class='answer correct-answer'/>
+          <input placeholder='jawaban benar' name='correct_answer'  class='answer correct-answer'/>
           <label class="custom-file-upload-question">
             <input type="file" class="input-file-answer" multiple="multiple" name="" accept="image/*"/>
             <i class="uil uil-image-v" style="color:white"></i>
@@ -29,7 +31,7 @@ $(document).ready(() => {
       </div>
       <div class="answer-container">
         <div class="answer-container-flex">
-          <input placeholder='jawaban lain' name='wrong_answer' required class='answer wrong-answer'/>
+          <input placeholder='jawaban lain' name='wrong_answer' class='answer wrong-answer'/>
           <label class="custom-file-upload-question">
             <input type="file" class="input-file-answer" multiple="multiple" name="" accept="image/*"/>
             <i class="uil uil-image-v"></i>
@@ -39,7 +41,7 @@ $(document).ready(() => {
       </div>
       <div class="answer-container">
         <div class="answer-container-flex">
-          <input placeholder='jawaban lain' name='wrong_answer' required class='answer wrong-answer'/>
+          <input placeholder='jawaban lain' name='wrong_answer' class='answer wrong-answer'/>
           <label class="custom-file-upload-question">
             <input type="file" class="input-file-answer" multiple="multiple" name="" accept="image/*"/>
             <i class="uil uil-image-v"></i>
@@ -49,7 +51,7 @@ $(document).ready(() => {
       </div>
       <div class="answer-container">
         <div class="answer-container-flex">
-          <input placeholder='jawaban lain' name='wrong_answer' required class='answer wrong-answer'/>
+          <input placeholder='jawaban lain' name='wrong_answer' class='answer wrong-answer'/>
           <label class="custom-file-upload-question">
             <input type="file" class="input-file-answer" multiple="multiple" name="" accept="image/*"/>
             <i class="uil uil-image-v"></i>
@@ -59,7 +61,7 @@ $(document).ready(() => {
       </div>
       <div class="answer-container">
         <div class="answer-container-flex">
-          <input placeholder='jawaban lain' name='wrong_answer' required class='answer wrong-answer'/>
+          <input placeholder='jawaban lain' name='wrong_answer' class='answer wrong-answer'/>
           <label class="custom-file-upload-question">
             <input type="file" class="input-file-answer" multiple="multiple" name="" accept="image/*"/>
             <i class="uil uil-image-v"></i>
@@ -128,7 +130,6 @@ $(document).ready(() => {
             answers: tempArray,
           });
         }
-        console.log(allDataArray);
       },
       update: function (event, ui) {
         const sortedElements = $(this).find("> .answer-card");
@@ -157,11 +158,10 @@ $(document).ready(() => {
             answers: tempArray,
           });
         }
-        console.log(allDataArray);
       },
     });
   }
-  function displayQueuedImages() {
+  function displayQuestionImage() {
     $(".input-file").each(function(idx){
       if($(this)[0].files[0]){
         $(".display_image").eq(idx).css('display', 'flex')
@@ -170,6 +170,19 @@ $(document).ready(() => {
           <span title="Hapus Gambar" class="deleteImg"><i class="uil uil-times"></i></span>
         `)
       };
+    })
+  }
+  function displayAnswerImage() {
+    $(".answers").each(function(idx){
+      $(this).find(".input-file-answer").each(function(){
+        if($(this)[0].files[0]){
+          $(this).closest(".answer-container").find(".display_image_answer").css('display', 'flex')
+          $(this).closest(".answer-container").find(".display_image_answer").html(`
+            <img src="${URL.createObjectURL($(this)[0].files[0])}" alt="no img" />
+            <span title="Hapus Gambar" class="deleteImgAnswer"><i class="uil uil-times"></i></span>
+          `)
+        }
+      })
     })
   }
   function getImgBlob(url) {
@@ -223,6 +236,9 @@ $(document).ready(() => {
           </div>
         `,
     ]);
+    $(".input-file-answer").each(function(){
+      $(this).attr("name",`answer_image_${index-1}`)
+    })
   }
 
   // Initialize Exam
@@ -237,6 +253,8 @@ $(document).ready(() => {
       $("#available_try").val(exams_data.available_try);
       // Loop through Questions
       exams_data.Questions.forEach(async (question, index) => {
+        question_type.push(question.question_type)
+        question_id.push(question.unique_id)
         // Initialize Question Pilihan Ganda
         if (question.question_type == "pilihan_ganda"){
           let pilgan_answers = JSON.parse(question.pilgan_answers)
@@ -245,6 +263,19 @@ $(document).ready(() => {
           $(".question").eq(index).find(".correct-answer").val(pilgan_answers[0].answer)
           $(".question").eq(index).find(".wrong-answer").each(function(idx){
             $(this).val(pilgan_answers[idx+1].answer)
+          })
+
+          // Image Processing
+          pilgan_answers.forEach(async(answer, idx) => {
+            if(answer.image){
+              await getImgBlob(answer.image).then(blob => {
+                let file = new File([blob], "image", {type: blob.type})
+                const container = new DataTransfer();
+                container.items.add(file);
+                $(".answers").eq(index).find(".input-file-answer").eq(idx)[0].files = container.files;
+                displayAnswerImage()
+              })
+            }
           })
         }
         // Initialize Question Tipe Kartu
@@ -277,7 +308,7 @@ $(document).ready(() => {
             const container = new DataTransfer();
             container.items.add(file);
             $(".input-file").eq(index)[0].files = container.files;
-            displayQueuedImages()
+            displayQuestionImage()
           });
         }
       })
@@ -475,7 +506,6 @@ $(document).ready(() => {
         answers: tempArray,
       });
     }
-    console.log(allDataArray);
   });
   $(".main-background").on("click", ".delete-card", function () {
     let arr = $(this).closest(".answers-card");
@@ -507,7 +537,6 @@ $(document).ready(() => {
         answers: tempArray,
       });
     }
-    console.log(allDataArray);
   }); 
   $(".assign-bg .close").click(function () {
     $(".assign-layer").css("visibility", "hidden");
@@ -517,8 +546,47 @@ $(document).ready(() => {
   });
 
   // IMAGE INPUT
-  $(".main-background").on("change", ".input-file", displayQueuedImages);
+  $(".main-background").on("change", ".input-file", displayQuestionImage);
 
+  $(".main-background").on("change", ".input-file-answer", function () {
+    $(this).closest(".answer-container").find(".answer").prop('required',false);
+    queuedImagesArrayAnswer = [];
+    answer_with_img.push(
+      `${$(this).closest(".question").index()},${$(this)
+        .closest(".answer-container")
+        .index()}`
+    );
+    $(this).attr(
+      "name",
+      `answer_image_${$(this).closest(".question").index()}`
+    );
+    let input_file_answer = $(this)
+      .closest(".question")
+      .find(".input-file-answer");
+    input_file_answer.each(function () {
+      queuedImagesArrayAnswer.push($(this).prop("files")[0]);
+    });
+    // DISPLAY IMG
+    let img = "";
+    queuedImagesArrayAnswer.forEach((image, index) => {
+      if (image !== undefined) {
+        img = `
+        <img src="${URL.createObjectURL(
+          image
+        )}" alt="no img" style="margin:1rem 0" />
+        <span title="Hapus Gambar" class="deleteImgAnswer"><i class="uil uil-times"></i></span>
+        `;
+      } else {
+        img = "";
+      }
+      let display_image_answer = $(this)
+        .closest(".question")
+        .find(".display_image_answer");
+      if (img !== "") {
+        display_image_answer[index].innerHTML = img;
+      }
+    });
+  });
   $(".main-background").on("click", ".deleteImg", function (e) {
     let input_file = document.querySelectorAll(".input-file");
     let index = $(".display_image").index($(this).parent());
@@ -533,6 +601,14 @@ $(document).ready(() => {
 
     document.querySelectorAll(".display_image")[index].style.display = "none";
   });
+  $(".main-background").on("click", ".deleteImgAnswer", function (e) {
+    $(this)
+      .closest(".answer-container")
+      .find(".input-file-answer")
+      .prop("type", "text")
+      .prop("type", "file");
+    $(this).closest(".display_image_answer").html("");
+  });
 
   // UPDATE FORM SUBMIT
   const manualForm = document.getElementById("submit-form");
@@ -542,6 +618,7 @@ $(document).ready(() => {
     formData.append("question_unique_id", question_id);
     formData.append("index_deleted", question_with_img);
     formData.append("card_answers", JSON.stringify(allDataArray));
+    formData.append("question_type", question_type)
     e.preventDefault();
     $.ajax({
       url: "/api/exams",
