@@ -5,11 +5,11 @@ $(document).ready(() => {
   }));
 
   let question_with_img = [];
+  let queuedImagesArrayAnswer = [];
   let users;
   let unique_id = window.location.href.substring(
     window.location.href.lastIndexOf("/") + 1
   );
-  let promisesAnswerImage
   let question_id = [];
   let allDataArray = [];
   let tempArray = [];
@@ -21,7 +21,7 @@ $(document).ready(() => {
     <div class="answers">
       <div class="answer-container" style="background-color:#2cc489;border: 2px solid white;">
         <div class="answer-container-flex">
-          <input placeholder='jawaban benar' name='correct_answer'  class='answer correct-answer'/>
+          <input placeholder='jawaban benar' name='correct_answer' class='answer correct-answer'/>
           <label class="custom-file-upload-question">
             <input type="file" class="input-file-answer" multiple="multiple" name="" accept="image/*"/>
             <i class="uil uil-image-v" style="color:white"></i>
@@ -237,7 +237,7 @@ $(document).ready(() => {
         `,
     ]);
     $(".input-file-answer").each(function(){
-      $(this).attr("name",`answer_image_${index-1}`)
+      $(this).attr("name",`answer_image_${$(this).closest(".question").index()}${$(this).closest(".question").find(".input-file-answer").index($(this))}`)
     })
   }
 
@@ -549,16 +549,10 @@ $(document).ready(() => {
   $(".main-background").on("change", ".input-file", displayQuestionImage);
 
   $(".main-background").on("change", ".input-file-answer", function () {
-    $(this).closest(".answer-container").find(".answer").prop('required',false);
     queuedImagesArrayAnswer = [];
-    answer_with_img.push(
-      `${$(this).closest(".question").index()},${$(this)
-        .closest(".answer-container")
-        .index()}`
-    );
     $(this).attr(
       "name",
-      `answer_image_${$(this).closest(".question").index()}`
+      `answer_image_${$(this).closest(".question").index()}${$(this).closest(".question").find(".input-file-answer").index($(this))}`
     );
     let input_file_answer = $(this)
       .closest(".question")

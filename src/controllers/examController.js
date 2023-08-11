@@ -200,7 +200,6 @@ async function updateExam(req, res) {
       correct_answer,
       question_type,
       card_answers,
-      wrong_answer,
     } = req.body;
 
     let card_answer_index = 0;
@@ -252,15 +251,19 @@ async function updateExam(req, res) {
     // UPDATE QUESTION
     // IF QUESTION > 1
     if (Array.isArray(question_text)) {
+      question_type = question_type.split(',')
       let question_with_img = req.body.index_deleted.split(",");
       let count = 0;
-      let wans_count = 0;
+      let answer_count = 0;
       const bulkNewBody = await Promise.all(
         question_id.map(async (quest_id, index) => {
+          const question_image = req.files.filter(
+            (item) => item.fieldname === `question_img`
+          );
           let img = "";
           if (question_with_img.includes(index.toString())) {
-            img = `${req.protocol}://${req.get("host")}/files/uploads/${
-              req.files[count].filename
+            img = `${req.protocol + "://" + req.get("host")}/files/uploads/${
+              question_image[count].filename
             }`;
             count += 1;
           } else {
@@ -268,30 +271,31 @@ async function updateExam(req, res) {
           }
 
           if (question_type[index] === "pilihan_ganda") {
-            let newWrongAnswer = wrong_answer
-              .slice(wans_count * 4, (wans_count + 1) * 4)
-              .join("|");
-            wans_count += 1;
-            let c_answer_occur = question_type.filter(
-              (type) => type === "pilihan_ganda"
-            );
-            let newPilganAnswers;
-            if (c_answer_occur.length === 1) {
-              newPilganAnswers = JSON.stringify({
-                correct_answer: correct_answer,
-                wrong_answer: newWrongAnswer,
-              });
-            } else if (c_answer_occur.length > 1) {
-              newPilganAnswers = JSON.stringify({
-                correct_answer: correct_answer[index],
-                wrong_answer: newWrongAnswer,
-              });
-            }
+            // HANDLE IMAGE
+            const filteredData = req.files.filter((item,idx) =>{
+              return item.fieldname.startsWith("answer_image_")
+            });
+
+            let answers = [correct_answer[answer_count], ...req.body.wrong_answer.slice(answer_count * 4, (answer_count + 1) * 4)]
+            let pilgan_answers = answers.map((ans, index_ans) => {
+              let answer_img = filteredData.filter(item => {
+                return item.fieldname == `answer_image_${index}${index_ans}`
+              })
+              return {
+                index: index_ans,
+                answer: ans,
+                image: answer_img.length !== 0 ? `${req.protocol + "://" + req.get("host")}/files/uploads/${
+                  answer_img[0].filename
+                }` : null
+              }
+            })
+            console.log(pilgan_answers);
+            answer_count += 1;
 
             return {
               question_text: question_text[index],
               question_img: img,
-              pilgan_answers: newPilganAnswers,
+              pilgan_answers: JSON.stringify(pilgan_answers),
               question_type: question_type[index],
             };
           } else if (question_type[index] == "kartu") {
@@ -309,6 +313,8 @@ async function updateExam(req, res) {
         })
       );
 
+      console.log(bulkNewBody);
+
       await Question.bulkCreate(bulkNewBody, {
         updateOnDuplicate: ["unique_id"],
       }).then(async (result) => {
@@ -325,7 +331,7 @@ async function updateExam(req, res) {
       if (question_type == "pilihan_ganda") {
         // // -----------ANSWER IMAGE HANDLE-----------
         const filteredData = req.files.filter(
-          (item) => item.fieldname === `answer_image_0`
+          (item) => item.fieldname.startsWith("answer_image_")
         );
         const question_image = req.files.filter(
           (item) => item.fieldname === `question_img`
@@ -333,11 +339,14 @@ async function updateExam(req, res) {
 
         let answers = [correct_answer, ...req.body.wrong_answer]
         let pilgan_answers = answers.map((ans,index) => {
+          let answer_img = filteredData.filter(item => {
+            return item.fieldname == `answer_image_0${index}`
+          })
           return {
             index,
             answer: ans,
-            image: filteredData[index] !== undefined ? `${req.protocol + "://" + req.get("host")}/files/uploads/${
-              filteredData[index].filename
+            image: answer_img[0] !== undefined ? `${req.protocol + "://" + req.get("host")}/files/uploads/${
+              answer_img[0].filename
             }` : null
           }
         })
