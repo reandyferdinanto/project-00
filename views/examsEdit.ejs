@@ -4,8 +4,8 @@
   <!-- NAV -->
   <%- include('./layouts/navbar'); -%>
 
-  <!-- MAIN -->
   <main>
+    <!-- SIDEBAR START -->
     <div class="main-sidebar">
       <div class="profile-sidebar">
         <div class="profile-img">
@@ -23,9 +23,13 @@
         <a href="/nilai">Nilai</a>
       </div>
     </div>
+    <!-- SIDEBAR END -->
+
 
     <div class="main-content">
       <div class="main-background">
+
+        <!-- HAPUS UJIAN START -->
         <div class="main-title">
           <h2>Mengubah Ujian</h2>
           <form action="" id="hapus-ujian">
@@ -42,7 +46,11 @@
             </div>
           </form>
         </div>
+        <!-- HAPUS UJIAN START -->
+
+
         <form id="submit-form" action="/api/exams">
+          <!-- EXAM START -->
           <div class="main-input">
             <label for="">
               Nama Ujian <br />
@@ -94,6 +102,9 @@
               </div>
             </div>
           </div>
+          <!-- EXAM END -->
+
+          <!-- SUBMIT LAYER START -->
           <div class="submit-layer">
             <div class="submit-question">
               <img src="/img/warning-alt.png" alt="" width="150" />
@@ -104,7 +115,9 @@
               </div>
             </div>
           </div>
+          <!-- SUBMIT LAYER END -->
 
+          <!-- WARNING LAYER START -->
           <div class="file-layer">
             <div class="file-toolarge">
               File terlalu besar <br />
@@ -112,6 +125,8 @@
               <button>Ok</button>
             </div>
           </div>
+          <!-- WARNING LAYER END -->
+
           <div class="questions-box">
             <div class="questions"></div>
           </div>
