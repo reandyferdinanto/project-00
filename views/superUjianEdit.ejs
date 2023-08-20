@@ -17,9 +17,11 @@
         </div>
       </div>
       <div class="list-sidebar">
-        <a href="/admin" class="selected">Daftar Admin</a>
-        <a href="/guru">Daftar Guru</a>
-        <a href="/tipe_ujian">Topik Ujian</a>
+        <a href="/admin">Daftar Admin</a>
+        <a href="/siswa">Daftar Siswa</a>
+        <a href="/admin/tipe_ujian" class="selected">Topik Ujian</a>
+        <a href="/ujian">Ujian</a>
+        <a href="/nilai">Nilai</a>
       </div>
     </div>
 
@@ -27,32 +29,22 @@
       <div class="main-background">
         <div class="main-title">
           <h2>
-            Menambahkan Admin Baru
+            Mengubah Topik Ujian
             <span style="color: #ff4c4c; font-size: 0.7rem">*harus diisi</span>
           </h2>
         </div>
         <form id="submit-form">
           <div class="main-input">
-            <label for="">Email<span style="color: #ff4c4c"> *</span></label>
+            <label for=""
+              >Topik Ujian<span style="color: #ff4c4c"> *</span></label
+            >
             <input
               class="nama-input"
               required
               type="text"
-              name="email"
-              id=""
-              placeholder="Masukan Email Admin"
-            />
-
-            <label for=""
-              >Nama Admin<span style="color: #ff4c4c"> *</span></label
-            >
-            <input
-              class="kelas-input"
-              required
-              type="text"
-              name="username"
-              id=""
-              placeholder="Masukan Nama Admin"
+              name="exam_type"
+              id="exam_type"
+              placeholder="Masukan Tipe Ujian"
             />
           </div>
           <div class="submit-input">
@@ -72,7 +64,7 @@
         <div class="complete-layer">
           <div class="complete-background">
             <img src="/img/check.png" width="50" alt="" />
-            <p>Admin berhasil di tambahkan</p>
+            <p>Data topik ujian berhasil diubah</p>
             <button type="button" id="complete-upload">OK</button>
           </div>
         </div>
@@ -84,7 +76,7 @@
   $(document).ready(() => {
     $("#complete-upload").on("click", function (e) {
       e.preventDefault();
-      window.location = "/admin";
+      window.location = "/tipe_ujian";
     });
     $("#selesai").on("click", () => {
       $(".submit-layer").css("visibility", "visible");
@@ -99,11 +91,10 @@
     manualForm.addEventListener("submit", (e) => {
       e.preventDefault();
       let formData = new FormData(manualForm);
-      formData.append("role", "admin");
-      formData.append("password", "123");
+      formData.append("unique_id", unique_id);
       $.ajax({
-        url: "/api/admin/register",
-        type: "POST",
+        url: "/api/exam_type",
+        type: "PUT",
         data: formData,
         async: false,
         cache: false,
@@ -112,14 +103,24 @@
         processData: false,
         success: (response) => {
           $(".submit-layer").css("visibility", "hidden");
-          if (response.payload.status_code == 201) {
+          if (response.payload.status_code == 200) {
             $(".complete-layer").removeClass("hide");
             $(".complete-layer").css("visibility", "visible");
           } else if (response.payload.message == "you're not authenticated") {
-            window.location = "/login";
+            window.location = "/tipe_ujian";
           }
         },
       });
+    });
+    let unique_id = window.location.href.substring(
+      window.location.href.lastIndexOf("/") + 1
+    );
+    let url = `/api/exam_type/${unique_id}`;
+    $.get(url, async (data, status) => {
+      let datas = data.payload.datas;
+      if (status == "success" && datas.length !== 0) {
+        $("#exam_type").val(datas.exam_type);
+      }
     });
   });
 </script>

@@ -17,10 +17,18 @@
         </div>
       </div>
       <div class="list-sidebar">
-        <a href="/">Beranda</a>
-        <a href="/siswa">Daftar Siswa</a>
-        <a href="/ujian">Ujian</a>
-        <a href="/nilai" class="selected">Nilai</a>
+        <% if(user.role =="super_admin"){%>
+          <a href="/admin">Daftar Admin</a>
+          <a href="/siswa">Daftar Siswa</a>
+          <a href="/admin/tipe_ujian">Topik Ujian</a>
+          <a href="/ujian">Ujian</a>
+          <a href="/nilai" class="selected">Nilai</a>
+        <%}else{%>
+          <a href="/">Beranda</a>
+          <a href="/siswa">Daftar Siswa</a>
+          <a href="/ujian">Ujian</a>
+          <a href="/nilai" class="selected">Nilai</a>
+        <%} %>
       </div>
     </div>
     <div class="main-content">

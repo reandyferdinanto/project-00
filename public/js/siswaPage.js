@@ -37,7 +37,7 @@ $(document).ready(() => {
           {
             data: "unique_id",
             render: function (data, type) {
-              if (role == "admin") {
+              if (role == "super_admin") {
                 return `<a href="/siswa/edit/${data}" class="edit-siswa"><i class="uil uil-edit"></i></a>`;
               } else {
                 return null;
@@ -47,7 +47,7 @@ $(document).ready(() => {
           {
             data: "unique_id",
             render: function (data, type) {
-              if (role == "admin") {
+              if (role == "super_admin") {
                 return `<input type="checkbox" name="checkedSiswa" class="checkbox-delete" value="${data}" />`;
               } else {
                 return null;
@@ -55,9 +55,6 @@ $(document).ready(() => {
             },
           },
         ],
-        // drawCallback: function () {
-        //   console.log("test");
-        // },
         initComplete: function () {
           setTimeout(() => {
             if (role == "admin") {

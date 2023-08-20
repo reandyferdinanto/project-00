@@ -17,14 +17,18 @@
           </div>
         </div>
         <div class="list-sidebar">
-          <a href="/">Beranda</a>
-          <a href="/siswa" class="selected"><% if(user.role =="admin"){%>
-            Daftar Siswa
+          <% if(user.role =="super_admin"){%>
+            <a href="/admin">Daftar Admin</a>
+            <a href="/siswa" class="selected">Daftar Siswa</a>
+            <a href="/admin/tipe_ujian">Topik Ujian</a>
+            <a href="/ujian">Ujian</a>
+            <a href="/nilai">Nilai</a>
           <%}else{%>
-            Data Siswa
-          <%} %></a>
-          <a href="/ujian">Ujian</a>
-          <a href="/nilai">Nilai</a>
+            <a href="/">Beranda</a>
+            <a href="/siswa" class="selected">Daftar Siswa</a>
+            <a href="/ujian">Ujian</a>
+            <a href="/nilai">Nilai</a>
+          <%} %>
         </div>
       </div>
       <div class="main-content">
@@ -32,12 +36,12 @@
           <form action="" id="form-delete">
             <!-- FORM HAPUS STARTED -->
             <div class="main-title">
-              <% if(user.role =="admin"){%>
+              <% if(user.role =="super_admin"){%>
                 <h2>Daftar Siswa</h2>
               <%}else{%>
                 <h2>Data Siswa</h2>
               <%} %>
-              <% if (user.role == "admin") { %>
+              <% if (user.role == "super_admin") { %>
                 <div class="main-side">
                   <a href="/siswa/tambah"
                     ><button class="tambah-button" type="button">
@@ -60,7 +64,7 @@
                       <th>Jurusan</th>
                       <th></th>
                       <th>
-                        <% if (user.role == "admin") { %>
+                        <% if (user.role == "super_admin") { %>
                           <input type="checkbox" name="" id="selectAll" />
                         <%}%>
                       </th>

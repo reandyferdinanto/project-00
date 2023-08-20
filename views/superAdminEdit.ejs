@@ -69,9 +69,11 @@
         </div>
       </div>
       <div class="list-sidebar">
-        <a href="/admin">Daftar Admin</a>
-        <a href="/guru" class="selected">Daftar Guru</a>
-        <a href="/tipe_ujian">Topik Ujian</a>
+        <a href="/admin" class="selected">Daftar Admin</a>
+        <a href="/siswa">Daftar Siswa</a>
+        <a href="/admin/tipe_ujian">Topik Ujian</a>
+        <a href="/ujian">Ujian</a>
+        <a href="/nilai">Nilai</a>
       </div>
     </div>
 
@@ -79,24 +81,24 @@
       <div class="main-background">
         <div class="main-title">
           <h2>
-            Mengubah Data Guru
+            Mengubah Data Admin
             <span style="color: #ff4c4c; font-size: 0.7rem">*harus diisi</span>
           </h2>
         </div>
-        <form id="submit-form" method="post">
+        <form id="submit-form">
           <div class="main-input">
-            <label for="">NUPTK<span style="color: #ff4c4c"> *</span></label>
+            <label for="">Email<span style="color: #ff4c4c"> *</span></label>
             <input
               class="nama-input"
               required
-              type="text"
-              name="nuptk"
-              id="nuptk"
-              placeholder="Masukan NUPTK Guru"
+              type="email"
+              name="email"
+              id="email"
+              placeholder="Masukan Email Admin"
             />
 
             <label for=""
-              >Nama Guru<span style="color: #ff4c4c"> *</span></label
+              >Nama Admin<span style="color: #ff4c4c"> *</span></label
             >
             <input
               class="kelas-input"
@@ -104,7 +106,7 @@
               type="text"
               name="username"
               id="username"
-              placeholder="Masukan Nama Guru"
+              placeholder="Masukan Nama Admin"
             />
           </div>
           <button type="button" class="ubah-katasandi">Ubah Kata Sandi</button>
@@ -157,7 +159,7 @@
         <div class="complete-layer">
           <div class="complete-background">
             <img src="/img/check.png" width="50" alt="" />
-            <p>Data guru berhasil diubah</p>
+            <p>Data admin berhasil diubah</p>
             <button type="button" id="complete-upload">OK</button>
           </div>
         </div>
@@ -165,7 +167,7 @@
     </div>
   </main>
 </body>
-<script src="/js/superUpdateGuru.js"></script>
+<script src="/js/superUpdateAdmin.js"></script>
 <script>
   $(".ubah-katasandi").click(function () {
     $(".ubah-katasandi-layer").css("visibility", "visible");

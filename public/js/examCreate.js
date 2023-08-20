@@ -82,7 +82,16 @@ $(document).ready(() => {
   let question_pilgan = `
   <div class="question_pilgan">  
     <div class="display_image"></div>
-    <textarea data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal" required></textarea>
+    <div class="question-text-container">
+      <textarea data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal" required></textarea>
+      <div class="upload-img">
+        <label class="custom-file-upload">
+          <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
+          <i class="uil uil-file-plus-alt"></i> Masukan Gambar
+        </label>
+        <p>*PNG/JPG/JPEG max. 200 kb</p>
+      </div>
+    </div>
     <div class="answers">
       <div class="answer-container" style="background-color:#2cc489;border: 2px solid white;">
         <div class="answer-container-flex">
@@ -133,13 +142,6 @@ $(document).ready(() => {
           </label>
         </div>
         <div class="display_image_answer"></div>
-      </div>
-      <div class="upload-img">
-        <label class="custom-file-upload">
-          <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
-          <i class="uil uil-file-plus-alt"></i> Masukan Gambar
-        </label>
-        <p>*PNG/JPG/JPEG max. 200 kb</p>
       </div>
     </div>
   </div>
