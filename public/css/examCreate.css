@@ -143,7 +143,7 @@ main {
 }
 .soal-text {
   width: 100%;
-  min-height: 100px;
+  min-height: 150px;
   padding: 0.5rem;
   font-size: 0.85rem;
   border-radius: 7px;
@@ -265,9 +265,11 @@ input[type="file"] {
 }
 
 .custom-file-upload {
+  gap: .5rem;
   border-radius: 7px;
-  display: inline-block;
-  padding: 0.6rem 1.5rem;
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 1rem;
   font-size: 0.85rem;
   cursor: pointer;
   width: max-content;
@@ -276,20 +278,16 @@ input[type="file"] {
   margin-top: auto;
   margin-left: auto;
   color: #358f6c;
+  border: .2px solid #358f6c;
+  transition: .3s;
 }
-/* .custom-file-upload {
-  border-radius: 7px;
-  display: inline-block;
-  padding: 0.6rem 1.5rem;
-  font-size: 0.85rem;
-  cursor: pointer;
-  width: max-content;
-  height: max-content;
-  background-color: white;
-  margin-top: auto;
-  margin-left: auto;
-  color: #358f6c;
-} */
+.custom-file-upload:hover{
+  background-color: #358f6c;
+  color: white;
+}
+.custom-file-upload i{
+  font-size: 1rem;
+}
 
 .display_image {
   width: 100%;
@@ -441,13 +439,16 @@ input[name="wrong_answer"]::placeholder {
 .upload-img {
   display: flex;
   flex-direction: column;
-  margin-left: auto;
   align-items: flex-end;
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
 }
 .upload-img p {
   font-size: 0.7rem;
   margin: 0.4rem 0 0 0;
   font-style: italic;
+  color: #358f6c;
 }
 .question-head-info p {
   margin: 0.4rem 0;
@@ -535,4 +536,8 @@ input[name="wrong_answer"]::placeholder {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+}
+
+.question-text-container{
+  position: relative;
 }
