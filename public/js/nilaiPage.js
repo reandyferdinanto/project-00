@@ -8,8 +8,8 @@ $(document).ready(() => {
 
   let exams;
 
-  // CALL
 
+  // Membuat select dalam page nilai menampilkan semua ujian yang terdaftar
   $.get("/api/exams", async (response, status) => {
     $("#exams-select").html("");
     exams = response.payload.datas;
@@ -26,10 +26,16 @@ $(document).ready(() => {
     }
   });
 
+  // Menginisialisasi table dengan API yang ada
   const url = "/api/scores";
   $.get(url, async (data, status) => {
     if (status == "success" && data.payload.datas.length !== 0) {
       if (exams.length !== 0) {
+
+        for (let i = 0; i < exams[0].available_try; i++) {
+          $("thead tr").append(`<th>Attemp ${i+1}</th>`)
+        }
+        
         $("#siswa-table").DataTable({
           ajax: {
             url: "/api/scores",
@@ -85,30 +91,47 @@ $(document).ready(() => {
             {
               data: "Exams",
               render: function (data) {
-                if (data.length !== 0) {
-                  let correct = data.filter((e) => {
-                    return e.unique_id == $("#exams-select").val();
-                  });
-                  if (correct.length !== 0) {
-                    let kkm = correct[0].kkm_point;
-                    let point = correct[0].ScoreExam.point;
-                    let remedial_point = correct[0].ScoreExam.remedial_point;
-                    if (point > kkm) {
-                      return `<p style="color: #358f6c;margin:0;">${point}</p>`;
-                    } else if (point < kkm && remedial_point > kkm) {
-                      return `<p style="color: #358f6c;margin:0;">${kkm}</p>`;
-                    } else if (point < kkm && remedial_point < kkm) {
-                      return `<p style="color: #ff4c4c;margin:0;">${point}</p>`;
+                if(data.length !== 0){
+                  let point = JSON.parse(data[0].ScoreExam.point)
+                  let kkm = data[0].kkm_point
+                  if (point){
+                    if (point[0].point >= kkm) {
+                      return `<p style="color: #358f6c;margin:0;">${point[0].point}</p>`;
+                    } else{
+                      return `<p style="color: #ff4c4c;margin:0;">${point[0].point}</p>`;
                     }
+                  }else{
+                    return "-"
                   }
-                  return "-";
-                } else {
-                  return "-";
+                }else{
+                  return "-"
+                }
+              },
+            },
+            {
+              data: "Exams",
+              render: function (data) {
+                if(data.length !== 0){
+                  let point = JSON.parse(data[0].ScoreExam.point)
+                  let kkm = data[0].kkm_point
+                  if(point){
+                    if (point[1].point >= kkm) {
+                      return `<p style="color: #358f6c;margin:0;">${point[1].point}</p>`;
+                    } else{
+                      return `<p style="color: #ff4c4c;margin:0;">${point[1].point}</p>`;
+                    }
+                  }else{
+                    return "-"
+                  }
+                }else{
+                  return "-"
                 }
               },
             },
           ],
           initComplete: function () {
+
+            // Membuat inrto untuk menjelaskan page
             setTimeout(() => {
               introJs()
                 .setOptions({
@@ -154,6 +177,7 @@ $(document).ready(() => {
             }, 500);
           },
         });
+
         $("hr").remove();
       } else {
         $(".main-table-body").append([
@@ -231,15 +255,41 @@ $(document).ready(() => {
               });
               if (correct.length !== 0) {
                 let kkm = correct[0].kkm_point;
-                let point = correct[0].ScoreExam.point;
-                let remedial_point = correct[0].ScoreExam.remedial_point;
-                if (point > kkm) {
-                  console.log("Ga remed");
-                  return `<p style="color: #358f6c;margin:0;">${point}</p>`;
-                } else if (point < kkm && remedial_point > kkm) {
-                  return `<p style="color: #358f6c;margin:0;">${kkm}</p>`;
-                } else if (point < kkm && remedial_point < kkm) {
-                  return `<p style="color: #ff4c4c;margin:0;">${point}</p>`;
+                let point = JSON.parse(correct[0].ScoreExam.point);
+                if(point){
+                  if (point[0].point >= kkm) {
+                    return `<p style="color: #358f6c;margin:0;">${point[0].point}</p>`;
+                  } else{
+                    return `<p style="color: #ff4c4c;margin:0;">${point[0].point}</p>`;
+                  }
+                }else{
+                  return "-"
+                }
+              }
+              return "-";
+            } else {
+              return "-";
+            }
+          },
+        },
+        {
+          data: "Exams",
+          render: function (data) {
+            if (data.length !== 0) {
+              let correct = data.filter((e) => {
+                return e.unique_id == $("#exams-select").val();
+              });
+              if (correct.length !== 0) {
+                let kkm = correct[0].kkm_point;
+                let point = JSON.parse(correct[0].ScoreExam.point);
+                if(point){
+                  if (point[1].point >= kkm) {
+                    return `<p style="color: #358f6c;margin:0;">${point[1].point}</p>`;
+                  } else{
+                    return `<p style="color: #ff4c4c;margin:0;">${point[1].point}</p>`;
+                  }
+                }else{
+                  return "-"
                 }
               }
               return "-";
