@@ -77,8 +77,9 @@ async function addUser(req, res) {
 
 async function updatePoint(req, res) {
   try {
-    const { point, remedial_point, exam_id } = req.body;
+    const { point, exam_id } = req.body;
     const { id } = req.params;
+    let new_point = []
 
     if (id == undefined || exam_id == undefined) {
       response(
@@ -89,17 +90,30 @@ async function updatePoint(req, res) {
       );
     }
 
-    ScoreExam.findOne({
+    await ScoreExam.findOne({
       where: {
         score_id: id,
         exam_id: exam_id,
       },
     }).then((prev) => {
+      if (prev.point){
+        new_point = JSON.parse(prev.point)
+        new_point.push({
+          attemp: new_point.length + 1,
+          point
+        })
+      }else{
+        new_point.push({
+          attemp: 1,
+          point
+        })
+      }
+
+      console.log(new_point);
+
       ScoreExam.update(
         {
-          point: point !== undefined ? point : prev.point,
-          remedial_point:
-            remedial_point !== undefined ? remedial_point : prev.remedial_point,
+          point: JSON.stringify(new_point),
           number_of_try: prev.number_of_try + 1,
         },
         {

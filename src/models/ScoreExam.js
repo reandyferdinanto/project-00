@@ -7,12 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
     },
     point: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
-    },
-    remedial_point: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
+      type: DataTypes.TEXT,
     },
     number_of_try: {
       type: DataTypes.INTEGER,
