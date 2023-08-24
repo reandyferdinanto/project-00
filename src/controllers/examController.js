@@ -23,8 +23,6 @@ Question.belongsTo(Exam, {
 });
 
 async function tambahExam(req, res) {
-  // console.log(req.body);
-  // console.log(req.files);
   try {
     let {
       exam_type,

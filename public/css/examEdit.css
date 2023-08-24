@@ -523,8 +523,8 @@ input[type="file"] {
   padding: 2rem;
   width: 75vw;
   height: 80vh;
-  overflow: scroll;
-  /* border-radius: 15px; */
+  overflow-y: scroll;
+  border-radius: 15px;
 }
 .assign-bg p {
   font-size: 0.9rem;
