@@ -35,7 +35,6 @@ $(document).ready(() => {
             },
           },
           { data: "kkm_point" },
-          { data: "available_try" },
           {
             data: "unique_id",
             render: function (data, type) {
