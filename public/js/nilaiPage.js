@@ -33,7 +33,7 @@ $(document).ready(() => {
       if (exams.length !== 0) {
 
         for (let i = 0; i < exams[0].available_try; i++) {
-          $("thead tr").append(`<th>Attemp ${i+1}</th>`)
+          $("thead tr").append(`<th>Nilai ${i+1}</th>`)
         }
         
         $("#siswa-table").DataTable({
