@@ -31,8 +31,9 @@ $(document).ready(() => {
               return meta.row + meta.settings._iDisplayStart + 1;
             },
           },
-          { data: "username", width: "30%" },
-          { data: "email", width: "50%" },
+          { data: "nuptk" },
+          { data: "username" },
+          { data: "email" },
           {
             data: "unique_id",
             render: function (data, type) {
