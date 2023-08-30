@@ -3,28 +3,10 @@
 <body>
   <!-- NAV -->
   <%- include('./layouts/navbar'); -%>
-
+  
   <!-- MAIN -->
   <main>
-    <div class="main-sidebar">
-      <div class="profile-sidebar">
-        <div class="profile-img">
-          <img src="" alt="" />
-        </div>
-        <div class="profile-info">
-          <p><b><%= user.username %></b></p>
-          <p><%= user.role %></p>
-        </div>
-      </div>
-      <div class="list-sidebar">
-        <a href="/admin" class="selected">Daftar Admin</a>
-        <a href="/siswa">Daftar Siswa</a>
-        <a href="/admin/tipe_ujian">Topik Ujian</a>
-        <a href="/ujian">Ujian</a>
-        <a href="/nilai">Nilai</a>
-      </div>
-    </div>
-
+    <%- include('./layouts/superSidebar'); -%>
     <div class="main-content">
       <div class="main-background">
         <div class="main-title">
@@ -82,6 +64,7 @@
     </div>
   </main>
 </body>
+<%- include('./layouts/footer'); -%>
 <script>
   $(document).ready(() => {
     $("#complete-upload").on("click", function (e) {
@@ -124,5 +107,10 @@
       });
     });
   });
+  $('form').bind("keypress", function(e) {
+        if (e.keyCode == 13) {               
+            e.preventDefault();
+            return false;
+        }
+    });
 </script>
-<%- include('./layouts/footer'); -%>

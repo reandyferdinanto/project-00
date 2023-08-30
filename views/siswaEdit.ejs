@@ -6,31 +6,7 @@
 
   <!-- MAIN -->
   <main>
-    <div class="main-sidebar">
-      <div class="profile-sidebar">
-        <div class="profile-img">
-          <img src="" alt="" />
-        </div>
-        <div class="profile-info">
-          <p><b><%= user.username %></b></p>
-          <p><%= user.role %></p>
-        </div>
-      </div>
-      <div class="list-sidebar">
-        <% if(user.role =="super_admin"){%>
-          <a href="/admin">Daftar Admin</a>
-          <a href="/siswa" class="selected">Daftar Siswa</a>
-          <a href="/admin/tipe_ujian">Topik Ujian</a>
-          <a href="/ujian">Ujian</a>
-          <a href="/nilai">Nilai</a>
-        <%}else{%>
-          <a href="/">Beranda</a>
-          <a href="/siswa" class="selected">Daftar Siswa</a>
-          <a href="/ujian">Ujian</a>
-          <a href="/nilai">Nilai</a>
-        <%} %>
-      </div>
-    </div>
+    <%- include('./layouts/adminSidebar'); -%>
 
     <div class="main-content">
       <div class="main-background">
@@ -110,5 +86,14 @@
     </div>
   </main>
 </body>
-<script src="/js/siswaEdit.js"></script>
 <%- include('./layouts/footer'); -%>
+<script src="/js/siswaEdit.js"></script>
+<script>
+  $(".siswaSidebar").addClass('selected')
+  $('form').bind("keypress", function(e) {
+        if (e.keyCode == 13) {               
+            e.preventDefault();
+            return false;
+        }
+    });
+</script>

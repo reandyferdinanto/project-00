@@ -3,26 +3,10 @@
 <body>
   <!-- NAV -->
   <%- include('./layouts/navbar'); -%>
-
+  
   <!-- MAIN -->
   <main>
-    <div class="main-sidebar">
-      <div class="profile-sidebar">
-        <div class="profile-img">
-          <img src="" alt="" />
-        </div>
-        <div class="profile-info">
-          <p><b><%= user.username %></b></p>
-          <p><%= user.role %></p>
-        </div>
-      </div>
-      <div class="list-sidebar">
-        <a href="/" class="selected">Beranda</a>
-        <a href="/siswa">Daftar Siswa</a>
-        <a href="/ujian">Ujian</a>
-        <a href="/nilai">Nilai</a>
-      </div>
-    </div>
+    <%- include('./layouts/adminSidebar'); -%>
     <div class="main-content">
       <div class="main-background">
         <div class="main-title">
@@ -42,5 +26,8 @@
     </div>
   </main>
 </body>
-<script src="/js/berandaPage.js"></script>
 <%- include('./layouts/footer'); -%>
+<script src="/js/berandaPage.js"></script>
+<script>
+  $(".berandaSidebar").addClass("selected")
+</script>

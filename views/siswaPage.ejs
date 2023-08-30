@@ -6,31 +6,7 @@
     <input type="hidden" name="role" value="<%= user.role %>">
     <!-- MAIN -->
     <main>
-      <div class="main-sidebar">
-        <div class="profile-sidebar">
-          <div class="profile-img">
-            <img src="" alt="" />
-          </div>
-          <div class="profile-info">
-            <p><b><%= user.username %></b></p>
-            <p><%= user.role %></p>
-          </div>
-        </div>
-        <div class="list-sidebar">
-          <% if(user.role =="super_admin"){%>
-            <a href="/admin">Daftar Admin</a>
-            <a href="/siswa" class="selected">Daftar Siswa</a>
-            <a href="/admin/tipe_ujian">Topik Ujian</a>
-            <a href="/ujian">Ujian</a>
-            <a href="/nilai">Nilai</a>
-          <%}else{%>
-            <a href="/">Beranda</a>
-            <a href="/siswa" class="selected">Daftar Siswa</a>
-            <a href="/ujian">Ujian</a>
-            <a href="/nilai">Nilai</a>
-          <%} %>
-        </div>
-      </div>
+      <%- include('./layouts/adminSidebar'); -%>
       <div class="main-content">
         <div class="main-background">
           <form action="" id="form-delete">
@@ -92,8 +68,8 @@
       </div>
     </main>
   </body>
-  <script src="/js/siswaPage.js"></script>
-  <script>
-    console.log();
-  </script>
 <%- include('./layouts/footer'); -%>
+<script src="/js/siswaPage.js"></script>
+<script>
+  $(".siswaSidebar").addClass('selected')
+</script>

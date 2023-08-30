@@ -31,7 +31,8 @@ $(document).ready(() => {
               return meta.row + meta.settings._iDisplayStart + 1;
             },
           },
-          { data: "username", width: "80%" },
+          { data: "username", width: "30%" },
+          { data: "email", width: "50%" },
           {
             data: "unique_id",
             render: function (data, type) {
@@ -61,6 +62,10 @@ $(document).ready(() => {
       ]);
     }
   });
+  
+  $(".ubah-button").on("click", () => {
+    $(".submit-layer").css("visibility", "hidden");
+  });
   $("#selectAll").on("click", function () {
     if (this.checked) {
       // Iterate each checkbox
@@ -76,11 +81,9 @@ $(document).ready(() => {
     }
   });
   $(".main-table-title").on("click", ".checkbox-delete", function () {
-    if ($(this).is(":checked")) {
-      $(".hapus-button").attr("disabled", false);
-    } else {
-      $(".hapus-button").attr("disabled", true);
-    }
+    const anyChecked = $(".checkbox-delete:checked").length > 0;
+    $(".hapus-button").attr("disabled", !anyChecked);
+    if(!anyChecked) $("#selectAll").prop('checked', false)
   });
   const formDelete = document.getElementById("form-delete");
   $(".hapus-button").on("click", (e) => {

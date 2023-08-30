@@ -36,7 +36,7 @@ $(document).ready(() => {
             data: "unique_id",
             width: "5%",
             render: function (data, type) {
-              return `<a href="/tipe_ujian/edit/${data}" class="edit-siswa"><i class="uil uil-edit"></i></a>`;
+              return `<a href="/admin/tipe_ujian/edit/${data}" class="edit-siswa"><i class="uil uil-edit"></i></a>`;
             },
           },
           {
@@ -47,11 +47,6 @@ $(document).ready(() => {
             },
           },
         ],
-        initComplete: function () {
-          // setTimeout(() => {
-          //   console.log("complete");
-          // }, 500);
-        },
       });
       $("hr").remove();
     } else {
@@ -78,11 +73,13 @@ $(document).ready(() => {
     }
   });
   $(".main-table-title").on("click", ".checkbox-delete", function () {
-    if ($(this).is(":checked")) {
-      $(".hapus-button").attr("disabled", false);
-    } else {
-      $(".hapus-button").attr("disabled", true);
-    }
+    const anyChecked = $(".checkbox-delete:checked").length > 0;
+    $(".hapus-button").attr("disabled", !anyChecked);
+    if(!anyChecked) $("#selectAll").prop('checked', false)
+  });
+  
+  $(".ubah-button").on("click", () => {
+    $(".submit-layer").css("visibility", "hidden");
   });
   const formDelete = document.getElementById("form-delete");
   $(".hapus-button").on("click", (e) => {
@@ -102,7 +99,7 @@ $(document).ready(() => {
         processData: false,
         success: (response) => {
           if (response !== undefined) {
-            window.location = "/tipe_ujian";
+            window.location = "/admin/tipe_ujian";
           }
         },
       });

@@ -1,0 +1,25 @@
+<div class="main-sidebar">
+    <div class="profile-sidebar">
+      <div class="profile-img">
+        <img src="" alt="" />
+      </div>
+      <div class="profile-info">
+        <p><b><%= user.username %></b></p>
+        <p><%= user.role %></p>
+      </div>
+    </div>
+    <div class="list-sidebar">
+      <% if(user.role =="super_admin"){%>
+        <a href="/admin" class="adminSidebar">Daftar Admin</a>
+        <a href="/siswa" class="siswaSidebar">Daftar Siswa</a>
+        <a href="/admin/tipe_ujian" class="topikSidebar">Topik Ujian</a>
+        <a href="/ujian" class="ujianSidebar">Ujian</a>
+        <a href="/nilai" class="nilaiSidebar">Nilai</a>
+      <%}else{%>
+        <a href="/" class="berandaSidebar">Beranda</a>
+        <a href="/siswa" class="siswaSidebar">Daftar Siswa</a>
+        <a href="/ujian" class="ujianSidebar">Ujian</a>
+        <a href="/nilai" class="nilaiSidebar">Nilai</a>
+      <%} %>
+    </div>
+  </div>

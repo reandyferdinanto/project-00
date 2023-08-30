@@ -6,24 +6,7 @@
 
   <!-- MAIN -->
   <main>
-    <div class="main-sidebar">
-      <div class="profile-sidebar">
-        <div class="profile-img">
-          <img src="" alt="" />
-        </div>
-        <div class="profile-info">
-          <p><b><%= user.username %></b></p>
-          <p><%= user.role %></p>
-        </div>
-      </div>
-      <div class="list-sidebar">
-        <a href="/admin" class="selected">Daftar Admin</a>
-        <a href="/siswa">Daftar Siswa</a>
-        <a href="/admin/tipe_ujian">Topik Ujian</a>
-        <a href="/ujian">Ujian</a>
-        <a href="/nilai">Nilai</a>
-      </div>
-    </div>
+    <%- include('./layouts/superSidebar'); -%>
     <div class="main-content">
       <div class="main-background">
         <form action="" id="form-delete">
@@ -44,6 +27,7 @@
                   <tr>
                     <th>No.</th>
                     <th>Nama Admin</th>
+                    <th>Email Admin</th>
                     <th></th>
                     <th><input type="checkbox" name="" id="selectAll" /></th>
                   </tr>
@@ -68,5 +52,5 @@
     </div>
   </main>
 </body>
-<script src="/js/superPageAdmin.js"></script>
 <%- include('./layouts/footer'); -%>
+<script src="/js/superPageAdmin.js"></script>

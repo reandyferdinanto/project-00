@@ -6,31 +6,7 @@
 
   <!-- MAIN -->
   <main>
-    <div class="main-sidebar">
-      <div class="profile-sidebar">
-        <div class="profile-img">
-          <img src="" alt="" />
-        </div>
-        <div class="profile-info">
-          <p><b><%= user.username %></b></p>
-          <p><%= user.role %></p>
-        </div>
-      </div>
-      <div class="list-sidebar">
-        <% if(user.role =="super_admin"){%>
-          <a href="/admin">Daftar Admin</a>
-          <a href="/siswa">Daftar Siswa</a>
-          <a href="/admin/tipe_ujian">Topik Ujian</a>
-          <a href="/ujian">Ujian</a>
-          <a href="/nilai" class="selected">Nilai</a>
-        <%}else{%>
-          <a href="/">Beranda</a>
-          <a href="/siswa">Daftar Siswa</a>
-          <a href="/ujian">Ujian</a>
-          <a href="/nilai" class="selected">Nilai</a>
-        <%} %>
-      </div>
-    </div>
+    <%- include('./layouts/adminSidebar'); -%>
     <div class="main-content">
       <div class="main-background">
         <div class="main-title">
@@ -69,5 +45,8 @@
     </div>
   </main>
 </body>
-<script src="/js/nilaiPage.js"></script>
 <%- include('./layouts/footer'); -%>
+<script src="/js/nilaiPage.js"></script>
+<script>
+  $(".nilaiSidebar").addClass('selected')
+</script>
