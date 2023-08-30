@@ -542,6 +542,10 @@ $(document).ready(() => {
   }); 
   $(".assign-bg .close").click(function () {
     $(".assign-layer").css("visibility", "hidden");
+    let checkedSiswa = document.querySelectorAll(
+      'input[type="checkbox"]:checked'
+    ).length;
+    $(".checkedSiswaExam").html(checkedSiswa + " Siswa");
   });
   $(".edit-button").click(function () {
     $(".assign-layer").css("visibility", "visible");

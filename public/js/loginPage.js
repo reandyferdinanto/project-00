@@ -15,7 +15,14 @@ $(document).ready(() => {
       processData: false,
       success: (response) => {
         if (response.error) {
-          $(".error-password").html(response.error);
+          if(!$(".error-password").length){
+            $(".content").prepend(`
+              <div class="error-password">${response.error}!</div>
+            `)
+            $(".error-password").delay(1500).fadeOut('slow', function(){
+              $(this).remove()
+            })
+          }
         }
         if (response.status == "success") {
           window.location = response.route;

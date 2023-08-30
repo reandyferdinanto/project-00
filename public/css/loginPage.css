@@ -37,6 +37,7 @@ input {
   padding: 0.5rem;
 }
 button {
+  margin-top: 1rem;
   padding: 0.5rem 1.5rem;
   font-weight: bold;
   font-size: 0.8rem;
@@ -51,7 +52,11 @@ button:hover {
   color: #0f0f0f;
 }
 .error-password {
-  text-align: center;
-  color: red;
+  color: black;
+  background-color: #f9d7da;
+  border: 1px solid lightcoral;
   font-size: 0.85rem;
+  border-radius: 5px;
+  padding: 1rem .75rem;
+  margin-bottom: 1rem;
 }

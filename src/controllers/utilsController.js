@@ -7,24 +7,26 @@ const { convertCsvToXlsx } = require("@aternus/csv-to-xlsx");
 
 async function uploadCSV(req, res) {
   try {
+    const filePath = path.join(
+      __dirname,
+      "..",
+      "..",
+      "public",
+      "files",
+      "uploads",
+      req.files[0].filename
+    )
     const siswa = [];
-    fs.createReadStream(
-      path.join(
-        __dirname,
-        "..",
-        "..",
-        "public",
-        "files",
-        "uploads",
-        req.files[0].filename
-      )
-    ).pipe(
+    fs.createReadStream(filePath)
+    .pipe(
       csv
         .parse({ headers: true })
         .on("data", (row) => {
           let input_header = Object.keys(row);
           let correct_header = ["username", "class", "nis", "major"];
-          if (JSON.stringify(input_header) !== JSON.stringify(correct_header)) {
+          const sortedInputHeader = input_header.slice().sort();
+          const sortedCorrectHeader = correct_header.slice().sort();
+          if (JSON.stringify(sortedInputHeader) !== JSON.stringify(sortedCorrectHeader)) {
             throw Error(
               `Header dari csv harus berupa "username", "class", "nis", "major"`
             );
@@ -39,6 +41,17 @@ async function uploadCSV(req, res) {
           Score.bulkCreate(siswa).then((datas) => {
             return response(201, "add new user", datas, res);
           });
+          if (fs.existsSync(filePath)) {
+            // The file exists, so you can proceed with deleting it
+            try {
+                fs.unlinkSync(filePath)
+                console.log('File deleted successfully')
+            } catch (err) {
+                console.error(err)
+            }
+          } else {
+              console.log('File not found')
+          }
         })
     );
   } catch (error) {
