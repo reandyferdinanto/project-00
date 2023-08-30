@@ -1,4 +1,5 @@
-const { Score, Exam, Question, ScoreExam } = require("../models");
+const { Score, Exam, Question, ScoreExam, Admin } = require("../models");
+const bcrypt = require('bcrypt')
 const response = require("./response");
 
 async function getAllScore(req, res, next) {
@@ -63,6 +64,7 @@ async function addUser(req, res) {
       class: req.body.class,
       major: req.body.major,
       password: req.body.nis + "##",
+      role: "siswa"
     });
     response(201, "add new user", newUser, res);
   } catch (error) {
@@ -209,42 +211,87 @@ async function userEdit(req, res, next) {
 }
 
 async function userAuth(req, res) {
-  const { nis, password } = req.body;
+  let { nis, password } = req.body;
   try {
-    const user = await Score.findOne({
+    let data
+    await Score.findOne({
       where: {
         nis,
       },
-    });
-    var data = {
-      uniqueID: user.uniqueID,
-      username: user.username,
-      nis: user.nis,
-      class: user.class,
-      major: user.major,
-    };
-
-    if (user) {
-      if (user.password == password) {
-        return res.json({
-          ResultCode: 1,
-          UserId: user.unique_id,
-          Data: data,
-        });
-      } else {
-        return res.json({
-          ResultCode: 2,
-          Message: "NIS and Password combination didn't match.",
-          Status: "failed",
-        });
+    }).then(result => {
+      if(result){
+        data = {
+          unique_id: result.unique_id,
+          username: result.username,
+          nis: result.nis,
+          class: result.class,
+          major: result.major,
+          role: result.role
+        };
+        if (result.password == password) {
+          console.log("password benar SISWA");
+          return res.json({
+            ResultCode: 1,
+            UserId: result.unique_id,
+            Data: data,
+          });
+        } else {
+          console.log("password salah SISWA");
+          return res.json({
+            ResultCode: 2,
+            Message: "NIS and Password combination didn't match.",
+            Status: "failed",
+          });
+        }
+      }else{
+        Admin.findOne({
+          where:{
+            nuptk: nis
+          }
+        }).then(hasil => {
+          if (hasil){
+              data = {
+                unique_id: hasil.unique_id,
+                username: hasil.username,
+                role: hasil.role,
+                email: hasil.email,
+              };
+              bcrypt.compare(password, hasil.password, function(err, match) {
+                if(err){
+                  console.log("err GURU");
+                  return res.json({
+                    ResultCode: 2,
+                    Message: err,
+                    Status: "failed",
+                  });
+                }
+                if (match){
+                  console.log("password benar GURU");
+                  return res.json({
+                    ResultCode: 1,
+                    UserId: hasil.unique_id,
+                    Data: data,
+                  });
+                }else if(!match){
+                  console.log("password benar GURU");
+                  return res.json({
+                    ResultCode: 2,
+                    Message: "NUPTK and Password combination didn't match.",
+                    Status: "failed",
+                  });
+                }
+            });
+          } else{
+            console.log("tidak di temukan user");
+            return res.json({
+              ResultCode: 2,
+              Message: "All user not found.",
+              Status: "failed",
+            });
+          }
+        })
       }
-    } else {
-      return res.json({
-        ResultCode: 2,
-        Message: "Authentication failed. Wrong credentials.",
-        Status: "failed",
-      });
-    }
+    });
   } catch (error) {
     res.json({
       ResultCode: 2,
