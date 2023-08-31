@@ -95,13 +95,6 @@ main {
   padding: 0.5rem 0.5rem;
   border: 0.1px solid gray;
 }
-.exam-input {
-  width: 50%;
-  background-color: white;
-  border-radius: 7px;
-  padding: 0.5rem 0.5rem;
-  border: 0.1px solid gray;
-}
 .main-input-config {
   display: grid;
   grid-template-columns: 1fr 1fr;

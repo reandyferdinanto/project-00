@@ -44,7 +44,7 @@ $(document).ready(() => {
       {
         element: ".soal-text",
         intro:
-          "Guru dapat mengetikkan soal pada kotak yang ini. Soal yang dibuat hanya terbatas sebanyak 300 karakter.",
+          "Guru dapat mengetikkan soal pada kotak ini.",
       },
       {
         element: ".correct-answer",

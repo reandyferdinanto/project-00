@@ -31,28 +31,26 @@
               placeholder="masukan nama ujian"
             />
             <label for=""
-              >Topik Ujian<span style="color: #ff4c4c"> *</span></label
-            >
-
+              >Topik Ujian<span style="color: #ff4c4c"> *</span>
+            </label>
             <select name="exam_type" class="exam-type" required>
               <option value="">--pilih ujian--</option>
             </select>
-            <div class="main-input-config">
-              <div class="">
-                <label for="">
-                  KKM <span style="color: #ff4c4c"> *</span>
-                </label>
-                <input
-                  class="exam-input"
-                  type="number"
-                  name="kkm_point"
-                  id=""
-                  value="70"
-                  required
-                />
-              </div>
-            </div>
-          </div>
+
+            <label for="">
+              KKM <span style="color: #ff4c4c"> *</span>
+            </label>
+            <br>
+            <input
+              class="exam-type"
+              type="number"
+              name="kkm_point"
+              id=""
+              value="70"
+              required
+              style="width: 25%;"
+            />
+        </div>
           <button class="main-create-question" id="add-question">
             Membuat Soal
           </button>
