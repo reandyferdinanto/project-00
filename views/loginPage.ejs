@@ -2,19 +2,25 @@
 <link rel="stylesheet" href="/css/loginPage.css" />
 <body>
   <main>
-    <div class="logo">
-      <img src="/img/logo.png" alt="" />
-    </div>
     <div class="content">
-      
-      <form id="formLogin">
-        <input type="text" required name="username" placeholder="username" />
-        <input
-          type="password"
-          required
-          name="password"
-          placeholder="password"
-        />
+      <div class="content-input">
+        <p style="font-size: 1.1rem; color: rgb(228, 228, 228);">MASUK KE LMS</p>
+        <img src="/img/logo.png" alt="" />
+        <form id="formLogin">
+          <div class="input">
+            <i class="uil uil-user"></i>
+            <input type="text" required name="username" placeholder="Username" />
+          </div>
+          <div class="input">
+            <i class="uil uil-lock"></i>
+            <input
+              type="password"
+              required
+              name="password"
+              placeholder="Password"
+            />
+          </div>
+      </div>
         <button class="loginButton">MASUK</button>
       </form>
     </div>
