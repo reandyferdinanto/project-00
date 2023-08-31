@@ -23,6 +23,7 @@ main {
   gap: 1rem;
 }
 .content {
+  border: 3px solid #3e9a76;
   color: white;
   background-color: #3e9a76;
   border-radius: 15px;
