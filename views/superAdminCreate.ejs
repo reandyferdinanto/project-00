@@ -76,6 +76,32 @@
 <%- include('./layouts/footer'); -%>
 <script>
   $(document).ready(() => {
+
+    let first_intro = initializeIntro({
+    dontShowAgainCookie: "adminCreate_intro",
+    dontShowAgain: true,
+    dontShowAgainLabel: "Jangan tampilkan lagi",
+    tooltipClass: "customTooltip",
+    prevLabel: "Kembali",
+    nextLabel: "Lanjut",
+    doneLabel: "Selesai",
+    steps: [
+      {
+        title: "Tambah Admin",
+        intro: "Halaman ini berfungsi untuk menambahkan Admin baru ke dalam tabel",
+      },
+      {
+        element: ".main-input",
+        intro: "Super Admin dapat mengisi formulir ini bila ingin menambahkan Admin",
+      },
+      {
+        element: "#selesai",
+        intro: "Apabila sudah selesai mengisi formulir dapat langsung menekan tombol selesai",
+      },
+    ],
+  });
+  first_intro.start();
+
     $(".adminSidebar").addClass('selected')
     $("#complete-upload").on("click", function (e) {
       e.preventDefault();
@@ -117,6 +143,11 @@
       });
     });
   });
+  function initializeIntro(stepConfig) {
+    const intro = introJs();
+    intro.setOptions(stepConfig);
+    return intro;
+  }
   $('form').bind("keypress", function(e) {
         if (e.keyCode == 13) {               
             e.preventDefault();

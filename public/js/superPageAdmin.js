@@ -92,6 +92,7 @@ $(document).ready(() => {
                 },
                 {
                   element: ".hapus-button",
+                  position:"left",
                   intro: "Super Admin dapat menekan tombol ini untuk menghapus Admin setelah selesai memilih",
                 },
                 {
