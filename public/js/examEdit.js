@@ -4,6 +4,31 @@ $(document).ready(() => {
     dateStyle: "medium",
   }));
 
+  let first_intro = initializeIntro({
+    dontShowAgainCookie: "examEdit_intro",
+    dontShowAgain: true,
+    dontShowAgainLabel: "Jangan tampilkan lagi",
+    tooltipClass: "customTooltip",
+    prevLabel: "Kembali",
+    nextLabel: "Lanjut",
+    doneLabel: "Selesai",
+    steps: [
+      {
+        title: "Edit Ujian",
+        intro: "Halaman ini berfungsi untuk mengubah soal ujian yang telah ada. Tampilan pada halaman ini mirip seperti pada saat membuat ujian baru sehingga guru dapat langsung mengubah soal yang diinginkan.",
+      },
+      {
+        element: "#selesai-hapus",
+        intro: "terdapat pula tombol hapus pada halaman ini bila ingin menghapus ujian yang telah dibuat.",
+      },
+      {
+        element: ".assign-button",
+        intro:"Guru dapat mengedit kepada siapa saja ujian diberikan dengan menekan ikon pensil.",
+      },
+    ],
+  });
+  first_intro.start();
+
   let question_with_img = [];
   let queuedImagesArrayAnswer = [];
   let users;
@@ -14,6 +39,7 @@ $(document).ready(() => {
   let allDataArray = [];
   let tempArray = [];
   let question_type = []
+  let introTampil = false
   let question_pilgan = `
   <div class="question_pilgan">  
     <div class="display_image"></div>
@@ -102,6 +128,11 @@ $(document).ready(() => {
     </div>
   `;
 
+  function initializeIntro(stepConfig) {
+    const intro = introJs();
+    intro.setOptions(stepConfig);
+    return intro;
+  }
   function initializeSortable() {
     $(".answers-card").sortable({
       // containment: "parent",
@@ -551,6 +582,33 @@ $(document).ready(() => {
   });
   $(".edit-button").click(function () {
     $(".assign-layer").css("visibility", "visible");
+    if(!introTampil){
+      let assign_intro = initializeIntro({
+        dontShowAgainCookie: "examEdit_intro",
+        dontShowAgain: true,
+        dontShowAgainLabel: "Jangan tampilkan lagi",
+        tooltipClass: "customTooltip",
+        prevLabel: "Kembali",
+        nextLabel: "Lanjut",
+        doneLabel: "Selesai",
+        steps: [
+          {
+            element: ".checkbox-delete",
+            intro: "Guru dapat menekan tombol ini untuk memilih siswa yang mengikuti ujian ",
+          },
+          {
+            element: "#selectAll",
+            intro:"Tombol ini berfungsi untuk memilih semua siswa yang ditampilkan pada tabel sebagai siswa yang mengikuti ujian.",
+          },
+          {
+            element: ".close",
+            intro:"bila sudah selesai memilih dapat menekan tombol ini, dan jangan lupa simpan perubahan dengan menekan tombol simpan dibagian bawah",
+          },
+        ],
+      });
+      assign_intro.start();
+      introTampil = true
+    }
   });
 
   // IMAGE INPUT

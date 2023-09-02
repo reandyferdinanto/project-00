@@ -6,6 +6,12 @@ $(document).ready(() => {
   });
   $("#date").html(text);
 
+  function initializeIntro(stepConfig) {
+    const intro = introJs();
+    intro.setOptions(stepConfig);
+    return intro;
+  }
+
   const url = "/api/admin";
 
   $.get(url, async (data, status) => {
@@ -51,9 +57,55 @@ $(document).ready(() => {
           },
         ],
         initComplete: function () {
-          // setTimeout(() => {
-          //   console.log("complete");
-          // }, 500);
+          setTimeout(() => {
+            let first_intro = initializeIntro({
+              dontShowAgainCookie: "adminPage_intro",
+              dontShowAgain: true,
+              dontShowAgainLabel: "Jangan tampilkan lagi",
+              tooltipClass: "customTooltip",
+              prevLabel: "Kembali",
+              nextLabel: "Lanjut",
+              doneLabel: "Selesai",
+              steps: [
+                {
+                  title: "Daftar Admin",
+                  intro: "Halaman ini berisi mengenai informasi admin. Super Admin dapat melihat admin yang telah terdaftar, menambahkan admin baru, maupun menghapus admin.",
+                },
+                {
+                  element: ".dataTables_length",
+                  intro: "Bagian ini berfungsi untuk memunculkan berapa banyaknya jumlah admin yang ingin ditampilkan pada tabel",
+                },
+                {
+                  element: ".dataTables_filter",
+                  intro: "Super Admin dapat mencari Admin dengan mengetik nama Admin pada kotak ini",
+                },
+                {
+                  element: ".checkbox-delete",
+                  intro: "Super Admin dapat menekan tombol ini untuk memilih Admin.",
+                },
+                {
+                  element: "#selectAll",
+                  intro: "Tombol ini berfungsi untuk memilih semua Admin yang ditampilkan pada tabel",
+                },
+                {
+                  intro: "Setelah memilih Admin, Super Admin dapat memilih untuk menghapus beberapa Admin secara bersamaan.",
+                },
+                {
+                  element: ".hapus-button",
+                  intro: "Super Admin dapat menekan tombol ini untuk menghapus Admin setelah selesai memilih",
+                },
+                {
+                  element: ".edit-siswa",
+                  intro: "Super Admin juga dapat mengubah data Admin dengan menekan tombol ini",
+                },
+                {
+                  element: ".buat-ujian-baru",
+                  intro: "Super Admin dapat menambahkan Admin baru dengan menekan tombol ini.",
+                },
+              ],
+            });
+            first_intro.start();
+          }, 500);
         },
       });
       $("hr").remove();
