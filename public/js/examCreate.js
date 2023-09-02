@@ -42,17 +42,21 @@ $(document).ready(() => {
     doneLabel: "Selesai",
     steps: [
       {
+        element: ".jenis-ujian",
+        intro: "Terdapat berbagai tipe soal untuk ujian. Untuk sekarang tersedia tipe 'Pilihan Ganda' dan 'Soal Kartu'."
+      },
+      {
         element: ".soal-text",
         intro:
           "Guru dapat mengetikkan soal pada kotak ini.",
       },
       {
-        element: ".correct-answer",
+        element: ".answer-container",
         intro: "Jawaban benar dimasukkan ke dalam kotak yang ini",
       },
       {
-        element: ".wrong-answer",
-        intro: " Untuk jawaban yang lain, dimasukan ke dalam kotak-kotak ini",
+        element: ".wrong-container",
+        intro: "Untuk jawaban yang lain, dimasukan ke dalam kotak-kotak ini",
       },
       {
         element: ".custom-file-upload",
@@ -62,6 +66,10 @@ $(document).ready(() => {
       {
         element: ".delete-quest",
         intro: "Guru dapat menghapus soal dengan menekan tombol yang ini.",
+      },
+      {
+        element: "#add-more",
+        intro: "Guru dapat menambahkan soal lain dengan menekan tombol ini."
       },
       {
         element: "#selesai",
@@ -79,6 +87,7 @@ $(document).ready(() => {
   let allDataArray = [];
   let quest_length = 1;
   let tempArray = [];
+  let introTampil = false
   let question_pilgan = `
   <div class="question_pilgan">  
     <div class="display_image"></div>
@@ -103,7 +112,7 @@ $(document).ready(() => {
         </div>
         <div class="display_image_answer"></div>
       </div>
-      <div class="answer-container">
+      <div class="answer-container wrong-container">
         <div class="answer-container-flex">
           <input placeholder='jawaban lain' name='wrong_answer' class='answer'/>
           <label class="custom-file-upload-question">
@@ -389,6 +398,45 @@ $(document).ready(() => {
         $(this).parent().parent().find(".question_pilgan").remove();
         $(this).parent().parent().append([question_card]);
         initializeSortable();
+        if(!introTampil){
+          let card_intro = initializeIntro({
+            dontShowAgainCookie: "examCreate_intro",
+            dontShowAgain: true,
+            dontShowAgainLabel: "Jangan tampilkan lagi",
+            tooltipClass: "customTooltip",
+            prevLabel: "Kembali",
+            nextLabel: "Lanjut",
+            doneLabel: "Selesai",
+            steps: [
+              {
+                title: "Soal Kartu",
+                element: ".soal-text",
+                intro: "Guru dapat mengetikkan soal pada kotak yang ini. Soal tipe kartu ini lebih sesuai untuk jawaban dengan urutan.",
+              },
+              {
+                element: "input[name=kartu]",
+                intro: "Guru dapat memasukkan jawaban benar sesuai urutan ke sini ",
+              },
+              {
+                element: ".answer-card-head i",
+                intro:
+                  "urutan kartu dapat dipindahkan dengan mengklik lalu menggeser posisi kartu",
+              },
+              {
+                element: ".delete-card",
+                intro:
+                  "kartu dapat dihapus dengan menekan tombol ini",
+              },
+              {
+                element: ".answer-card-add",
+                intro:
+                  "kartu dapat ditambahkan dengan menekan tombol ini",
+              },
+            ],
+          });
+          card_intro.start();
+          introTampil = true
+        }
         break;
 
       default:

@@ -179,14 +179,14 @@ $(document).ready(() => {
         });
 
         $("hr").remove();
-      } else {
-        $(".main-table-body").append([
-          `
-                  <img src="/img/nothing.png" alt="" />
-                  <p>Belum ada nilai</p>
-                `,
-        ]);
-      }
+      } 
+    }else {
+      $(".main-table-body").append([
+        `
+          <img src="/img/nothing.png" alt="" />
+          <p>Belum ada nilai</p>
+        `,
+      ]);
     }
   });
 

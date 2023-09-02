@@ -9,7 +9,10 @@ $(document).ready(() => {
   const url = "/api/admin";
 
   $.get(url, async (data, status) => {
-    if (status == "success" && data.payload.datas.length !== 0) {
+    let esudo = data.payload.datas.filter(adm => {
+      return adm.role !== "super_admin"
+    })
+    if (status == "success" && esudo.length !== 0) {
       $("#siswa-table").DataTable({
         ajax: {
           url: "/api/admin",
@@ -54,12 +57,12 @@ $(document).ready(() => {
         },
       });
       $("hr").remove();
-    } else {
+    } else if(esudo.length == 0) {
       $(".main-table-body").append([
         `
-                  <img src="/img/nothing.png" alt="" />
-                  <p>Belum ada admin</p>
-                `,
+          <img src="/img/nothing.png" alt="" />
+          <p>Belum ada admin</p>
+        `,
       ]);
     }
   });

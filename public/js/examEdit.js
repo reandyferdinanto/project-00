@@ -84,13 +84,15 @@ $(document).ready(() => {
   let question_card = `
     <div class="question_kartu">  
       <div class="display_image"></div>
-      <textarea maxlength="300" data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal"></textarea>
-      <div class="upload-img" style="margin-top:1rem">
+      <div class="question-text-container">
+        <textarea data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal" required></textarea>
+        <div class="upload-img">
           <label class="custom-file-upload">
-              <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
-              <i class="uil uil-file-plus-alt"></i> Masukan Gambar
+            <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
+            <i class="uil uil-file-plus-alt"></i> Masukan Gambar
           </label>
           <p>*PNG/JPG/JPEG max. 200 kb</p>
+        </div>
       </div>
       <div class="answers-card">
         <div class="answer-card-add">
@@ -543,7 +545,7 @@ $(document).ready(() => {
   $(".assign-bg .close").click(function () {
     $(".assign-layer").css("visibility", "hidden");
     let checkedSiswa = document.querySelectorAll(
-      'input[type="checkbox"]:checked'
+      '.checkbox-delete:checked'
     ).length;
     $(".checkedSiswaExam").html(checkedSiswa + " Siswa");
   });

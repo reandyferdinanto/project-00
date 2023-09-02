@@ -16,9 +16,9 @@ $(document).ready(() => {
       success: (response) => {
         if (response.error) {
           if(!$(".error-password").length){
-            $(".content").prepend(`
+            $(`
               <div class="error-password">${response.error}!</div>
-            `)
+            `).insertBefore("#formLogin")
             $(".error-password").delay(1500).fadeOut('slow', function(){
               $(this).remove()
             })

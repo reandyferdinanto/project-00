@@ -109,31 +109,31 @@
         <form id="password-from">
           <div class="ubah-katasandi-layer">
             <div class="ubah-katasandi-bg">
-              <h2>Ubah Katasandi</h2>
+              <h2>Ubah kata sandi</h2>
               <input
                 type="password"
                 name="password_lama"
                 id=""
-                placeholder="Masukan katasandi lama"
+                placeholder="Masukan kata sandi lama"
                 required
               />
               <input
                 type="password"
                 name=""
                 id="password"
-                placeholder="Masukan katasandi baru"
+                placeholder="Masukan kata sandi baru"
                 required
               />
               <input
                 type="password"
                 name="password_baru"
                 id="confirm_password"
-                placeholder="Konfirmasi katasandi baru"
+                placeholder="Konfirmasi kata sandi baru"
                 required
               />
               <div class="ubah-katasandi-button">
                 <button class="ubah" type="button">Batal</button>
-                <button class="submit" type="submit">Ubah</button>
+                <button class="submit" type="submit">Ubah Kata Sandi</button>
               </div>
             </div>
           </div>
@@ -152,6 +152,7 @@
 <%- include('./layouts/footer'); -%>
 <script src="/js/superUpdateAdmin.js"></script>
 <script>
+  $(".adminSidebar").addClass('selected')
   $(".ubah-katasandi").click(function () {
     $(".ubah-katasandi-layer").css("visibility", "visible");
   });
