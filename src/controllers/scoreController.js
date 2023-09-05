@@ -111,8 +111,6 @@ async function updatePoint(req, res) {
         })
       }
 
-      console.log(new_point);
-
       ScoreExam.update(
         {
           point: JSON.stringify(new_point),
@@ -229,14 +227,12 @@ async function userAuth(req, res) {
           role: result.role
         };
         if (result.password == password) {
-          console.log("password benar SISWA");
           return res.json({
             ResultCode: 1,
             UserId: result.unique_id,
             Data: data,
           });
         } else {
-          console.log("password salah SISWA");
           return res.json({
             ResultCode: 2,
             Message: "NIS and Password combination didn't match.",
@@ -258,7 +254,6 @@ async function userAuth(req, res) {
               };
               bcrypt.compare(password, hasil.password, function(err, match) {
                 if(err){
-                  console.log("err GURU");
                   return res.json({
                     ResultCode: 2,
                     Message: err,
@@ -266,14 +261,12 @@ async function userAuth(req, res) {
                   });
                 }
                 if (match){
-                  console.log("password benar GURU");
                   return res.json({
                     ResultCode: 1,
                     UserId: hasil.unique_id,
                     Data: data,
                   });
                 }else if(!match){
-                  console.log("password benar GURU");
                   return res.json({
                     ResultCode: 2,
                     Message: "NUPTK and Password combination didn't match.",
@@ -282,7 +275,6 @@ async function userAuth(req, res) {
                 }
             });
           } else{
-            console.log("tidak di temukan user");
             return res.json({
               ResultCode: 2,
               Message: "All user not found.",
@@ -300,6 +292,7 @@ async function userAuth(req, res) {
     });
   }
 }
+
 module.exports = {
   getAllScore,
   getScoreById,

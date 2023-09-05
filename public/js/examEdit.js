@@ -197,8 +197,10 @@ $(document).ready(() => {
     });
   }
   function displayQuestionImage() {
+    question_with_img = []
     $(".input-file").each(function(idx){
       if($(this)[0].files[0]){
+        question_with_img.push(idx)
         $(".display_image").eq(idx).css('display', 'flex')
         $(".display_image").eq(idx).html(`
           <img src="${URL.createObjectURL($(this)[0].files[0])}" alt="no img" />

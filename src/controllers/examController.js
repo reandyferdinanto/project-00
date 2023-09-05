@@ -287,7 +287,6 @@ async function updateExam(req, res) {
                 }` : null
               }
             })
-            console.log(pilgan_answers);
             answer_count += 1;
 
             return {
@@ -310,8 +309,6 @@ async function updateExam(req, res) {
           }
         })
       );
-
-      console.log(bulkNewBody);
 
       await Question.bulkCreate(bulkNewBody, {
         updateOnDuplicate: ["unique_id"],
@@ -350,7 +347,6 @@ async function updateExam(req, res) {
         })
         // ----------END HANDLE---------------
         pilgan_answers = JSON.stringify(pilgan_answers);
-        console.log(question_id);
         await Question.update({
           question_text,
           question_img:

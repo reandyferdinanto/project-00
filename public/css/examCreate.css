@@ -340,8 +340,9 @@ input[type="file"] {
   border-radius: 100%;
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  transition: .3s;
 }
-.display_image span:hover {
+.display_image span:hover,.display_image_answer span:hover {
   transform: scale(1.1);
 }
 .display_image span i {

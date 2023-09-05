@@ -180,7 +180,7 @@ $(document).ready(() => {
 
         $("hr").remove();
       } 
-    }else {
+    }else if(exams.length == 0 || data.payload.datas.length == 0){
       $(".main-table-body").append([
         `
           <img src="/img/nothing.png" alt="" />

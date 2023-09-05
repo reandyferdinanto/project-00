@@ -45,7 +45,6 @@ async function uploadCSV(req, res) {
             // The file exists, so you can proceed with deleting it
             try {
                 fs.unlinkSync(filePath)
-                console.log('File deleted successfully')
             } catch (err) {
                 console.error(err)
             }

@@ -116,6 +116,7 @@
     let unique_id = window.location.href.substring(
       window.location.href.lastIndexOf("/") + 1
     );
+    
     let url = `/api/exam_type/${unique_id}`;
     $.get(url, async (data, status) => {
       let datas = data.payload.datas;
