@@ -40,6 +40,7 @@ $(document).ready(() => {
   let tempArray = [];
   let question_type = []
   let introTampil = false
+  let itemProcess = 0
   let question_pilgan = `
   <div class="question_pilgan">  
     <div class="display_image"></div>
@@ -120,7 +121,7 @@ $(document).ready(() => {
           <p>*PNG/JPG/JPEG max. 200 kb</p>
         </div>
       </div>
-      <div class="answers-card">
+      <div class="answers-card answers">
         <div class="answer-card-add">
           <img src="/img/plus.png" alt="" width="40" />
         </div>
@@ -210,7 +211,7 @@ $(document).ready(() => {
     })
   }
   function displayAnswerImage() {
-    $(".answers").each(function(idx){
+    $(".answers").each(function(idx){;
       $(this).find(".input-file-answer").each(function(){
         if($(this)[0].files[0]){
           $(this).closest(".answer-container").find(".display_image_answer").css('display', 'flex')
@@ -303,7 +304,7 @@ $(document).ready(() => {
           })
 
           // Image Processing
-          pilgan_answers.forEach(async(answer, idx) => {
+          pilgan_answers.forEach(async(answer, idx, array) => {
             if(answer.image){
               await getImgBlob(answer.image).then(blob => {
                 let file = new File([blob], "image", {type: blob.type})
