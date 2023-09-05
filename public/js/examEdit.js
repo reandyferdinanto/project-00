@@ -40,7 +40,6 @@ $(document).ready(() => {
   let tempArray = [];
   let question_type = []
   let introTampil = false
-  let itemProcess = 0
   let question_pilgan = `
   <div class="question_pilgan">  
     <div class="display_image"></div>
@@ -459,6 +458,9 @@ $(document).ready(() => {
   });
 
   $(".main-background").on("click", ".delete-quest", function () {
+    $(".question").each(function(idx){
+      $(this).find(".question-head-info p b").html(`Soal ${idx}`)
+    })
     $(this).parent().remove();
     let deleted = $(this).parent().find('input[name="row_id"]').val();
     let index = question_id.indexOf(deleted);

@@ -313,6 +313,9 @@ $(document).ready(() => {
   $(".main-background").on("click", "#add-more", addMoreQuestion);
 
   $(".main-background").on("click", ".delete-quest", function () {
+    $(".question").each(function(idx){
+      $(this).find(".question-head-info p b").html(`Soal ${idx}`)
+    })
     $(this).parent().remove();
   });
   $(".main-background").on("click", "#selesai", () => {
