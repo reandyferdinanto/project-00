@@ -256,11 +256,13 @@ $(document).ready(() => {
               if (correct.length !== 0) {
                 let kkm = correct[0].kkm_point;
                 let point = JSON.parse(correct[0].ScoreExam.point);
-                if(point[0]){
-                  if (point[0].point >= kkm) {
-                    return `<p style="color: #358f6c;margin:0;">${point[0].point}</p>`;
-                  } else{
-                    return `<p style="color: #ff4c4c;margin:0;">${point[0].point}</p>`;
+                if(point){
+                  if(point[0]){
+                    if (point[0].point >= kkm) {
+                      return `<p style="color: #358f6c;margin:0;">${point[0].point}</p>`;
+                    } else{
+                      return `<p style="color: #ff4c4c;margin:0;">${point[0].point}</p>`;
+                    }
                   }
                 }else{
                   return "-"
@@ -282,11 +284,13 @@ $(document).ready(() => {
               if (correct.length !== 0) {
                 let kkm = correct[0].kkm_point;
                 let point = JSON.parse(correct[0].ScoreExam.point);
-                if(point[1]){
-                  if (point[1].point >= kkm) {
-                    return `<p style="color: #358f6c;margin:0;">${point[1].point}</p>`;
-                  } else{
-                    return `<p style="color: #ff4c4c;margin:0;">${point[1].point}</p>`;
+                if(point){
+                  if(point[1]){
+                    if (point[1].point >= kkm) {
+                      return `<p style="color: #358f6c;margin:0;">${point[1].point}</p>`;
+                    } else{
+                      return `<p style="color: #ff4c4c;margin:0;">${point[1].point}</p>`;
+                    }
                   }
                 }else{
                   return "-"
