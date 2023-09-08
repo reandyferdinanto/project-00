@@ -299,6 +299,7 @@ async function updateExam(req, res) {
             let newCradAnswers = JSON.stringify(
               card_answers[card_answer_index]
             );
+            console.log(newCradAnswers);
             card_answer_index += 1;
             return (newBody = {
               question_text: question_text[index],
@@ -369,7 +370,7 @@ async function updateExam(req, res) {
             exam.setQuestions(result);
           })
       } else if (question_type == "kartu") {
-        card_answers = JSON.stringify(card_answers);
+        card_answers = JSON.stringify(...card_answers);
         let newBody = {
           question_text,
           question_img:
