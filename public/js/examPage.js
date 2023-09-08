@@ -44,7 +44,7 @@ $(document).ready(() => {
           {
             data: "unique_id",
             render: function (data, type) {
-              return `<a class="ujian-link" href="#" title="preview"><i class="uil uil-presentation-play"></i></a>`;
+              return `<a class="ujian-link"><i class="uil uil-presentation-play"></i></a>`;
             },
           },
         ],

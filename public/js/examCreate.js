@@ -289,8 +289,10 @@ $(document).ready(() => {
     const questionId = "card_answer_" + quest_length;
     $(".question:last-child").attr("data-question-id", questionId);
     initializeSortable();
-    quest_length += 1;
     tempArray = [];
+    $(".question").each(function(idx){
+      $(this).find(".question-head-info p b").html(`Soal ${idx+1}`)
+    })
   }
   function displayQueuedImages() {
     let img = "";
@@ -313,10 +315,10 @@ $(document).ready(() => {
   $(".main-background").on("click", "#add-more", addMoreQuestion);
 
   $(".main-background").on("click", ".delete-quest", function () {
-    $(".question").each(function(idx){
-      $(this).find(".question-head-info p b").html(`Soal ${idx}`)
-    })
     $(this).parent().remove();
+    $(".question").each(function(idx){
+      $(this).find(".question-head-info p b").html(`Soal ${idx+1}`)
+    })
   });
   $(".main-background").on("click", "#selesai", () => {
     $(".submit-layer").css("visibility", "visible");
@@ -366,10 +368,8 @@ $(document).ready(() => {
     $(this).find(".delete-card").css("visibility", "hidden");
   });
   $(".main-background").on("click", ".answer-card-add", function () {
-    $(this)
-      .parent()
-      .prepend([
-        `<div class="answer-card">
+    $(
+      `<div class="answer-card">
         <div class="answer-card-head">
           <span>#1</span>
           <i class="uil uil-draggabledots"></i>
@@ -379,8 +379,9 @@ $(document).ready(() => {
           <input required type="text" placeholder='Kartu'/>
           <div class="delete-card">x</div>
         </div>
-      </div>`,
-      ]);
+      </div>`
+    ).insertBefore($(this))
+
     $(this)
       .parent()
       .find(".answer-card")

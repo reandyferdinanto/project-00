@@ -113,7 +113,9 @@ main {
 }
 
 .ujian-link {
-  color: #358f6c;
+  color: gray;
+  opacity: .5;
+  cursor: default;
 }
 
 .edit-siswa {

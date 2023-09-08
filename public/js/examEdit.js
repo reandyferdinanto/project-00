@@ -458,10 +458,10 @@ $(document).ready(() => {
   });
 
   $(".main-background").on("click", ".delete-quest", function () {
-    $(".question").each(function(idx){
-      $(this).find(".question-head-info p b").html(`Soal ${idx}`)
-    })
     $(this).parent().remove();
+    $(".question").each(function(idx){
+      $(this).find(".question-head-info p b").html(`Soal ${idx+1}`)
+    })
     let deleted = $(this).parent().find('input[name="row_id"]').val();
     let index = question_id.indexOf(deleted);
     if (index !== -1) {
@@ -495,21 +495,20 @@ $(document).ready(() => {
     window.location = "/ujian";
   });
   $(".main-background").on("click", ".answer-card-add", function () {
-    $(this)
-      .parent()
-      .prepend([
-        `<div class="answer-card">
-          <div class="answer-card-head">
-            <span>#1</span>
-            <i class="uil uil-draggabledots"></i>
-            <span style="color:transparent">#1</span>
-          </div>
-          <div class="answer-card-input">
-            <input required type="text" placeholder='Kartu'/>
-            <div class="delete-card">x</div>
-          </div>
-        </div>`,
-      ]);
+    $(
+      `<div class="answer-card">
+        <div class="answer-card-head">
+          <span>#1</span>
+          <i class="uil uil-draggabledots"></i>
+          <span style="color:transparent">#1</span>
+        </div>
+        <div class="answer-card-input">
+          <input required type="text" placeholder='Kartu'/>
+          <div class="delete-card">x</div>
+        </div>
+      </div>`
+    ).insertBefore($(this))
+    
     $(this)
       .parent()
       .find(".answer-card")

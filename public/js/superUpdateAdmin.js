@@ -27,6 +27,7 @@ $(document).ready(() => {
     if (status == "success" && datas.length !== 0) {
       $("#email").val(datas.email);
       $("#username").val(datas.username);
+      $("#nuptk").val(datas.nuptk);
     }
   });
   // SET UJIAN
