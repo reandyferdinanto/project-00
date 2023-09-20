@@ -482,7 +482,7 @@ $(document).ready(() => {
       if (input_file[index].files[0] == undefined) {
         queuedImagesArray.push(input_file[index].files);
       } else if (input_file[index].files[0]) {
-        if (input_file[index].files[0].size < 200000) {
+        if (input_file[index].files[0].size < 1000000) {
           question_with_img.push(index);
           queuedImagesArray.push(input_file[index].files);
           document.querySelectorAll(".display_image")[index].style.display =

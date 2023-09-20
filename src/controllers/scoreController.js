@@ -59,12 +59,13 @@ async function getScoreById(req, res, next) {
 async function addUser(req, res) {
   try {
     const newUser = await Score.create({
-      nis: req.body.nis,
+      nis: "001"+req.body.nis,
       username: req.body.username,
       class: req.body.class,
       major: req.body.major,
       password: req.body.nis + "##",
-      role: "siswa"
+      role: "siswa",
+      gender: req.body.gender?req.body.gender:"pria"
     });
     response(201, "add new user", newUser, res);
   } catch (error) {

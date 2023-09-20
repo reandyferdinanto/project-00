@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     role: DataTypes.STRING,
     email: DataTypes.STRING,
     nuptk: DataTypes.STRING,
+    gender: DataTypes.STRING
   });
   return Admin;
 };

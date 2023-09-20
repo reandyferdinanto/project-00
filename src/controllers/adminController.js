@@ -15,6 +15,7 @@ function register(req, res) {
         role,
         email,
         nuptk,
+        gender: req.body.gender?req.body.gender:"pria"
       }).then((respon) => {
         response(201, "success create new user", respon, res);
       });
@@ -31,10 +32,10 @@ function register(req, res) {
 
 async function login(req, res) {
   try {
-    const { username, password } = req.body;
+    const { nuptk, password } = req.body;
     const admin = await Admin.findOne({
       where: {
-        username: username,
+        nuptk: nuptk,
       },
     });
     if (admin == null) {

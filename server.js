@@ -29,7 +29,7 @@ const storage = multer.diskStorage({
 });
 
 app.enable("trust proxy");
-app.use(multer({ storage: storage, limits: { fileSize: 2000000 } }).any());
+app.use(multer({ storage: storage, limits: { fileSize: 1000000 } }).any());
 app.use(cors());
 app.use(cookieParse());
 // app.use(morgan("dev"));

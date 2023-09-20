@@ -30,7 +30,10 @@ $(document).ready(() => {
               return meta.row + meta.settings._iDisplayStart + 1;
             },
           },
-          { data: "nis" },
+          { data: "nis",
+            render: function(data){
+              return data.slice(3)
+            } },
           { data: "username" },
           { data: "class" },
           { data: "major" },
