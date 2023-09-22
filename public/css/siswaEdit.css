@@ -23,6 +23,10 @@ main {
   grid-template-columns: 0.2fr 1fr;
 }
 
+.main-title h2 {
+  color: #358f6c;
+}
+
 .profile-sidebar {
   display: flex;
   align-items: center;
@@ -74,10 +78,6 @@ main {
   justify-content: space-between;
   padding: 2rem 2rem 0;
 }
-
-.main-title h2 {
-  color: #358f6c;
-}
 .main-title a {
   margin-top: auto;
 }
@@ -88,6 +88,9 @@ main {
   border-radius: 20px;
   padding: 2rem;
   color: white;
+}
+.main-input input {
+  margin: 0.75rem 0;
 }
 .nama-input {
   width: 100%;
@@ -108,10 +111,6 @@ main {
   grid-template-columns: 1fr 1fr;
   /* gap: 2rem; */
   margin-top: 1rem;
-}
-label {
-  display: grid;
-  gap: 0.75rem;
 }
 .main-create-question {
   margin-right: 2rem;
@@ -237,9 +236,9 @@ input[type="file"] {
 }
 
 .custom-file-upload {
-  border-radius: 7px;
+  border-radius: 30px;
   display: inline-block;
-  padding: 0.4rem 1.5rem;
+  padding: 0.5rem;
   font-size: 0.85rem;
   cursor: pointer;
   width: max-content;
@@ -252,17 +251,58 @@ input[type="file"] {
   margin-right: 2rem;
   display: flex;
   justify-content: flex-end;
-  padding-top: 2rem;
 }
+
 .input-side {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  margin-bottom: 1rem;
+  margin-bottom: .75rem;
 }
 .input-side div input {
   width: 50%;
   margin-top: 0.75rem;
 }
+input[type="file"] {
+  margin-right: 2rem;
+}
+input[type="file"]::file-selector-button {
+  background-color: antiquewhite;
+  border: none;
+  color: #358f6c;
+  border-radius: 20px;
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+}
+.button-upload-csv {
+  background-color: antiquewhite;
+  border: none;
+  color: #358f6c;
+  border-radius: 20px;
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+}
+.button-upload-csv:disabled {
+  background-color: lightgray;
+  color: gray;
+  cursor: default;
+}
+.upload-csv-p {
+  margin: 0 0.5rem;
+  margin-top: 0.2rem;
+  font-size: 0.8rem;
+  color: #358f6c;
+}
+
+.ubah-katasandi {
+  margin-left: 2rem;
+  padding: 0.5rem 1.5rem;
+  background-color: #ff4c4c;
+  color: white;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+}
+
 .exams-assign {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -270,6 +310,7 @@ input[type="file"] {
   background-color: white;
   padding: 0.9rem 1.2rem;
   border-radius: 10px;
+  margin: .75rem 0;
 }
 .exam-assign {
   display: flex;
@@ -278,5 +319,5 @@ input[type="file"] {
   background-color: #358f6c;
   color: white;
   border-radius: 5px;
-  padding: 0.75rem 1rem;
+  padding: 0.25rem 1rem;
 }

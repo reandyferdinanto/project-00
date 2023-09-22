@@ -28,6 +28,7 @@ $(document).ready(() => {
       $("#email").val(datas.email);
       $("#username").val(datas.username);
       $("#nuptk").val(datas.nuptk);
+      $(`input[name=gender][value='${datas.gender}']`).prop("checked",true);
     }
   });
   // SET UJIAN

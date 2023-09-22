@@ -49,6 +49,7 @@ $(document).ready(() => {
           columns: [
             {
               data: null,
+              width:"2%",
               render: function (data, type, row, meta) {
                 return meta.row + meta.settings._iDisplayStart + 1;
               },
@@ -92,7 +93,10 @@ $(document).ready(() => {
               data: "Exams",
               render: function (data) {
                 if(data.length !== 0){
-                  let point = JSON.parse(data[0].ScoreExam.point)
+                  let correct = data.filter((e) => {
+                    return e.unique_id == $("#exams-select").val();
+                  });
+                  let point = JSON.parse(correct[0].ScoreExam.point)
                   let kkm = data[0].kkm_point
                   if (point){
                     if (point[0].point >= kkm) {
@@ -112,7 +116,10 @@ $(document).ready(() => {
               data: "Exams",
               render: function (data) {
                 if(data.length !== 0){
-                  let point = JSON.parse(data[0].ScoreExam.point)
+                  let correct = data.filter((e) => {
+                    return e.unique_id == $("#exams-select").val();
+                  });
+                  let point = JSON.parse(correct[0].ScoreExam.point)
                   let kkm = data[0].kkm_point
                   if(point){
                     if (point[1].point >= kkm) {
@@ -207,6 +214,7 @@ $(document).ready(() => {
       columns: [
         {
           data: null,
+          width:"2%",
           render: function (data, type, row, meta) {
             return meta.row + meta.settings._iDisplayStart + 1;
           },

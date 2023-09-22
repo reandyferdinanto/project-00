@@ -1,6 +1,9 @@
 <%- include('./layouts/header'); -%>
 <link rel="stylesheet" href="/css/siswaCreate.css" />
 <style>
+  label{
+    font-weight: bold;
+  }
   .ubah-katasandi-layer {
     visibility: hidden;
     position: fixed;
@@ -78,18 +81,6 @@
               id="email"
               placeholder="Masukan Email Admin"
             />
-
-            <label for=""
-              >Nama Admin<span style="color: #ff4c4c"> *</span></label
-            >
-            <input
-              class="kelas-input"
-              required
-              type="text"
-              name="username"
-              id="username"
-              placeholder="Masukan Nama Admin"
-            />
             <label for=""
               >NUPTK<span style="color: #ff4c4c"> *</span></label
             >
@@ -101,6 +92,29 @@
               id="nuptk"
               placeholder="Masukan Nama Admin"
             />
+            <label for=""
+              >Nama Admin<span style="color: #ff4c4c"> *</span></label
+            >
+            <input
+              class="kelas-input"
+              required
+              type="text"
+              name="username"
+              id="username"
+              placeholder="Masukan Nama Admin"
+            />
+            <label for="">Jenis Kelamin<span style="color: #ff4c4c"> *</span></label>
+              <div class="" style="display: flex; gap: 2rem; margin-bottom: .5rem">
+                <div>
+                  <input type="radio" id="" name="gender" value="laki-laki" checked />
+                  <span style="margin: .5rem;" for="">Laki-Laki</span>
+                </div>
+              
+                <div>
+                  <input type="radio" id="" name="gender" value="perempuan" />
+                  <span style="margin: .5rem;" for="">Perempuan</span>
+                </div>
+              </div>
           </div>
           <button type="button" class="ubah-katasandi">Ubah Kata Sandi</button>
           <div class="submit-input">

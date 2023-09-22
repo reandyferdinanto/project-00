@@ -56,6 +56,7 @@ $(document).ready(() => {
       $("#username").val(datas.username);
       $("#class").val(datas.class);
       $("#major").val(datas.major);
+      $(`input[name=gender][value='${datas.gender}']`).prop("checked",true);
       if (datas.Exams) {
         datas.Exams.forEach((exam) => {
           $(".exams-assign").on("click", `#${exam.exam_name}`, function () {});
@@ -72,7 +73,7 @@ $(document).ready(() => {
         $(".exams-assign").append([
           `
               <div class="exam-assign">
-                <label for="${data.exam_name}">${data.exam_name}</label>
+                <span for="${data.exam_name}">${data.exam_name}</span>
                 <input type="checkbox" name="${data.unique_id}" id="${data.unique_id}" />
               </div>`,
         ]);

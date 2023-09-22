@@ -7,7 +7,7 @@ const { createToken } = require("../utils/JWT");
 
 function register(req, res) {
   try {
-    const { username, password, role, email, nuptk } = req.body;
+    const { username, password, role, email, nuptk, gender } = req.body;
     bcrypt.hash(password, 10).then((hash) => {
       Admin.create({
         username,
@@ -15,7 +15,7 @@ function register(req, res) {
         role,
         email,
         nuptk,
-        gender: req.body.gender?req.body.gender:"pria"
+        gender: gender ? gender:"pria"
       }).then((respon) => {
         response(201, "success create new user", respon, res);
       });
@@ -89,7 +89,7 @@ async function getAdminById(req, res) {
 }
 async function updateAdmin(req, res) {
   try {
-    const { unique_id, email, nuptk, username } = req.body;
+    const { unique_id, email, nuptk, username, gender } = req.body;
     await Admin.findOne({
       where: {
         unique_id: unique_id,
@@ -101,6 +101,7 @@ async function updateAdmin(req, res) {
           username: username !== undefined ? username : prev.username,
           email: email !== undefined ? email : prev.email,
           nuptk: nuptk !== undefined ? nuptk : prev.nuptk,
+          gender: gender !== undefined ? gender : prev.gender,
         },
         {
           where: {

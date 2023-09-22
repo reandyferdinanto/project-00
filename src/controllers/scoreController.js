@@ -178,6 +178,7 @@ async function userEdit(req, res, next) {
         nis: nis !== null ? nis : user.nis,
         major: major !== null ? major : user.major,
         class: req.body.class !== null ? req.body.class : user.class,
+        gender: req.body.gender?req.body.gender:"pria"
       },
       {
         where: {
