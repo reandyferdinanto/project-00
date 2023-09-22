@@ -92,21 +92,26 @@ $(document).ready(() => {
             {
               data: "Exams",
               render: function (data) {
-                if(data.length !== 0){
+                if (data.length !== 0) {
                   let correct = data.filter((e) => {
                     return e.unique_id == $("#exams-select").val();
                   });
-                  let point = JSON.parse(correct[0].ScoreExam.point)
-                  let kkm = data[0].kkm_point
-                  if (point){
-                    if (point[0].point >= kkm) {
-                      return `<p style="color: #358f6c;margin:0;">${point[0].point}</p>`;
-                    } else{
-                      return `<p style="color: #ff4c4c;margin:0;">${point[0].point}</p>`;
+                  if (correct.length !== 0) {
+                    let kkm = correct[0].kkm_point;
+                    let point = JSON.parse(correct[0].ScoreExam.point);
+                    if(point){
+                      if(point[0]){
+                        if (point[0].point >= kkm) {
+                          return `<p style="color: #358f6c;margin:0;">${point[0].point}</p>`;
+                        } else{
+                          return `<p style="color: #ff4c4c;margin:0;">${point[0].point}</p>`;
+                        }
+                      }
+                    }else{
+                      return "-"
                     }
-                  }else{
-                    return "-"
                   }
+                  return "-";
                 }else{
                   return "-"
                 }
@@ -115,23 +120,28 @@ $(document).ready(() => {
             {
               data: "Exams",
               render: function (data) {
-                if(data.length !== 0){
+                if (data.length !== 0) {
                   let correct = data.filter((e) => {
                     return e.unique_id == $("#exams-select").val();
                   });
-                  let point = JSON.parse(correct[0].ScoreExam.point)
-                  let kkm = data[0].kkm_point
-                  if(point){
-                    if (point[1].point >= kkm) {
-                      return `<p style="color: #358f6c;margin:0;">${point[1].point}</p>`;
-                    } else{
-                      return `<p style="color: #ff4c4c;margin:0;">${point[1].point}</p>`;
+                  if (correct.length !== 0) {
+                    let kkm = correct[0].kkm_point;
+                    let point = JSON.parse(correct[0].ScoreExam.point);
+                    if(point){
+                      if(point[1]){
+                        if (point[1].point >= kkm) {
+                          return `<p style="color: #358f6c;margin:0;">${point[1].point}</p>`;
+                        } else{
+                          return `<p style="color: #ff4c4c;margin:0;">${point[1].point}</p>`;
+                        }
+                      }
+                    }else{
+                      return "-"
                     }
-                  }else{
-                    return "-"
                   }
-                }else{
-                  return "-"
+                  return "-";
+                } else {
+                  return "-";
                 }
               },
             },
