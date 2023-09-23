@@ -31,6 +31,7 @@ $(document).ready(() => {
 
   let question_with_img = [];
   let queuedImagesArrayAnswer = [];
+  let allImage = []
   let users;
   let unique_id = window.location.href.substring(
     window.location.href.lastIndexOf("/") + 1
@@ -277,6 +278,13 @@ $(document).ready(() => {
       $(this).attr("name",`answer_image_${$(this).closest(".question").index()}${$(this).closest(".question").find(".input-file-answer").index($(this))}`)
     })
   }
+  function addImageToList(image){
+    if(image){
+      const urlParts = image.split('/');
+      const fileName = urlParts[urlParts.length - 1];
+      allImage.push(fileName)
+    }
+  }
 
   // Initialize Exam
   $.get(`/api/exams/${unique_id}`, async (exams, status) => {
@@ -292,6 +300,8 @@ $(document).ready(() => {
       exams_data.Questions.forEach(async (question, index) => {
         question_type.push(question.question_type)
         question_id.push(question.unique_id)
+        // add all question image to array
+        addImageToList(question.question_img)
         // Initialize Question Pilihan Ganda
         if (question.question_type == "pilihan_ganda"){
           let pilgan_answers = JSON.parse(question.pilgan_answers)
@@ -312,6 +322,8 @@ $(document).ready(() => {
                 $(".answers").eq(index).find(".input-file-answer").eq(idx)[0].files = container.files;
                 displayAnswerImage()
               })
+              // add all answer image to array
+              addImageToList(answer.image)
             }
           })
         }
@@ -709,6 +721,7 @@ $(document).ready(() => {
   deleteForm.addEventListener("submit", (e) => {
     let formData = new FormData(deleteForm);
     formData.append("exam_unique_id", unique_id);
+    formData.append("allImage", allImage)
     e.preventDefault();
     $.ajax({
       url: "/api/exams",

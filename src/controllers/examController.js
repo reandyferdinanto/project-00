@@ -1,6 +1,7 @@
 const { Exam, Score, Question, ScoreExam, ExamType } = require("../models");
 const response = require("./response");
 const fs = require("fs");
+const path = require('path')
 
 Score.belongsToMany(Exam, {
   foreignKey: "score_id",
@@ -428,13 +429,42 @@ async function getAllExam(req, res, next) {
 
 async function deleteExam(req, res, next) {
   try {
-    if (!req.body.exam_unique_id)
+
+    let {allImage, exam_unique_id} = req.body
+    allImage = allImage.split(',')
+
+    // DELETE FILE NOT USED
+    const filePath = path.join(__dirname, '..', '..', 'public', 'files', 'uploads');
+
+    if (Array.isArray(allImage) && allImage.length > 0) {
+      allImage.forEach((filename) => {
+        const fileToDelete = path.join(filePath, filename);
+
+        if (fs.existsSync(fileToDelete)) {
+          try {
+            fs.unlinkSync(fileToDelete);
+            console.log(`File ${filename} deleted successfully.`);
+          } catch (err) {
+            console.error(`Error deleting file ${filename}: ${err}`);
+          }
+        } else {
+          console.log(`File ${filename} not found.`);
+        }
+      });
+    } else {
+      console.log('No files to delete.');
+    }
+
+
+
+    // DELETE EXAM
+    if (!exam_unique_id)
       return response(400, "body can't be undefined", [], res);
 
     // FIND USER AND DELETE
     const exams = await Exam.destroy({
       where: {
-        unique_id: req.body.exam_unique_id,
+        unique_id: exam_unique_id,
       },
     });
 
@@ -442,7 +472,7 @@ async function deleteExam(req, res, next) {
     if (!exams)
       return response(
         400,
-        "cant find user with id:" + req.body.exam_unique_id,
+        "cant find user with id:" + exam_unique_id,
         [],
         res
       );
