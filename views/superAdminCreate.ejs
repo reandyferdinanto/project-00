@@ -35,7 +35,7 @@
             <input
               class="nama-input"
               required
-              type="text"
+              type="number"
               name="nuptk"
               id=""
               placeholder="Masukan NUPTK Admin"
@@ -96,6 +96,8 @@
 <script>
   $(document).ready(() => {
 
+    let user_id = $("#user_id").text()
+
     let first_intro = initializeIntro({
     dontShowAgainCookie: "adminCreate_intro",
     dontShowAgain: true,
@@ -134,6 +136,15 @@
       $(".submit-layer").css("visibility", "hidden");
     });
 
+
+    // Fetch SUDO
+    let school_id
+    let school_name
+    $.get(`/api/admin/${user_id}`, function(data) {
+      school_id = data.payload.datas.school_id
+      school_name = data.payload.datas.school_name
+    })
+
     // UPLOAD
     const manualForm = document.getElementById("submit-form");
     manualForm.addEventListener("submit", (e) => {
@@ -141,6 +152,8 @@
       let formData = new FormData(manualForm);
       formData.append("role", "admin");
       formData.append("password", "123");
+      formData.append("school_id", school_id)
+      formData.append("school_name", school_name)
       $.ajax({
         url: "/api/admin/register",
         type: "POST",

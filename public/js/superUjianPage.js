@@ -12,15 +12,22 @@ $(document).ready(() => {
     return intro;
   }
 
-  const url = "/api/exam_type";
+  let user_id = $("#user_id").text()
+  let school_id
+  $.get(`/api/admin/${user_id}`, function(data) {
+    school_id = data.payload.datas.school_id
+  })
 
-  $.get(url, async (data, status) => {
+  $.get("/api/exam_type", async (data, status) => {
     if (status == "success" && data.payload.datas.length !== 0) {
       $("#siswa-table").DataTable({
         ajax: {
           url: "/api/exam_type",
-          dataSrc: function (response) {
-            return response.payload.datas;
+          dataSrc: function(json){
+            let filteredData = json.payload.datas.filter(function (data) {
+              return data.school_id === school_id;
+            });
+            return filteredData;
           },
         },
         pageLength: 20,

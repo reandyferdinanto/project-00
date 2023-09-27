@@ -58,14 +58,17 @@ async function getScoreById(req, res, next) {
 
 async function addUser(req, res) {
   try {
+    let uniq_user = req.body.school_id + req.body.nis
     const newUser = await Score.create({
-      nis: "001"+req.body.nis,
+      nis: uniq_user,
       username: req.body.username,
       class: req.body.class,
       major: req.body.major,
       password: req.body.nis + "##",
       role: "siswa",
-      gender: req.body.gender?req.body.gender:"pria"
+      gender: req.body.gender?req.body.gender:"pria",
+      school_id: req.body.school_id,
+      school_name: req.body.school_name
     });
     response(201, "add new user", newUser, res);
   } catch (error) {
@@ -226,7 +229,10 @@ async function userAuth(req, res) {
           nis: result.nis,
           class: result.class,
           major: result.major,
-          role: result.role
+          role: result.role,
+          gender: result.gender,
+          school_id: result.school_id,
+          school_name: result.school_name
         };
         if (result.password == password) {
           return res.json({
@@ -253,6 +259,9 @@ async function userAuth(req, res) {
                 username: hasil.username,
                 role: hasil.role,
                 email: hasil.email,
+                gender: hasil.gender,
+                school_id: hasil.school_id,
+                school_name: hasil.school_name
               };
               bcrypt.compare(password, hasil.password, function(err, match) {
                 if(err){

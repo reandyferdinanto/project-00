@@ -7,6 +7,7 @@ const { convertCsvToXlsx } = require("@aternus/csv-to-xlsx");
 
 async function uploadCSV(req, res) {
   try {
+    console.log(req.body);
     const filePath = path.join(
       __dirname,
       "..",
@@ -23,15 +24,18 @@ async function uploadCSV(req, res) {
         .parse({ headers: true })
         .on("data", (row) => {
           let input_header = Object.keys(row);
-          let correct_header = ["username", "class", "nis", "major"];
+          let correct_header = ["username", "class", "nis", "major", "gender"];
           const sortedInputHeader = input_header.slice().sort();
           const sortedCorrectHeader = correct_header.slice().sort();
           if (JSON.stringify(sortedInputHeader) !== JSON.stringify(sortedCorrectHeader)) {
             throw Error(
-              `Header dari csv harus berupa "username", "class", "nis", "major"`
+              `Header dari csv harus berupa "username", "class", "nis", "major", "gender"`
             );
           }
-          row.password = row.nis + "!##!";
+          row.nis = req.body.school_id + row.nis
+          row.password = row.nis + "##";
+          row.school_id = req.body.school_id
+          row.school_name = req.body.school_name
           siswa.push(row);
         })
         .on("error", function (e) {

@@ -12,7 +12,9 @@ module.exports = (sequelize, DataTypes) => {
     role: DataTypes.STRING,
     email: DataTypes.STRING,
     nuptk: DataTypes.STRING,
-    gender: DataTypes.STRING
+    gender: DataTypes.STRING,
+    school_id: DataTypes.STRING,
+    school_name: DataTypes.STRING 
   });
   return Admin;
 };

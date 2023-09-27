@@ -7,6 +7,12 @@ $(document).ready(() => {
   });
   $("#date").html(text);
 
+  let user_id = $("#user_id").text()
+  let school_id
+  $.get(`/api/admin/${user_id}`, function(data) {
+    school_id = data.payload.datas.school_id
+  })
+
   // DATA SISWA
   let role = $("input[name=role]").val();
 
@@ -16,7 +22,12 @@ $(document).ready(() => {
       $("#siswa-table").DataTable({
         ajax: {
           url: "/api/scores",
-          dataSrc: "payload.datas",
+          dataSrc: function(json){
+            let filteredData = json.payload.datas.filter(function (data) {
+              return data.school_id === school_id;
+            });
+            return filteredData;
+          },
         },
         pageLength: 20,
         lengthMenu: [
@@ -32,8 +43,8 @@ $(document).ready(() => {
           },
           { data: "nis",
             render: function(data){
-              return data.slice(3)
-            } },
+              return data.slice(4)
+            }},
           { data: "username" },
           { data: "class" },
           { data: "major" },

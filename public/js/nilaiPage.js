@@ -28,6 +28,14 @@ $(document).ready(() => {
 
   // Menginisialisasi table dengan API yang ada
   const url = "/api/scores";
+  // Fetch SUDO
+  let user_id = $("#user_id").text()
+  let school_id
+  let school_name
+  $.get(`/api/admin/${user_id}`, function(data) {
+    school_id = data.payload.datas.school_id
+    school_name = data.payload.datas.school_name
+  })
   $.get(url, async (data, status) => {
     if (status == "success" && data.payload.datas.length !== 0) {
       if (exams.length !== 0) {
@@ -39,7 +47,12 @@ $(document).ready(() => {
         $("#siswa-table").DataTable({
           ajax: {
             url: "/api/scores",
-            dataSrc: "payload.datas",
+            dataSrc: function(json){
+              let filteredData = json.payload.datas.filter(function (data) {
+                return data.school_id === school_id;
+              });
+              return filteredData;
+            },
           },
           pageLength: 20,
           lengthMenu: [
@@ -54,7 +67,10 @@ $(document).ready(() => {
                 return meta.row + meta.settings._iDisplayStart + 1;
               },
             },
-            { data: "nis" },
+            { data: "nis",
+              render: function(data){
+                return data.slice(4)
+              } },
             { data: "username" },
             {
               data: "Exams",

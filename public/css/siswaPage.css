@@ -191,3 +191,11 @@ main {
 .edit-siswa {
   color: #358f6c;
 }
+.buat-ujian-baru{
+  background-color: #358f6c;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}

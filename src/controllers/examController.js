@@ -35,6 +35,8 @@ async function tambahExam(req, res) {
       question_type,
       card_answers,
       answer_with_image,
+      school_id,
+      school_name
     } = req.body;
 
     let card_answer_index = 0;
@@ -47,6 +49,8 @@ async function tambahExam(req, res) {
       exam_name,
       kkm_point,
       available_try,
+      school_id,
+      school_name
     });
 
     if (Array.isArray(question_text)) {

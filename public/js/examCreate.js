@@ -554,12 +554,23 @@ $(document).ready(() => {
     $(this).closest(".display_image_answer").html("");
   });
 
+  // Fetch SUDO
+  let user_id = $("#user_id").text()
+  let school_id
+  let school_name
+  $.get(`/api/admin/${user_id}`, function(data) {
+    school_id = data.payload.datas.school_id
+    school_name = data.payload.datas.school_name
+  })
+
   const manualForm = document.getElementById("submit-form");
   manualForm.addEventListener("submit", (e) => {
     let formData = new FormData(manualForm);
     formData.append("index_deleted", question_with_img);
     formData.append("answer_with_image", JSON.stringify(answer_with_img));
     formData.append("card_answers", JSON.stringify(allDataArray));
+    formData.append("school_id", school_id)
+    formData.append("school_name", school_name)
     e.preventDefault();
     $.ajax({
       url: "/api/exams",

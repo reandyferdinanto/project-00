@@ -58,10 +58,12 @@ async function updateExamType(req, res) {
 
 async function createExamType(req, res) {
   try {
-    const { exam_type, tanggal_dibuat } = req.body;
+    const { exam_type, tanggal_dibuat, school_id, school_name } = req.body;
     await ExamType.create({
       exam_type,
       tanggal_dibuat,
+      school_id,
+      school_name
     }).then(() => {
       response(201, "success create new exam_type", [], res);
     });

@@ -67,11 +67,22 @@ $(document).ready(() => {
     window.location = "/siswa";
   });
 
+  // Fetch SUDO
+  let user_id = $("#user_id").text()
+  let school_id
+  let school_name
+  $.get(`/api/admin/${user_id}`, function(data) {
+    school_id = data.payload.datas.school_id
+    school_name = data.payload.datas.school_name
+  })
+
   // FILE UPLOAD
   const fileUpload = document.getElementById("fileUpload");
   fileUpload.addEventListener("submit", (e) => {
     e.preventDefault();
     let formData = new FormData(fileUpload);
+    formData.append("school_id", school_id)
+    formData.append("school_name", school_name)
 
     $.ajax({
       url: "/api/utils/upload",
@@ -102,6 +113,8 @@ $(document).ready(() => {
   // $("selesai-button").on("click", () => {
   manualForm.addEventListener("submit", (e) => {
     let formData = new FormData(manualForm);
+    formData.append("school_id", school_id)
+    formData.append("school_name", school_name)
     e.preventDefault();
     $.ajax({
       url: "/api/scores",

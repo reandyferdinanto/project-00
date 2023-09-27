@@ -12,9 +12,13 @@ $(document).ready(() => {
     return intro;
   }
 
-  const url = "/api/admin";
+  let user_id = $("#user_id").text()
+  let school_id
+  $.get(`/api/admin/${user_id}`, function(data) {
+    school_id = data.payload.datas.school_id
+  })
 
-  $.get(url, async (data, status) => {
+  $.get("/api/admin", async (data, status) => {
     let esudo = data.payload.datas.filter(adm => {
       return adm.role !== "super_admin"
     })
@@ -24,7 +28,7 @@ $(document).ready(() => {
           url: "/api/admin",
           dataSrc: function (response) {
             return response.payload.datas.filter((e) => {
-              return e.role == "admin";
+              return e.role == "admin" && e.school_id == school_id;
             });
           },
         },
@@ -40,8 +44,11 @@ $(document).ready(() => {
               return meta.row + meta.settings._iDisplayStart + 1;
             },
           },
-          { data: "nuptk" },
-          { data: "username" },
+          { data: "nuptk", 
+            render: function(data){
+              return data.slice(4)
+            }},
+          { data: "username"},
           { data: "email" },
           {
             data: "unique_id",

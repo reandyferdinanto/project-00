@@ -8,6 +8,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     exam_type: DataTypes.STRING,
     tanggal_dibuat: DataTypes.STRING,
+    school_id: DataTypes.STRING,
+    school_name: DataTypes.STRING 
   });
   return ExamType;
 };

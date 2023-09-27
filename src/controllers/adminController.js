@@ -7,15 +7,25 @@ const { createToken } = require("../utils/JWT");
 
 function register(req, res) {
   try {
-    const { username, password, role, email, nuptk, gender } = req.body;
+    const { username, password, role, email, nuptk, gender, school_id, school_name } = req.body;
+    let uniq_nuptk
+    if(!nuptk.includes("sudo")){
+      uniq_nuptk = school_id+nuptk
+    }else{
+      uniq_nuptk= nuptk
+    }
+
+    // hash password input before save into database
     bcrypt.hash(password, 10).then((hash) => {
       Admin.create({
         username,
         password: hash,
         role,
         email,
-        nuptk,
-        gender: gender ? gender:"pria"
+        nuptk: uniq_nuptk,
+        gender,
+        school_id,
+        school_name
       }).then((respon) => {
         response(201, "success create new user", respon, res);
       });

@@ -13,7 +13,9 @@ module.exports = (sequelize, DataTypes) => {
     major: DataTypes.STRING,
     password: DataTypes.STRING,
     role: DataTypes.STRING,
-    gender: DataTypes.STRING
+    gender: DataTypes.STRING,
+    school_id: DataTypes.STRING,
+    school_name: DataTypes.STRING
   });
   return Score;
 };

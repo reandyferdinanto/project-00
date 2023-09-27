@@ -7,6 +7,7 @@ const createToken = (user) => {
       id: user.unique_id,
       username: user.username,
       role: user.role,
+      school_name: user.school_name
     },
     "SECRET"
   );

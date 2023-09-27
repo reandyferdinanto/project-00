@@ -16,6 +16,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       defaultValue: 2,
     },
+    school_id: DataTypes.STRING,
+    school_name: DataTypes.STRING 
   });
   return Exams;
 };
