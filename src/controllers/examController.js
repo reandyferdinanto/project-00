@@ -203,11 +203,39 @@ async function updateExam(req, res) {
       correct_answer,
       question_type,
       card_answers,
+      allImage
     } = req.body;
+
+    allImage = allImage.split(',')
+
+    // DELETE FILE NOT USED
+    const filePath = path.join(__dirname, '..', '..', 'public', 'files', 'uploads');
+
+    if (Array.isArray(allImage) && allImage.length > 0) {
+      allImage.forEach((filename) => {
+        const fileToDelete = path.join(filePath, filename);
+
+        if (fs.existsSync(fileToDelete)) {
+          try {
+            fs.unlinkSync(fileToDelete);
+            console.log(`File ${filename} deleted successfully.`);
+          } catch (err) {
+            console.error(`Error deleting file ${filename}: ${err}`);
+          }
+        } else {
+          console.log(`File ${filename} not found.`);
+        }
+      });
+    } else {
+      console.log('No files to delete.');
+    }
 
     let card_answer_index = 0;
     card_answers = JSON.parse(card_answers);
     let question_id = req.body.question_unique_id.split(",");
+    let all_question_id = req.body.all_question_id.split(",");
+
+    // cari exam untuk prev data
     const exam = await Exam.findOne({
       where: {
         unique_id: req.body.exam_unique_id,
@@ -228,7 +256,8 @@ async function updateExam(req, res) {
         },
       }
     );
-    // ASSIGN SISWA
+
+    // daftarkan siswa ke ujian atau hapus siswa dari ujain
     let exam_unique_id = req.body.exam_unique_id;
     let siswa_on = Object.keys(req.body).filter((key) => {
       return req.body[key] === "on";
@@ -251,7 +280,7 @@ async function updateExam(req, res) {
       }
     });
 
-    // UPDATE QUESTION
+    // update ujian menjadi yang terbaru
     // IF QUESTION > 1
     if (Array.isArray(question_text)) {
       question_type = question_type.split(',')
@@ -316,15 +345,13 @@ async function updateExam(req, res) {
         })
       );
 
-      await Question.bulkCreate(bulkNewBody, {
-        updateOnDuplicate: ["unique_id"],
-      }).then(async (result) => {
-        exam.setQuestions(result);
+      await Question.bulkCreate(bulkNewBody).then(async (result) => {
         await Question.destroy({
           where: {
-            unique_id: question_id,
+            unique_id: all_question_id,
           },
         });
+        exam.setQuestions(result);
       });
 
       // IF QUESTION == 1
@@ -434,7 +461,8 @@ async function getAllExam(req, res, next) {
 async function deleteExam(req, res, next) {
   try {
 
-    let {allImage, exam_unique_id} = req.body
+    let {allImage, exam_unique_id,question_unique_id} = req.body
+
     allImage = allImage.split(',')
 
     // DELETE FILE NOT USED
@@ -458,6 +486,16 @@ async function deleteExam(req, res, next) {
     } else {
       console.log('No files to delete.');
     }
+
+
+    // Delete question when exams deleted
+    let question_id = question_unique_id.split(",");
+    console.log(question_id);
+    await Question.destroy({
+      where: {
+        unique_id: question_id,
+      },
+    });
 
 
 

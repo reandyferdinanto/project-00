@@ -37,6 +37,7 @@ $(document).ready(() => {
     window.location.href.lastIndexOf("/") + 1
   );
   let question_id = [];
+  let all_question_id = [];
   let allDataArray = [];
   let tempArray = [];
   let question_type = []
@@ -300,6 +301,7 @@ $(document).ready(() => {
       exams_data.Questions.forEach(async (question, index) => {
         question_type.push(question.question_type)
         question_id.push(question.unique_id)
+        all_question_id.push(question.unique_id)
         // add all question image to array
         addImageToList(question.question_img)
         // Initialize Question Pilihan Ganda
@@ -470,15 +472,12 @@ $(document).ready(() => {
   });
 
   $(".main-background").on("click", ".delete-quest", function () {
+    let index_deleted = $(".delete-quest").index($(this));
+    question_id.splice(index_deleted, 1);
     $(this).parent().remove();
     $(".question").each(function(idx){
       $(this).find(".question-head-info p b").html(`Soal ${idx+1}`)
     })
-    let deleted = $(this).parent().find('input[name="row_id"]').val();
-    let index = question_id.indexOf(deleted);
-    if (index !== -1) {
-      question_id.splice(index, 1);
-    }
   });
   $(".main-background").on("click", "#selesai", () => {
     $(".submit-layer").css("visibility", "visible");
@@ -692,9 +691,11 @@ $(document).ready(() => {
     let formData = new FormData(manualForm);
     formData.append("exam_unique_id", unique_id);
     formData.append("question_unique_id", question_id);
+    formData.append("all_question_id", all_question_id);
     formData.append("index_deleted", question_with_img);
     formData.append("card_answers", JSON.stringify(allDataArray));
     formData.append("question_type", question_type)
+    formData.append("allImage", allImage)
     e.preventDefault();
     $.ajax({
       url: "/api/exams",
@@ -721,6 +722,7 @@ $(document).ready(() => {
   deleteForm.addEventListener("submit", (e) => {
     let formData = new FormData(deleteForm);
     formData.append("exam_unique_id", unique_id);
+    formData.append("question_unique_id", question_id);
     formData.append("allImage", allImage)
     e.preventDefault();
     $.ajax({
