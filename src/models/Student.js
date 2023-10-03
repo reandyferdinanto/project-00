@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Score = sequelize.define("Score", {
+  const Student = sequelize.define("Student", {
     unique_id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
@@ -17,5 +17,5 @@ module.exports = (sequelize, DataTypes) => {
     school_id: DataTypes.STRING,
     school_name: DataTypes.STRING
   });
-  return Score;
+  return Student;
 };

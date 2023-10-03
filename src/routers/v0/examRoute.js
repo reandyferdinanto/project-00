@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const examController = require("../controllers/examController");
-const { validateToken } = require("../utils/JWT");
+const examController = require("../../controllers/v0/examController");
+const { validateToken } = require("../../utils/JWT");
 
 router.get("/", examController.getAllExam);
 router.get("/:id", examController.getExamById);

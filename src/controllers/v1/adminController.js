@@ -1,9 +1,9 @@
 const fs = require("fs");
 const path = require("path");
-const { Admin } = require("../models");
+const { Admin } = require("../../models");
 const response = require("./response");
 const bcrypt = require("bcrypt");
-const { createToken } = require("../utils/JWT");
+const { createToken } = require("../../utils/JWT");
 
 function register(req, res) {
   try {
@@ -77,9 +77,13 @@ async function logout(req, res, next) {
   res.redirect("/login");
 }
 
-async function getAdmin(req, res) {
+async function getAllAdmin(req, res) {
   try {
-    await Admin.findAll().then((result) => {
+    await Admin.findAll({
+      attributes: {
+        exclude: ["createdAt", "updatedAt"],
+      },
+    }).then((result) => {
       response(200, "success get all admin", result, res);
     });
   } catch (error) {
@@ -185,7 +189,7 @@ module.exports = {
   register,
   login,
   logout,
-  getAdmin,
+  getAllAdmin,
   getAdminById,
   updateAdmin,
   resetPassword,

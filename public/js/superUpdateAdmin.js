@@ -20,10 +20,10 @@ $(document).ready(() => {
   let unique_id = window.location.href.substring(
     window.location.href.lastIndexOf("/") + 1
   );
-  let url_input = `/api/admin/${unique_id}`;
+  let url_input = `/api/v1/admins/${unique_id}`;
   // SET INPUT
   $.get(url_input, async (data, status) => {
-    let datas = data.payload.datas;
+    let datas = data.datas;
     if (status == "success" && datas.length !== 0) {
       $("#email").val(datas.email);
       $("#username").val(datas.username);
@@ -45,7 +45,7 @@ $(document).ready(() => {
     let formData = new FormData(manualForm);
     formData.append("unique_id", unique_id);
     $.ajax({
-      url: "/api/admin",
+      url: "/api/v1/admins",
       type: "PUT",
       data: formData,
       async: false,
@@ -54,10 +54,10 @@ $(document).ready(() => {
       encrypt: "multipart/form-data",
       processData: false,
       success: (response) => {
-        if (response.payload.status_code == 200) {
+        if (response.status_code == 200) {
           $(".complete-layer").removeClass("hide");
           $(".complete-layer").css("visibility", "visible");
-        } else if (response.payload.message == "you're not authenticated") {
+        } else if (response.message == "you're not authenticated") {
           window.location = "/login";
         }
       },

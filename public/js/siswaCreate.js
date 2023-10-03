@@ -71,9 +71,9 @@ $(document).ready(() => {
   let user_id = $("#user_id").text()
   let school_id
   let school_name
-  $.get(`/api/admin/${user_id}`, function(data) {
-    school_id = data.payload.datas.school_id
-    school_name = data.payload.datas.school_name
+  $.get(`/api/v1/admins/${user_id}`, function(data) {
+    school_id = data.datas.school_id
+    school_name = data.datas.school_name
   })
 
   // FILE UPLOAD
@@ -85,7 +85,7 @@ $(document).ready(() => {
     formData.append("school_name", school_name)
 
     $.ajax({
-      url: "/api/utils/upload",
+      url: "/api/v1/utils/upload",
       type: "POST",
       data: formData,
       async: false,
@@ -95,15 +95,15 @@ $(document).ready(() => {
       processData: false,
       success: (response) => {
         $(".submit-layer").css("visibility", "hidden");
-        if (response.payload.status_code == 201) {
+        if (response.status_code == 201) {
           $(".complete-layer").removeClass("hide");
           $(".complete-layer").css("visibility", "visible");
-        } else if (response.payload.message == "you're not authenticated") {
+        } else if (response.message == "you're not authenticated") {
           window.location = "/login";
         }
       },
       error: function (request, status, error) {
-        alert("Error: " + request.responseJSON.payload.message);
+        alert("Error: " + request.responseJSON.message);
       },
     });
   });
@@ -117,7 +117,7 @@ $(document).ready(() => {
     formData.append("school_name", school_name)
     e.preventDefault();
     $.ajax({
-      url: "/api/scores",
+      url: "/api/v1/students",
       type: "POST",
       data: formData,
       async: false,
@@ -127,10 +127,10 @@ $(document).ready(() => {
       processData: false,
       success: (response) => {
         $(".submit-layer").css("visibility", "hidden");
-        if (response.payload.status_code == 201) {
+        if (response.status_code == 201) {
           $(".complete-layer").removeClass("hide");
           $(".complete-layer").css("visibility", "visible");
-        } else if (response.payload.message == "you're not authenticated") {
+        } else if (response.message == "you're not authenticated") {
           window.location = "/login";
         }
       },

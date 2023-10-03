@@ -1,7 +1,7 @@
 const router = require("express").Router();
-const adminController = require("../controllers/adminController");
+const adminController = require("../../controllers/v1/adminController");
 
-router.get("/", adminController.getAdmin);
+router.get("/", adminController.getAllAdmin);
 router.get("/:id", adminController.getAdminById);
 router.post("/register", adminController.register);
 router.post("/login", adminController.login);

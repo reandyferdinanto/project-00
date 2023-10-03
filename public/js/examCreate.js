@@ -558,9 +558,9 @@ $(document).ready(() => {
   let user_id = $("#user_id").text()
   let school_id
   let school_name
-  $.get(`/api/admin/${user_id}`, function(data) {
-    school_id = data.payload.datas.school_id
-    school_name = data.payload.datas.school_name
+  $.get(`/api/v1/admins/${user_id}`, function(data) {
+    school_id = data.datas.school_id
+    school_name = data.datas.school_name
   })
 
   const manualForm = document.getElementById("submit-form");
@@ -573,7 +573,7 @@ $(document).ready(() => {
     formData.append("school_name", school_name)
     e.preventDefault();
     $.ajax({
-      url: "/api/exams",
+      url: "/api/v1/exams",
       type: "POST",
       data: formData,
       async: false,
@@ -583,10 +583,10 @@ $(document).ready(() => {
       processData: false,
       success: (response) => {
         $(".submit-layer").css("visibility", "hidden");
-        if (response.payload.status_code == 200) {
+        if (response.status_code == 200) {
           $(".complete-layer").removeClass("hide");
           $(".complete-layer").css("visibility", "visible");
-        } else if (response.payload.message == "you're not authenticated") {
+        } else if (response.message == "you're not authenticated") {
           window.location = "/login";
         }
       },
@@ -594,10 +594,13 @@ $(document).ready(() => {
   });
 
   //GET EXAMS TYPE
-  $.get("/api/exam_type", async (data, status) => {
-    if (status == "success" && data.payload.datas.length !== 0) {
-      let datas = data.payload.datas;
-      datas.forEach((data) => {
+  $.get("/api/v1/exam_type", async (data, status) => {
+    if (status == "success" && data.datas.length !== 0) {
+      let datas = data.datas;
+      let filteredType = datas.filter(examt => {
+        return examt.school_id == school_id
+      })
+      filteredType.forEach((data) => {
         $(".exam-type").append([
           `
         <option value="${data.exam_type.toLowerCase()}">${

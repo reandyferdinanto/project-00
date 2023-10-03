@@ -14,20 +14,20 @@ $(document).ready(() => {
 
   let user_id = $("#user_id").text()
   let school_id
-  $.get(`/api/admin/${user_id}`, function(data) {
-    school_id = data.payload.datas.school_id
+  $.get(`/api/v1/admins/${user_id}`, function(data) {
+    school_id = data.datas.school_id
   })
 
-  $.get("/api/admin", async (data, status) => {
-    let esudo = data.payload.datas.filter(adm => {
+  $.get("/api/v1/admins", async (data, status) => {
+    let esudo = data.datas.filter(adm => {
       return adm.role !== "super_admin"
     })
     if (status == "success" && esudo.length !== 0) {
       $("#siswa-table").DataTable({
         ajax: {
-          url: "/api/admin",
+          url: "/api/v1/admins",
           dataSrc: function (response) {
-            return response.payload.datas.filter((e) => {
+            return response.datas.filter((e) => {
               return e.role == "admin" && e.school_id == school_id;
             });
           },
@@ -157,7 +157,7 @@ $(document).ready(() => {
       e.preventDefault();
       let formData = new FormData(formDelete);
       $.ajax({
-        url: "/api/admin",
+        url: "/api/v1/admins",
         type: "DELETE",
         data: formData,
         async: false,

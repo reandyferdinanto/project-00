@@ -14,17 +14,17 @@ $(document).ready(() => {
 
   let user_id = $("#user_id").text()
   let school_id
-  $.get(`/api/admin/${user_id}`, function(data) {
-    school_id = data.payload.datas.school_id
+  $.get(`/api/v1/admins/${user_id}`, function(data) {
+    school_id = data.datas.school_id
   })
 
-  $.get("/api/exam_type", async (data, status) => {
-    if (status == "success" && data.payload.datas.length !== 0) {
+  $.get("/api/v1/exam_type", async (data, status) => {
+    if (status == "success" && data.datas.length !== 0) {
       $("#siswa-table").DataTable({
         ajax: {
-          url: "/api/exam_type",
+          url: "/api/v1/exam_type",
           dataSrc: function(json){
-            let filteredData = json.payload.datas.filter(function (data) {
+            let filteredData = json.datas.filter(function (data) {
               return data.school_id === school_id;
             });
             return filteredData;
@@ -151,7 +151,7 @@ $(document).ready(() => {
       e.preventDefault();
       let formData = new FormData(formDelete);
       $.ajax({
-        url: "/api/exam_type",
+        url: "/api/v1/exam_type",
         type: "DELETE",
         data: formData,
         async: false,

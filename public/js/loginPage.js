@@ -5,7 +5,7 @@ $(document).ready(() => {
     let formData = new FormData(formLogin);
 
     $.ajax({
-      url: "/api/admin/login",
+      url: "/api/v1/admins/login",
       type: "POST",
       data: formData,
       async: false,

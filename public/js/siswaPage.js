@@ -9,21 +9,19 @@ $(document).ready(() => {
 
   let user_id = $("#user_id").text()
   let school_id
-  $.get(`/api/admin/${user_id}`, function(data) {
-    school_id = data.payload.datas.school_id
+  $.get(`/api/v1/admins/${user_id}`, function(data) {
+    school_id = data.datas.school_id
   })
 
   // DATA SISWA
   let role = $("input[name=role]").val();
-
-  const url = "/api/scores";
-  $.get(url, async (data, status) => {
-    if (status == "success" && data.payload.datas.length !== 0) {
+  $.get("/api/v1/students", async (data, status) => {
+    if (status == "success" && data.datas.length !== 0) {
       $("#siswa-table").DataTable({
         ajax: {
-          url: "/api/scores",
+          url: "/api/v1/students",
           dataSrc: function(json){
-            let filteredData = json.payload.datas.filter(function (data) {
+            let filteredData = json.datas.filter(function (data) {
               return data.school_id === school_id;
             });
             return filteredData;
@@ -183,7 +181,7 @@ $(document).ready(() => {
         e.preventDefault();
         let formData = new FormData(formDelete);
         $.ajax({
-          url: "/api/scores",
+          url: "/api/v1/students",
           type: "DELETE",
           data: formData,
           async: false,
@@ -223,6 +221,4 @@ $(document).ready(() => {
       if(!anyChecked) $("#selectAll").prop('checked', false)
     });
   });
-
-  // ROLE HANDLE
 });

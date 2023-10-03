@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { validateRedirect, validateToken } = require("../utils/JWT");
+const { validateRedirect } = require("../utils/JWT");
 
 router.get("/ujian", validateRedirect, (req, res) => {
   res.render("examsPage", {
@@ -96,5 +96,7 @@ router.get("/admin/tipe_ujian/edit/:id", validateRedirect, (req, res) => {
     user: req.user,
   });
 });
+
+
 
 module.exports = router;

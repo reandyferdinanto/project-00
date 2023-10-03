@@ -10,18 +10,18 @@ $(document).ready(() => {
   let user_id = $("#user_id").text()
   let school_id
   let school_name
-  $.get(`/api/admin/${user_id}`, function(data) {
-    school_id = data.payload.datas.school_id
-    school_name = data.payload.datas.school_name
+  $.get(`/api/v1/admins/${user_id}`, function(data) {
+    school_id = data.datas.school_id
+    school_name = data.datas.school_name
   })
 
-  $.get("/api/exams", async (data, status) => {
-    if (status == "success" && data.payload.datas.length !== 0) {
+  $.get("/api/v1/exams", async (data, status) => {
+    if (status == "success" && data.datas.length !== 0) {
       $("#siswa-table").DataTable({
         ajax: {
-          url: "/api/exams",
+          url: "/api/v1/exams",
           dataSrc: function(json){
-            let filteredData = json.payload.datas.filter(function (data) {
+            let filteredData = json.datas.filter(function (data) {
               return data.school_id === school_id;
             });
             return filteredData;

@@ -44,21 +44,13 @@ app.set("views", path.join(__dirname, "views"));
 
 // ROUTER
 const db = require("./src/models");
-const scoreRouter = require("./src/routers/scoreRoute");
-const indexRouter = require("./src/routers/indexRoute");
-const utilsRouter = require("./src/routers/utilsRoute");
-const examRouter = require("./src/routers/examRoute");
-const adminRouter = require("./src/routers/adminRoute");
-const examTypeRouter = require("./src/routers/examTypeRoute");
 const webRouter = require("./src/routers/webRouter");
+const v0Router = require('./src/routers/v0Router')
+const v1Router = require('./src/routers/v1Router')
 
 app.use("/", webRouter);
-app.use("/api/", indexRouter);
-app.use("/api/scores", scoreRouter);
-app.use("/api/utils", utilsRouter);
-app.use("/api/exams", examRouter);
-app.use("/api/admin", adminRouter);
-app.use("/api/exam_type", examTypeRouter);
+app.use("/api/", v0Router);
+app.use("/api/v1", v1Router);
 
 // ERROR HANDLER
 app.all("*", (req, res, next) => {

@@ -1,10 +1,10 @@
-const { Score, Exam, Question, ScoreExam, Admin } = require("../models");
+const { Student, Exam, Question, StudentExam, Admin } = require("../../models");
 const bcrypt = require('bcrypt')
 const response = require("./response");
 
-async function getAllScore(req, res, next) {
+async function getAllStudents(req, res, next) {
   try {
-    let score = await Score.findAll({
+    let student = await Student.findAll({
       attributes: { exclude: ["createdAt", "updatedAt"] },
       include: [
         {
@@ -17,7 +17,7 @@ async function getAllScore(req, res, next) {
       ],
       order: [["username"], [Exam, "createdAt"]],
     });
-    return response(200, "showing all user", score, res);
+    return response(200, "showing all user", student, res);
   } catch (error) {
     return response(
       500,
@@ -28,10 +28,10 @@ async function getAllScore(req, res, next) {
   }
 }
 
-async function getScoreById(req, res, next) {
+async function getStudentById(req, res, next) {
   try {
     const { id } = req.params;
-    const score = await Score.findByPk(id, {
+    const student = await Student.findByPk(id, {
       attributes: { exclude: ["createdAt", "updatedAt"] },
       include: [
         {
@@ -49,8 +49,8 @@ async function getScoreById(req, res, next) {
         },
       ],
     });
-    if (!score) return response(400, "user not found", [], res);
-    response(200, "showing user by username", score, res);
+    if (!student) return response(400, "user not found", [], res);
+    response(200, "showing user by username", student, res);
   } catch (error) {
     response(500, "server failed to get user", { error: error.message }, res);
   }
@@ -59,7 +59,7 @@ async function getScoreById(req, res, next) {
 async function addUser(req, res) {
   try {
     let uniq_user = req.body.school_id + req.body.nis
-    const newUser = await Score.create({
+    const newUser = await Student.create({
       nis: uniq_user,
       username: req.body.username,
       class: req.body.class,
@@ -96,7 +96,7 @@ async function updatePoint(req, res) {
       );
     }
 
-    await ScoreExam.findOne({
+    await StudentExam.findOne({
       where: {
         score_id: id,
         exam_id: exam_id,
@@ -115,7 +115,7 @@ async function updatePoint(req, res) {
         })
       }
 
-      ScoreExam.update(
+      StudentExam.update(
         {
           point: JSON.stringify(new_point),
           number_of_try: prev.number_of_try + 1,
@@ -144,7 +144,7 @@ async function deleteUser(req, res, next) {
   try {
     let checkedSiswa = req.body.checkedSiswa;
     if (!checkedSiswa) return response(400, "body cant be undefined", [], res);
-    await Score.destroy({
+    await Student.destroy({
       where: {
         unique_id: checkedSiswa,
       },
@@ -167,7 +167,7 @@ async function userEdit(req, res, next) {
   try {
     let { unique_id, username, nis, major } = req.body;
     // INIT USER
-    const user = await Score.findByPk(unique_id);
+    const user = await Student.findByPk(unique_id);
     let exams_on = Object.keys(req.body).filter((key) => {
       return req.body[key] === "on";
     });
@@ -175,7 +175,7 @@ async function userEdit(req, res, next) {
       return req.body[key] === "off";
     });
     // UPDATE USER
-    const updatedUser = await Score.update(
+    const updatedUser = await Student.update(
       {
         username: username !== null ? username : user.username,
         nis: nis !== null ? nis : user.nis,
@@ -192,14 +192,14 @@ async function userEdit(req, res, next) {
     // EXAMS
     exams_on.forEach(async (exam_id) => {
       let exam = await Exam.findByPk(exam_id);
-      if (!(await exam.hasScore(user))) {
-        await exam.addScore(user);
+      if (!(await exam.hasStudent(user))) {
+        await exam.addStudent(user);
       }
     });
     exams_off.forEach(async (exam_id) => {
       let exam = await Exam.findByPk(exam_id);
-      if (await exam.hasScore(user)) {
-        await exam.removeScore(user);
+      if (await exam.hasStudent(user)) {
+        await exam.removeStudent(user);
       }
     });
     response(200, "success update user", updatedUser, res);
@@ -217,7 +217,7 @@ async function userAuth(req, res) {
   let { nis, password } = req.body;
   try {
     let data
-    await Score.findOne({
+    await Student.findOne({
       where: {
         nis,
       },
@@ -305,8 +305,8 @@ async function userAuth(req, res) {
 }
 
 module.exports = {
-  getAllScore,
-  getScoreById,
+  getAllStudents,
+  getStudentById,
   updatePoint,
   deleteUser,
   userEdit,

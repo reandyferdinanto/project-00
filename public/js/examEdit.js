@@ -242,9 +242,9 @@ $(document).ready(() => {
     });
   }
   function initializeExamType(exams_data){
-    $.get("/api/exam_type", async (exam_types, status) => {
-      if (status == "success" && exam_types.payload.datas.length !== 0) {
-        exam_types.payload.datas.forEach((exam_type) => {
+    $.get("/api/v1/exam_type", async (exam_types, status) => {
+      if (status == "success" && exam_types.datas.length !== 0) {
+        exam_types.datas.forEach((exam_type) => {
           $("#exam_type").append([
             `
             <option value="${exam_type.exam_type.toLowerCase()}">${
@@ -288,8 +288,8 @@ $(document).ready(() => {
   }
 
   // Initialize Exam
-  $.get(`/api/exams/${unique_id}`, async (exams, status) => {
-    let exams_data = exams.payload.datas;
+  $.get(`/api/v1/exams/${unique_id}`, async (exams, status) => {
+    let exams_data = exams.datas;
     // Initialize ExamType
     initializeExamType(exams_data)
 
@@ -306,7 +306,7 @@ $(document).ready(() => {
         addImageToList(question.question_img)
         // Initialize Question Pilihan Ganda
         if (question.question_type == "pilihan_ganda"){
-          let pilgan_answers = JSON.parse(question.pilgan_answers)
+          let pilgan_answers = question.pilgan_answers
           addMoreQuestion(question_pilgan, index+1)
           $(".question").eq(index).find(".soal-text").val(question.question_text)
           $(".question").eq(index).find(".correct-answer").val(pilgan_answers[0].answer)
@@ -331,7 +331,7 @@ $(document).ready(() => {
         }
         // Initialize Question Tipe Kartu
         if(question.question_type == "kartu"){
-          let card_answers = JSON.parse(question.card_answers)
+          let card_answers = question.card_answers
           addMoreQuestion(question_card, index+1)
           $(".question").eq(index).find(".soal-text").val(question.question_text)
           card_answers.answers.reverse().forEach((card,idx) => {
@@ -375,15 +375,15 @@ $(document).ready(() => {
 
 
   //ASSIGN
-  $.get("/api/scores", async (data, status) => {
-    if (status == "success" && data.payload.datas.length !== 0) {
+  $.get("/api/v1/students", async (data, status) => {
+    if (status == "success" && data.datas.length !== 0) {
       let index = 0;
-      users = data.payload.datas;
-      if (status == "success" && data.payload.datas.length !== 0) {
+      users = data.datas;
+      if (status == "success" && data.datas.length !== 0) {
         $("#assign-table").DataTable({
           ajax: {
-            url: "/api/scores",
-            dataSrc: "payload.datas",
+            url: "/api/v1/students",
+            dataSrc: "datas",
           },
           pageLength: -1,
           lengthMenu: [[-1], ["Semua"]],
@@ -698,7 +698,7 @@ $(document).ready(() => {
     formData.append("allImage", allImage)
     e.preventDefault();
     $.ajax({
-      url: "/api/exams",
+      url: "/api/v1/exams",
       type: "PUT",
       data: formData,
       async: false,
@@ -708,10 +708,10 @@ $(document).ready(() => {
       processData: false,
       success: (response) => {
         $(".submit-layer").css("visibility", "hidden");
-        if (response.payload.status_code == 200) {
+        if (response.status_code == 200) {
           $(".complete-layer").removeClass("hide");
           $(".complete-layer").css("visibility", "visible");
-        } else if (response.payload.message == "you're not authenticated") {
+        } else if (response.message == "you're not authenticated") {
           window.location = "/login";
         }
       },
@@ -726,7 +726,7 @@ $(document).ready(() => {
     formData.append("allImage", allImage)
     e.preventDefault();
     $.ajax({
-      url: "/api/exams",
+      url: "/api/v1/exams",
       type: "DELETE",
       data: formData,
       async: false,
@@ -736,10 +736,10 @@ $(document).ready(() => {
       processData: false,
       success: (response) => {
         $(".submit-hapus").css("visibility", "hidden");
-        if (response.payload.status_code == 200) {
+        if (response.status_code == 200) {
           $(".complete-layer-hapus").removeClass("hide");
           $(".complete-layer-hapus").css("visibility", "visible");
-        } else if (response.payload.message == "you're not authenticated") {
+        } else if (response.message == "you're not authenticated") {
           window.location = "/login";
         }
       },

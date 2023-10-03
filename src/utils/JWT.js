@@ -1,5 +1,5 @@
 const { sign, verify } = require("jsonwebtoken");
-const response = require("../controllers/response");
+const response = require("../controllers/v0/response");
 
 const createToken = (user) => {
   const accessToken = sign(

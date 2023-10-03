@@ -1,4 +1,4 @@
-const { ExamType } = require("../models");
+const { ExamType } = require("../../models");
 const response = require("./response");
 
 async function getExamType(req, res) {

@@ -8,10 +8,6 @@ $(document).ready(() => {
   setTimeout(() => {
     introJs()
       .setOptions({
-        // buttonClass: "button-intro",
-        // disableInteraction: true,
-        // overlayOpacity: 1,
-        // showStepNumbers: true,
         dontShowAgainLabel: "Jangan tampilkan lagi",
         tooltipClass: "customTooltip",
         prevLabel: "Kembali",
@@ -45,7 +41,7 @@ $(document).ready(() => {
       .start();
   }, 1000);
 
-  const url = "/api/exams";
+  const url = "/api/v1/exams";
   let datas;
   $.get(url, async (data, status) => {
     if (status == "success") {
@@ -55,8 +51,8 @@ $(document).ready(() => {
         // padding: "0.5rem 2rem",
         margin: ".5rem 2rem",
       });
-      datas = data.payload.datas;
-      datas.map((data, index) => {
+      datas = data.datas;
+      datas.forEach((data) => {
         $(".main-home").prepend([
           `
               <a href="/ujian/edit/${data.unique_id}" class="tambah-ujian">

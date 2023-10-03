@@ -1,9 +1,9 @@
 const router = require("express").Router();
-const scoreController = require("../controllers/scoreController");
-const { validateToken } = require("../utils/JWT");
+const scoreController = require("../../controllers/v0/scoreController");
+const { validateToken } = require("../../utils/JWT");
 
-router.get("/", scoreController.getAllScore);
-router.get("/:id", scoreController.getScoreById);
+router.get("/", scoreController.getAllStudents);
+router.get("/:id", scoreController.getStudentById);
 router.post("/", validateToken, scoreController.addUser);
 router.post("/edit", validateToken, scoreController.userEdit);
 router.post("/auth", scoreController.userAuth);

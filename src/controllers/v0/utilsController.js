@@ -1,15 +1,15 @@
 const csv = require("fast-csv");
 const fs = require("fs");
 const path = require("path");
-const { Score, Exam } = require("../models");
+const { Score, Exam } = require("../../models");
 const response = require("./response");
 const { convertCsvToXlsx } = require("@aternus/csv-to-xlsx");
 
 async function uploadCSV(req, res) {
   try {
-    console.log(req.body);
     const filePath = path.join(
       __dirname,
+      "..",
       "..",
       "..",
       "public",

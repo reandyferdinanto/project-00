@@ -44,13 +44,13 @@ $(document).ready(() => {
   let unique_id = window.location.href.substring(
     window.location.href.lastIndexOf("/") + 1
   );
-  let url_input = `/api/scores/${unique_id}`;
-  let url_ujian = `/api/exams`;
+  let url_input = `/api/v1/students/${unique_id}`;
+  let url_ujian = `/api/v1/exams`;
   let user_data;
   // SET INPUT
   $.get(url_input, async (data, status) => {
-    let datas = data.payload.datas;
-    user_data = data.payload.datas;
+    let datas = data.datas;
+    user_data = data.datas;
     if (status == "success" && datas.length !== 0) {
       $("#nis").val(datas.nis);
       $("#username").val(datas.username);
@@ -66,7 +66,7 @@ $(document).ready(() => {
   });
   // SET UJIAN
   $.get(url_ujian, async (data, status) => {
-    let datas = data.payload.datas;
+    let datas = data.datas;
     if (status == "success" && datas.length !== 0) {
       $(".exams-assign").html("");
       datas.forEach((data, index) => {
@@ -108,7 +108,7 @@ $(document).ready(() => {
     formData.append("unique_id", unique_id);
     e.preventDefault();
     $.ajax({
-      url: "/api/scores/edit",
+      url: "/api/v1/students/edit",
       type: "POST",
       data: formData,
       async: false,
@@ -118,10 +118,10 @@ $(document).ready(() => {
       processData: false,
       success: (response) => {
         $(".submit-layer").css("visibility", "hidden");
-        if (response.payload.status_code == 200) {
+        if (response.status_code == 200) {
           $(".complete-layer").removeClass("hide");
           $(".complete-layer").css("visibility", "visible");
-        } else if (response.payload.message == "you're not authenticated") {
+        } else if (response.message == "you're not authenticated") {
           window.location = "/login";
         }
       },

@@ -10,9 +10,9 @@ $(document).ready(() => {
 
 
   // Membuat select dalam page nilai menampilkan semua ujian yang terdaftar
-  $.get("/api/exams", async (response, status) => {
+  $.get("/api/v1/exams", async (response, status) => {
     $("#exams-select").html("");
-    exams = response.payload.datas;
+    exams = response.datas;
     if (exams.length !== 0) {
       exams.forEach((exam, index) => {
         $("#exams-select").append(
@@ -27,17 +27,17 @@ $(document).ready(() => {
   });
 
   // Menginisialisasi table dengan API yang ada
-  const url = "/api/scores";
+  const url = "/api/v1/students";
   // Fetch SUDO
   let user_id = $("#user_id").text()
   let school_id
   let school_name
-  $.get(`/api/admin/${user_id}`, function(data) {
-    school_id = data.payload.datas.school_id
-    school_name = data.payload.datas.school_name
+  $.get(`/api/v1/admins/${user_id}`, function(data) {
+    school_id = data.datas.school_id
+    school_name = data.datas.school_name
   })
   $.get(url, async (data, status) => {
-    if (status == "success" && data.payload.datas.length !== 0) {
+    if (status == "success" && data.datas.length !== 0) {
       if (exams.length !== 0) {
 
         for (let i = 0; i < exams[0].available_try; i++) {
@@ -46,9 +46,9 @@ $(document).ready(() => {
         
         $("#siswa-table").DataTable({
           ajax: {
-            url: "/api/scores",
+            url: "/api/v1/students",
             dataSrc: function(json){
-              let filteredData = json.payload.datas.filter(function (data) {
+              let filteredData = json.datas.filter(function (data) {
                 return data.school_id === school_id;
               });
               return filteredData;
@@ -114,7 +114,7 @@ $(document).ready(() => {
                   });
                   if (correct.length !== 0) {
                     let kkm = correct[0].kkm_point;
-                    let point = JSON.parse(correct[0].ScoreExam.point);
+                    let point = correct[0].StudentExam.point;
                     if(point){
                       if(point[0]){
                         if (point[0].point >= kkm) {
@@ -142,7 +142,7 @@ $(document).ready(() => {
                   });
                   if (correct.length !== 0) {
                     let kkm = correct[0].kkm_point;
-                    let point = JSON.parse(correct[0].ScoreExam.point);
+                    let point = correct[0].StudentExam.point;
                     if(point){
                       if(point[1]){
                         if (point[1].point >= kkm) {
@@ -213,7 +213,7 @@ $(document).ready(() => {
 
         $("hr").remove();
       } 
-    }else if(exams.length == 0 || data.payload.datas.length == 0){
+    }else if(exams.length == 0 || data.datas.length == 0){
       $(".main-table-body").append([
         `
           <img src="/img/nothing.png" alt="" />
@@ -229,8 +229,8 @@ $(document).ready(() => {
     $("#siswa-table").DataTable().destroy();
     $("#siswa-table").DataTable({
       ajax: {
-        url: "/api/scores",
-        dataSrc: "payload.datas",
+        url: "/api/v1/students",
+        dataSrc: "datas",
       },
       pageLength: 20,
       lengthMenu: [
@@ -289,7 +289,7 @@ $(document).ready(() => {
               });
               if (correct.length !== 0) {
                 let kkm = correct[0].kkm_point;
-                let point = JSON.parse(correct[0].ScoreExam.point);
+                let point = correct[0].StudentExam.point;
                 if(point){
                   if(point[0]){
                     if (point[0].point >= kkm) {
@@ -317,7 +317,7 @@ $(document).ready(() => {
               });
               if (correct.length !== 0) {
                 let kkm = correct[0].kkm_point;
-                let point = JSON.parse(correct[0].ScoreExam.point);
+                let point = correct[0].StudentExam.point;
                 if(point){
                   if(point[1]){
                     if (point[1].point >= kkm) {
@@ -346,7 +346,7 @@ $(document).ready(() => {
   download_form.addEventListener("submit", function (e) {
     e.preventDefault();
     $.ajax({
-      url: "/api/utils/export",
+      url: "/api/v1/utils/export",
       type: "POST",
       async: false,
       cache: false,
@@ -355,7 +355,7 @@ $(document).ready(() => {
       success: (response) => {
         if (response.status_code == 200) {
           window.location.href = "files/exports/nilai-siswa.xlsx";
-        } else if (response.payload.message == "you're not authenticated") {
+        } else if (response.message == "you're not authenticated") {
           window.location = "/login";
         }
       },

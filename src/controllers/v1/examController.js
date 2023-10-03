@@ -1,16 +1,16 @@
-const { Exam, Score, Question, ScoreExam, ExamType } = require("../models");
+const { Exam, Student, Question, StudentExam, ExamType } = require("../../models");
 const response = require("./response");
 const fs = require("fs");
 const path = require('path')
 
-Score.belongsToMany(Exam, {
+Student.belongsToMany(Exam, {
   foreignKey: "score_id",
-  through: ScoreExam,
+  through: StudentExam,
   constraints: false,
 });
-Exam.belongsToMany(Score, {
+Exam.belongsToMany(Student, {
   foreignKey: "exam_id",
-  through: ScoreExam,
+  through: StudentExam,
   constraints: false,
 });
 
@@ -43,7 +43,7 @@ async function tambahExam(req, res) {
     card_answers = JSON.parse(card_answers);
     answer_with_image = JSON.parse(answer_with_image);
 
-    const score = await Score.findAll();
+    const student = await Student.findAll();
     const exam = await Exam.create({
       exam_type,
       exam_name,
@@ -123,7 +123,7 @@ async function tambahExam(req, res) {
           exam.addQuestions(question);
         }
       });
-      exam.addScores(score);
+      exam.addStudents(student);
     } else {
       if (question_type == "pilihan_ganda") {
         // // -----------ANSWER IMAGE HANDLE-----------
@@ -163,7 +163,7 @@ async function tambahExam(req, res) {
           question_type,
         });
         exam.addQuestions(question);
-        exam.addScores(score);
+        exam.addStudents(student);
       } else if (question_type == "kartu") {
         card_answers = JSON.stringify(card_answers[0]);
         const question = await Question.create({
@@ -178,7 +178,7 @@ async function tambahExam(req, res) {
           question_type,
         });
         exam.addQuestions(question);
-        exam.addScores(score);
+        exam.addStudents(student);
       }
     }
     return response(200, "success create new exam", [], res);
@@ -209,7 +209,7 @@ async function updateExam(req, res) {
     allImage = allImage.split(',')
 
     // DELETE FILE NOT USED
-    const filePath = path.join(__dirname, '..', '..', 'public', 'files', 'uploads');
+    const filePath = path.join(__dirname,'..', '..', '..', 'public', 'files', 'uploads');
 
     if (Array.isArray(allImage) && allImage.length > 0) {
       allImage.forEach((filename) => {
@@ -267,16 +267,16 @@ async function updateExam(req, res) {
     });
     siswa_on.forEach(async (siswa_id) => {
       let exam = await Exam.findByPk(exam_unique_id);
-      let user = await Score.findByPk(siswa_id);
-      if (!(await exam.hasScore(user))) {
-        await exam.addScore(user);
+      let user = await Student.findByPk(siswa_id);
+      if (!(await exam.hasStudent(user))) {
+        await exam.addStudent(user);
       }
     });
     siswa_off.forEach(async (siswa_id) => {
       let exam = await Exam.findByPk(exam_unique_id);
-      let user = await Score.findByPk(siswa_id);
-      if (await exam.hasScore(user)) {
-        await exam.removeScore(user);
+      let user = await Student.findByPk(siswa_id);
+      if (await exam.hasStudent(user)) {
+        await exam.removeStudent(user);
       }
     });
 
@@ -446,17 +446,30 @@ async function getAllExam(req, res, next) {
         {
           model: Question,
           attributes: {
-            exclude: ["ExamUniqueId", "createdAt", "updatedAt"],
+            exclude: ["ExamUniqueId", "createdAt", "updatedAt", "examId"],
           },
         },
       ],
       attributes: { exclude: ["createdAt", "updatedAt"] },
     });
+
+    exams.forEach((exam) => {
+      exam.Questions.forEach((question) => {
+        if (question.pilgan_answers) {
+          question.pilgan_answers = JSON.parse(question.pilgan_answers);
+        }
+        if (question.card_answers) {
+          question.card_answers = JSON.parse(question.card_answers);
+        }
+      });
+    });
+
     response(200, "get all exam data", exams, res);
   } catch (error) {
     response(500, "server error get all exam", { error: error.message }, res);
   }
 }
+
 
 async function deleteExam(req, res, next) {
   try {
@@ -466,7 +479,7 @@ async function deleteExam(req, res, next) {
     allImage = allImage.split(',')
 
     // DELETE FILE NOT USED
-    const filePath = path.join(__dirname, '..', '..', 'public', 'files', 'uploads');
+    const filePath = path.join(__dirname,'..', '..', '..', 'public', 'files', 'uploads');
 
     if (Array.isArray(allImage) && allImage.length > 0) {
       allImage.forEach((filename) => {
@@ -535,6 +548,14 @@ async function getExamById(req, res, next) {
           attributes: { exclude: ["ExamUniqueId", "createdAt", "updatedAt"] },
         },
       ],
+    });
+    exam.Questions.forEach((question) => {
+      if (question.pilgan_answers) {
+        question.pilgan_answers = JSON.parse(question.pilgan_answers);
+      }
+      if (question.card_answers) {
+        question.card_answers = JSON.parse(question.card_answers);
+      }
     });
     if (!exam)
       return response(200, `no exam found with id: ${req.params.id}`, [], res);
