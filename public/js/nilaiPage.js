@@ -210,7 +210,6 @@ $(document).ready(() => {
             }, 500);
           },
         });
-
         $("hr").remove();
       } 
     }else if(exams.length == 0 || data.datas.length == 0){

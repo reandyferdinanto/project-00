@@ -38,7 +38,7 @@ main {
   width: 55%;
 }
 .content form {
-  margin-top: 2rem;
+  margin-top: 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
