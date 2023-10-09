@@ -8,7 +8,6 @@ $(document).ready(() => {
 
   let exams;
 
-
   // Membuat select dalam page nilai menampilkan semua ujian yang terdaftar
   $.get("/api/v1/exams", async (response, status) => {
     $("#exams-select").html("");
@@ -29,25 +28,24 @@ $(document).ready(() => {
   // Menginisialisasi table dengan API yang ada
   const url = "/api/v1/students";
   // Fetch SUDO
-  let user_id = $("#user_id").text()
-  let school_id
-  let school_name
-  $.get(`/api/v1/admins/${user_id}`, function(data) {
-    school_id = data.datas.school_id
-    school_name = data.datas.school_name
-  })
+  let user_id = $("#user_id").text();
+  let school_id;
+  let school_name;
+  $.get(`/api/v1/admins/${user_id}`, function (data) {
+    school_id = data.datas.school_id;
+    school_name = data.datas.school_name;
+  });
   $.get(url, async (data, status) => {
     if (status == "success" && data.datas.length !== 0) {
       if (exams.length !== 0) {
-
         for (let i = 0; i < exams[0].available_try; i++) {
-          $("thead tr").append(`<th>Nilai ${i+1}</th>`)
+          $("thead tr").append(`<th>Nilai ${i + 1}</th>`);
         }
-        
+
         $("#siswa-table").DataTable({
           ajax: {
             url: "/api/v1/students",
-            dataSrc: function(json){
+            dataSrc: function (json) {
               let filteredData = json.datas.filter(function (data) {
                 return data.school_id === school_id;
               });
@@ -62,15 +60,17 @@ $(document).ready(() => {
           columns: [
             {
               data: null,
-              width:"2%",
+              width: "2%",
               render: function (data, type, row, meta) {
                 return meta.row + meta.settings._iDisplayStart + 1;
               },
             },
-            { data: "nis",
-              render: function(data){
-                return data.slice(4)
-              } },
+            {
+              data: "nis",
+              render: function (data) {
+                return data.slice(4);
+              },
+            },
             { data: "username" },
             {
               data: "Exams",
@@ -115,21 +115,21 @@ $(document).ready(() => {
                   if (correct.length !== 0) {
                     let kkm = correct[0].kkm_point;
                     let point = correct[0].StudentExam.point;
-                    if(point){
-                      if(point[0]){
+                    if (point) {
+                      if (point[0]) {
                         if (point[0].point >= kkm) {
                           return `<p style="color: #358f6c;margin:0;">${point[0].point}</p>`;
-                        } else{
+                        } else {
                           return `<p style="color: #ff4c4c;margin:0;">${point[0].point}</p>`;
                         }
                       }
-                    }else{
-                      return "-"
+                    } else {
+                      return "-";
                     }
                   }
                   return "-";
-                }else{
-                  return "-"
+                } else {
+                  return "-";
                 }
               },
             },
@@ -143,16 +143,16 @@ $(document).ready(() => {
                   if (correct.length !== 0) {
                     let kkm = correct[0].kkm_point;
                     let point = correct[0].StudentExam.point;
-                    if(point){
-                      if(point[1]){
+                    if (point) {
+                      if (point[1]) {
                         if (point[1].point >= kkm) {
                           return `<p style="color: #358f6c;margin:0;">${point[1].point}</p>`;
-                        } else{
+                        } else {
                           return `<p style="color: #ff4c4c;margin:0;">${point[1].point}</p>`;
                         }
                       }
-                    }else{
-                      return "-"
+                    } else {
+                      return "-";
                     }
                   }
                   return "-";
@@ -163,7 +163,6 @@ $(document).ready(() => {
             },
           ],
           initComplete: function () {
-
             // Membuat inrto untuk menjelaskan page
             setTimeout(() => {
               introJs()
@@ -211,8 +210,8 @@ $(document).ready(() => {
           },
         });
         $("hr").remove();
-      } 
-    }else if(exams.length == 0 || data.datas.length == 0){
+      }
+    } else if (exams.length == 0 || data.datas.length == 0) {
       $(".main-table-body").append([
         `
           <img src="/img/nothing.png" alt="" />
@@ -239,7 +238,7 @@ $(document).ready(() => {
       columns: [
         {
           data: null,
-          width:"2%",
+          width: "2%",
           render: function (data, type, row, meta) {
             return meta.row + meta.settings._iDisplayStart + 1;
           },
@@ -289,16 +288,16 @@ $(document).ready(() => {
               if (correct.length !== 0) {
                 let kkm = correct[0].kkm_point;
                 let point = correct[0].StudentExam.point;
-                if(point){
-                  if(point[0]){
+                if (point) {
+                  if (point[0]) {
                     if (point[0].point >= kkm) {
                       return `<p style="color: #358f6c;margin:0;">${point[0].point}</p>`;
-                    } else{
+                    } else {
                       return `<p style="color: #ff4c4c;margin:0;">${point[0].point}</p>`;
                     }
                   }
-                }else{
-                  return "-"
+                } else {
+                  return "-";
                 }
               }
               return "-";
@@ -317,16 +316,16 @@ $(document).ready(() => {
               if (correct.length !== 0) {
                 let kkm = correct[0].kkm_point;
                 let point = correct[0].StudentExam.point;
-                if(point){
-                  if(point[1]){
+                if (point) {
+                  if (point[1]) {
                     if (point[1].point >= kkm) {
                       return `<p style="color: #358f6c;margin:0;">${point[1].point}</p>`;
-                    } else{
+                    } else {
                       return `<p style="color: #ff4c4c;margin:0;">${point[1].point}</p>`;
                     }
                   }
-                }else{
-                  return "-"
+                } else {
+                  return "-";
                 }
               }
               return "-";

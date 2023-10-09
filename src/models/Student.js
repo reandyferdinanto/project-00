@@ -15,7 +15,11 @@ module.exports = (sequelize, DataTypes) => {
     role: DataTypes.STRING,
     gender: DataTypes.STRING,
     school_id: DataTypes.STRING,
-    school_name: DataTypes.STRING
+    school_name: DataTypes.STRING,
+    login_status: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: 0,
+    },
   });
   return Student;
 };

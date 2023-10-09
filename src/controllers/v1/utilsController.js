@@ -1,7 +1,7 @@
 const csv = require("fast-csv");
 const fs = require("fs");
 const path = require("path");
-const { Student, Exam } = require("../../models");
+const { Student, Exam, Admin } = require("../../models");
 const response = require("./response");
 const { convertCsvToXlsx } = require("@aternus/csv-to-xlsx");
 
@@ -16,10 +16,9 @@ async function uploadCSV(req, res) {
       "files",
       "uploads",
       req.files[0].filename
-    )
+    );
     const siswa = [];
-    fs.createReadStream(filePath)
-    .pipe(
+    fs.createReadStream(filePath).pipe(
       csv
         .parse({ headers: true })
         .on("data", (row) => {
@@ -27,15 +26,18 @@ async function uploadCSV(req, res) {
           let correct_header = ["username", "class", "nis", "major", "gender"];
           const sortedInputHeader = input_header.slice().sort();
           const sortedCorrectHeader = correct_header.slice().sort();
-          if (JSON.stringify(sortedInputHeader) !== JSON.stringify(sortedCorrectHeader)) {
+          if (
+            JSON.stringify(sortedInputHeader) !==
+            JSON.stringify(sortedCorrectHeader)
+          ) {
             throw Error(
               `Header dari csv harus berupa "username", "class", "nis", "major", "gender"`
             );
           }
-          row.nis = req.body.school_id + row.nis
+          row.nis = req.body.school_id + row.nis;
           row.password = row.nis + "##";
-          row.school_id = req.body.school_id
-          row.school_name = req.body.school_name
+          row.school_id = req.body.school_id;
+          row.school_name = req.body.school_name;
           siswa.push(row);
         })
         .on("error", function (e) {
@@ -48,12 +50,12 @@ async function uploadCSV(req, res) {
           if (fs.existsSync(filePath)) {
             // The file exists, so you can proceed with deleting it
             try {
-                fs.unlinkSync(filePath)
+              fs.unlinkSync(filePath);
             } catch (err) {
-                console.error(err)
+              console.error(err);
             }
           } else {
-              console.log('File not found')
+            console.log("File not found");
           }
         })
     );
@@ -135,7 +137,34 @@ async function exportCSV(req, res) {
   csvStream.end();
   writableStream.end();
 }
+
+async function updateLoginStatus(req, res) {
+  try {
+    let { login_status, id } = req.body;
+    let student = await Student.findByPk(id);
+    let admin = await Admin.findByPk(id);
+
+    if (student) {
+      student.update({
+        login_status,
+      });
+    } else {
+      admin.update({
+        login_status,
+      });
+    }
+    response(200, "success update login status", [], res);
+  } catch (error) {
+    response(
+      500,
+      "server failed to update login status",
+      { error: error.message },
+      res
+    );
+  }
+}
 module.exports = {
   uploadCSV,
   exportCSV,
+  updateLoginStatus,
 };
