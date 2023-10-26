@@ -9,6 +9,7 @@ const fs = require("fs");
 
 const app = express();
 
+// white listing untuk konten external (CSP)
 const cspOptions = {
   directives: {
     defaultSrc: ["'self'"],
@@ -21,6 +22,7 @@ const cspOptions = {
   },
 };
 
+// default membuat folder untuk penempatan file upload
 if (!fs.existsSync("public/files/uploads")) {
   if (!fs.existsSync("public/files")) {
     fs.mkdirSync("public/files");
@@ -30,6 +32,7 @@ if (!fs.existsSync("public/files/uploads")) {
   }
 }
 
+// multer setup disk storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "public/files/uploads");
@@ -40,6 +43,7 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + Math.floor(Math.random() * 99) + 1 + "." + extension);
   },
 });
+
 
 app.enable("trust proxy");
 app.use(multer({ storage: storage, limits: { fileSize: 1000000 } }).any());

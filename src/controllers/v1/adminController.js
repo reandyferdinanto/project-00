@@ -1,9 +1,7 @@
-const fs = require("fs");
-const path = require("path");
 const { Admin } = require("../../models");
 const response = require("./response");
 const bcrypt = require("bcrypt");
-const { createToken } = require("../../utils/JWT");
+const { generateAccessToken, generateRefreshToken } = require("../../utils/JWT");
 
 async function register(req, res) {
   try {
@@ -46,19 +44,25 @@ async function login(req, res) {
       },
     });
     if (admin == null) {
-      return res.json({ error: "user not found" });
+      return res.status(404).json({ error: "User not found" });
     }
     const dbPassword = admin.password;
     bcrypt.compare(password, dbPassword).then((match) => {
       if (!match) {
         res.json({ error: "wrong username and password combination" });
       } else {
-        const accessToken = createToken(admin);
+        // Generate access-token
+        const accessToken = generateAccessToken(admin);
         res.cookie("access-token", accessToken, {
-          maxAge: 3600000,
+          maxAge:480_000
         });
+        // // Generate refresh-token (NOT USED)
+        // const refreshToken = generateRefreshToken(admin);
+        // res.cookie("refresh-token", refreshToken);
+
+
         if (admin.role == "super_admin") {
-          res.status(200).json({ route: "/admin", status: "success" });
+          res.status(200).json({ route: "/admin", status: "success", accessToken });
         } else {
           res.status(200).json({ route: "/", status: "success" });
         }
