@@ -1,4 +1,7 @@
 $(document).ready(() => {
+  
+  $(".siswaSidebar").addClass('selected')
+  
   // TIME
   const d = new Date();
   let text;

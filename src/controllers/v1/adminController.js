@@ -5,24 +5,21 @@ const response = require("./response");
 const bcrypt = require("bcrypt");
 const { createToken } = require("../../utils/JWT");
 
-function register(req, res) {
+async function register(req, res) {
   try {
-    const { username, password, role, email, nuptk, gender, school_id, school_name } = req.body;
-    let uniq_nuptk
-    if(!nuptk.includes("sudo")){
-      uniq_nuptk = school_id+nuptk
-    }else{
-      uniq_nuptk= nuptk
+    let { username, password, role, email, nuptk, gender, school_id, school_name } = req.body;
+    if(role!=="super_admin"){
+      nuptk = school_id+nuptk
     }
 
     // hash password input before save into database
-    bcrypt.hash(password, 10).then((hash) => {
+    await bcrypt.hash(password, 10).then((hash) => {
       Admin.create({
         username,
         password: hash,
         role,
         email,
-        nuptk: uniq_nuptk,
+        nuptk,
         gender,
         school_id,
         school_name
@@ -81,7 +78,7 @@ async function getAllAdmin(req, res) {
   try {
     await Admin.findAll({
       attributes: {
-        exclude: ["createdAt", "updatedAt"],
+        exclude: ["createdAt", "updatedAt", "password"],
       },
     }).then((result) => {
       response(200, "success get all admin", result, res);
@@ -90,10 +87,15 @@ async function getAllAdmin(req, res) {
     response(500, "server failed to get admin", { error: error.message }, res);
   }
 }
+
 async function getAdminById(req, res) {
   const pk = req.params.id;
   try {
-    await Admin.findByPk(pk).then((result) => {
+    await Admin.findByPk(pk, {
+      attributes: {
+        exclude: ["createdAt", "updatedAt", "password"],
+      },
+    }).then((result) => {
       if (!result) return response(200, `no admin with id ${pk}`, [], res);
       response(200, "success get all admin", result, res);
     });
@@ -101,6 +103,7 @@ async function getAdminById(req, res) {
     response(500, "server failed to get admin", { error: error.message }, res);
   }
 }
+
 async function updateAdmin(req, res) {
   try {
     const { unique_id, email, nuptk, username, gender } = req.body;
@@ -138,7 +141,7 @@ async function resetPassword(req, res) {
       const dbPassword = result.password;
       bcrypt.compare(password_lama, dbPassword).then((match) => {
         if (!match) {
-          return response(400, "password lama salah", [], res);
+          return response(400, "Kata sandi lama salah", [], res);
         } else {
           bcrypt.hash(password_baru, 10).then((hash) => {
             Admin.update(

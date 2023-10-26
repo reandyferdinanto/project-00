@@ -19,7 +19,7 @@
         <form id="formLogin">
           <div class="input">
             <i class="uil uil-user"></i>
-            <input type="text" required name="nuptk" placeholder="Username" />
+            <input type="text" required name="nuptk" placeholder="Username" maxlength="30" pattern="[A-Za-z0-9]+"/>
           </div>
           <div class="input">
             <i class="uil uil-lock"></i>
@@ -28,6 +28,7 @@
               required
               name="password"
               placeholder="Password"
+              maxlength="30"
             />
           </div>
       </div>

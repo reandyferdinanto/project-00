@@ -1,4 +1,7 @@
 $(document).ready(() => {
+  
+  $(".nilaiSidebar").addClass('selected')
+  
   const d = new Date();
   let text;
   text = d.toLocaleString("id-ID", {

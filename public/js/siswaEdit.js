@@ -1,4 +1,13 @@
 $(document).ready(() => {
+  
+  $(".siswaSidebar").addClass('selected')
+  $('form').bind("keypress", function(e) {
+      if (e.keyCode == 13) {               
+          e.preventDefault();
+          return false;
+      }
+  });
+  
   introJs()
     .setOptions({
       dontShowAgainLabel: "Jangan tampilkan lagi",

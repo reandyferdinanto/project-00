@@ -1,4 +1,13 @@
 $(document).ready(() => {
+
+  $('.ujianSidebar').addClass('selected')
+  $('form').bind("keypress", function(e) {
+        if (e.keyCode == 13) {               
+            e.preventDefault();
+            return false;
+        }
+  });
+
   const d = new Date();
   let text = d.toLocaleString("id-ID", {
     dateStyle: "medium",

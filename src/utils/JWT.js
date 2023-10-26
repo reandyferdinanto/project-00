@@ -1,5 +1,7 @@
 const { sign, verify } = require("jsonwebtoken");
 const response = require("../controllers/v0/response");
+const path = require('path')
+require("dotenv").config({ path: path.resolve(__dirname + "/./../../.env") });
 
 const createToken = (user) => {
   const accessToken = sign(

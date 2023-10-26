@@ -5,7 +5,7 @@ const response = require("./response");
 async function getAllStudents(req, res, next) {
   try {
     let students = await Student.findAll({
-      attributes: { exclude: ["createdAt", "updatedAt"] },
+      attributes: { exclude: ["createdAt", "updatedAt", "password"] },
       include: [
         {
           model: Exam,
@@ -43,7 +43,7 @@ async function getStudentById(req, res, next) {
   try {
     const { id } = req.params;
     const student = await Student.findByPk(id, {
-      attributes: { exclude: ["createdAt", "updatedAt"] },
+      attributes: { exclude: ["createdAt", "updatedAt", "password"] },
       include: [
         {
           model: Exam,

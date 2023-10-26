@@ -85,12 +85,3 @@
 </body>
 <%- include('./layouts/footer'); -%>
 <script src="/js/examCreate.js"></script>
-<script>
-  $('.ujianSidebar').addClass('selected')
-  $('form').bind("keypress", function(e) {
-        if (e.keyCode == 13) {               
-            e.preventDefault();
-            return false;
-        }
-    });
-</script>

@@ -80,6 +80,7 @@
               name="email"
               id="email"
               placeholder="Masukan Email Admin"
+              maxlength="40"
             />
             <label for=""
               >NUPTK<span style="color: #ff4c4c"> *</span></label
@@ -91,6 +92,7 @@
               name="nuptk"
               id="nuptk"
               placeholder="Masukan Nama Admin"
+              max="40"
             />
             <label for=""
               >Nama Admin<span style="color: #ff4c4c"> *</span></label
@@ -102,6 +104,7 @@
               name="username"
               id="username"
               placeholder="Masukan Nama Admin"
+              maxlength="40" pattern="[A-Za-z0-9]+"
             />
             <label for="">Jenis Kelamin<span style="color: #ff4c4c"> *</span></label>
               <div class="" style="display: flex; gap: 2rem; margin-bottom: .5rem">
@@ -141,6 +144,7 @@
                 id=""
                 placeholder="Masukan kata sandi lama"
                 required
+                maxlength="40"
               />
               <input
                 type="password"
@@ -148,6 +152,7 @@
                 id="password"
                 placeholder="Masukan kata sandi baru"
                 required
+                maxlength="40"
               />
               <input
                 type="password"
@@ -155,6 +160,7 @@
                 id="confirm_password"
                 placeholder="Konfirmasi kata sandi baru"
                 required
+                maxlength="40"
               />
               <div class="ubah-katasandi-button">
                 <button class="ubah" type="button">Batal</button>
@@ -175,115 +181,4 @@
   </main>
 </body>
 <%- include('./layouts/footer'); -%>
-<script src="/js/superUpdateAdmin.js"></script>
-<script>
-  let introTampil = false
-  function initializeIntro(stepConfig) {
-    const intro = introJs();
-    intro.setOptions(stepConfig);
-    return intro;
-  }
-  let first_intro = initializeIntro({
-    dontShowAgainCookie: "adminEdit_intro",
-    dontShowAgain: true,
-    dontShowAgainLabel: "Jangan tampilkan lagi",
-    tooltipClass: "customTooltip",
-    prevLabel: "Kembali",
-    nextLabel: "Lanjut",
-    doneLabel: "Selesai",
-    steps: [
-      {
-        title: "Edit Admin",
-        intro: "Halaman ini berfungsi untuk mengubah informasi Admin yang telah ada. Tampilan pada halaman ini mirip seperti pada saat membuat Admin baru sehingga Super Admin dapat langsung mengubah informasi yang diinginkan.",
-      },
-      {
-        element: ".ubah-katasandi",
-        intro: "Tombol ini berfungsi untuk mengubah kata sandi dari akun Admin yang dipilih.",
-      },
-    ],
-  });
-  first_intro.start();
-  $(".adminSidebar").addClass('selected')
-  $(".ubah-katasandi").click(function () {
-    $(".ubah-katasandi-layer").css("visibility", "visible");
-    if(!introTampil){
-      first_intro.exit()
-      let password_intro = initializeIntro({
-      dontShowAgainCookie: "adminEdit_intro",
-      dontShowAgain: true,
-      dontShowAgainLabel: "Jangan tampilkan lagi",
-      tooltipClass: "customTooltip",
-      prevLabel: "Kembali",
-      nextLabel: "Lanjut",
-      doneLabel: "Selesai",
-      steps: [
-        {
-          element: ".ubah-katasandi-bg",
-          intro: "Masukkan kata sandi sebelumnya dan kata sandi baru di sini",
-        },
-        {
-          element: ".submit",
-          intro: "Tekan tomboh ini untuk menyimpan kata sandi baru",
-          position: "right"
-        },
-      ],
-    });
-      password_intro.start();
-      introTampil = true
-    }
-  });
-  $(".ubah").click(function () {
-    $(".ubah-katasandi-layer").css("visibility", "hidden");
-  });
-
-  // CONFIRM
-  let password = document.getElementById("password"),
-    confirm_password = document.getElementById("confirm_password");
-
-  function validatePassword() {
-    if (password.value != confirm_password.value) {
-      confirm_password.setCustomValidity("Password Tidak Sama");
-    } else {
-      confirm_password.setCustomValidity("");
-    }
-  }
-
-  password.onchange = validatePassword;
-  confirm_password.onkeyup = validatePassword;
-
-  let unique_id = window.location.href.substring(
-    window.location.href.lastIndexOf("/") + 1
-  );
-
-  let password_from = document.getElementById("password-from");
-  password_from.addEventListener("submit", function (e) {
-    e.preventDefault();
-    let formData = new FormData(password_from);
-    formData.append("unique_id", unique_id);
-    $.ajax({
-      url: "/api/admin/password",
-      type: "PUT",
-      data: formData,
-      async: false,
-      cache: false,
-      contentType: false,
-      encrypt: "multipart/form-data",
-      processData: false,
-      success: (response) => {
-        if (response.payload.status_code == 200) {
-          $(".complete-layer").removeClass("hide");
-          $(".complete-layer").css("visibility", "visible");
-        }
-      },
-      error: (response) => {
-        alert(response.responseJSON.payload.message);
-      },
-    });
-  });
-  $('form').bind("keypress", function(e) {
-        if (e.keyCode == 13) {               
-            e.preventDefault();
-            return false;
-        }
-    });
-</script>
+<script src="/js/superAdminEdit.js"></script>

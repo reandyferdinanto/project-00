@@ -28,6 +28,7 @@
               name="nis"
               id="nis"
               placeholder="Masukan NIS Siswa"
+              max="40"
             />
 
             <label for=""
@@ -40,6 +41,7 @@
               name="username"
               id="username"
               placeholder="Masukan Nama Siswa"
+              maxlength="40"
             />
 
             <label for=""
@@ -70,6 +72,7 @@
                   name="class"
                   id="class"
                   placeholder="Masukan Jurusan Kelas"
+                  maxlength="40"
                 />
               </div>
               <div class="">
@@ -84,6 +87,7 @@
                   name="major"
                   id="major"
                   placeholder="Masukan Jurusan Siswa"
+                  maxlength="40"
                 />
               </div>
             </div>
@@ -119,12 +123,3 @@
 </body>
 <%- include('./layouts/footer'); -%>
 <script src="/js/siswaEdit.js"></script>
-<script>
-  $(".siswaSidebar").addClass('selected')
-  $('form').bind("keypress", function(e) {
-      if (e.keyCode == 13) {               
-          e.preventDefault();
-          return false;
-      }
-  });
-</script>
