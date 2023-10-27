@@ -1,8 +1,8 @@
 const router = require("express").Router();
 const utilsController = require("../../controllers/v0/utilsController");
-const { validateToken } = require("../../utils/JWT");
+const { validateTokenAPI } = require("../../utils/JWT");
 
-router.post("/upload", validateToken, utilsController.uploadCSV);
-router.post("/export", validateToken, utilsController.exportCSV);
+router.post("/upload", validateTokenAPI, utilsController.uploadCSV);
+router.post("/export", validateTokenAPI, utilsController.exportCSV);
 
 module.exports = router;

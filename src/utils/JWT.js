@@ -30,11 +30,20 @@ const generateRefreshToken = (user) => {
   );
 };
 
-const validateToken = (req, res, next) => {
-  const accessToken = req.cookies["access-token"];
-  if (!accessToken) {
-    return res.redirect("/login");
+const validateTokenAPI = (req, res, next) => {
+  try {
+    const accessToken = req.cookies["access-token"];
+    if (!accessToken) return res.sendStatus(403)
+    next()
+  } catch (error) {
+    return response(500, "server error", { error: error.message }, res);
   }
+};
+
+const validateTokenWebiste = (req, res, next) => {
+  const accessToken = req.cookies["access-token"];
+  // if token expired or not login
+  if (!accessToken) return res.redirect("/login")
   try {
     verify(accessToken, ACCESS_TOKEN_SECRET, function(err, user){
       if(err) return res.sendStatus(403)
@@ -49,5 +58,6 @@ const validateToken = (req, res, next) => {
 module.exports = {
   generateAccessToken,
   generateRefreshToken,
-  validateToken,
+  validateTokenAPI,
+  validateTokenWebiste
 };
