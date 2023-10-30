@@ -23,15 +23,10 @@ const cspOptions = {
 };
 
 // whitelisting untuk private API
-var whitelist = ["https://dev.festivo.co"]
+// var whitelist = ["https://dev.festivo.co/", "localhost:3000/"]
 var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
+  origin: 'https://dev.festivo.co/',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
 // default membuat folder untuk penempatan file upload
