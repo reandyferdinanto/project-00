@@ -22,6 +22,18 @@ const cspOptions = {
   },
 };
 
+// whitelisting untuk private API
+var whitelist = ["https://dev.festivo.co"]
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
+
 // default membuat folder untuk penempatan file upload
 if (!fs.existsSync("public/files/uploads")) {
   if (!fs.existsSync("public/files")) {
@@ -47,7 +59,7 @@ const storage = multer.diskStorage({
 
 app.enable("trust proxy");
 app.use(multer({ storage: storage, limits: { fileSize: 1000000 } }).any());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(cookieParse());
 app.use(helmet({
   xFrameOptions: { action: "deny" },
