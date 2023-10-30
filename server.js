@@ -25,7 +25,7 @@ const cspOptions = {
 // whitelisting untuk private API
 // var whitelist = ["https://dev.festivo.co/", "localhost:3000/"]
 var corsOptions = {
-  origin: 'https://dev.festivo.co/',
+  origin: ['https://dev.festivo.co/'],
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
