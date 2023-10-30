@@ -54,7 +54,7 @@ async function login(req, res) {
         // Generate access-token
         const accessToken = generateAccessToken(admin);
         res.cookie("access-token", accessToken, {
-          maxAge:480_000
+          httpOnly: true
         });
         // // Generate refresh-token (NOT USED)
         // const refreshToken = generateRefreshToken(admin);
