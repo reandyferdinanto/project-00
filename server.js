@@ -56,16 +56,16 @@ app.enable("trust proxy");
 app.use(multer({ storage: storage, limits: { fileSize: 1000000 } }).any());
 app.use(cors(corsOptions));
 app.use(cookieParse());
-app.use(helmet({
-  xFrameOptions: { action: "deny" },
-}));
-app.use(helmet.contentSecurityPolicy(cspOptions));
-app.use(
-  helmet.hsts({
-    maxAge: 31536000, // Durasi HSTS dalam detik (setahun)
-    includeSubDomains: true, // Sertakan subdomain
-  })
-);
+// app.use(helmet({
+//   xFrameOptions: { action: "deny" },
+// }));
+// app.use(helmet.contentSecurityPolicy(cspOptions));
+// app.use(
+//   helmet.hsts({
+//     maxAge: 31536000, // Durasi HSTS dalam detik (setahun)
+//     includeSubDomains: true, // Sertakan subdomain
+//   })
+// );
 app.use(morgan("common"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
