@@ -49,7 +49,7 @@ async function login(req, res) {
     const dbPassword = admin.password;
     bcrypt.compare(password, dbPassword).then((match) => {
       if (!match) {
-        res.json({ error: "wrong username and password combination" });
+        res.status(400).json({ error: "wrong username and password combination" });
       } else {
         // Generate access-token
         const accessToken = generateAccessToken(admin);
