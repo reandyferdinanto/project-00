@@ -621,4 +621,36 @@ $(document).ready(() => {
     } else {
     }
   });
+
+
+
+
+
+  // setInterval(function(){
+  //   const form = document.getElementById("submit-form");
+  //   let formData = new FormData(form);
+  //   formData.append("id",user_id)
+  //   $.ajax({
+  //     url: "/api/v1/temp-form-data",
+  //     type: "POST",
+  //     data: formData,
+  //     async: false,
+  //     cache: false,
+  //     contentType: false,
+  //     encrypt: "multipart/form-data",
+  //     processData: false,
+  //     success: (response) => {
+  //       console.log("SAVED");
+  //     },
+  //   });
+  // }, 5000)
+
+  // $.get("/api/v1/temp-form-data", function(result){
+  //   let temp_data = result.TEMP_DATA.find(data => data.id == user_id)
+  //   if(temp_data){
+  //     $("input[name=exam_name]").val(temp_data.exam_name)
+  //     $("select[name=exam_type]").val(temp_data.exam_type)
+  //     $("input[name=kkm_point]").val(temp_data.kkm_point)
+  //   }
+  // })
 });

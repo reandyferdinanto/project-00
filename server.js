@@ -13,6 +13,7 @@ const app = express();
 const cspOptions = {
   directives: {
     defaultSrc: ["'self'"],
+    imgSrc: ["'self'", "data:", "blob:"], // Menambahkan "blob:"
     scriptSrc: [
       "'self'",
       'code.jquery.com',
@@ -52,7 +53,7 @@ const storage = multer.diskStorage({
 });
 
 
-app.enable("trust proxy");
+app.set('trust proxy', 1);
 app.use(multer({ storage: storage, limits: { fileSize: 1000000 } }).any());
 app.use(cors(corsOptions));
 app.use(cookieParse());
@@ -66,7 +67,7 @@ app.use(
     includeSubDomains: true, // Sertakan subdomain
   })
 );
-app.use(morgan("common"));
+// app.use(morgan("common"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 

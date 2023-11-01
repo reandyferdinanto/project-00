@@ -333,7 +333,6 @@ async function updateExam(req, res) {
             let newCradAnswers = JSON.stringify(
               card_answers[card_answer_index]
             );
-            console.log(newCradAnswers);
             card_answer_index += 1;
             return (newBody = {
               question_text: question_text[index],
@@ -503,7 +502,6 @@ async function deleteExam(req, res, next) {
 
     // Delete question when exams deleted
     let question_id = question_unique_id.split(",");
-    console.log(question_id);
     await Question.destroy({
       where: {
         unique_id: question_id,
