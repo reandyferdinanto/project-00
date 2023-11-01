@@ -1,78 +1,27 @@
 <%- include('./layouts/header'); -%>
   <link rel="stylesheet" href="/css/siswaPage.css" />
   <body>
-    <!-- NAV -->
     <%- include('./layouts/navbar'); -%>
-    <input type="hidden" name="role" value="<%= user.role %>">
-    <!-- MAIN -->
+    <!-- <input type="hidden" name="role" value="<%= user.role %>"> -->
     <main>
-      <%- include('./layouts/adminSidebar'); -%>
-      <div class="main-content">
-        <div class="main-background">
-          <form action="" id="form-delete">
-            <!-- FORM HAPUS STARTED -->
-            <div class="main-title">
-              <% if(user.role =="super_admin"){%>
-                <h2>Daftar Siswa</h2>
-              <%}else{%>
-                <h2>Data Siswa</h2>
-              <%} %>
-              <% if (user.role == "super_admin") { %>
-                <div class="main-side">
-                  <a href="/siswa/tambah"
-                    ><button class="tambah-button" type="button">
-                      Tambah Siswa
-                    </button></a
-                  >
-                  <button class="hapus-button" disabled>Hapus</button>
-                </div>
-              <% } %>
-            </div>
-            <div class="main-table">
-              <div class="main-table-title">
-                <table id="siswa-table" class="display" style="width:100%">
-                  <thead>
-                    <tr>
-                      <th>No.</th>
-                      <th>NIS</th>
-                      <th>Nama Siswa</th>
-                      <th>Kelas</th>
-                      <th>Jurusan</th>
-                      <th></th>
-                      <th>
-                        <% if (user.role == "super_admin") { %>
-                          <input type="checkbox" name="" id="selectAll" />
-                        <%}%>
-                      </th>
-                    </tr>
-                  </thead>
-                </table>
-              </div>
-              <hr>
-              <div class="main-table-body"></div>
-            <div class="submit-layer">
-              <div class="submit-question">
-                <img src="/img/warning-alt.png" alt="" width="150" />
-                <p>Apakah anda yakin ingin menghapus siswa tersebut ?</p>
-                <div class="submit-buttons">
-                  <button class="ubah-button" type="button">Batal</button>
-                  <button class="selesai-button">Hapus</button>
-                  
-                </div>
-              </div>
-            </div>
-            
-            <!-- FORM HAPUS ENDED -->
-          </form>
+      <%- include('./layouts/superSidebar'); -%>
+      <section id="siswa-page" class="h-full bg-white rounded-tl-3xl p-8">
+        <div class="flex justify-between">
+          <p class="text-main font-bold text-2xl">Daftar Siswa</p>
+          <div class="flex gap-4 mt-5">
+            <a href="/siswa/buat"><button class="bg-main text-white text-sm px-8 py-2 rounded-lg">Tambah Siswa</button></a>
+            <button class="bg-red-500 text-white text-sm px-6 py-2 rounded-lg disabled:bg-red-500/50" disabled>Hapus</button>
+          </div>
         </div>
-      </div>
+        <div class="text-center h-screen shadow-[0_0px_40px_-15px_rgba(0,0,0,0.2)] w-full mt-8 rounded-3xl p-8 bg-white">
+          <img src="/img/nothing.png" alt="" class="m-auto mt-20">
+          <p class="text-sm text-main font-normal">Belum Ada Siswa</p>
+        </div>
+      </section>
     </main>
-
-    <div style="position: fixed; bottom: 2rem; right: 2rem;">
-      <a href="mailto:hello@festivo.co">
-        <img src="/img/chatbot.png" width="50px" alt="">
-      </a>
-    </div>
   </body>
 <%- include('./layouts/footer'); -%>
 <script src="/js/siswaPage.js"></script>
+<script>
+  $("#side-siswa").addClass("sidelist-selected")
+</script>

@@ -1,13 +1,25 @@
 <%- include('./layouts/header'); -%>
 <link rel="stylesheet" href="/css/examPage.css" />
 <body>
-  <!-- NAV -->
   <%- include('./layouts/navbar'); -%>
-
-  <!-- MAIN -->
   <main>
     <%- include('./layouts/superSidebar'); -%>
-    <div class="main-content">
+
+    <section id="topik-page" class="h-full bg-white rounded-tl-3xl p-8">
+      <div class="flex justify-between">
+        <p class="text-main font-bold text-2xl">Daftar Topik Ujian</p>
+        <div class="flex gap-4 mt-5">
+          <a href="/topik/buat"><button class="bg-main text-white text-sm px-8 py-2 rounded-lg">Tambah Topik Ujian</button></a>
+          <button class="bg-red-500 text-white text-sm px-6 py-2 rounded-lg disabled:bg-red-500/50" disabled>Hapus</button>
+        </div>
+      </div>
+      <div class="text-center h-screen shadow-[0_0px_40px_-15px_rgba(0,0,0,0.2)] w-full mt-8 rounded-3xl p-8 bg-white">
+        <img src="/img/nothing.png" alt="" class="m-auto mt-20">
+        <p class="text-sm text-main font-normal">Belum Ada Siswa</p>
+      </div>
+    </section>
+
+    <!-- <div class="main-content">
       <div class="main-background">
         <form action="" id="form-delete">
           <div class="main-title">
@@ -49,8 +61,11 @@
           </div>
         </form>
       </div>
-    </div>
+    </div> -->
   </main>
 </body>
 <%- include('./layouts/footer'); -%>
 <script src="/js/superUjianPage.js"></script>
+<script>
+  $("#side-topik").addClass("sidelist-selected")
+</script>

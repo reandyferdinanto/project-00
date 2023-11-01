@@ -1,49 +1,34 @@
 <%- include('./layouts/header'); -%>
 <link rel="stylesheet" href="/css/nilaiPage.css" />
 <body>
-  <!-- NAV -->
   <%- include('./layouts/navbar'); -%>
-
-  <!-- MAIN -->
   <main>
-    <%- include('./layouts/adminSidebar'); -%>
-    <div class="main-content">
-      <div class="main-background">
-        <div class="main-title">
-          <h2>Nilai Siswa</h2>
-          <form id="download-form" method="post">
-            <a href="/exams/create"
-              ><button class="download-csv-button" type="submit">
-                Download Data
-              </button></a
-            >
-          </form>
-        </div>
-        <div class="filter-option">
-          <select name="exams-filter" id="exams-select">
-            <option value="0">Manasik</option>
-          </select>
-        </div>
-        <div class="main-table">
-          <div class="main-table-title">
-            <table id="siswa-table" class="display" style="width: 100%">
-              <thead>
-                <tr>
-                  <th>No.</th>
-                  <th>NIS</th>
-                  <th>Nama Siswa</th>
-                  <th>Nama Ujian</th>
-                  <th>KKM</th>
-                </tr>
-              </thead>
-            </table>
-          </div>
-          <hr />
-          <div class="main-table-body"></div>
+    <%- include('./layouts/superSidebar'); -%>
+    <section id="ujian-page" class="h-full bg-white rounded-tl-3xl p-8">
+      <div class="flex justify-between">
+        <p class="text-main font-bold text-2xl">Nilai Siswa</p>
+        <div class="flex gap-4 mt-5">
+          <a href="/ujian/buat"><button class="bg-main text-white text-sm px-8 py-2 rounded-lg">Download Nilai</button></a>
         </div>
       </div>
-    </div>
+      <div class="w-full flex justify-center">
+        <label class="block">
+          <select id="countries" name="exp_type" class="min-w-[240px] block px-3 py-2 rounded-lg text-sm border-0 text-white bg-main focus:ring-0 focus:outline-none">
+              <option selected>Pilih Ujian</option>
+              <option value="Employee">Employee</option>
+              <option value="Volunteer">Volunteer</option>
+          </select>
+      </label>
+      </div>
+      <div class="text-center h-screen shadow-[0_0px_40px_-15px_rgba(0,0,0,0.2)] w-full mt-8 rounded-3xl p-8 bg-white">
+        <img src="/img/nothing.png" alt="" class="m-auto mt-20">
+        <p class="text-sm text-main font-normal">Belum Ada Nilai</p>
+      </div>
+    </section>
   </main>
 </body>
 <%- include('./layouts/footer'); -%>
 <script src="/js/nilaiPage.js"></script>
+<script>
+  $("#side-nilai").addClass("sidelist-selected")
+</script>

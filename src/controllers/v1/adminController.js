@@ -171,11 +171,11 @@ async function resetPassword(req, res) {
 
 async function deleteAdmin(req, res) {
   try {
-    let checkedAdmin = req.body.checkedAdmin;
-    if (!checkedAdmin) return response(400, "body cant be undefined", [], res);
+    let unique_id = req.body.unique_id;
+    if (!unique_id) return response(400, "body cant be undefined", [], res);
     await Admin.destroy({
       where: {
-        unique_id: checkedAdmin,
+        unique_id,
       },
     }).then((respon) => {
       if (!respon)
