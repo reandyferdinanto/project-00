@@ -1,19 +1,18 @@
-<div class="main-sidebar">
-    <div class="profile-sidebar">
-      <div class="profile-img">
-        <img src="" alt="" />
-      </div>
-      <div class="profile-info">
-        <p><b><%= user.username %></b></p>
-        <p style="font-size: .8rem;"><%= user.role %></p>
-        <p id="user_id" style="display: none;"><%= user.id %></p>
-      </div>
+<div class="">
+  <div class="side-profile flex gap-3 my-4 items-center">
+    <div class="w-[60px] h-[60px] bg-white rounded-full overflow-hidden">
+      <img id="" src="/img/user-img.png" alt="profile-picture" class="w-full h-full object-cover">
     </div>
-    <div class="list-sidebar">
-      <a href="/admin" class="adminSidebar">Daftar Admin</a>
-      <a href="/siswa">Daftar Siswa</a>
-      <a href="/admin/tipe_ujian" class="topik-sidebar">Topik Ujian</a>
-      <a href="/ujian">Ujian</a>
-      <a href="/nilai">Nilai</a>
+    <div class="">
+      <p class="font-bold text-sm text-white">SUDO</p>
+      <p class="font-normal text-sm text-white">Super Admin</p>
     </div>
   </div>
+  <div class="side-list flex flex-col mt-5 text-sm">
+    <a href="/admin" class="py-3 px-5 text-white sidelist-selected">Daftar Admin</a>
+    <a href="/siswa" class="py-3 px-5 text-white">Daftar Siswa</a>
+    <a href="/admin/tipe_ujian" class="py-3 px-5 text-white">Topik Ujian</a>
+    <a href="/ujian" class="py-3 px-5 text-white">Ujian</a>
+    <a href="/nilai" class="py-3 px-5 text-white">Nilai</a>
+  </div>
+</div>

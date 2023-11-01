@@ -7,3 +7,6 @@
 html{
     font-family: "Inter", sans-serif;
 }
+.sidelist-selected{
+    @apply bg-white text-main rounded-s-full
+}
