@@ -1,4 +1,8 @@
 $(document).ready(() => {
+
+  $('.berandaSidebar').addClass('selected')
+
+
   const d = new Date();
   let text;
   text = d.toLocaleString("id-ID", {
