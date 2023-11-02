@@ -10,3 +10,15 @@ html{
 .sidelist-selected{
     @apply bg-white text-main rounded-s-full
 }
+
+body {
+    margin: 0;
+    background-color: #358f6c;
+    font-family: "Inter", sans-serif;
+}
+
+main {
+    padding: 0 0 0 2rem;
+    display: grid;
+    grid-template-columns: 0.2fr 1fr;
+}
