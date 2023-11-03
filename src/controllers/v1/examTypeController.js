@@ -19,6 +19,7 @@ async function getExamType(req, res) {
     );
   }
 }
+
 async function getExamTypeById(req, res) {
   try {
     const pk = req.params.id;
@@ -38,6 +39,7 @@ async function getExamTypeById(req, res) {
     );
   }
 }
+
 async function updateExamType(req, res) {
   try {
     const { exam_type, unique_id } = req.body;
@@ -66,13 +68,8 @@ async function updateExamType(req, res) {
 
 async function createExamType(req, res) {
   try {
-    const { exam_type, tanggal_dibuat, school_id, school_name } = req.body;
-    await ExamType.create({
-      exam_type,
-      tanggal_dibuat,
-      school_id,
-      school_name
-    }).then(() => {
+    const topikData = req.body;
+    await ExamType.create(topikData).then(() => {
       response(201, "success create new exam_type", [], res);
     });
   } catch (error) {
@@ -81,13 +78,14 @@ async function createExamType(req, res) {
 }
 
 async function deleteExamType(req, res) {
+  console.log(req.body);
   try {
-    let checkedExamType = req.body.checkedExamType;
-    if (!checkedExamType)
+    let unique_id = req.body.unique_id;
+    if (!unique_id)
       return response(400, "body cant be undefined", [], res);
     await ExamType.destroy({
       where: {
-        unique_id: checkedExamType,
+        unique_id,
       },
     }).then((respon) => {
       if (!respon)

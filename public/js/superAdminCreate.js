@@ -1,94 +1,101 @@
+getDate()
 
-$(document).ready(() => {
+$("#side-admin").addClass("sidelist-selected")
+//   let first_intro = initializeIntro({
+  //   dontShowAgainCookie: "adminCreate_intro",
+  //   dontShowAgain: true,
+  //   dontShowAgainLabel: "Jangan tampilkan lagi",
+  //   tooltipClass: "customTooltip",
+  //   prevLabel: "Kembali",
+  //   nextLabel: "Lanjut",
+  //   doneLabel: "Selesai",
+  //   steps: [
+    //     {
+  //       title: "Tambah Admin",
+  //       intro: "Halaman ini berfungsi untuk menambahkan Admin baru ke dalam tabel",
+  //     },
+  //     {
+    //       element: ".main-input",
+    //       intro: "Super Admin dapat mengisi formulir ini bila ingin menambahkan Admin",
+    //     },
+    //     {
+      //       element: "#selesai",
+      //       intro: "Apabila sudah selesai mengisi formulir dapat langsung menekan tombol selesai",
+      //     },
+      //   ],
+      // });
+      // first_intro.start();
 
-    let user_id = $("#user_id").text()
-    let first_intro = initializeIntro({
-    dontShowAgainCookie: "adminCreate_intro",
-    dontShowAgain: true,
-    dontShowAgainLabel: "Jangan tampilkan lagi",
-    tooltipClass: "customTooltip",
-    prevLabel: "Kembali",
-    nextLabel: "Lanjut",
-    doneLabel: "Selesai",
-    steps: [
-      {
-        title: "Tambah Admin",
-        intro: "Halaman ini berfungsi untuk menambahkan Admin baru ke dalam tabel",
-      },
-      {
-        element: ".main-input",
-        intro: "Super Admin dapat mengisi formulir ini bila ingin menambahkan Admin",
-      },
-      {
-        element: "#selesai",
-        intro: "Apabila sudah selesai mengisi formulir dapat langsung menekan tombol selesai",
-      },
-    ],
-  });
-  first_intro.start();
+      
+$("#button-selesai").click(function(){ 
+  $("#popup").removeClass("hidden")
+});
 
-    $(".adminSidebar").addClass('selected')
-    
-    $("#complete-upload").on("click", function (e) {
-      e.preventDefault();
-      window.location = "/admin";
-    });
-    
-    $("#selesai").on("click", () => {
-      $(".submit-layer").css("visibility", "visible");
-    });
+$("#button-batal").click(function(){ 
+  $("#popup").addClass("hidden")
+});
 
-    $(".ubah-button").on("click", () => {
-      $(".submit-layer").css("visibility", "hidden");
-    });
-
-
-    // Fetch SUDO
-    let school_id
-    let school_name
-    $.get(`/api/v1/admins/${user_id}`, function(data) {
-      school_id = data.datas.school_id
-      school_name = data.datas.school_name
-    })
-
-    // UPLOAD
-    const manualForm = document.getElementById("submit-form");
-    manualForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      let formData = new FormData(manualForm);
-      formData.append("role", "admin");
-      formData.append("password", "123");
-      formData.append("school_id", school_id)
-      formData.append("school_name", school_name)
-      $.ajax({
-        url: "/api/v1/admins/register",
-        type: "POST",
-        data: formData,
-        async: false,
-        cache: false,
-        contentType: false,
-        encrypt: "multipart/form-data",
-        processData: false,
-        success: (response) => {
-          $(".submit-layer").css("visibility", "hidden");
-          if (response.status_code == 201) {
-            $(".complete-layer").removeClass("hide");
-            $(".complete-layer").css("visibility", "visible");
-          } else if (response.message == "you're not authenticated") {
-            window.location = "/login";
-          }
-        },
-      });
-    });
-  });
-  function initializeIntro(stepConfig) {
-    const intro = introJs();
-    intro.setOptions(stepConfig);
-    return intro;
+$('form').bind("keypress", function(e) {
+  if (e.keyCode == 13) {               
+    e.preventDefault();
+    return false;
   }
-  $('form').bind("keypress", function(e) {
-        if (e.keyCode == 13) {               
-            e.preventDefault();
-            return false;
-        }
-    });
+});
+      
+      
+// Fetch super admin school id and school name
+let USER_ID = $("#user_id").text()
+let SCHOOL_ID
+let SCHOOL_NAME
+$.get(`/api/v1/admins/${USER_ID}`, function(data) {
+  SCHOOL_ID = data.datas.school_id
+  SCHOOL_NAME = data.datas.school_name
+})
+
+$("#form-admin-create").on("submit", function (e) {
+  e.preventDefault();
+  const formData = new FormData(this);
+  formData.append("role", "admin");
+  formData.append("school_id", SCHOOL_ID)
+  formData.append("school_name", SCHOOL_NAME)
+
+  $.ajax({
+    url: "/api/v1/admins/register",
+    type: "POST",
+    data: formData,
+    contentType: false,
+    enctype: "multipart/form-data",
+    processData: false,
+    success: function (response) {
+      if (response.status_code == 201) {
+        window.location = "/admin"
+      }
+    },
+    error: function (data, status, error) {
+      const ErrorMessage = `<div id="ErrorMessage" class="bg-red-500/80 fixed top-8 left-1/2 -translate-x-1/2 min-w-[400px] text-center py-1.5 rounded-lg border border-red-900 text-[#000] text-sm z-10">${status}: ${data.responseJSON.datas.error}</div>`
+      $("body").prepend(ErrorMessage)
+      $("#ErrorMessage")
+        .delay(3000)
+        .fadeOut("slow", function () {
+          $(this).remove();
+        });
+    },
+  });
+});
+
+
+function initializeIntro(stepConfig) {
+  const intro = introJs();
+  intro.setOptions(stepConfig);
+  return intro;
+}
+
+function getDate(){
+  const d = new Date();
+  let text;
+  text = d.toLocaleString("id-ID", {
+    dateStyle: "medium",
+  });
+  $("#date").html(text);
+}
+  

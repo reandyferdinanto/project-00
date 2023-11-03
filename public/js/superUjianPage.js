@@ -1,5 +1,7 @@
 getDate()
 
+$("#side-topik").addClass("sidelist-selected")
+
 const USER_ID = $("#user_id").text()
 let SCHOOL_ID
 $.get(`/api/v1/admins/${USER_ID}`, function(data) {
@@ -73,7 +75,7 @@ $.get("/api/v1/exam_type", async (data, status) => {
           data: "unique_id",
           width: "5%",
           render: function (data, type) {
-            return `<input type="checkbox" name="checkedExamType" class="checkbox-delete" value="${data}" />`;
+            return `<input type="checkbox" name="unique_id" class="checkbox-delete" value="${data}" />`;
           },
         },
       ],
@@ -131,12 +133,12 @@ $.get("/api/v1/exam_type", async (data, status) => {
 });
   
 
-$("#form-admin-topik").on("submit", function (e) {
+$("#form-topik-delete").on("submit", function (e) {
   e.preventDefault();
   const formData = new FormData(this);
 
   $.ajax({
-    url: "/api/v1/admins",
+    url: "/api/v1/exam_type",
     type: "DELETE",
     data: formData,
     contentType: false,

@@ -5,23 +5,16 @@ const { generateAccessToken, generateRefreshToken } = require("../../utils/JWT")
 
 async function register(req, res) {
   try {
-    let { username, password, role, email, nuptk, gender, school_id, school_name } = req.body;
-    if(role!=="super_admin"){
-      nuptk = school_id+nuptk
-    }
+    let adminData = req.body;
+    if(adminData.role !== "super_admin") adminData.nuptk = adminData.school_id+adminData.nuptk
+    if(!adminData.password) adminData.password = "123"
+
+    console.log(adminData);
 
     // hash password input before save into database
-    await bcrypt.hash(password, 10).then((hash) => {
-      Admin.create({
-        username,
-        password: hash,
-        role,
-        email,
-        nuptk,
-        gender,
-        school_id,
-        school_name
-      }).then((respon) => {
+    await bcrypt.hash(adminData.password, 10).then((hash) => {
+      adminData.password = hash
+      Admin.create(adminData).then((respon) => {
         response(201, "success create new user", respon, res);
       });
     });

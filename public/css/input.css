@@ -22,3 +22,12 @@ main {
     display: grid;
     grid-template-columns: 0.2fr 1fr;
 }
+
+input[type="file"]::file-selector-button {
+    background-color: antiquewhite;
+    border: none;
+    color: #358f6c;
+    border-radius: 20px;
+    padding: 0.3rem 0.7rem;
+    cursor: pointer;
+  }

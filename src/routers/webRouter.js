@@ -26,7 +26,7 @@ router.get("/siswa", validateTokenWebiste, (req, res) => {
     user: req.user,
   });
 });
-router.get("/siswa/tambah", validateTokenWebiste, (req, res) => {
+router.get("/siswa/buat", validateTokenWebiste, (req, res) => {
   if (req.user.role == "super_admin") {
     res.render("siswaCreate", {
       user: req.user,
@@ -80,19 +80,19 @@ router.get("/admin/edit/:id", validateTokenWebiste, (req, res) => {
     user: req.user,
   });
 });
-router.get("/admin/tipe_ujian", validateTokenWebiste, (req, res) => {
+router.get("/topik", validateTokenWebiste, (req, res) => {
   if (req.user.role !== "super_admin") return res.redirect("/");
   res.render("superUjianPage", {
     user: req.user,
   });
 });
-router.get("/admin/tipe_ujian/buat", validateTokenWebiste, (req, res) => {
+router.get("/topik/buat", validateTokenWebiste, (req, res) => {
   if (req.user.role !== "super_admin") return res.redirect("/");
   res.render("superUjianCreate", {
     user: req.user,
   });
 });
-router.get("/admin/tipe_ujian/edit/:id", validateTokenWebiste, (req, res) => {
+router.get("/topik/edit/:id", validateTokenWebiste, (req, res) => {
   if (req.user.role !== "super_admin") return res.redirect("/");
   res.render("superUjianEdit", {
     user: req.user,

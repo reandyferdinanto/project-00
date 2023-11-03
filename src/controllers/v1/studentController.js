@@ -72,24 +72,17 @@ async function getStudentById(req, res, next) {
 
 async function addUser(req, res) {
   try {
-    let uniq_user = req.body.school_id + req.body.nis;
-    let uniq_password = req.body.school_id + req.body.nis + "##";
-    const newUser = await Student.create({
-      nis: uniq_user,
-      username: req.body.username,
-      class: req.body.class,
-      major: req.body.major,
-      password: uniq_password,
-      role: "siswa",
-      gender: req.body.gender ? req.body.gender : "pria",
-      school_id: req.body.school_id,
-      school_name: req.body.school_name,
-    });
-    response(201, "add new user", newUser, res);
+    let studentData = req.body
+    studentData.nis = studentData.school_id + studentData.nis;
+    studentData.password = studentData.school_id + studentData.nis + "##";
+    studentData.role = "siswa"
+
+    const newStudents = await Student.create(studentData);
+    response(201, "add new Students", newStudents, res);
   } catch (error) {
     response(
       500,
-      "server failed to create new user",
+      "server failed to create new Students",
       { error: error.message },
       res
     );

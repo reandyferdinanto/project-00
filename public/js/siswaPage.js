@@ -217,11 +217,11 @@ $("#form-siswa-delete").on("submit", function (e) {
 
 
 
-  function getDate(){
-    const d = new Date();
-    let text;
-    text = d.toLocaleString("id-ID", {
-      dateStyle: "medium",
-    });
-    $("#date").html(text);
-  }
+function getDate(){
+  const d = new Date();
+  let text;
+  text = d.toLocaleString("id-ID", {
+    dateStyle: "medium",
+  });
+  $("#date").html(text);
+}
