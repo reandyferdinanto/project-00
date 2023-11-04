@@ -1,87 +1,335 @@
 <%- include('./layouts/header'); -%>
-<link rel="stylesheet" href="/css/examCreate.css" />
 <body>
   <!-- NAV -->
   <%- include('./layouts/navbar'); -%>
 
   <!-- MAIN -->
   <main>
-    <%- include('./layouts/adminSidebar'); -%>
-    <div class="main-content">
-      <div class="main-background">
-        <form id="submit-form">
-          <div class="main-title">
-            <h2>
-              Membuat Ujian Baru
-              <span style="color: #ff4c4c; font-size: 0.7rem"
-                >*harus diisi</span
-              >
-            </h2>
+    <%- include('./layouts/superSidebar'); -%>
+    <section id="exam-create" class="min-h-screen bg-white rounded-tl-3xl p-8">
+      <p class="text-main font-bold text-2xl">Menambahkan Ujian Baru</p>
+      <form id="form-exam-create" class="">
+        <div id="bg-table-exam" class="h-max shadow-[0_0px_40px_-15px_rgba(0,0,0,0.2)] w-full mt-8 rounded-3xl p-8 bg-main">
+          <div class="flex flex-col gap-4">
+            <label class="block flex flex-col gap-2">
+              <span class="text-white font-bold tracking-[1.4px] text-sm">Nama Ujian <span class="text-red-500 font-medium text-xs">*</span></span>
+              <!-- Using form state modifiers, the classes can be identical for every input -->
+              <input required type="text" placeholder="Ujian Harian Manasik" name="exam_name" class="font-normal block text-main border-0 w-full px-3 py-[10px] bg-white rounded-lg text-sm
+              focus:outline-none focus:border-white-60 focus:ring-1 focus:ring-white-60
+              focus:invalid:border-pink-500 focus:invalid:ring-pink-500
+              "/>
+            </label>
+            <label class="block flex flex-col gap-2">
+              <span class="text-white font-bold tracking-[1.4px] text-sm">Topik Ujian <span class="text-red-500 font-medium text-xs">*</span></span>
+              <select id="countries" name="exam_type" class="w-full block px-3 py-2.5 rounded-lg text-sm border-0 text-main bg-white focus:ring-0 focus:outline-none">
+                <option selected>Pilih Ujian</option>
+                <option value="Employee">Employee</option>
+                <option value="Volunteer">Volunteer</option>
+              </select>
+            </label>
+            <label class="block flex flex-col gap-2">
+              <div class="flex gap-1 items-center">
+                <span class="text-white font-bold tracking-[1.4px] text-sm">Recovery Password <span class="text-red-500 font-medium text-xs">*</span></span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 34 34" fill="none">
+                  <path d="M16.9987 25.3333C17.4709 25.3333 17.8668 25.1735 18.1862 24.8541C18.5056 24.5346 18.6654 24.1388 18.6654 23.6666V16.9999C18.6654 16.5277 18.5056 16.1319 18.1862 15.8124C17.8668 15.493 17.4709 15.3333 16.9987 15.3333C16.5265 15.3333 16.1306 15.493 15.8112 15.8124C15.4918 16.1319 15.332 16.5277 15.332 16.9999V23.6666C15.332 24.1388 15.4918 24.5346 15.8112 24.8541C16.1306 25.1735 16.5265 25.3333 16.9987 25.3333ZM16.9987 11.9999C17.4709 11.9999 17.8668 11.8402 18.1862 11.5208C18.5056 11.2013 18.6654 10.8055 18.6654 10.3333C18.6654 9.86103 18.5056 9.4652 18.1862 9.14575C17.8668 8.82631 17.4709 8.66658 16.9987 8.66658C16.5265 8.66658 16.1306 8.82631 15.8112 9.14575C15.4918 9.4652 15.332 9.86103 15.332 10.3333C15.332 10.8055 15.4918 11.2013 15.8112 11.5208C16.1306 11.8402 16.5265 11.9999 16.9987 11.9999ZM16.9987 33.6666C14.6931 33.6666 12.5265 33.2291 10.4987 32.3541C8.47092 31.4791 6.70703 30.2916 5.20703 28.7916C3.70703 27.2916 2.51953 25.5277 1.64453 23.4999C0.769531 21.4721 0.332031 19.3055 0.332031 16.9999C0.332031 14.6944 0.769531 12.5277 1.64453 10.4999C2.51953 8.47214 3.70703 6.70825 5.20703 5.20825C6.70703 3.70825 8.47092 2.52075 10.4987 1.64575C12.5265 0.770752 14.6931 0.333252 16.9987 0.333252C19.3043 0.333252 21.4709 0.770752 23.4987 1.64575C25.5265 2.52075 27.2904 3.70825 28.7904 5.20825C30.2904 6.70825 31.4779 8.47214 32.3529 10.4999C33.2279 12.5277 33.6654 14.6944 33.6654 16.9999C33.6654 19.3055 33.2279 21.4721 32.3529 23.4999C31.4779 25.5277 30.2904 27.2916 28.7904 28.7916C27.2904 30.2916 25.5265 31.4791 23.4987 32.3541C21.4709 33.2291 19.3043 33.6666 16.9987 33.6666Z" fill="white" fill-opacity="0.7"/>
+                </svg>
+              </div>
+              <!-- Using form state modifiers, the classes can be identical for every input -->
+              <input required type="text" placeholder="●●●●●●●●●●" name="exam_recovery_password" class="font-normal block border-0 w-1/2 text-main px-3 py-[10px] bg-white rounded-lg text-sm
+              focus:outline-none focus:border-white-60 focus:ring-1 focus:ring-white-60
+              focus:invalid:border-pink-500 focus:invalid:ring-pink-500
+              "/>
+              <p class="text-white text-xs font-normal">Recovery password digunakan ketika siswa terkena blokir saat mengerjakan ujian</p>
+            </label>
+            <label class="block flex flex-col gap-2">
+              <span class="text-white font-bold tracking-[1.4px] text-sm">KKM <span class="text-red-500 font-medium text-xs">*</span></span>
+              <!-- Using form state modifiers, the classes can be identical for every input -->
+              <input required type="text" value="70" name="exam_kkm" class="font-normal block border-0 w-1/6 text-main px-3 py-[10px] bg-white rounded-lg text-sm
+              focus:outline-none focus:border-white-60 focus:ring-1 focus:ring-white-60
+              focus:invalid:border-pink-500 focus:invalid:ring-pink-500
+              "/>
+            </label>
           </div>
-          <div class="main-input">
-            <label for="">
-              Nama Ujian<span style="color: #ff4c4c"> *</span>
-            </label>
-            <input
-              class="exam-type"
-              type="text"
-              name="exam_name"
-              id=""
-              required
-              placeholder="masukan nama ujian"
-            />
-            <label for=""
-              >Topik Ujian<span style="color: #ff4c4c"> *</span>
-            </label>
-            <select name="exam_type" class="exam-type" required>
-              <option value="">--pilih ujian--</option>
-            </select>
-
-            <label for="">
-              KKM <span style="color: #ff4c4c"> *</span>
-            </label>
-            <br>
-            <input
-              class="exam-type"
-              type="number"
-              name="kkm_point"
-              id=""
-              value="70"
-              required
-              style="width: 25%;"
-            />
         </div>
-          <button class="main-create-question" id="add-question">
-            Membuat Soal
-          </button>
-          <div class="submit-layer">
-            <div class="submit-question">
-              <img src="/img/warning-alt.png" alt="" width="150" />
-              <p>Apakah anda sudah yakin selesai?</p>
-              <div class="submit-buttons">
-                <button class="ubah-button" type="button">Ubah</button>
-                <button class="selesai-button" type="submit">Selesai</button>
+
+        <section id="questions" class="bg-main rounded-2xl mt-10 pb-8">
+
+
+          <div class="question relative p-8">
+            <div class="head flex justify-between items-center">
+              <p class="font-bold text-sm text-white">Soal 1</p>
+              <label class="block flex flex-col gap-2">
+                <select name="question_type" class="w-[250px] block px-3 py-2.5 rounded-lg text-sm border-0 text-main bg-white focus:ring-0 focus:outline-none">
+                  <option selected value="Pilihan Ganda">Pilihan Ganda</option>
+                  <option value="Kartu">Kartu</option>
+                </select>
+              </label>
+            </div>
+            <div class="question-image h-[300px] mt-4 hidden">
+              <img src="" alt="" class="w-full h-full object-scale-down">
+            </div>
+            <div class="question-text relative mt-4">
+              <textarea name="question_text" id="" class="w-full rounded-lg min-h-[150px] p-4 text-main placeholder:text-main focus:ring-0 focus:outline-none text-base" placeholder="Masukan Soal"></textarea>
+              <label for="custom-input-file">
+                <input type="file" id="custom-input-file" class="question-image-input hidden" name="question_image" accept="image/*"/>
+                <div class="absolute bottom-4 right-4">
+                  <button id="" type="button" class="question-image-button flex items-center gap-1 bg-white border border-main rounded-lg text-main py-1 px-7 text-sm hover:bg-main hover:text-white duration-300 group"><i class="uil uil-image-plus text-main text-lg duration-300 group-hover:text-white"></i> <span>Masukan Gambar</span></button>
+                  <p class="text-main text-xs font-normal text-center mt-1">*PNG/JPG/JPEG max. 200 kb</p>
+                </div>
+              </label>
+            </div>
+            <div class="body question-pilgan">
+              <div class="grid grid-cols-2 gap-3 mt-3">
+                <label class="block">
+                  <div class="answer-box border-2 border-white rounded-lg bg-[#2bc489] focus:ring-2 focus:ring-white-80 divide-white-60">
+                    <div class="answer-image h-[200px] mt-3 hidden pb-2">
+                      <img src="/img/warning-alt.png" alt="" class="w-full h-full object-scale-down">
+                    </div>
+                    <div class="flex justify-between items-center divide-x divide-white-80">
+                      <input type="text" placeholder="Jawaban benar" name="question_pilgan_answer_1" class="bg-transparent text-white placeholder:text-white-80 font-normal block w-full px-3 py-3.5 text-base border-0
+                        focus:outline-none focus:ring-0
+                      "/>
+                      <label for="custom-input-file">
+                        <input type="file" id="custom-input-file" class="answer-image-input hidden" name="question_image_answer_1" accept="image/*"/>
+                        <button type="button" class="answer-image-button px-3" title="Masukan Gambar">
+                          <i class="uil uil-image-plus text-2xl text-white"></i>
+                        </button>
+                      </label>
+                    </div>
+                  </div>
+                </label>
+                <label class="block">
+                  <div class="answer-box border-2 border-white-80 rounded-lg bg-white focus:ring-2 focus:ring-white-60 divide-main/50">
+                    <div class="answer-image h-[200px] mt-3 hidden pb-2">
+                      <img src="/img/warning-alt.png" alt="" class="w-full h-full object-scale-down">
+                    </div>
+                    <div class="flex justify-between items-center divide-x divide-main">
+                      <input type="text" placeholder="Jawaban lain" name="question_pilgan_answer_2" class="bg-transparent text-main placeholder:text-main font-normal block w-full px-3 py-3.5 text-base border-0
+                        focus:outline-none focus:ring-0
+                      "/>
+                      <label for="custom-input-file">
+                        <input type="file" id="custom-input-file" class="answer-image-input hidden" name="question_image_answer_2" accept="image/*"/>
+                        <button type="button" class="answer-image-button px-3" title="Masukan Gambar">
+                          <i class="uil uil-image-plus text-2xl text-main"></i>
+                        </button>
+                      </label>
+                    </div>
+                  </div>
+                </label>
+                <label class="block">
+                  <div class="answer-box border-2 border-white-80 rounded-lg bg-white focus:ring-2 focus:ring-white-60 divide-main/50">
+                    <div class="answer-image h-[200px] mt-3 hidden pb-2">
+                      <img src="/img/warning-alt.png" alt="" class="w-full h-full object-scale-down">
+                    </div>
+                    <div class="flex justify-between items-center divide-x divide-main">
+                      <input type="text" placeholder="Jawaban lain" name="question_pilgan_answer_3" class="bg-transparent text-main placeholder:text-main font-normal block w-full px-3 py-3.5 text-base border-0
+                        focus:outline-none focus:ring-0
+                      "/>
+                      <label for="custom-input-file">
+                        <input type="file" id="custom-input-file" class="answer-image-input hidden" name="question_image_answer_3" accept="image/*"/>
+                        <button type="button" class="answer-image-button px-3" title="Masukan Gambar">
+                          <i class="uil uil-image-plus text-2xl text-main"></i>
+                        </button>
+                      </label>
+                    </div>
+                  </div>
+                </label>
+                <label class="block">
+                  <div class="answer-box border-2 border-white-80 rounded-lg bg-white focus:ring-2 focus:ring-white-60 divide-main/50">
+                    <div class="answer-image h-[200px] mt-3 hidden pb-2">
+                      <img src="/img/warning-alt.png" alt="" class="w-full h-full object-scale-down">
+                    </div>
+                    <div class="flex justify-between items-center divide-x divide-main">
+                      <input type="text" placeholder="Jawaban lain" name="question_pilgan_answer_4" class="bg-transparent text-main placeholder:text-main font-normal block w-full px-3 py-3.5 text-base border-0
+                        focus:outline-none focus:ring-0
+                      "/>
+                      <label for="custom-input-file">
+                        <input type="file" id="custom-input-file" class="answer-image-input hidden" name="question_image_answer_4" accept="image/*"/>
+                        <button type="button" class="answer-image-button px-3" title="Masukan Gambar">
+                          <i class="uil uil-image-plus text-2xl text-main"></i>
+                        </button>
+                      </label>
+                    </div>
+                  </div>
+                </label>
+                <label class="block">
+                  <div class="answer-box border-2 border-white-80 rounded-lg bg-white focus:ring-2 focus:ring-white-60 divide-main/50">
+                    <div class="answer-image h-[200px] mt-3 hidden pb-2">
+                      <img src="/img/warning-alt.png" alt="" class="w-full h-full object-scale-down">
+                    </div>
+                    <div class="flex justify-between items-center divide-x divide-main">
+                      <input type="text" placeholder="Jawaban lain" name="question_pilgan_answer_5" class="bg-transparent text-main placeholder:text-main font-normal block w-full px-3 py-3.5 text-base border-0
+                        focus:outline-none focus:ring-0
+                      "/>
+                      <label for="custom-input-file">
+                        <input type="file" id="custom-input-file" class="answer-image-input hidden" name="question_image_answer_5" accept="image/*"/>
+                        <button type="button" class="answer-image-button px-3" title="Masukan Gambar">
+                          <i class="uil uil-image-plus text-2xl text-main"></i>
+                        </button>
+                      </label>
+                    </div>
+                  </div>
+                </label>
               </div>
             </div>
-          </div>
-          <div class="file-layer">
-            <div class="file-toolarge">
-              File terlalu besar <br />
-              max: 1MB
-              <button>Ok</button>
+            <div class="body question-kartu hidden">
+              <div id="question-kartu-answers" class="grid grid-cols-3 gap-4 mt-3">
+                <div class="kartu-answer px-4 py-2 rounded-lg bg-white cursor-grab">
+                  <div class="flex justify-between items-center">
+                    <p class="text-main text-base">1#</p>
+                    <p class="rotate-90 text-2xl text-main"><i class="uil uil-draggabledots"></i></p>
+                    <p class="invisible">1#</p>
+                  </div>
+                  <div class="flex justify-center py-10">
+                    <input type="text" name="question_kartu_answer_1" class="py-2 px-5 focus:ring-0 focus:outline-none focus:border-b-[1px] border-main text-center" placeholder="Kartu">
+                  </div>
+                </div>
+                <div class="kartu-answer px-4 py-2 rounded-lg bg-white cursor-grab">
+                  <div class="flex justify-between items-center">
+                    <p class="text-main text-base">2#</p>
+                    <p class="rotate-90 text-2xl text-main"><i class="uil uil-draggabledots"></i></p>
+                    <p class="invisible">1#</p>
+                  </div>
+                  <div class="flex justify-center py-10">
+                    <input type="text" name="question_kartu_answer_2" class="py-2 px-5 focus:ring-0 focus:outline-none focus:border-b-[1px] border-main text-center" placeholder="Kartu">
+                  </div>
+                </div>
+                <div id="question-kartu-tembah" class="rounded-lg bg-white/50 cursor-pointer flex justify-center items-center">
+                  <img src="/img/plus.png" alt="" width="15%">
+                </div>
+              </div>
+            </div>
+            <div class="button-hapus absolute top-8 right-[-1rem] bg-white text-main text-2xl p-1 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] rounded-lg hover:scale-110 duration-200 cursor-pointer" title="Hapus Soal">
+              <i class="uil uil-trash-alt"></i>
             </div>
           </div>
-          <div class="complete-layer">
-            <div class="complete-background">
-              <img src="/img/check.png" width="50" alt="" />
-              <p>Ujian berhasil diunggah</p>
-              <button type="button" id="complete-upload">OK</button>
+
+
+          <div class="flex justify-center mt-10">
+            <button type="button" class="text-sm font-bold text-main py-2 px-10 rounded-full bg-white shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] hover:scale-105 duration-200">Tambah Soal</button>
+          </div>
+        </section>
+
+
+
+        <div class="mt-10 flex justify-end">
+          <button id="button-selesai" type="button" class="py-2 px-10 bg-main text-white text-sm rounded-full ms-auto hover:bg-main/80 duration-200">Selesai</button>
+        </div>
+
+
+
+        <section id="popup" class="bg-[#000]/50 fixed top-0 bottom-0 right-0 left-0 flex items-center hidden">
+          <div id="popup-simpan" class="delete-popup w-[50%] bg-white m-auto flex flex-col items-center py-20 rounded-2xl">
+            <img src="/img/warning-alt.png" alt="" width="120px">
+            <p class="text-sm my-3">Apakah anda yakin ingin menyimpan data tersebut ?</p>
+            <div class="mt-4 flex gap-4">
+              <button type="button" id="button-batal" class="py-1.5 px-8 bg-red-500 text-white rounded-full text-sm">Batal</button>
+              <button type="submit" class="py-1.5 px-8 bg-main text-white rounded-full text-sm">Selesai</button>
             </div>
           </div>
-        </form>
-      </div>
-    </div>
+        </section>
+
+
+
+      </form>
+    </section>
+
+
+    
+
+
+
+    
   </main>
 </body>
 <%- include('./layouts/footer'); -%>
-<script src="/js/examCreate.js"></script>
+<script>
+  $("#side-ujian").addClass("sidelist-selected")
+  
+  $("#button-selesai").click(function(){
+    $("#popup").removeClass("hidden")
+  })
+  
+  $("#button-batal").click(function(){
+    $("#popup").addClass("hidden")
+  })
+
+  $("#question-kartu-answers").sortable({
+      opacity: 0.75,
+      distance: 25,
+      tolerance: "intersect",
+      items: "> .kartu-answer",
+  })
+
+  $("select[name=question_type]").change(function(){
+    const THIS_VALUE = $(this).val()
+    console.log(THIS_VALUE);
+    if(THIS_VALUE == "Pilihan Ganda"){
+      $(this).closest(".question").find(".question-pilgan").removeClass("hidden")
+      $(this).closest(".question").find(".question-kartu").addClass("hidden")
+    }else if(THIS_VALUE == "Kartu"){
+      $(this).closest(".question").find(".question-pilgan").addClass("hidden")
+      $(this).closest(".question").find(".question-kartu").removeClass("hidden")
+    }
+  })
+
+  $(".question-image-button").click(function(){
+    const INPUT_IMG = $(this).closest("label").find(".question-image-input")
+    INPUT_IMG.click().change(function(){
+      const selectedImage = this.files[0];
+      if (selectedImage) {
+          const QUESTION_IMAGE = $(this).closest(".question").find(".question-image")
+          const imageUrl = URL.createObjectURL(selectedImage);
+          QUESTION_IMAGE.removeClass("hidden")
+          QUESTION_IMAGE.find("img").attr("src", imageUrl);
+      }
+    })
+  })
+
+  $(".answer-image-button").click(function(){
+    const INPUT_IMG = $(this).closest("label").find(".answer-image-input")
+    INPUT_IMG.click().change(function(){
+      const selectedImage = this.files[0];
+      if (selectedImage) {
+          const ANSWER_IMAGE = $(this).closest(".block").find(".answer-image")
+          const imageUrl = URL.createObjectURL(selectedImage);
+          ANSWER_IMAGE.closest(".answer-box").addClass("divide-y")
+          ANSWER_IMAGE.removeClass("hidden")
+          ANSWER_IMAGE.find("img").attr("src", imageUrl);
+      }
+    })
+  })
+
+
+
+
+  $("#form-exam-create").submit(function(e){
+    e.preventDefault()
+    const formData = new FormData(this);
+
+    $.ajax({
+      url: "/api/v1/exams",
+      type: "POST",
+      data: formData,
+      contentType: false,
+      enctype: "multipart/form-data",
+      processData: false,
+      success: function (response) {
+        console.log(response);
+        // if (response.status_code == 200) {
+        //   window.location = "/siswa"
+        // }
+      },
+      error: function (data, status, error) {
+        const ErrorMessage = `<div id="ErrorMessage" class="bg-red-500/80 fixed top-8 left-1/2 -translate-x-1/2 min-w-[400px] text-center py-1.5 rounded-lg border border-red-900 text-[#000] text-sm z-10">${status}: ${data.responseJSON.datas.error}</div>`
+        $("body").prepend(ErrorMessage)
+        $("#ErrorMessage")
+          .delay(3000)
+          .fadeOut("slow", function () {
+            $(this).remove();
+          });
+      },
+    });
+  })
+</script>
+<!-- <script src="/js/examCreate.js"></script> -->

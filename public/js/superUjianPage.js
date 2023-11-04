@@ -68,7 +68,7 @@ $.get("/api/v1/exam_type", async (data, status) => {
           data: "unique_id",
           width: "5%",
           render: function (data, type) {
-            return `<a href="/admin/tipe_ujian/edit/${data}" class="edit-siswa"><i class="uil uil-edit"></i></a>`;
+            return `<a href="/topik/edit/${data}" class="edit-siswa"><i class="uil uil-edit text-main"></i></a>`;
           },
         },
         {

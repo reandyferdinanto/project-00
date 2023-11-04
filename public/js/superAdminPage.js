@@ -84,12 +84,14 @@ $.get(`/api/v1/admins`, function (admins) {
         { data: "email" },
         {
           data: "unique_id",
+          width:"5%",
           render: function (data, type) {
-            return `<a href="/admin/edit/${data}" class="edit-siswa"><i class="uil uil-edit"></i></a>`;
+            return `<a href="/admin/edit/${data}" class="edit-siswa"><i class="uil uil-edit text-main"></i></a>`;
           },
         },
         {
           data: "unique_id",
+          width:"5%",
           render: function (data, type) {
             return `<input type="checkbox" name="unique_id" class="checkbox-delete" value="${data}" />`;
           },

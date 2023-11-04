@@ -66,7 +66,7 @@ app.use(cookieParse());
 //     includeSubDomains: true, // Sertakan subdomain
 //   })
 // );
-app.use(morgan("common"));
+// app.use(morgan("common"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 

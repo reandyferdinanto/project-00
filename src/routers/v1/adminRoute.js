@@ -8,8 +8,7 @@ router.get("/:id", adminController.getAdminById);
 router.post("/register", adminController.register);
 router.post("/login",limiter, adminController.login);
 router.post("/logout",validateTokenAPI, adminController.logout);
-router.put("/",validateTokenAPI, adminController.updateAdmin);
-router.put("/password",validateTokenAPI, adminController.resetPassword);
+router.put("/:id",validateTokenAPI, adminController.updateAdmin);
 router.delete("/",validateTokenAPI, adminController.deleteAdmin);
 
 module.exports = router;

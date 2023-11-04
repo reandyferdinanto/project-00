@@ -42,20 +42,12 @@ async function getExamTypeById(req, res) {
 
 async function updateExamType(req, res) {
   try {
-    const { exam_type, unique_id } = req.body;
-    await ExamType.findByPk(unique_id).then((prev) => {
-      ExamType.update(
-        {
-          exam_type: exam_type,
-        },
-        {
-          where: {
-            unique_id,
-          },
-        }
-      );
-      response(200, "success update exam_type", [], res);
-    });
+    const examTypeData = req.body;
+    const examTypeId = req.params.id
+
+    let examType = await ExamType.findByPk(examTypeId)
+    examType.update(examTypeData)    
+    response(200, "success update exam_type", [], res);
   } catch (error) {
     response(
       500,
