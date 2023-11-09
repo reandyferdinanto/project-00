@@ -102,3 +102,46 @@ function getDate(){
   });
   $("#date").html(text);
 }
+
+introJs()
+    .setOptions({
+      dontShowAgainCookie: "siswaCreate_intro",
+      dontShowAgain: true,
+      dontShowAgainLabel: "Jangan tampilkan lagi",
+      tooltipClass: "customTooltip",
+      prevLabel: "Kembali",
+      nextLabel: "Lanjut",
+      doneLabel: "Selesai",
+      steps: [
+        {
+          title: "Tambah Siswa",
+          intro:"Halaman ini berfungsi untuk menambahkan siswa baru ke dalam tabel",
+        },
+        {
+          intro:"Guru dapat menambahkan siswa melalui dua cara, yaitu melalui file ataupun manual. Bila menambahkan melalui file, guru dapat menambahkan banyak siswa sekaligus.",
+        },
+        {
+          element: "#button-file",
+          title: "Menambahkan Siswa Menggunakan File",
+          intro:
+            "Untuk menambahkan siswa melalui file  excel (.csv), guru dapat menekan tombol ini dan memilih file terkait.",
+        },
+        {
+          element: "#button-upload",
+          intro:"setelah selesai memilih file, tekan tombol ini untuk mengunggah data.",
+          position: "left"
+        },
+        {
+          element: "#bg-table-siswa",
+          title: "Menambahkan Siswa Secara Manual",
+          intro:"Guru dapat mengisi formulir ini bila ingin menambahkan satu siswa saja.",
+          position: "top",
+        },
+        {
+          element: "#button-selesai",
+          intro:"Apabila sudah selesai mengisi formulir dapat langsung menekan tombol selesai",
+          position: "left",
+        },
+      ],
+    })
+    .start();

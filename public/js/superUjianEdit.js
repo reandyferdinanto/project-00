@@ -63,19 +63,19 @@ function getDate(){
 }
 
 
-// let first_intro = initializeIntro({
-//   dontShowAgainCookie: "topikCreate_intro",
-//   dontShowAgain: true,
-//   dontShowAgainLabel: "Jangan tampilkan lagi",
-//   tooltipClass: "customTooltip",
-//   prevLabel: "Kembali",
-//   nextLabel: "Lanjut",
-//   doneLabel: "Selesai",
-//   steps: [
-//     {
-//       title: "Edit Topik Ujian",
-//       intro: "Halaman ini berfungsi untuk mengubah Topik Ujian yang telah ada.",
-//     },
-//   ],
-// });
-// first_intro.start();
+let first_intro = initializeIntro({
+  dontShowAgainCookie: "topikCreate_intro",
+  dontShowAgain: true,
+  dontShowAgainLabel: "Jangan tampilkan lagi",
+  tooltipClass: "customTooltip",
+  prevLabel: "Kembali",
+  nextLabel: "Lanjut",
+  doneLabel: "Selesai",
+  steps: [
+    {
+      title: "Edit Topik Ujian",
+      intro: "Halaman ini berfungsi untuk mengubah Topik Ujian yang telah ada.",
+    },
+  ],
+});
+first_intro.start();

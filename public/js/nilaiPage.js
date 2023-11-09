@@ -1,6 +1,6 @@
 $(document).ready(() => {
   
-  $(".nilaiSidebar").addClass('selected')
+  $("#side-nilai").addClass('sidelist-selected')
   
   const d = new Date();
   let text;
@@ -184,11 +184,10 @@ $(document).ready(() => {
                         "Halaman ini berisi mengenai nilai siswa. Guru dapat melihat nilai siswa berdasarkan ujian yang diikuti serta mengunduh data nilai.",
                     },
                     {
-                      element: "#exams-select",
+                      element: "#exams-filter",
                       intro:
                         "Guru dapat memilih ingin melihat nilai berdasarkan ujian yang ada dengan menekan tombol ini.",
                     },
-
                     {
                       element: "#siswa-table_length",
                       intro:

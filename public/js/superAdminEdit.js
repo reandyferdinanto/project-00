@@ -108,3 +108,29 @@ function getDate(){
   });
   $("#date").html(text);
 }
+function initializeIntro(stepConfig) {
+  const intro = introJs();
+  intro.setOptions(stepConfig);
+  return intro;
+}
+
+let first_intro = initializeIntro({
+  dontShowAgainCookie: "adminEdit_intro",
+  dontShowAgain: true,
+  dontShowAgainLabel: "Jangan tampilkan lagi",
+  tooltipClass: "customTooltip",
+  prevLabel: "Kembali",
+  nextLabel: "Lanjut",
+  doneLabel: "Selesai",
+  steps: [
+    {
+      title: "Edit Admin",
+      intro: "Halaman ini berfungsi untuk mengubah informasi Admin yang telah ada. Tampilan pada halaman ini mirip seperti pada saat membuat Admin baru sehingga Super Admin dapat langsung mengubah informasi yang diinginkan.",
+    },
+    {
+      element: "#button-katasandi",
+      intro: "Tombol ini berfungsi untuk mengubah kata sandi dari akun Admin yang dipilih.",
+    },
+  ],
+});
+first_intro.start();

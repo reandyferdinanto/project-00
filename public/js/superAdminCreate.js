@@ -1,30 +1,31 @@
 getDate()
 
 $("#side-admin").addClass("sidelist-selected")
-//   let first_intro = initializeIntro({
-  //   dontShowAgainCookie: "adminCreate_intro",
-  //   dontShowAgain: true,
-  //   dontShowAgainLabel: "Jangan tampilkan lagi",
-  //   tooltipClass: "customTooltip",
-  //   prevLabel: "Kembali",
-  //   nextLabel: "Lanjut",
-  //   doneLabel: "Selesai",
-  //   steps: [
-    //     {
-  //       title: "Tambah Admin",
-  //       intro: "Halaman ini berfungsi untuk menambahkan Admin baru ke dalam tabel",
-  //     },
-  //     {
-    //       element: ".main-input",
-    //       intro: "Super Admin dapat mengisi formulir ini bila ingin menambahkan Admin",
-    //     },
-    //     {
-      //       element: "#selesai",
-      //       intro: "Apabila sudah selesai mengisi formulir dapat langsung menekan tombol selesai",
-      //     },
-      //   ],
-      // });
-      // first_intro.start();
+  let first_intro = initializeIntro({
+    dontShowAgainCookie: "adminCreate_intro",
+    dontShowAgain: true,
+    dontShowAgainLabel: "Jangan tampilkan lagi",
+    tooltipClass: "customTooltip",
+    prevLabel: "Kembali",
+    nextLabel: "Lanjut",
+    doneLabel: "Selesai",
+    steps: [
+        {
+        title: "Tambah Admin",
+        intro: "Halaman ini berfungsi untuk menambahkan Admin baru ke dalam tabel",
+      },
+      {
+          element: "#bg-table-admin",
+          intro: "Super Admin dapat mengisi formulir ini bila ingin menambahkan Admin",
+        },
+        {
+            element: "#button-selesai",
+            intro: "Apabila sudah selesai mengisi formulir dapat langsung menekan tombol selesai",
+            position: "left"
+          },
+        ],
+      });
+      first_intro.start();
 
       
 $("#button-selesai").click(function(){ 

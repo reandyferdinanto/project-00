@@ -4,15 +4,26 @@
       <img id="" src="/img/user-img.png" alt="profile-picture" class="w-full h-full object-cover">
     </div>
     <div class="">
-      <p class="font-bold text-sm text-white">SUDO</p>
-      <p class="font-normal text-sm text-white">Super Admin</p>
+      <p class="font-bold text-sm text-white"><%= user.username %></p>
+      <% if(user.role =="super_admin"){%>
+        <p class="font-normal text-sm text-white">Super Admin</p>
+        <% }else{%>
+        <p class="font-normal text-sm text-white">Admin</p>
+      <% }%>
     </div>
   </div>
   <div class="side-list flex flex-col mt-10 text-sm">
+    <% if(user.role =="super_admin"){%>
     <a id="side-admin" href="/admin" class="py-3 px-5 text-white">Daftar Admin</a>
     <a id="side-siswa" href="/siswa" class="py-3 px-5 text-white">Daftar Siswa</a>
     <a id="side-topik" href="/topik" class="py-3 px-5 text-white">Topik Ujian</a>
     <a id="side-ujian" href="/ujian" class="py-3 px-5 text-white">Ujian</a>
     <a id="side-nilai" href="/nilai" class="py-3 px-5 text-white">Nilai</a>
+    <% }else{%>
+    <a id="side-beranda" href="/" class="py-3 px-5 text-white">Beranda</a>
+    <a id="side-siswa" href="/siswa" class="py-3 px-5 text-white">Data Siswa</a>
+    <a id="side-ujian" href="/ujian" class="py-3 px-5 text-white">Ujian</a>
+    <a id="side-nilai" href="/nilai" class="py-3 px-5 text-white">Nilai</a>
+    <% }%>
   </div>
 </div>

@@ -6,7 +6,7 @@
 
   <main>
     <!-- SIDEBAR START -->
-    <%- include('./layouts/adminSidebar'); -%>
+    <%- include('./layouts/superSidebar'); -%>
     <!-- SIDEBAR END -->
 
 
@@ -15,14 +15,14 @@
 
         <!-- HAPUS UJIAN START -->
         <div class="main-title">
-          <h2>Mengubah Ujian</h2>
-          <form action="" id="hapus-ujian">
-            <button type="button" id="selesai-hapus">Hapus Ujian</button>
+          <p class="text-main font-bold text-2xl mt-3">Mengubah Ujian</p>
+          <form action="" id="form-hapus-ujian">
+            <button type="button" id="selesai-hapus" class="text-sm rounded-lg">Hapus Ujian</button>
             <div class="submit-hapus">
               <div class="submit-question">
                 <img src="/img/warning-alt.png" alt="" width="150" />
-                <p>Apakah anda yakin ingin menghapus ujian?</p>
-                <div class="submit-buttons">
+                <p class="my-3">Apakah anda yakin ingin menghapus ujian?</p>
+                <div class="submit-buttons mt-4">
                   <button class="ubah-button" type="button">Batal</button>
                   <button class="selesai-button" type="submit">Hapus</button>
                 </div>
@@ -33,46 +33,28 @@
         <!-- HAPUS UJIAN START -->
 
 
-        <form id="submit-form" action="/api/exams">
+        <form id="form-submit-exam" action="/api/exams">
           <!-- EXAM START -->
           <div class="main-input">
             <label for="">
               Nama Ujian <br />
-              <input
-                class="exam-type"
-                type="text"
-                name="exam_name"
-                id="exam_name"
-                required
-                placeholder="masukan nama ujian"
-              />
+              <input class="exam-type text-main" type="text" name="exam_name" id="exam_name" required placeholder="masukan nama ujian" />
               Topik Ujian
-              <select
-                name="exam_type"
-                class="exam-type"
-                required
-                id="exam_type"
-              >
+              <select name="exam_type" class="exam-type text-main" required id="exam_type" >
                 <option value="">--pilih ujian--</option>
               </select>
             </label>
             <div class="main-input-config">
               <label for="">
                 KKM <br />
-                <input
-                  class="exam-input"
-                  type="number"
-                  name="kkm_point"
-                  id="kkm_point"
-                  value="70"
-                />
+                <input class="exam-input text-main" type="number" name="kkm_point" id="kkm_point" value="70" />
               </label>  
             </div>
             <div class="assign-container">
               <label for="">Diujikan ke</label>
               <div class="assign-button">
-                <span class="checkedSiswaExam">0 Siswa</span>
-                <span><i class="uil uil-edit edit-button"></i></span>
+                <span class="checkedSiswaExam text-main">0 Siswa</span>
+                <span class="text-main"><i class="uil uil-edit edit-button"></i></span>
               </div>
             </div>
           </div>
@@ -82,8 +64,8 @@
           <div class="submit-layer">
             <div class="submit-question">
               <img src="/img/warning-alt.png" alt="" width="150" />
-              <p>Apakah anda sudah yakin selesai?</p>
-              <div class="submit-buttons">
+              <p class="text-sm my-3">Apakah anda yakin ingin mengubah data tersebut ?</p>
+              <div class="submit-buttons mt-4">
                 <button class="ubah-button" type="button">Ubah</button>
                 <button class="selesai-button" type="submit">Selesai</button>
               </div>
@@ -147,6 +129,7 @@
             <button type="button" id="complete-hapus">OK</button>
           </div>
         </div>
+
       </div>
     </div>
   </main>

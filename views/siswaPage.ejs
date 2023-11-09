@@ -8,11 +8,15 @@
       <%- include('./layouts/superSidebar'); -%>
       <section id="siswa-page" class="h-full bg-white rounded-tl-3xl p-8">
         <div class="flex justify-between">
-          <p class="text-main font-bold text-2xl">Daftar Siswa</p>
-          <div class="flex gap-4 mt-5">
-            <a href="/siswa/buat"><button class="bg-main text-white text-sm px-8 py-2 rounded-lg">Tambah Siswa</button></a>
-            <button id="button-delete" class="bg-red-500 text-white text-sm px-6 py-2 rounded-lg disabled:bg-red-500/50" disabled>Hapus</button>
-          </div>
+          <% if(user.role =="super_admin"){%>
+            <p class="text-main font-bold text-2xl">Daftar Siswa</p>
+            <div class="flex gap-4 mt-5">
+              <a id="button-tambah" href="/siswa/buat"><button class="bg-main text-white text-sm px-8 py-2 rounded-lg">Tambah Siswa</button></a>
+              <button id="button-delete" class="bg-red-500 text-white text-sm px-6 py-2 rounded-lg disabled:bg-red-500/50" disabled>Hapus</button>
+            </div>
+            <% }else{%>
+            <p class="text-main font-bold text-2xl">Data Siswa</p>
+          <% }%>
         </div>
         <div id="bg-table-siswa" class="min-h-screen shadow-[0_0px_40px_-15px_rgba(0,0,0,0.2)] w-full mt-8 rounded-3xl p-8 bg-white">
           <form id="form-siswa-delete">

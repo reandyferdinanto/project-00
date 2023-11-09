@@ -1,69 +1,73 @@
 $(document).ready(() => {
-  const d = new Date();
-  let text;
-  text = d.toLocaleString("id-ID", {
-    dateStyle: "medium",
-  });
-  $("#date").html(text);
-  setTimeout(() => {
-    introJs()
-      .setOptions({
-        dontShowAgainLabel: "Jangan tampilkan lagi",
-        tooltipClass: "customTooltip",
-        prevLabel: "Kembali",
-        nextLabel: "Lanjut",
-        doneLabel: "Selesai",
-        dontShowAgainCookie: "berandaPage_intro",
-        dontShowAgain: true,
-        steps: [
-          {
-            title: "Beranda",
-            intro:
-              "Halaman ini berisi mengenai ujian terbaru yang dibuat dan juga fitur cepat untuk menambahkan ujian.",
-          },
-          {
-            element: ".ujian",
-            intro:
-              "Guru dapat mengakses ujian yang telah ada dengan menekan bagian ini",
-          },
-          {
-            element: ".tambah-ujian-baru",
-            intro:
-              "Guru dapat menambahkan ujian baru lebih cepat dengan menekan bagian ini",
-          },
-          {
-            element: ".keluar-button",
-            intro:
-              "Tombol ini berfungsi bila ingin keluar dari halaman Muslim Maya",
-          },
-        ],
-      })
-      .start();
-  }, 1000);
 
-  const url = "/api/v1/exams";
-  let datas;
-  $.get(url, async (data, status) => {
+  getDate()
+
+  $("#side-beranda").addClass("sidelist-selected")
+
+  const BerandaIntro = initializeIntro({
+    dontShowAgainLabel: "Jangan tampilkan lagi",
+    tooltipClass: "customTooltip",
+    prevLabel: "Kembali",
+    nextLabel: "Lanjut",
+    doneLabel: "Selesai",
+    dontShowAgainCookie: "berandaPage_intro",
+    dontShowAgain: true,
+    steps: [
+      {
+        title: "Beranda",
+        intro:
+          "Halaman ini berisi mengenai ujian terbaru yang dibuat dan juga fitur cepat untuk menambahkan ujian.",
+      },
+      {
+        element: "#card-exam",
+        intro:
+          "Guru dapat mengakses ujian yang telah ada dengan menekan bagian ini",
+      },
+      {
+        element: "#beranda-tambah-ujian",
+        intro:
+          "Guru dapat menambahkan ujian baru lebih cepat dengan menekan bagian ini",
+      },
+      {
+        element: "#button-logout",
+        intro:
+          "Tombol ini berfungsi bila ingin keluar dari halaman Muslim Maya",
+        position:"left"
+      },
+    ],
+  })
+
+  $.get(`/api/v1/exams`, async (data, status) => {
     if (status == "success") {
-      $(".main-table-body").html("");
-      $(".main-table-body").css({
-        "text-align": "left",
-        // padding: "0.5rem 2rem",
-        margin: ".5rem 2rem",
+      data.datas.forEach((exam) => {
+        $(addCard(exam)).insertBefore(`#beranda-tambah-ujian`)
       });
-      datas = data.datas;
-      datas.forEach((data) => {
-        $(".main-home").prepend([
-          `
-              <a href="/ujian/edit/${data.unique_id}" class="tambah-ujian">
-                <div class="ujian">
-                  <p>Ujian</p>
-                  <p><b>${data.exam_name}</b></p>
-                </div>
-              </a>
-              `,
-        ]);
-      });
+      BerandaIntro.start()
     }
   });
+
+
+
+
+  function getDate(){
+    const d = new Date();
+    let text;
+    text = d.toLocaleString("id-ID", {
+      dateStyle: "medium",
+    });
+    $("#date").html(text);
+  }
+  function addCard(exam){
+    return `
+    <a id="card-exam" href="/ujian/edit/${exam.unique_id}" class="hover:-translate-y-1 duration-200 cursor-pointer shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] rounded-lg border border-main flex justify-center items-center flex-col h-[200px]">
+      <p class="text-main text-base">${exam.exam_name}</p>
+      <p class="text-main text-sm font-bold">(Edit)</p>
+    </a>
+    `
+  }
+  function initializeIntro(stepConfig) {
+    const intro = introJs();
+    intro.setOptions(stepConfig);
+    return intro;
+  }
 });

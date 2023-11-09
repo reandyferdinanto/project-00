@@ -79,55 +79,55 @@ $.get("/api/v1/exam_type", async (data, status) => {
           },
         },
       ],
-      // initComplete: function(){
-      //   setTimeout(() => {
-      //     let first_intro = initializeIntro({
-      //       dontShowAgainCookie: "topikPage_intro",
-      //       dontShowAgain: true,
-      //       dontShowAgainLabel: "Jangan tampilkan lagi",
-      //       tooltipClass: "customTooltip",
-      //       prevLabel: "Kembali",
-      //       nextLabel: "Lanjut",
-      //       doneLabel: "Selesai",
-      //       steps: [
-      //         {
-      //           title: "Topik Ujian",
-      //           intro: "Halaman ini berisi mengenai topik ujian. Super Admin dapat melihat topik ujian yang telah terdaftar, menambahkan topik ujian, maupun menghapus topik ujian.",
-      //         },
-      //         {
-      //           element: ".dataTables_length",
-      //           intro: "Bagian ini berfungsi untuk memunculkan berapa banyaknya jumlah topik ujian yang ingin ditampilkan pada tabel",
-      //         },
-      //         {
-      //           element: ".dataTables_filter",
-      //           intro: "Super Admin dapat mencari topik ujian di kotak ini",
-      //         },
-      //         {
-      //           element: ".checkbox-delete",
-      //           intro: "Super Admin dapat menekan tombol ini untuk memilih topik ujian.",
-      //         },
-      //         {
-      //           element: "#selectAll",
-      //           intro: "Tombol ini berfungsi untuk memilih semua topik ujian yang ditampilkan pada tabel",
-      //         },
-      //         {
-      //           element: ".hapus-button",
-      //           position:"left",
-      //           intro: "Super Admin dapat menekan tombol ini untuk menghapus topik ujian setelah selesai memilih",
-      //         },
-      //         {
-      //           element: ".edit-siswa",
-      //           intro: "Super Admin juga dapat mengubah topik ujian dengan menekan tombol ini",
-      //         },
-      //         {
-      //           element: ".buat-ujian-baru",
-      //           intro: "Super Admin dapat menambahkan topik ujian baru dengan menekan tombol ini.",
-      //         },
-      //       ],
-      //     });
-      //     first_intro.start();
-      //   },500)
-      // }
+      initComplete: function(){
+        setTimeout(() => {
+          let first_intro = initializeIntro({
+            dontShowAgainCookie: "topikPage_intro",
+            dontShowAgain: true,
+            dontShowAgainLabel: "Jangan tampilkan lagi",
+            tooltipClass: "customTooltip",
+            prevLabel: "Kembali",
+            nextLabel: "Lanjut",
+            doneLabel: "Selesai",
+            steps: [
+              {
+                title: "Topik Ujian",
+                intro: "Halaman ini berisi mengenai topik ujian. Super Admin dapat melihat topik ujian yang telah terdaftar, menambahkan topik ujian, maupun menghapus topik ujian.",
+              },
+              {
+                element: ".dataTables_length",
+                intro: "Bagian ini berfungsi untuk memunculkan berapa banyaknya jumlah topik ujian yang ingin ditampilkan pada tabel",
+              },
+              {
+                element: ".dataTables_filter",
+                intro: "Super Admin dapat mencari topik ujian di kotak ini",
+              },
+              {
+                element: ".checkbox-delete",
+                intro: "Super Admin dapat menekan tombol ini untuk memilih topik ujian.",
+              },
+              {
+                element: "#selectAll",
+                intro: "Tombol ini berfungsi untuk memilih semua topik ujian yang ditampilkan pada tabel",
+              },
+              {
+                element: "#button-delete",
+                position:"left",
+                intro: "Super Admin dapat menekan tombol ini untuk menghapus topik ujian setelah selesai memilih",
+              },
+              {
+                element: ".edit-siswa",
+                intro: "Super Admin juga dapat mengubah topik ujian dengan menekan tombol ini",
+              },
+              {
+                element: "#button-tambah",
+                intro: "Super Admin dapat menambahkan topik ujian baru dengan menekan tombol ini.",
+              },
+            ],
+          });
+          first_intro.start();
+        },500)
+      }
     });
   }
 });

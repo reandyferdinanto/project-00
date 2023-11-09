@@ -1,104 +1,139 @@
-getDate()
-
-$("#side-siswa").addClass("sidelist-selected")
-
-$('form').bind("keypress", function(e) {
-    if (e.keyCode == 13) {               
-        e.preventDefault();
-        return false;
-    }
-});
-
-$("#button-selesai").on("click", () => {
-  $("#popup").removeClass("hidden")
-});
-$("#button-batal").on("click", () => {
-  $("#popup").addClass("hidden")
-});
-
-// GET Admin unique Id dari URL
-const SISWA_UNIQUE_ID = window.location.href.substring(window.location.href.lastIndexOf("/") + 1);
-let user_data;
-
-// Assign data yang sudah diisi
-$.get(`/api/v1/students/${SISWA_UNIQUE_ID}`, async (students) => {
-  user_data = students.datas;
-  if (students.datas) {
-    $("input[name=nis]").val(students.datas.nis.slice(4));
-    $("input[name=username]").val(students.datas.username);
-    $("input[name=class]").val(students.datas.class);
-    $("input[name=major]").val(students.datas.major);
-    $(`input[name=gender][value='${students.datas.gender}']`).prop("checked",true);
-  }
-});
-
-
-  // SET UJIAN
-$.get(`/api/v1/exams`, async (exams, status) => {
-  if (exams.datas.length !== 0) {
-    $("#siswa-daftar-ujian").html("");
-    exams.datas.forEach((data, index) => {
-      $("#siswa-daftar-ujian").append(
-        `
-          <div class="flex items-center justify-between px-4 border-0 bg-main rounded-lg">
-            <label for="${data.unique_id}" class="w-full py-4 ml-2 text-sm font-medium text-white">${data.exam_name}</label>
-            <input id="${data.unique_id}" type="checkbox" value="" name="${data.unique_id}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-          </div>
-        `,
-      );
-      $("#siswa-daftar-ujian").on("change", `#${data.unique_id}`, function () {
-        if (!$(`#${data.unique_id}`).is(":checked")) {
-          $(this).html(
-            `<input type="hidden" name="${data.unique_id}" id="${data.unique_id}" value="off" />`
-          );
-        } else {
-          $(`#${data.unique_id}`).val("on");
-        }
-      });
-    });
-    user_data.Exams.forEach((user_exam) => {
-      if (datas.find((e) => e.exam_name == user_exam.exam_name)) {
-        $(`#${user_exam.unique_id}`).prop("checked", true);
+$(document).ready(() => {
+  
+  $("#side-siswa").addClass('sidelist-selected')
+  $('form').bind("keypress", function(e) {
+      if (e.keyCode == 13) {               
+          e.preventDefault();
+          return false;
       }
-    });
-  }
-});
-
-// SUBMIT
-$("#form-siswa-edit").on("submit", function (e) {
-  e.preventDefault();
-  const formData = new FormData(this);
-  formData.append("unique_id", SISWA_UNIQUE_ID);
-
-  $.ajax({
-    url: "/api/v1/students/edit",
-    type: "POST",
-    data: formData,
-    contentType: false,
-    enctype: "multipart/form-data",
-    processData: false,
-    success: function (response) {
-      if (response.status_code == 200) {
-        window.location = "/siswa"
-      }
-    },
-    error: function (data, status, error) {
-      const ErrorMessage = `<div id="ErrorMessage" class="bg-red-500/80 fixed top-8 left-1/2 -translate-x-1/2 min-w-[400px] text-center py-1.5 rounded-lg border border-red-900 text-[#000] text-sm z-10">${status}: ${data.responseJSON.datas.error}</div>`
-      $("body").prepend(ErrorMessage)
-      $("#ErrorMessage")
-        .delay(3000)
-        .fadeOut("slow", function () {
-          $(this).remove();
-        });
-    },
   });
-});
+  
+  introJs()
+    .setOptions({
+      dontShowAgainLabel: "Jangan tampilkan lagi",
+      tooltipClass: "customTooltip",
+      prevLabel: "Kembali",
+      nextLabel: "Lanjut",
+      dontShowAgainCookie: "siswaEdit_intro",
+      dontShowAgain: true,
+      doneLabel: "Selesai",
+      steps: [
+        {
+          title: "Edit Siswa",
+          intro:
+            "Halaman ini berfungsi untuk mengubah informasi siswa yang telah ada. Tampilan pada halaman ini mirip seperti pada saat membuat siswa baru secara manual sehingga guru dapat langsung mengubah informasi yang diinginkan.",
+        },
+        {
+          element: document.querySelector(".exams-assign"),
+          intro:
+            "Pada halaman ini, akan muncul ujian yang telah dibuat. Guru dapat mengubah informasi ujian mana yang akan diikuti oleh siswa dengan menekan tombol di sebelah nama ujian yang ada.",
+        },
+      ],
+    })
+    .start();
 
-function getDate(){
   const d = new Date();
   let text;
   text = d.toLocaleString("id-ID", {
     dateStyle: "medium",
   });
   $("#date").html(text);
-}
+
+  // ADD SOAL
+
+  $("#selesai").on("click", () => {
+    $(".submit-layer").css("visibility", "visible");
+  });
+
+  $(".ubah-button").on("click", () => {
+    $(".submit-layer").css("visibility", "hidden");
+  });
+
+  // GET URL
+  let unique_id = window.location.href.substring(
+    window.location.href.lastIndexOf("/") + 1
+  );
+  let url_input = `/api/v1/students/${unique_id}`;
+  let url_ujian = `/api/v1/exams`;
+  let user_data;
+  // SET INPUT
+  $.get(url_input, async (data, status) => {
+    let datas = data.datas;
+    user_data = data.datas;
+    if (status == "success" && datas.length !== 0) {
+      $("#nis").val(datas.nis);
+      $("#username").val(datas.username);
+      $("#class").val(datas.class);
+      $("#major").val(datas.major);
+      $(`input[name=gender][value='${datas.gender}']`).prop("checked",true);
+      if (datas.Exams) {
+        datas.Exams.forEach((exam) => {
+          $(".exams-assign").on("click", `#${exam.exam_name}`, function () {});
+        });
+      }
+    }
+  });
+  // SET UJIAN
+  $.get(url_ujian, async (data, status) => {
+    let datas = data.datas;
+    if (status == "success" && datas.length !== 0) {
+      $(".exams-assign").html("");
+      datas.forEach((data, index) => {
+        $(".exams-assign").append([
+          `
+              <div class="exam-assign">
+                <span for="${data.exam_name}">${data.exam_name}</span>
+                <input type="checkbox" name="${data.unique_id}" id="${data.unique_id}" />
+              </div>`,
+        ]);
+        $(".exams-assign").on("change", "#" + data.unique_id, function () {
+          if (!$("#" + data.unique_id).is(":checked")) {
+            $(this).html(
+              `<input type="hidden" name="${data.unique_id}" id="${data.unique_id}" value="off" />`
+            );
+          } else {
+            $("#" + data.unique_id).val("on");
+          }
+        });
+        // CHEKED
+      });
+      user_data.Exams.forEach((user_exam) => {
+        if (datas.find((e) => e.exam_name == user_exam.exam_name)) {
+          $(`#${user_exam.unique_id}`).prop("checked", true);
+        }
+      });
+    }
+  });
+
+  $("#complete-upload").on("click", function (e) {
+    e.preventDefault();
+    window.location = "/siswa";
+  });
+
+  // SUBMIT
+  const manualForm = document.getElementById("submit-form");
+  manualForm.addEventListener("submit", (e) => {
+    let formData = new FormData(manualForm);
+    formData.append("unique_id", unique_id);
+    e.preventDefault();
+    $.ajax({
+      url: "/api/v1/students/edit",
+      type: "POST",
+      data: formData,
+      async: false,
+      cache: false,
+      contentType: false,
+      encrypt: "multipart/form-data",
+      processData: false,
+      success: (response) => {
+        $(".submit-layer").css("visibility", "hidden");
+        if (response.status_code == 200) {
+          $(".complete-layer").removeClass("hide");
+          $(".complete-layer").css("visibility", "visible");
+        } else if (response.message == "you're not authenticated") {
+          window.location = "/login";
+        }
+      },
+    });
+  });
+});

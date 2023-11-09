@@ -74,3 +74,34 @@ function getDate(){
   });
   return text
 }
+function initializeIntro(stepConfig) {
+  const intro = introJs();
+  intro.setOptions(stepConfig);
+  return intro;
+}
+
+let first_intro = initializeIntro({
+  dontShowAgainCookie: "topikCreate_intro",
+  dontShowAgain: true,
+  dontShowAgainLabel: "Jangan tampilkan lagi",
+  tooltipClass: "customTooltip",
+  prevLabel: "Kembali",
+  nextLabel: "Lanjut",
+  doneLabel: "Selesai",
+  steps: [
+    {
+      title: "Tambah Topik Ujian",
+      intro: "Halaman ini berfungsi untuk menambahkan topik ujian baru ke dalam tabel",
+    },
+    {
+      element: "#bg-table-topik",
+      intro: "Super Admin dapat mengisi formulir ini bila ingin menambahkan Topik Ujian",
+    },
+    {
+      element: "#button-selesai",
+      intro: "Apabila sudah selesai mengisi formulir dapat langsung menekan tombol selesai",
+      position:"left"
+    },
+  ],
+});
+first_intro.start();

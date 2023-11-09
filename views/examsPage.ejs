@@ -2,6 +2,7 @@
 <body>
   <!-- NAV -->
   <%- include('./layouts/navbar'); -%>
+  <p id="user_id" class="hidden"><%= user.id %></p>
 
   <!-- MAIN -->
   <main>
@@ -10,7 +11,7 @@
       <div class="flex justify-between">
         <p class="text-main font-bold text-2xl">Daftar Ujian</p>
         <div class="flex gap-4 mt-5">
-          <a href="/ujian/buat"><button class="bg-main text-white text-sm px-8 py-2 rounded-lg">Tambah Ujian</button></a>
+          <a id="button-tambah" href="/ujian/buat"><button class="bg-main text-white text-sm px-8 py-2 rounded-lg">Tambah Ujian</button></a>
         </div>
       </div>
       <div id="bg-table-ujian" class="min-h-screen shadow-[0_0px_40px_-15px_rgba(0,0,0,0.2)] w-full mt-8 rounded-3xl p-8 bg-white">

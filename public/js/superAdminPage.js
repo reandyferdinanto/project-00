@@ -141,7 +141,7 @@ $.get(`/api/v1/admins`, function (admins) {
                 intro: "Super Admin juga dapat mengubah data Admin dengan menekan tombol ini",
               },
               {
-                element: ".buat-ujian-baru",
+                element: "#button-tambah",
                 intro: "Super Admin dapat menambahkan Admin baru dengan menekan tombol ini.",
               },
             ],
