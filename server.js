@@ -13,6 +13,7 @@ const app = express();
 const cspOptions = {
   directives: {
     defaultSrc: ["'self'"],
+    imgSrc: ["'self'", "data:", "blob:"], // Menambahkan "blob:"
     scriptSrc: [
       "'self'",
       'code.jquery.com',

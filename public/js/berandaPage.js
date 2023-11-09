@@ -1,5 +1,3 @@
-$(document).ready(() => {
-
   getDate()
 
   $("#side-beranda").addClass("sidelist-selected")

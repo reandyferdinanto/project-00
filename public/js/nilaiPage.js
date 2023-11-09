@@ -38,6 +38,7 @@ $(document).ready(() => {
     school_id = data.datas.school_id;
     school_name = data.datas.school_name;
   });
+
   $.get(url, async (data, status) => {
     if (status == "success" && data.datas.length !== 0) {
       if (exams.length !== 0) {
@@ -213,7 +214,7 @@ $(document).ready(() => {
         });
         $("hr").remove();
       }
-    } else if (exams.length == 0 || data.datas.length == 0) {
+    } if (exams.length == 0 || data.datas.length == 0) {
       $(".main-table-body").append([
         `
           <img src="/img/nothing.png" alt="" />
