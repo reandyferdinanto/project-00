@@ -469,7 +469,6 @@ async function getAllExam(req, res, next) {
   }
 }
 
-
 async function deleteExam(req, res, next) {
   try {
 

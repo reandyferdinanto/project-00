@@ -1,6 +1,6 @@
 $(document).ready(() => {
   
-  $(".siswaSidebar").addClass('selected')
+  $("#side-siswa").addClass('sidelist-selected')
   $('form').bind("keypress", function(e) {
       if (e.keyCode == 13) {               
           e.preventDefault();

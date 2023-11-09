@@ -3,74 +3,53 @@
 <body>
   <!-- NAV -->
   <%- include('./layouts/navbar'); -%>
+  <p id="user_id" class="hidden"><%= user.id %></p>
 
   <!-- MAIN -->
   <main>
-    <%- include('./layouts/adminSidebar'); -%>
+    <%- include('./layouts/superSidebar'); -%>
+
     <div class="main-content">
       <div class="main-background">
         <form id="submit-form">
           <div class="main-title">
-            <h2>
-              Membuat Ujian Baru
-              <span style="color: #ff4c4c; font-size: 0.7rem"
-                >*harus diisi</span
-              >
-            </h2>
+          <p class="text-main font-bold text-2xl mt-4">Membuat Ujian Baru <span class="text-red-500 font-medium text-xs">* harus diisi</span></p>
           </div>
           <div class="main-input">
-            <label for="">
-              Nama Ujian<span style="color: #ff4c4c"> *</span>
-            </label>
-            <input
-              class="exam-type"
-              type="text"
-              name="exam_name"
-              id=""
-              required
-              placeholder="masukan nama ujian"
+            <label for="" class="text-sm font-bold">Nama Ujian<span style="color: #ff4c4c"> *</span></label>
+            <input class="exam-type text-main py-2 px-3 focus:ring-0 focus:outline-none" type="text" name="exam_name" id="" required placeholder="masukan nama ujian"
             />
-            <label for=""
-              >Topik Ujian<span style="color: #ff4c4c"> *</span>
-            </label>
-            <select name="exam_type" class="exam-type" required>
+            <label for="" class="text-sm font-bold">Topik Ujian<span style="color: #ff4c4c"> *</span></label>
+            <select name="exam_type" class="exam-type text-main py-2 px-3 focus:ring-0 focus:outline-none" required>
               <option value="">--pilih ujian--</option>
             </select>
 
-            <label for="">
-              KKM <span style="color: #ff4c4c"> *</span>
-            </label>
+            <label for="" class="text-sm font-bold">KKM <span style="color: #ff4c4c"> *</span></label>
             <br>
-            <input
-              class="exam-type"
-              type="number"
-              name="kkm_point"
-              id=""
-              value="70"
-              required
-              style="width: 25%;"
+            <input class="exam-type text-main py-2 px-3 focus:ring-0 focus:outline-none" type="number" name="kkm_point" id="" value="70" required style="width: 25%;"
             />
         </div>
-          <button class="main-create-question" id="add-question">
-            Membuat Soal
-          </button>
+          <button class="main-create-question" id="add-question">Membuat Soal</button>
           <div class="submit-layer">
             <div class="submit-question">
               <img src="/img/warning-alt.png" alt="" width="150" />
-              <p>Apakah anda sudah yakin selesai?</p>
-              <div class="submit-buttons">
+              <p class="my-3">Apakah anda sudah yakin selesai?</p>
+              <div class="submit-buttons mt-4">
                 <button class="ubah-button" type="button">Ubah</button>
                 <button class="selesai-button" type="submit">Selesai</button>
               </div>
             </div>
           </div>
+
+          
           <div class="file-layer">
             <div class="file-toolarge">
-              File terlalu besar <br />
-              max: 1MB
+              File terlalu besar <br />max: 1MB
               <button>Ok</button>
             </div>
           </div>
+
+
           <div class="complete-layer">
             <div class="complete-background">
               <img src="/img/check.png" width="50" alt="" />

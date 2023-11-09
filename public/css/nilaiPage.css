@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"); */
 
 body {
   /* padding: 0 2rem; */
@@ -13,41 +13,6 @@ main {
   grid-template-columns: 0.2fr 1fr;
 }
 
-.profile-sidebar {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-top: 1rem;
-}
-.profile-img {
-  width: 60px;
-  height: 60px;
-  background-color: white;
-  border-radius: 100%;
-}
-.profile-info p {
-  margin: 0.2rem 0;
-  color: white;
-  font-size: 0.9rem;
-}
-.list-sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  margin: 2rem 0;
-}
-.list-sidebar a {
-  border-radius: 0;
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 20px 0 0px 20px;
-  text-decoration: none;
-  font-size: 0.9rem;
-}
-.selected {
-  background-color: white !important;
-  color: #358f6c !important;
-}
 .main-content {
   width: 100%;
   min-height: 100vh;

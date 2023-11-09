@@ -3,24 +3,22 @@
 <body>
   <!-- NAV -->
   <%- include('./layouts/navbar'); -%>
+  <p id="user_id" class="hidden"><%= user.id %></p>
 
   <!-- MAIN -->
   <main>
-    <%- include('./layouts/adminSidebar'); -%>
+    <%- include('./layouts/superSidebar'); -%>
     <div class="main-content">
       <div class="main-background">
-        <div class="main-title">
-          <h2>Nilai Siswa</h2>
+        <div class="main-title mt-3">
+          <p class="text-main font-bold text-2xl mt-3">Nilai Siswa</p>
           <form id="download-form" method="post">
-            <a href="/exams/create"
-              ><button class="download-csv-button" type="submit">
-                Download Data
-              </button></a
+            <a href="/exams/create"><button class="download-csv-button text-sm mt-10" type="submit">Download Data</button></a
             >
           </form>
         </div>
         <div class="filter-option">
-          <select name="exams-filter" id="exams-select">
+          <select id="exams-filter" name="exams-filter" class="min-w-[240px] block px-3 py-2 rounded-lg text-sm border-0 text-white bg-main focus:ring-0 focus:outline-none" id="exams-select">
             <option value="0">Manasik</option>
           </select>
         </div>

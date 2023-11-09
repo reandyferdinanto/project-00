@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+html{
+    font-family: "Inter", sans-serif;
+}
+.sidelist-selected{
+    @apply bg-white text-main rounded-s-full
+}
+
+body {
+    margin: 0;
+    background-color: #358f6c;
+    font-family: "Inter", sans-serif;
+}
+
+main {
+    padding: 0 0 0 2rem;
+    display: grid;
+    grid-template-columns: 0.2fr 1fr;
+}
+
+input[type="file"]::file-selector-button {
+    background-color: antiquewhite;
+    border: none;
+    color: #358f6c;
+    border-radius: 20px;
+    padding: 0.3rem 0.7rem;
+    cursor: pointer;
+  }

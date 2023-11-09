@@ -1,10 +1,10 @@
 $(document).ready(() => {
-  $('.ujianSidebar').addClass('selected')
+  $('#side-ujian').addClass('sidelist-selected')
   $('form').bind("keypress", function(e) {
-        if (e.keyCode == 13) {               
-            e.preventDefault();
-            return false;
-        }
+    if (e.keyCode == 13) {               
+        e.preventDefault();
+        return false;
+    }
   });
 
   const d = new Date();
@@ -12,30 +12,6 @@ $(document).ready(() => {
     dateStyle: "medium",
   }));
 
-  let first_intro = initializeIntro({
-    dontShowAgainCookie: "examEdit_intro",
-    dontShowAgain: true,
-    dontShowAgainLabel: "Jangan tampilkan lagi",
-    tooltipClass: "customTooltip",
-    prevLabel: "Kembali",
-    nextLabel: "Lanjut",
-    doneLabel: "Selesai",
-    steps: [
-      {
-        title: "Edit Ujian",
-        intro: "Halaman ini berfungsi untuk mengubah soal ujian yang telah ada. Tampilan pada halaman ini mirip seperti pada saat membuat ujian baru sehingga guru dapat langsung mengubah soal yang diinginkan.",
-      },
-      {
-        element: "#selesai-hapus",
-        intro: "terdapat pula tombol hapus pada halaman ini bila ingin menghapus ujian yang telah dibuat.",
-      },
-      {
-        element: ".assign-button",
-        intro:"Guru dapat mengedit kepada siapa saja ujian diberikan dengan menekan ikon pensil.",
-      },
-    ],
-  });
-  first_intro.start();
 
   let question_with_img = [];
   let queuedImagesArrayAnswer = [];
@@ -51,10 +27,10 @@ $(document).ready(() => {
   let question_type = []
   let introTampil = false
   let question_pilgan = `
-  <div class="question_pilgan">  
+  <div class="question_pilgan text-main">  
     <div class="display_image"></div>
     <div class="question-text-container">
-      <textarea data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal" required></textarea>
+      <textarea data-max-words="2" name="question_text" class='soal-text p-4' placeholder="Masukan Soal" required></textarea>
       <div class="upload-img">
         <label class="custom-file-upload">
           <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
@@ -67,7 +43,7 @@ $(document).ready(() => {
       <div class="answer-container" style="background-color:#2cc489;border: 2px solid white;">
         <div class="answer-container-flex">
           <input placeholder='jawaban benar' name='correct_answer' class='answer correct-answer'/>
-          <label class="custom-file-upload-question">
+          <label class="custom-file-upload-question divide-x divide-white-60">
             <input type="file" class="input-file-answer" multiple="multiple" name="" accept="image/*"/>
             <i class="uil uil-image-v" style="color:white"></i>
           </label>
@@ -77,7 +53,7 @@ $(document).ready(() => {
       <div class="answer-container">
         <div class="answer-container-flex">
           <input placeholder='jawaban lain' name='wrong_answer' class='answer wrong-answer'/>
-          <label class="custom-file-upload-question">
+          <label class="custom-file-upload-question divide-x divide-main">
             <input type="file" class="input-file-answer" multiple="multiple" name="" accept="image/*"/>
             <i class="uil uil-image-v"></i>
           </label>
@@ -87,7 +63,7 @@ $(document).ready(() => {
       <div class="answer-container">
         <div class="answer-container-flex">
           <input placeholder='jawaban lain' name='wrong_answer' class='answer wrong-answer'/>
-          <label class="custom-file-upload-question">
+          <label class="custom-file-upload-question divide-x divide-main">
             <input type="file" class="input-file-answer" multiple="multiple" name="" accept="image/*"/>
             <i class="uil uil-image-v"></i>
           </label>
@@ -97,7 +73,7 @@ $(document).ready(() => {
       <div class="answer-container">
         <div class="answer-container-flex">
           <input placeholder='jawaban lain' name='wrong_answer' class='answer wrong-answer'/>
-          <label class="custom-file-upload-question">
+          <label class="custom-file-upload-question divide-x divide-main">
             <input type="file" class="input-file-answer" multiple="multiple" name="" accept="image/*"/>
             <i class="uil uil-image-v"></i>
           </label>
@@ -107,7 +83,7 @@ $(document).ready(() => {
       <div class="answer-container">
         <div class="answer-container-flex">
           <input placeholder='jawaban lain' name='wrong_answer' class='answer wrong-answer'/>
-          <label class="custom-file-upload-question">
+          <label class="custom-file-upload-question divide-x divide-main">
             <input type="file" class="input-file-answer" multiple="multiple" name="" accept="image/*"/>
             <i class="uil uil-image-v"></i>
           </label>
@@ -118,10 +94,10 @@ $(document).ready(() => {
   </div>
 `;
   let question_card = `
-    <div class="question_kartu">  
+    <div class="question_kartu text-main">  
       <div class="display_image"></div>
       <div class="question-text-container">
-        <textarea data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal" required></textarea>
+        <textarea data-max-words="2" name="question_text" class='soal-text p-4' placeholder="Masukan Soal" required></textarea>
         <div class="upload-img">
           <label class="custom-file-upload">
             <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
@@ -137,163 +113,6 @@ $(document).ready(() => {
       </div>
     </div>
   `;
-
-  function initializeIntro(stepConfig) {
-    const intro = introJs();
-    intro.setOptions(stepConfig);
-    return intro;
-  }
-  function initializeSortable() {
-    $(".answers-card").sortable({
-      // containment: "parent",
-      opacity: 0.75,
-      distance: 25,
-      tolerance: "intersect",
-      items: "> .answer-card",
-      create: function (event, ui) {
-        const sortedElements = $(this).find("> .answer-card");
-        tempArray = [];
-
-        sortedElements.each(function (index) {
-          const value = $(this).find("input").val();
-          tempArray.push({ index, value });
-        });
-        const questionId = $(this).closest(".question").data("question-id");
-
-        // Find the index of the question in the allDataArray (if it exists)
-        const questionIndex = allDataArray.findIndex(function (item) {
-          return item.questionId === questionId;
-        });
-
-        // If the question exists in the allDataArray, update its answers, otherwise add it as a new question
-        if (questionIndex !== -1) {
-          allDataArray[questionIndex].questionId = questionId;
-          allDataArray[questionIndex].answers = tempArray;
-        } else {
-          allDataArray.push({
-            questionId,
-            answers: tempArray,
-          });
-        }
-      },
-      update: function (event, ui) {
-        const sortedElements = $(this).find("> .answer-card");
-        tempArray = [];
-
-        sortedElements.each(function (index) {
-          const value = $(this).find("input").val();
-          tempArray.push({ index, value });
-          $(this)
-            .find("span")
-            .html(`#${index + 1}`);
-        });
-        const questionId = $(this).closest(".question").data("question-id");
-
-        // Find the index of the question in the allDataArray (if it exists)
-        const questionIndex = allDataArray.findIndex(function (item) {
-          return item.questionId === questionId;
-        });
-
-        // If the question exists in the allDataArray, update its answers, otherwise add it as a new question
-        if (questionIndex !== -1) {
-          allDataArray[questionIndex].answers = tempArray;
-        } else {
-          allDataArray.push({
-            questionId,
-            answers: tempArray,
-          });
-        }
-      },
-    });
-  }
-  function displayQuestionImage() {
-    question_with_img = []
-    $(".input-file").each(function(idx){
-      if($(this)[0].files[0]){
-        question_with_img.push(idx)
-        $(".display_image").eq(idx).css('display', 'flex')
-        $(".display_image").eq(idx).html(`
-          <img src="${URL.createObjectURL($(this)[0].files[0])}" alt="no img" />
-          <span title="Hapus Gambar" class="deleteImg"><i class="uil uil-times"></i></span>
-        `)
-      };
-    })
-  }
-  function displayAnswerImage() {
-    $(".answers").each(function(idx){;
-      $(this).find(".input-file-answer").each(function(){
-        if($(this)[0].files[0]){
-          $(this).closest(".answer-container").find(".display_image_answer").css('display', 'flex')
-          $(this).closest(".answer-container").find(".display_image_answer").html(`
-            <img src="${URL.createObjectURL($(this)[0].files[0])}" alt="no img" />
-            <span title="Hapus Gambar" class="deleteImgAnswer"><i class="uil uil-times"></i></span>
-          `)
-        }
-      })
-    })
-  }
-  function getImgBlob(url) {
-    return new Promise((resolve, reject) => {
-      $.ajax({
-        url: url,
-        method: "GET",
-        xhrFields: {
-          responseType: "blob",
-        },
-        success: function (response) {
-          resolve(response);
-        },
-        error: function (error) {
-          reject(error);
-        },
-      });
-    });
-  }
-  function initializeExamType(exams_data){
-    $.get("/api/v1/exam_type", async (exam_types, status) => {
-      if (status == "success" && exam_types.datas.length !== 0) {
-        exam_types.datas.forEach((exam_type) => {
-          $("#exam_type").append([
-            `
-            <option value="${exam_type.exam_type.toLowerCase()}">${
-              exam_type.exam_type.charAt(0).toUpperCase() + exam_type.exam_type.slice(1)
-            }</option>
-        `,
-          ]);
-        });
-        // ubah exam type menjadi ujian yang dipilih
-        $("#exam_type").val(exams_data.exam_type).change();
-      }
-    });
-  }
-  function addMoreQuestion(question, index) {
-    // if (validateForm() == false) return;
-    $(".questions").append([
-      `
-          <div class="question">
-            <div class="question-head">
-              <div class="question-head-info">
-                <p><b>Soal ${index}</b></p>
-              </div>
-            </div>
-            ${question}
-            <div class="delete-quest" title="Hapus Soal" >
-              <span><i class="uil uil-trash-alt"></i></span>
-            </div>
-          </div>
-        `,
-    ]);
-    $(".input-file-answer").each(function(){
-      $(this).attr("name",`answer_image_${$(this).closest(".question").index()}${$(this).closest(".question").find(".input-file-answer").index($(this))}`)
-    })
-  }
-  function addImageToList(image){
-    if(image){
-      const urlParts = image.split('/');
-      const fileName = urlParts[urlParts.length - 1];
-      allImage.push(fileName)
-    }
-  }
 
   // Initialize Exam
   $.get(`/api/v1/exams/${unique_id}`, async (exams, status) => {
@@ -313,9 +132,11 @@ $(document).ready(() => {
         // add all question image to array
         addImageToList(question.question_img)
         // Initialize Question Pilihan Ganda
+        
         if (question.question_type == "pilihan_ganda"){
           let pilgan_answers = question.pilgan_answers
           addMoreQuestion(question_pilgan, index+1)
+
           $(".question").eq(index).find(".soal-text").val(question.question_text)
           $(".question").eq(index).find(".correct-answer").val(pilgan_answers[0].answer)
           $(".question").eq(index).find(".wrong-answer").each(function(idx){
@@ -373,14 +194,6 @@ $(document).ready(() => {
       })
     }
   });
-
-
-
-
-
-
-
-
 
   //ASSIGN
   $.get("/api/v1/students", async (data, status) => {
@@ -478,6 +291,14 @@ $(document).ready(() => {
       ]);
     }
   });
+
+
+
+
+
+
+
+
 
   $(".main-background").on("click", ".delete-quest", function () {
     let index_deleted = $(".delete-quest").index($(this));
@@ -694,7 +515,7 @@ $(document).ready(() => {
   });
 
   // UPDATE FORM SUBMIT
-  const manualForm = document.getElementById("submit-form");
+  const manualForm = document.getElementById("form-submit-exam");
   manualForm.addEventListener("submit", (e) => {
     let formData = new FormData(manualForm);
     formData.append("exam_unique_id", unique_id);
@@ -726,23 +547,24 @@ $(document).ready(() => {
     });
   });
 
-  const deleteForm = document.getElementById("hapus-ujian");
-  deleteForm.addEventListener("submit", (e) => {
-    let formData = new FormData(deleteForm);
+
+
+
+  $("#form-hapus-ujian").on("submit", function (e) {
+    e.preventDefault();
+    const formData = new FormData(this);
     formData.append("exam_unique_id", unique_id);
     formData.append("question_unique_id", question_id);
     formData.append("allImage", allImage)
-    e.preventDefault();
+
     $.ajax({
       url: "/api/v1/exams",
       type: "DELETE",
       data: formData,
-      async: false,
-      cache: false,
       contentType: false,
-      encrypt: "multipart/form-data",
+      enctype: "multipart/form-data",
       processData: false,
-      success: (response) => {
+      success: function (response) {
         $(".submit-hapus").css("visibility", "hidden");
         if (response.status_code == 200) {
           $(".complete-layer-hapus").removeClass("hide");
@@ -751,8 +573,213 @@ $(document).ready(() => {
           window.location = "/login";
         }
       },
+      error: function (data, status, error) {
+        $(`<div class="bg-red-500/70 fixed top-8 left-1/2 -translate-x-1/2 min-w-[400px] text-center py-1.5 rounded-lg border border-red-900 text-[#000] text-sm">${status}: ${data.responseJSON.error}</div>`)
+          .insertBefore("#admin-page")
+          .delay(3000)
+          .fadeOut("slow", function () {
+            $(this).remove();
+          });
+      },
     });
   });
 
  
+
+
+
+
+
+  
+  function initializeIntro(stepConfig) {
+    const intro = introJs();
+    intro.setOptions(stepConfig);
+    return intro;
+  }
+  function initializeSortable() {
+    $(".answers-card").sortable({
+      // containment: "parent",
+      opacity: 0.75,
+      distance: 25,
+      tolerance: "intersect",
+      items: "> .answer-card",
+      create: function (event, ui) {
+        const sortedElements = $(this).find("> .answer-card");
+        tempArray = [];
+
+        sortedElements.each(function (index) {
+          const value = $(this).find("input").val();
+          tempArray.push({ index, value });
+        });
+        const questionId = $(this).closest(".question").data("question-id");
+
+        // Find the index of the question in the allDataArray (if it exists)
+        const questionIndex = allDataArray.findIndex(function (item) {
+          return item.questionId === questionId;
+        });
+
+        // If the question exists in the allDataArray, update its answers, otherwise add it as a new question
+        if (questionIndex !== -1) {
+          allDataArray[questionIndex].questionId = questionId;
+          allDataArray[questionIndex].answers = tempArray;
+        } else {
+          allDataArray.push({
+            questionId,
+            answers: tempArray,
+          });
+        }
+
+        console.log(allDataArray);
+      },
+      update: function (event, ui) {
+        const sortedElements = $(this).find("> .answer-card");
+        tempArray = [];
+
+        sortedElements.each(function (index) {
+          const value = $(this).find("input").val();
+          tempArray.push({ index, value });
+          $(this)
+            .find("span")
+            .html(`#${index + 1}`);
+        });
+        const questionId = $(this).closest(".question").data("question-id");
+
+        // Find the index of the question in the allDataArray (if it exists)
+        const questionIndex = allDataArray.findIndex(function (item) {
+          return item.questionId === questionId;
+        });
+
+        // If the question exists in the allDataArray, update its answers, otherwise add it as a new question
+        if (questionIndex !== -1) {
+          allDataArray[questionIndex].answers = tempArray;
+        } else {
+          allDataArray.push({
+            questionId,
+            answers: tempArray,
+          });
+        }
+      },
+    });
+  }
+  function displayQuestionImage() {
+    question_with_img = []
+    $(".input-file").each(function(idx){
+      if($(this)[0].files[0]){
+        question_with_img.push(idx)
+        $(".display_image").eq(idx).css('display', 'flex')
+        $(".display_image").eq(idx).html(`
+          <img src="${URL.createObjectURL($(this)[0].files[0])}" alt="no img" />
+          <span title="Hapus Gambar" class="deleteImg"><i class="uil uil-times"></i></span>
+        `)
+      };
+    })
+  }
+  function displayAnswerImage() {
+    $(".answers").each(function(idx){;
+      $(this).find(".input-file-answer").each(function(){
+        if($(this)[0].files[0]){
+          $(this).closest(".answer-container").find(".display_image_answer").css('display', 'flex')
+          $(this).closest(".answer-container").find(".display_image_answer").html(`
+            <img src="${URL.createObjectURL($(this)[0].files[0])}" alt="no img" />
+            <span title="Hapus Gambar" class="deleteImgAnswer"><i class="uil uil-times"></i></span>
+          `)
+        }
+      })
+    })
+  }
+  function getImgBlob(url) {
+    return new Promise((resolve, reject) => {
+      $.ajax({
+        url: url,
+        method: "GET",
+        xhrFields: {
+          responseType: "blob",
+        },
+        success: function (response) {
+          resolve(response);
+        },
+        error: function (error) {
+          reject(error);
+        },
+      });
+    });
+  }
+  function initializeExamType(exams_data){
+    $.get("/api/v1/exam_type", async (exam_types, status) => {
+      if (status == "success" && exam_types.datas.length !== 0) {
+        exam_types.datas.forEach((exam_type) => {
+          $("#exam_type").append([
+            `
+            <option value="${exam_type.exam_type.toLowerCase()}">${
+              exam_type.exam_type.charAt(0).toUpperCase() + exam_type.exam_type.slice(1)
+            }</option>
+        `,
+          ]);
+        });
+        // ubah exam type menjadi ujian yang dipilih
+        $("#exam_type").val(exams_data.exam_type).change();
+      }
+    });
+  }
+  function addMoreQuestion(question, index) {
+    $(".questions").append([
+      `
+          <div class="question">
+            <div class="question-head">
+              <div class="question-head-info">
+                <p><b>Soal ${index}</b></p>
+              </div>
+            </div>
+            ${question}
+            <div class="delete-quest" title="Hapus Soal" >
+              <span><i class="uil uil-trash-alt"></i></span>
+            </div>
+          </div>
+        `,
+    ]);
+    $(".input-file-answer").each(function(){
+      $(this).attr("name",`answer_image_${$(this).closest(".question").index()}${$(this).closest(".question").find(".input-file-answer").index($(this))}`)
+    })
+    const questionId = "card_" + index;
+    $(".question:last-child").attr("data-question-id", questionId);
+  }
+  function addImageToList(image){
+    if(image){
+      const urlParts = image.split('/');
+      const fileName = urlParts[urlParts.length - 1];
+      allImage.push(fileName)
+    }
+  }
+
+
+
+
+  let first_intro = initializeIntro({
+    dontShowAgainCookie: "examEdit_intro",
+    dontShowAgain: true,
+    dontShowAgainLabel: "Jangan tampilkan lagi",
+    tooltipClass: "customTooltip",
+    prevLabel: "Kembali",
+    nextLabel: "Lanjut",
+    doneLabel: "Selesai",
+    steps: [
+      {
+        title: "Edit Ujian",
+        intro: "Halaman ini berfungsi untuk mengubah soal ujian yang telah ada. Tampilan pada halaman ini mirip seperti pada saat membuat ujian baru sehingga guru dapat langsung mengubah soal yang diinginkan.",
+      },
+      {
+        element: "#selesai-hapus",
+        intro: "terdapat pula tombol hapus pada halaman ini bila ingin menghapus ujian yang telah dibuat.",
+        position: "left"
+      },
+      {
+        element: ".assign-button",
+        intro:"Guru dapat mengedit kepada siapa saja ujian diberikan dengan menekan ikon pensil.",
+      },
+    ],
+  });
+  first_intro.start();
 });
+
+
+

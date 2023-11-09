@@ -5,23 +5,14 @@ const { generateAccessToken, generateRefreshToken } = require("../../utils/JWT")
 
 async function register(req, res) {
   try {
-    let { username, password, role, email, nuptk, gender, school_id, school_name } = req.body;
-    if(role!=="super_admin"){
-      nuptk = school_id+nuptk
-    }
+    let adminData = req.body;
+    if(adminData.role !== "super_admin") adminData.nuptk = adminData.school_id+adminData.nuptk
+    if(!adminData.password) adminData.password = "123"
 
     // hash password input before save into database
-    await bcrypt.hash(password, 10).then((hash) => {
-      Admin.create({
-        username,
-        password: hash,
-        role,
-        email,
-        nuptk,
-        gender,
-        school_id,
-        school_name
-      }).then((respon) => {
+    await bcrypt.hash(adminData.password, 10).then((hash) => {
+      adminData.password = hash
+      Admin.create(adminData).then((respon) => {
         response(201, "success create new user", respon, res);
       });
     });
@@ -49,7 +40,7 @@ async function login(req, res) {
     const dbPassword = admin.password;
     bcrypt.compare(password, dbPassword).then((match) => {
       if (!match) {
-        res.json({ error: "wrong username and password combination" });
+        res.status(400).json({ error: "wrong username and password combination" });
       } else {
         // Generate access-token
         const accessToken = generateAccessToken(admin);
@@ -110,72 +101,43 @@ async function getAdminById(req, res) {
 
 async function updateAdmin(req, res) {
   try {
-    const { unique_id, email, nuptk, username, gender } = req.body;
-    await Admin.findOne({
-      where: {
-        unique_id: unique_id,
-      },
-    }).then((prev) => {
-      if (!prev) return response(400, "user not found", [], res);
-      Admin.update(
-        {
-          username: username !== undefined ? username : prev.username,
-          email: email !== undefined ? email : prev.email,
-          nuptk: nuptk !== undefined ? nuptk : prev.nuptk,
-          gender: gender !== undefined ? gender : prev.gender,
-        },
-        {
-          where: {
-            unique_id,
-          },
-        }
-      );
-    });
-    response(200, "success update admin data", [], res);
+    let adminData = req.body;
+    const adminId = req.params.id
+    let admin = await Admin.findByPk(adminId)
+
+    if(admin){
+      if(adminData.prev_password && adminData.new_password){
+        bcrypt.compare(adminData.prev_password, admin.password).then((match) => {
+          if (!match) {
+            res.status(400).json({ error: "Kata sandi lama yang dimasukan salah" });
+          } else {
+            bcrypt.hash(adminData.new_password, 10).then((hash) => {
+              adminData.password = hash
+              admin.update(adminData)
+              response(200, "success update admin data", [], res);
+            });
+          }
+        });
+      }else{
+        adminData.nuptk = admin.school_id + adminData.nuptk
+        admin.update(adminData)
+        response(200, "success update admin data", [], res);
+      }
+    }else{
+      response(400, "admin not found", [], res)
+    }
   } catch (error) {
     response(200, "server failed to update admin data", req.body, res);
   }
 }
 
-async function resetPassword(req, res) {
-  try {
-    const { unique_id, password_lama, password_baru } = req.body;
-    await Admin.findByPk(unique_id).then((result) => {
-      if (!result) return res.json({ error: "user not found" });
-      const dbPassword = result.password;
-      bcrypt.compare(password_lama, dbPassword).then((match) => {
-        if (!match) {
-          return response(400, "Kata sandi lama salah", [], res);
-        } else {
-          bcrypt.hash(password_baru, 10).then((hash) => {
-            Admin.update(
-              {
-                password: hash,
-              },
-              {
-                where: {
-                  unique_id,
-                },
-              }
-            ).then(() => {
-              response(200, "success change admin password", [], res);
-            });
-          });
-        }
-      });
-    });
-  } catch (error) {
-    response(500, "server failed to chang admin data", [], res);
-  }
-}
-
 async function deleteAdmin(req, res) {
   try {
-    let checkedAdmin = req.body.checkedAdmin;
-    if (!checkedAdmin) return response(400, "body cant be undefined", [], res);
+    let unique_id = req.body.unique_id;
+    if (!unique_id) return response(400, "body cant be undefined", [], res);
     await Admin.destroy({
       where: {
-        unique_id: checkedAdmin,
+        unique_id,
       },
     }).then((respon) => {
       if (!respon)
@@ -199,6 +161,5 @@ module.exports = {
   getAllAdmin,
   getAdminById,
   updateAdmin,
-  resetPassword,
   deleteAdmin,
 };

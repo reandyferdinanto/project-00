@@ -1,57 +1,57 @@
 <%- include('./layouts/header'); -%>
-<link rel="stylesheet" href="/css/siswaPage.css" />
 <body>
   <!-- NAV -->
   <%- include('./layouts/navbar'); -%>
+  <p id="user_id" class="hidden"><%= user.id %></p>
 
   <!-- MAIN -->
   <main>
     <%- include('./layouts/superSidebar'); -%>
-    <div class="main-content">
-      <div class="main-background">
-        <form action="" id="form-delete">
-          <div class="main-title">
-            <h2>Daftar Admin</h2>
-            <div class="main-side">
-              <a href="/admin/buat"
-                ><button class="buat-ujian-baru" type="button">
-                  + Tambah Admin
-                </button></a
-              ><button class="hapus-button" disabled>Hapus</button>
-            </div>
+    <section id="admin-page" class="h-full bg-white rounded-tl-3xl p-8">
+      <div class="flex justify-between">
+        <p class="text-main font-bold text-2xl">Daftar Admin</p>
+        <div class="flex gap-4 mt-5">
+          <a id="button-tambah" href="/admin/buat"><button class="bg-main text-white text-sm px-8 py-2 rounded-lg">Tambah Admin</button></a>
+          <button id="button-delete" class="bg-red-500 text-white text-sm px-6 py-2 rounded-lg disabled:bg-red-500/50" disabled>Hapus</button>
+        </div>
+      </div>
+      <div id="bg-table-admin" class="min-h-screen shadow-[0_0px_40px_-15px_rgba(0,0,0,0.2)] w-full mt-8 rounded-3xl p-8 bg-white">
+        <form id="form-admin-delete">
+          <table id="table-admin" class="display hidden" style="width: 100%;">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>NUPTK</th>
+                <th>Nama Admin</th>
+                <th>Email Admin</th>
+                <th></th>
+                <th><input type="checkbox" name="" id="selectAll" /></th>
+              </tr>
+            </thead>
+          </table>
+          <div id="bg-nothing" class="text-center">
+            <img src="/img/nothing.png" alt="" class="m-auto mt-20">
+            <p class="text-sm text-main font-normal">Belum Ada Admin</p>
           </div>
-          <div class="main-table">
-            <div class="main-table-title">
-              <table id="siswa-table" class="display" style="width: 100%">
-                <thead>
-                  <tr>
-                    <th>No.</th>
-                    <th>NUPTK</th>
-                    <th>Nama Admin</th>
-                    <th>Email Admin</th>
-                    <th></th>
-                    <th><input type="checkbox" name="" id="selectAll" /></th>
-                  </tr>
-                </thead>
-              </table>
-            </div>
-            <hr />
-            <div class="main-table-body"></div>
-          </div>
-          <div class="submit-layer">
-            <div class="submit-question">
-              <img src="/img/warning-alt.png" alt="" width="150" />
-              <p>Apakah anda yakin ingin menghapus admin tersebut ?</p>
-              <div class="submit-buttons">
-                <button class="ubah-button" type="button">Batal</button>
-                <button class="selesai-button">Hapus</button>
+
+
+          <section id="popup" class="bg-[#000]/50 fixed top-0 bottom-0 right-0 left-0 flex items-center hidden">
+            <div class="delete-popup w-[50%] bg-white m-auto flex flex-col items-center py-20 rounded-2xl">
+              <img src="/img/warning-alt.png" alt="" width="120px">
+              <p class="text-sm my-3">Apakah anda yakin ingin menghapus data tersebut ?</p>
+              <div class="mt-4 flex gap-4">
+                <button type="button" id="button-batal" class="py-1.5 px-8 bg-red-500 text-white rounded-full text-sm">Batal</button>
+                <button type="submit" class="py-1.5 px-8 bg-main text-white rounded-full text-sm">Hapus</button>
               </div>
             </div>
-          </div>
+          </section>
         </form>
       </div>
-    </div>
+    </section>
   </main>
 </body>
 <%- include('./layouts/footer'); -%>
 <script src="/js/superAdminPage.js"></script>
+<script>
+  $("#side-admin").addClass("sidelist-selected")
+</script>

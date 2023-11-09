@@ -11,8 +11,9 @@ const generateAccessToken = (user) => {
     {
       id: user.unique_id,
       username: user.username,
+      school_name: user.school_name,
+      email: user.email,
       role: user.role,
-      school_name: user.school_name
     },
     ACCESS_TOKEN_SECRET
   );

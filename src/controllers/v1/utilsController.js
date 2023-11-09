@@ -26,10 +26,7 @@ async function uploadCSV(req, res) {
           let correct_header = ["username", "class", "nis", "major", "gender"];
           const sortedInputHeader = input_header.slice().sort();
           const sortedCorrectHeader = correct_header.slice().sort();
-          if (
-            JSON.stringify(sortedInputHeader) !==
-            JSON.stringify(sortedCorrectHeader)
-          ) {
+          if (JSON.stringify(sortedInputHeader) !==JSON.stringify(sortedCorrectHeader)) {
             throw Error(
               `Header dari csv harus berupa "username", "class", "nis", "major", "gender"`
             );

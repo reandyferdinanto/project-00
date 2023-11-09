@@ -11,18 +11,18 @@
 
   <!-- MAIN -->
   <main>
-    <%- include('./layouts/adminSidebar'); -%>
+    <%- include('./layouts/superSidebar'); -%>
 
     <div class="main-content">
       <div class="main-background">
         <div class="main-title">
-          <h2>Mengubah Data Siswa</h2>
+          <p class="text-main font-bold text-2xl mt-3">Nilai Siswa</p>
         </div>
         <form id="submit-form" method="post">
           <div class="main-input">
             <label for="">NIS<span style="color: #ff4c4c"> *</span></label>
             <input
-              class="nama-input"
+              class="nama-input text-main"
               required
               type="number"
               name="nis"
@@ -34,7 +34,7 @@
               >Nama Siswa<span style="color: #ff4c4c"> *</span></label
             >
             <input
-              class="kelas-input"
+              class="kelas-input text-main"
               required
               type="text"
               name="username"
@@ -42,6 +42,36 @@
               placeholder="Masukan Nama Siswa"
             />
 
+            <div class="input-side">
+              <div class="">
+                <label for=""
+                  >Kelas<span style="color: #ff4c4c"> *</span></label
+                >
+                <br />
+                <input
+                  class="nama-input text-main"
+                  required
+                  type="text"
+                  name="class"
+                  id="class"
+                  placeholder="Masukan Jurusan Kelas"
+                />
+              </div>
+              <div class="">
+                <label for=""
+                  >Jurusan<span style="color: #ff4c4c"> *</span></label
+                >
+                <br />
+                <input
+                  class="kelas-input text-main"
+                  required
+                  type="text"
+                  name="major"
+                  id="major"
+                  placeholder="Masukan Jurusan Siswa"
+                />
+              </div>
+            </div>
             <label for=""
               >Jenis Kelamin<span style="color: #ff4c4c"> *</span></label
             >
@@ -56,37 +86,6 @@
                 <span style="margin: .5rem;" for="">Perempuan</span>
               </div>
             </div>
-
-            <div class="input-side">
-              <div class="">
-                <label for=""
-                  >Kelas<span style="color: #ff4c4c"> *</span></label
-                >
-                <br />
-                <input
-                  class="nama-input"
-                  required
-                  type="text"
-                  name="class"
-                  id="class"
-                  placeholder="Masukan Jurusan Kelas"
-                />
-              </div>
-              <div class="">
-                <label for=""
-                  >Jurusan<span style="color: #ff4c4c"> *</span></label
-                >
-                <br />
-                <input
-                  class="kelas-input"
-                  required
-                  type="text"
-                  name="major"
-                  id="major"
-                  placeholder="Masukan Jurusan Siswa"
-                />
-              </div>
-            </div>
             <label for="">Ujian</label>
             <div class="exams-assign">
               <p style="color: #358f6c">belum ada ujian terdaftar</p>
@@ -98,8 +97,8 @@
           <div class="submit-layer">
             <div class="submit-question">
               <img src="/img/warning-alt.png" alt="" width="150" />
-              <p>Apakah anda sudah yakin ingin menyimpan perubahan ?</p>
-              <div class="submit-buttons">
+              <p class="text-sm my-3">Apakah anda yakin ingin mengubah data tersebut ?</p>
+              <div class="submit-buttons mt-4">
                 <button class="ubah-button" type="button">Ubah</button>
                 <button class="selesai-button" type="submit">Selesai</button>
               </div>

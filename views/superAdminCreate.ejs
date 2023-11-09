@@ -1,95 +1,72 @@
 <%- include('./layouts/header'); -%>
-<link rel="stylesheet" href="/css/siswaCreate.css" />
-<style>
-  label{
-    font-weight: bold;
-  }
-</style>
 <body>
   <!-- NAV -->
   <%- include('./layouts/navbar'); -%>
-  
+  <p id="user_id" class="hidden"><%= user.id %></p>
   <!-- MAIN -->
   <main>
     <%- include('./layouts/superSidebar'); -%>
-    <div class="main-content">
-      <div class="main-background">
-        <div class="main-title">
-          <h2>
-            Menambahkan Admin Baru
-            <span style="color: #ff4c4c; font-size: 0.7rem">*harus diisi</span>
-          </h2>
+    <section id="admin-create" class="min-h-screen bg-white rounded-tl-3xl p-8">
+      <p class="text-main font-bold text-2xl">Menambahkan Admin Baru <span class="text-red-500 font-medium text-xs">* harus diisi</span></p>
+      <form id="form-admin-create" class="">
+        <div id="bg-table-admin" class="h-max shadow-[0_0px_40px_-15px_rgba(0,0,0,0.2)] w-full mt-8 rounded-3xl p-8 bg-main">
+          <div class="flex flex-col gap-4">
+            <label class="block flex flex-col gap-2">
+              <span class="text-white font-bold tracking-[1.4px] text-sm">Email <span class="text-red-500 font-medium text-xs">*</span></span>
+              <!-- Using form state modifiers, the classes can be identical for every input -->
+              <input required type="email" placeholder="siswa@gmail.com" name="email" class="font-normal block border-0 w-full px-3 py-[10px] bg-white rounded-lg text-sm
+              focus:outline-none focus:border-white-60 focus:ring-1 focus:ring-white-60
+              focus:invalid:border-pink-500 focus:invalid:ring-pink-500
+              "/>
+            </label>
+            <label class="block flex flex-col gap-2">
+              <span class="text-white font-bold tracking-[1.4px] text-sm">NUPTK <span class="text-red-500 font-medium text-xs">*</span></span>
+              <!-- Using form state modifiers, the classes can be identical for every input -->
+              <input required type="number" placeholder="201943501293" name="nuptk" class="font-normal block border-0 w-full px-3 py-[10px] bg-white rounded-lg text-sm
+              focus:outline-none focus:border-white-60 focus:ring-1 focus:ring-white-60
+              focus:invalid:border-pink-500 focus:invalid:ring-pink-500
+              "/>
+            </label>
+            <label class="block flex flex-col gap-2">
+              <span class="text-white font-bold tracking-[1.4px] text-sm">Nama Admin <span class="text-red-500 font-medium text-xs">*</span></span>
+              <!-- Using form state modifiers, the classes can be identical for every input -->
+              <input required type="text" placeholder="Jhoni Suherman" name="username" class="font-normal block border-0 w-full px-3 py-[10px] bg-white rounded-lg text-sm
+              focus:outline-none focus:border-white-60 focus:ring-1 focus:ring-white-60
+              focus:invalid:border-pink-500 focus:invalid:ring-pink-500
+              "/>
+            </label>
+            <label class="block flex flex-col gap-2">
+              <span class="text-white font-bold tracking-[1.4px] text-sm">Jenis Kelamin <span class="text-red-500 font-medium text-xs">*</span></span>
+              <!-- Using form state modifiers, the classes can be identical for every input -->
+              <div class="flex gap-4">
+                <div class="flex items-center">
+                  <input checked id="default-radio-1" type="radio" value="laki-laki" name="gender" class="w-4 h-4 text-white bg-gray-100 border-gray-300 focus:ring-0">
+                  <label for="default-radio-1" class="ml-2 text-sm font-medium text-white">Laki-Laki</label>
+                </div>
+                <div class="flex items-center">
+                  <input id="default-radio-2" type="radio" value="perempuan" name="gender" class="w-4 h-4 text-white bg-gray-100 border-gray-300 focus:ring-0">
+                  <label for="default-radio-2" class="ml-2 text-sm font-medium text-white">Perempuan</label>
+                </div>
+              </div>
+            </label>
+          </div>
         </div>
-        <form id="submit-form">
-          <div class="main-input">
-            <label for="">Email<span style="color: #ff4c4c"> *</span></label>
-            <input
-              class="nama-input"
-              required
-              type="email"
-              name="email"
-              id=""
-              placeholder="Masukan Email Admin"
-            />
-            <label for="">NUPTK<span style="color: #ff4c4c"> *</span></label>
-            <input
-              class="nama-input"
-              required
-              type="number"
-              name="nuptk"
-              id=""
-              placeholder="Masukan NUPTK Admin"
-            />
+        <div class="flex justify-end mt-7">
+          <button id="button-selesai" type="button" class="py-2 px-10 bg-main text-white text-sm rounded-full ms-auto hover:bg-main/80 duration-200">Selesai</button>
+        </div>
 
-            <label for=""
-              >Nama Admin<span style="color: #ff4c4c"> *</span></label
-            >
-            <input
-              class="kelas-input"
-              required
-              type="text"
-              name="username"
-              id=""
-              placeholder="Masukan Nama Admin"
-            />
-            <label for=""
-              >Jenis Kelamin<span style="color: #ff4c4c"> *</span></label
-            >
-            <div class="" style="display: flex; gap: 2rem; margin-bottom: .5rem">
-              <div>
-                <input type="radio" id="" name="gender" value="laki-laki" checked />
-                <span style="margin: .5rem;" for="">Laki-Laki</span>
-              </div>
-            
-              <div>
-                <input type="radio" id="" name="gender" value="perempuan" />
-                <span style="margin: .5rem;" for="">Perempuan</span>
-              </div>
+        <section id="popup" class="bg-[#000]/50 fixed top-0 bottom-0 right-0 left-0 flex items-center hidden">
+          <div class="delete-popup w-[50%] bg-white m-auto flex flex-col items-center py-20 rounded-2xl">
+            <img src="/img/warning-alt.png" alt="" width="120px">
+            <p class="text-sm my-3">Apakah anda yakin ingin membuat data tersebut ?</p>
+            <div class="mt-4 flex gap-4">
+              <button type="button" id="button-batal" class="py-1.5 px-8 bg-red-500 text-white rounded-full text-sm">Batal</button>
+              <button type="submit" class="py-1.5 px-8 bg-main text-white rounded-full text-sm">Selesai</button>
             </div>
           </div>
-          <div class="submit-input">
-            <button type="button" id="selesai">Selesai</button>
-          </div>
-          <div class="submit-layer">
-            <div class="submit-question">
-              <img src="/img/warning-alt.png" alt="" width="150" />
-              <p>Apakah anda sudah yakin selesai?</p>
-              <div class="submit-buttons">
-                <button class="ubah-button" type="button">Ubah</button>
-                <button class="selesai-button" type="submit">Selesai</button>
-              </div>
-            </div>
-          </div>
-        </form>
-        <div class="complete-layer">
-          <div class="complete-background">
-            <img src="/img/check.png" width="50" alt="" />
-            <p>Admin berhasil di tambahkan</p>
-            <button type="button" id="complete-upload">OK</button>
-          </div>
-        </div>
-      </div>
-    </div>
+        </section>
+      </form>
+    </section>
   </main>
 </body>
 <%- include('./layouts/footer'); -%>

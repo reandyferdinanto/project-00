@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 2,
     },
     school_id: DataTypes.STRING,
-    school_name: DataTypes.STRING 
+    school_name: DataTypes.STRING,
   });
   return Exams;
 };

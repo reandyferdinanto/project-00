@@ -72,24 +72,17 @@ async function getStudentById(req, res, next) {
 
 async function addUser(req, res) {
   try {
-    let uniq_user = req.body.school_id + req.body.nis;
-    let uniq_password = req.body.school_id + req.body.nis + "##";
-    const newUser = await Student.create({
-      nis: uniq_user,
-      username: req.body.username,
-      class: req.body.class,
-      major: req.body.major,
-      password: uniq_password,
-      role: "siswa",
-      gender: req.body.gender ? req.body.gender : "pria",
-      school_id: req.body.school_id,
-      school_name: req.body.school_name,
-    });
-    response(201, "add new user", newUser, res);
+    let studentData = req.body
+    studentData.nis = studentData.school_id + studentData.nis;
+    studentData.password = studentData.school_id + studentData.nis + "##";
+    studentData.role = "siswa"
+
+    const newStudents = await Student.create(studentData);
+    response(201, "add new Students", newStudents, res);
   } catch (error) {
     response(
       500,
-      "server failed to create new user",
+      "server failed to create new Students",
       { error: error.message },
       res
     );
@@ -180,31 +173,20 @@ async function deleteUser(req, res, next) {
 
 async function userEdit(req, res, next) {
   try {
-    let { unique_id, username, nis, major } = req.body;
-    // INIT USER
-    const user = await Student.findByPk(unique_id);
-    let exams_on = Object.keys(req.body).filter((key) => {
-      return req.body[key] === "on";
+    let siswaData = req.body;
+    // User update
+    const user = await Student.findByPk(siswaData.unique_id);
+    if(!user) return response(400, "user not found", [], res);
+    siswaData.nis = user.school_id + siswaData.nis
+    user.update(siswaData)
+
+    let exams_on = Object.keys(siswaData).filter((key) => {
+      return siswaData[key] === "on";
     });
-    let exams_off = Object.keys(req.body).filter((key) => {
-      return req.body[key] === "off";
+    let exams_off = Object.keys(siswaData).filter((key) => {
+      return siswaData[key] === "off";
     });
-    // UPDATE USER
-    const updatedUser = await Student.update(
-      {
-        username: username !== null ? username : user.username,
-        nis: nis !== null ? nis : user.nis,
-        major: major !== null ? major : user.major,
-        class: req.body.class !== null ? req.body.class : user.class,
-        gender: req.body.gender ? req.body.gender : "pria",
-      },
-      {
-        where: {
-          unique_id,
-        },
-      }
-    );
-    // EXAMS
+
     exams_on.forEach(async (exam_id) => {
       let exam = await Exam.findByPk(exam_id);
       if (!(await exam.hasStudent(user))) {
@@ -217,7 +199,7 @@ async function userEdit(req, res, next) {
         await exam.removeStudent(user);
       }
     });
-    response(200, "success update user", updatedUser, res);
+    response(200, "success update user", user, res);
   } catch (error) {
     response(
       500,
