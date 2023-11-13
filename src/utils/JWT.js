@@ -19,21 +19,10 @@ const generateAccessToken = (user) => {
   );
 };
 
-const generateRefreshToken = (user) => {
-  return refresh_token = sign(
-    {
-      id: user.unique_id,
-      username: user.username,
-      role: user.role,
-      school_name: user.school_name
-    },
-    REFRESH_TOKEN_SECRET,
-  );
-};
-
 const validateTokenAPI = (req, res, next) => {
   try {
-    const accessToken = req.cookies["access-token"];
+    const accessToken = req.cookies["login-token"];
+    console.log(accessToken);
     if (!accessToken) return res.sendStatus(403)
     next()
   } catch (error) {
@@ -42,7 +31,7 @@ const validateTokenAPI = (req, res, next) => {
 };
 
 const validateTokenWebiste = (req, res, next) => {
-  const accessToken = req.cookies["access-token"];
+  const accessToken = req.cookies["login-token"];
   // if token expired or not login
   if (!accessToken) return res.redirect("/login")
   try {
@@ -58,7 +47,6 @@ const validateTokenWebiste = (req, res, next) => {
 
 module.exports = {
   generateAccessToken,
-  generateRefreshToken,
   validateTokenAPI,
   validateTokenWebiste
 };

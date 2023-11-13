@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const { validateTokenAPI } = require("../utils/JWT");
 const TEMP_DATA = require('../utils/TempData')
 
 router.get("/", (req, res) => {
@@ -6,7 +7,7 @@ router.get("/", (req, res) => {
     postman_docs: "https://documenter.getpostman.com/view/17399437/2s93eYTrCu",
   });
 });
-router.post('/temp-form-data', (req, res) => {
+router.post('/temp-form-data', validateTokenAPI, (req, res) => {
   const formData = req.body;
   addOrUpdateObject(TEMP_DATA, formData)
   console.log(TEMP_DATA);

@@ -360,37 +360,6 @@ $(".main-background").on("change", ".input-file-answer", function () {
     }
   });
 
-
-
-
-
-  // setInterval(function(){
-  //   const form = document.getElementById("submit-form");
-  //   let formData = new FormData(form);
-  //   formData.append("id",user_id)
-  //   $.ajax({
-  //     url: "/api/v1/temp-form-data",
-  //     type: "POST",
-  //     data: formData,
-  //     async: false,
-  //     cache: false,
-  //     contentType: false,
-  //     encrypt: "multipart/form-data",
-  //     processData: false,
-  //     success: (response) => {
-  //       console.log("SAVED");
-  //     },
-  //   });
-  // }, 5000)
-
-  // $.get("/api/v1/temp-form-data", function(result){
-  //   let temp_data = result.TEMP_DATA.find(data => data.id == user_id)
-  //   if(temp_data){
-  //     $("input[name=exam_name]").val(temp_data.exam_name)
-  //     $("select[name=exam_type]").val(temp_data.exam_type)
-  //     $("input[name=kkm_point]").val(temp_data.kkm_point)
-  //   }
-  // })
 });
 $(".main-background").on("click", ".deleteImg", function (e) {
   let input_file = document.querySelectorAll(".input-file");
@@ -660,3 +629,287 @@ function displayQueuedImages() {
     document.querySelectorAll(".display_image")[index].innerHTML = img;
   });
 }
+
+
+
+
+
+
+
+
+
+
+
+setInterval(function(){
+    const form = document.getElementById("submit-form");
+    let formData = new FormData(form);
+    formData.append("card_answers", JSON.stringify(allDataArray));
+    formData.append("id", USER_ID)
+    $.ajax({
+      url: "/api/v1/temp-form-data",
+      type: "POST",
+      data: formData,
+      async: false,
+      cache: false,
+      contentType: false,
+      encrypt: "multipart/form-data",
+      processData: false,
+      success: (response) => {
+        console.log("SAVED");
+      },
+    });
+  }, 5000)
+
+  setTimeout(function(){
+    $.get("/api/v1/temp-form-data", function(result){
+      let temp_data = result.TEMP_DATA.find(data => data.id == USER_ID)
+      if(temp_data){
+        const CONFIRM_TEMP = confirm("ingin melanjutkan save?")
+        if(CONFIRM_TEMP){
+          $("input[name=exam_name]").val(temp_data.exam_name)
+          $("select[name=exam_type]").val(temp_data.exam_type)
+          $("input[name=kkm_point]").val(temp_data.kkm_point)
+          if(temp_data.question_type){
+            // Menambah question box apabila ada soal dalam data temp
+            $("#add-question").remove();
+            $("#submit-form").append([
+              `
+                <div class="questions-box">
+                  <div class="questions text-main"></div>
+                  <div class="add-more">
+                    <button id="add-more" type="button">Tambah Soal</button>
+                  </div>
+                </div>
+                <div class="submit-input">
+                  <button type="button" id="selesai">Selesai</button>
+                </div>
+                `,
+            ]);
+
+            // melakukan foreach untuk menambah soal
+            if(Array.isArray(temp_data.question_type)){
+              temp_data.question_type.forEach(function(type, index){
+                addQuestionForTemp(temp_data, index, type)
+              })
+            }
+          }
+        }else{
+          alert("OK")
+        }
+      }
+    })
+  },500)
+
+
+  let COUNT_CARD = 0
+  let COUNT_PILGAN = 0
+  function addQuestionForTemp(TEMP_DATA, index, type) {
+    $(".questions").append([
+      `
+          <div class="question">
+            <div class="question-head">
+              <div class="question-head-info text-white">
+                <p><b>Soal ${index+1}</b></p>
+              </div>
+              <select name="question_type" class="jenis-ujian">
+                  <option value="pilihan_ganda">Pilihan Ganda</option>
+                  <option value="kartu">Soal Kartu</option>
+                  <option value="praktik" disabled>Praktik In Game</option>
+                  <option value="esai" disabled>Esai</option>
+              </select>
+            </div>
+            ${type == "pilihan_ganda" ? pilganTemp(TEMP_DATA, index) : kartuTemp(TEMP_DATA, index)}
+            <div class="delete-quest" title="Hapus Soal" >
+              <span><i class="uil uil-trash-alt"></i></span>
+            </div>
+          </div>
+        `,
+    ]);
+    $(".question:last-child select[name=question_type]").val(type)
+    const questionId = "card_" + index;
+    $(".question:last-child").attr("data-question-id", questionId);
+    
+    type == "pilihan_ganda" ? COUNT_PILGAN += 1 : COUNT_CARD += 1
+    
+    tempInitializeSortable();
+  }
+  function pilganTemp(TEMP_DATA, index){
+    let wrong_answer = TEMP_DATA.wrong_answer.slice(COUNT_PILGAN * 4, (COUNT_PILGAN + 1) * 4)
+    return `
+    <div class="question_pilgan">  
+      <div class="display_image"></div>
+      <div class="question-text-container">
+        <textarea data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal" required>${TEMP_DATA.question_text[index]}</textarea>
+        <div class="upload-img">
+          <label class="custom-file-upload">
+            <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
+            <i class="uil uil-file-plus-alt"></i> Masukan Gambar
+          </label>
+          <p>*PNG/JPG/JPEG max. 200 kb</p>
+        </div>
+      </div>
+      <div class="answers">
+        <div class="answer-container" style="background-color:#2cc489;border: 2px solid white;">
+          <div class="answer-container-flex divide-x divide-white-60">
+            <input placeholder='jawaban benar' name='correct_answer' class='answer correct-answer' value='${Array.isArray(TEMP_DATA.correct_answer) ? TEMP_DATA.correct_answer[COUNT_PILGAN] : TEMP_DATA.correct_answer}'/>
+            <label class="custom-file-upload-question">
+              <input type="file" class="input-file-answer" multiple="multiple" name="answer_image_${quest_length}0" accept="image/*"/>
+              <i class="uil uil-image-plus text-xl" style="color:white"></i>
+            </label>
+          </div>
+          <div class="display_image_answer"></div>
+        </div>
+        <div class="answer-container wrong-container">
+          <div class="answer-container-flex divide-x divide-main">
+            <input placeholder='jawaban lain' name='wrong_answer' class='answer' value='${wrong_answer[0]}'/>
+            <label class="custom-file-upload-question">
+              <input type="file" class="input-file-answer" multiple="multiple" name="answer_image_${quest_length}1" accept="image/*"/>
+              <i class="uil uil-image-plus text-xl"></i>
+            </label>
+          </div>
+          <div class="display_image_answer"></div>
+        </div>
+        <div class="answer-container">
+          <div class="answer-container-flex divide-x divide-main">
+            <input placeholder='jawaban lain' name='wrong_answer' class='answer' value='${wrong_answer[1]}'/>
+            <label class="custom-file-upload-question">
+              <input type="file" class="input-file-answer" multiple="multiple" name="answer_image_${quest_length}2" accept="image/*"/>
+              <i class="uil uil-image-plus text-xl"></i>
+            </label>
+          </div>
+          <div class="display_image_answer"></div>
+        </div>
+        <div class="answer-container">
+          <div class="answer-container-flex divide-x divide-main">
+            <input placeholder='jawaban lain' name='wrong_answer' class='answer' value='${wrong_answer[2]}'/>
+            <label class="custom-file-upload-question">
+              <input type="file" class="input-file-answer" multiple="multiple" name="answer_image_${quest_length}3" accept="image/*"/>
+              <i class="uil uil-image-plus text-xl"></i>
+            </label>
+          </div>
+          <div class="display_image_answer"></div>
+        </div>
+        <div class="answer-container">
+          <div class="answer-container-flex divide-x divide-main">
+            <input placeholder='jawaban lain' name='wrong_answer' class='answer' value='${wrong_answer[3]}'/>
+            <label class="custom-file-upload-question">
+              <input type="file" class="input-file-answer" multiple="multiple" name="answer_image_${quest_length}4" accept="image/*"/>
+              <i class="uil uil-image-plus text-xl"></i>
+            </label>
+          </div>
+          <div class="display_image_answer"></div>
+        </div>
+      </div>
+    </div>
+    `
+  }
+  function kartuTemp(TEMP_DATA, index){
+    const CARD_ANSWER = JSON.parse(TEMP_DATA.card_answers)[COUNT_CARD].answers
+    console.log(JSON.parse(TEMP_DATA.card_answers)[COUNT_CARD]);
+    console.log(COUNT_CARD);
+    let cards = CARD_ANSWER.map(card => {
+      return cardAnswer(card)
+    })
+    return `
+    <div class="question_kartu">  
+      <div class="display_image"></div>
+      <div class="question-text-container">
+        <textarea maxlength="300" data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal">${TEMP_DATA.question_text[index]}</textarea>
+        <div class="upload-img" style="margin-top:1rem">
+          <label class="custom-file-upload">
+              <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
+              <i class="uil uil-file-plus-alt"></i> Masukan Gambar
+          </label>
+          <p>*PNG/JPG/JPEG max. 200 kb</p>
+        </div>
+      </div>
+      
+      <div class="answers-card">
+        ${cards.join("")}
+      <div class="answer-card-add">
+        <img src="/img/plus.png" alt="" width="40" />
+      </div>
+    </div>
+  </div>
+    `
+  }
+  function cardAnswer(card){
+    return `
+      <div class="answer-card">
+        <div class="answer-card-head">
+          <span>#1</span>
+          <i class="uil uil-draggabledots"></i>
+          <span style="color:transparent">#1</span>
+        </div>
+        <div class="answer-card-input">
+          <input name="kartu" required type="text" placeholder='Kartu' value='${card.value}'/>
+          <div class="delete-card">x</div>
+        </div>
+      </div>
+    `
+  }
+  function tempInitializeSortable() {
+    $(".answers-card").sortable({
+      // containment: "parent",
+      opacity: 0.75,
+      distance: 25,
+      tolerance: "intersect",
+      items: "> .answer-card",
+      create: function (event, ui) {
+        const sortedElements = $(this).find("> .answer-card");
+        tempArray = [];
+
+        sortedElements.each(function (index) {
+          const value = $(this).find("input").val();
+          tempArray.push({ index, value });
+        });
+        const questionId = $(this).closest(".question").data("question-id");
+
+        // Find the index of the question in the allDataArray (if it exists)
+        const questionIndex = allDataArray.findIndex(function (item) {
+          return item.questionId === questionId;
+        });
+
+        // If the question exists in the allDataArray, update its answers, otherwise add it as a new question
+        if (questionIndex !== -1) {
+          allDataArray[questionIndex].questionId = questionId;
+          allDataArray[questionIndex].answers = tempArray;
+        } else {
+          allDataArray.push({
+            questionId,
+            answers: tempArray,
+          });
+        }
+
+        console.log(allDataArray);
+      },
+      update: function (event, ui) {
+        const sortedElements = $(this).find("> .answer-card");
+        tempArray = [];
+
+        sortedElements.each(function (index) {
+          const value = $(this).find("input").val();
+          tempArray.push({ index, value });
+          $(this)
+            .find("span")
+            .html(`#${index + 1}`);
+        });
+        const questionId = $(this).closest(".question").data("question-id");
+
+        // Find the index of the question in the allDataArray (if it exists)
+        const questionIndex = allDataArray.findIndex(function (item) {
+          return item.questionId === questionId;
+        });
+
+        // If the question exists in the allDataArray, update its answers, otherwise add it as a new question
+        if (questionIndex !== -1) {
+          allDataArray[questionIndex].answers = tempArray;
+        } else {
+          allDataArray.push({
+            questionId,
+            answers: tempArray,
+          });
+        }
+      },
+    });
+  }

@@ -42,9 +42,9 @@ async function login(req, res) {
       if (!match) {
         res.status(400).json({ error: "wrong username and password combination" });
       } else {
-        // Generate access-token
+        // Generate login-token
         const accessToken = generateAccessToken(admin);
-        res.cookie("access-token", accessToken, {
+        res.cookie("login-token", accessToken, {
           httpOnly: true
         });
         // // Generate refresh-token (NOT USED)
@@ -65,7 +65,7 @@ async function login(req, res) {
 }
 
 async function logout(req, res, next) {
-  res.clearCookie("access-token");
+  res.clearCookie("login-token");
   res.redirect("/login");
 }
 

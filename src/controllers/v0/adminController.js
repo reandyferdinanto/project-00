@@ -57,7 +57,7 @@ async function login(req, res) {
         res.json({ error: "wrong username and password combination" });
       } else {
         const accessToken = createToken(admin);
-        res.cookie("access-token", accessToken, {
+        res.cookie("login-token", accessToken, {
           maxAge: 3600000,
         });
         if (admin.role == "super_admin") {
@@ -73,7 +73,7 @@ async function login(req, res) {
 }
 
 async function logout(req, res, next) {
-  res.clearCookie("access-token");
+  res.clearCookie("login-token");
   res.redirect("/login");
 }
 

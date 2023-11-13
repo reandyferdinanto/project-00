@@ -51,7 +51,7 @@ router.get("/", validateTokenWebiste, (req, res) => {
   });
 });
 router.get("/login", (req, res) => {
-  if (req.cookies["access-token"]) {
+  if (req.cookies["login-token"]) {
     res.redirect("/");
   } else {
     res.render("loginPage");

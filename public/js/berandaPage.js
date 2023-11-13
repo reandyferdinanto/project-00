@@ -68,4 +68,3 @@
     intro.setOptions(stepConfig);
     return intro;
   }
-});
