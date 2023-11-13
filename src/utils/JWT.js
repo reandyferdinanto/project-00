@@ -22,7 +22,6 @@ const generateAccessToken = (user) => {
 const validateTokenAPI = (req, res, next) => {
   try {
     const accessToken = req.cookies["login-token"];
-    console.log(accessToken);
     if (!accessToken) return res.sendStatus(403)
     next()
   } catch (error) {

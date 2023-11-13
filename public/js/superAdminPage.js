@@ -1,5 +1,7 @@
 getDate()
 
+$("#side-admin").addClass("sidelist-selected")
+
 const USER_ID = $("#user_id").text()
 let SCHOOL_ID
 $.get(`/api/v1/admins/${USER_ID}`, function(data) {

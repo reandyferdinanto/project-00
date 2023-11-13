@@ -1,5 +1,7 @@
 getDate()
 
+$("#side-siswa").addClass("sidelist-selected")
+
 let USER_ID = $("#user_id").text()
 let ROLE = $("#user_role").text();
 let SCHOOL_ID

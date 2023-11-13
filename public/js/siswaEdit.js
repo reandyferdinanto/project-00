@@ -61,7 +61,7 @@ $(document).ready(() => {
     let datas = data.datas;
     user_data = data.datas;
     if (status == "success" && datas.length !== 0) {
-      $("#nis").val(datas.nis);
+      $("#nis").val(datas.nis.slice(4));
       $("#username").val(datas.username);
       $("#class").val(datas.class);
       $("#major").val(datas.major);
