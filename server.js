@@ -19,6 +19,7 @@ const cspOptions = {
       'code.jquery.com',
       'cdnjs.cloudflare.com',
       'cdn.datatables.net',
+      "cdn.jsdelivr.net"
     ],
   },
 };
