@@ -13,16 +13,16 @@ $(document).ready(() => {
 
   // Membuat select dalam page nilai menampilkan semua ujian yang terdaftar
   $.get("/api/v1/exams", async (response, status) => {
-    $("#exams-select").html("");
+    $("#exams-filter").html("");
     exams = response.datas;
     if (exams.length !== 0) {
       exams.forEach((exam, index) => {
-        $("#exams-select").append(
+        $("#exams-filter").append(
           `<option value="${exam.unique_id}">${exam.exam_name}</option>`
         );
       });
     } else {
-      $("#exams-select").append(
+      $("#exams-filter").append(
         `<option value="">tidak ada ujian terdaftar</option>`
       );
     }
@@ -81,7 +81,7 @@ $(document).ready(() => {
               render: function (data) {
                 if (data.length !== 0) {
                   let correct = data.filter((e) => {
-                    return e.unique_id == $("#exams-select").val();
+                    return e.unique_id == $("#exams-filter").val();
                   });
                   if (correct.length !== 0) {
                     return correct[0].exam_name;
@@ -97,7 +97,7 @@ $(document).ready(() => {
               render: function (data) {
                 if (data.length !== 0) {
                   let correct = data.filter((e) => {
-                    return e.unique_id == $("#exams-select").val();
+                    return e.unique_id == $("#exams-filter").val();
                   });
                   if (correct.length !== 0) {
                     let kkm = correct[0].kkm_point;
@@ -114,7 +114,7 @@ $(document).ready(() => {
               render: function (data) {
                 if (data.length !== 0) {
                   let correct = data.filter((e) => {
-                    return e.unique_id == $("#exams-select").val();
+                    return e.unique_id == $("#exams-filter").val();
                   });
                   if (correct.length !== 0) {
                     let kkm = correct[0].kkm_point;
@@ -142,7 +142,7 @@ $(document).ready(() => {
               render: function (data) {
                 if (data.length !== 0) {
                   let correct = data.filter((e) => {
-                    return e.unique_id == $("#exams-select").val();
+                    return e.unique_id == $("#exams-filter").val();
                   });
                   if (correct.length !== 0) {
                     let kkm = correct[0].kkm_point;
@@ -225,7 +225,7 @@ $(document).ready(() => {
   });
 
   // SELECT
-  $("#exams-select").on("change", function () {
+  $("#exams-filter").on("change", function () {
     $("#siswa-table").DataTable().clear();
     $("#siswa-table").DataTable().destroy();
     $("#siswa-table").DataTable({
@@ -253,7 +253,7 @@ $(document).ready(() => {
           render: function (data) {
             if (data.length !== 0) {
               let correct = data.filter((e) => {
-                return e.unique_id == $("#exams-select").val();
+                return e.unique_id == $("#exams-filter").val();
               });
               if (correct.length !== 0) {
                 return correct[0].exam_name;
@@ -269,7 +269,7 @@ $(document).ready(() => {
           render: function (data) {
             if (data.length !== 0) {
               let correct = data.filter((e) => {
-                return e.unique_id == $("#exams-select").val();
+                return e.unique_id == $("#exams-filter").val();
               });
               if (correct.length !== 0) {
                 let kkm = correct[0].kkm_point;
@@ -286,7 +286,7 @@ $(document).ready(() => {
           render: function (data) {
             if (data.length !== 0) {
               let correct = data.filter((e) => {
-                return e.unique_id == $("#exams-select").val();
+                return e.unique_id == $("#exams-filter").val();
               });
               if (correct.length !== 0) {
                 let kkm = correct[0].kkm_point;
@@ -314,7 +314,7 @@ $(document).ready(() => {
           render: function (data) {
             if (data.length !== 0) {
               let correct = data.filter((e) => {
-                return e.unique_id == $("#exams-select").val();
+                return e.unique_id == $("#exams-filter").val();
               });
               if (correct.length !== 0) {
                 let kkm = correct[0].kkm_point;
