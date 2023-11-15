@@ -40,6 +40,11 @@ async function tambahExam(req, res) {
       school_name
     } = req.body;
 
+    const USER_ID = req.user.id
+    TempData = TempData.filter(function( obj ) {
+      return obj.id !== USER_ID;
+    });
+
     let card_answer_index = 0;
     card_answers = JSON.parse(card_answers);
     answer_with_image = JSON.parse(answer_with_image);

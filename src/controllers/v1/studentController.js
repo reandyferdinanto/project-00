@@ -1,4 +1,4 @@
-const { Student, Exam, StudentExam, Admin, Metric } = require("../../models");
+const { Student, Exam, StudentExam, Admin, Metric,MetricPerSchool } = require("../../models");
 const bcrypt = require("bcrypt");
 const response = require("./response");
 
@@ -80,14 +80,14 @@ async function addStudent(req, res) {
 
 
     // metrics to analytics how many student has created on our website
-    let metric = await Metric.findOne()
-    if(metric) {
-      metric.update({
-        student_counter: metric.student_counter + 1,
-      })
-    }else{
-      await Metric.create({student_counter:1})
-    }
+    // let metricPerSchool = await MetricPerSchool.findOne({where:{school_id: studentData.school_id}})
+    // if(metric) {
+    //   metric.update({
+    //     student_counter: metric.student_counter + 1,
+    //   })
+    // }else{
+    //   await Metric.create()
+    // }
 
     response(201, "add new Students", newStudents, res);
   } catch (error) {

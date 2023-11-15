@@ -20,10 +20,14 @@ const generateAccessToken = (user) => {
 };
 
 const validateTokenAPI = (req, res, next) => {
+  const accessToken = req.cookies["login-token"];
+  if (!accessToken) return res.sendStatus(403)
   try {
-    const accessToken = req.cookies["login-token"];
-    if (!accessToken) return res.sendStatus(403)
-    next()
+    verify(accessToken, ACCESS_TOKEN_SECRET, function(err, user){
+      if(err) return res.sendStatus(403)
+      req.user = user
+      next()
+    });
   } catch (error) {
     return response(500, "server error", { error: error.message }, res);
   }

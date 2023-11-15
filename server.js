@@ -6,6 +6,7 @@ const path = require("path");
 const helmet = require('helmet')
 const cookieParse = require("cookie-parser");
 const fs = require("fs");
+const {Metric, MetricPerSchool}= require('./src/models')
 
 const app = express();
 
@@ -82,7 +83,7 @@ app.set("views", path.join(__dirname, "views"));
 const db = require("./src/models");
 const webRouter = require("./src/routers/webRouter");
 const v0Router = require('./src/routers/v0Router')
-const v1Router = require('./src/routers/v1Router')
+const v1Router = require('./src/routers/v1Router');
 
 app.use("/", webRouter);
 app.use("/api/", v0Router);
@@ -105,6 +106,19 @@ app.use((error, req, res, next) => {
 });
 
 let PORT = process.env.PORT || 3000;
-db.sequelize.sync({ alter: true }).then(() => {
+db.sequelize.sync({ alter: true }).then(async () => {
+
+  await Metric.findOne().then(async (result) => {
+    if(!result) await Metric.create()
+  })
+  Metric.hasMany(MetricPerSchool,{
+    foreignKey: 'ownerId',
+    constraints: false
+  })
+  MetricPerSchool.belongsTo(Metric, {
+    foreignKey: "ownerId",
+    constraints: false,
+  });
+
   app.listen(PORT, () => console.log("server run at port " + PORT));
 });
