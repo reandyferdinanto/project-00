@@ -1,4 +1,4 @@
-const { Student, Exam, StudentExam, Admin } = require("../../models");
+const { Student, Exam, StudentExam, Admin, Metric } = require("../../models");
 const bcrypt = require("bcrypt");
 const response = require("./response");
 
@@ -70,14 +70,25 @@ async function getStudentById(req, res, next) {
   }
 }
 
-async function addUser(req, res) {
+async function addStudent(req, res) {
   try {
     let studentData = req.body
     studentData.nis = studentData.school_id + studentData.nis;
     studentData.password = studentData.school_id + studentData.nis + "##";
     studentData.role = "siswa"
-
     const newStudents = await Student.create(studentData);
+
+
+    // metrics to analytics how many student has created on our website
+    let metric = await Metric.findOne()
+    if(metric) {
+      metric.update({
+        student_counter: metric.student_counter + 1,
+      })
+    }else{
+      await Metric.create({student_counter:1})
+    }
+
     response(201, "add new Students", newStudents, res);
   } catch (error) {
     response(
@@ -89,7 +100,7 @@ async function addUser(req, res) {
   }
 }
 
-async function updatePoint(req, res) {
+async function updateStudentPoint(req, res) {
   try {
     const { point, exam_id } = req.body;
     const { id } = req.params;
@@ -213,6 +224,19 @@ async function userEdit(req, res, next) {
 async function userAuth(req, res) {
   let { nis, password } = req.body;
   try {
+
+    // metrics to analytics how many student has created on our website
+    let metric = await Metric.findOne()
+    if(metric) {
+      metric.update({
+        student_login: metric.student_login + 1,
+      })
+    }else{
+      await Metric.create({student_login:1})
+    }
+
+
+
     let data;
     await Student.findOne({
       where: {
@@ -304,9 +328,9 @@ async function userAuth(req, res) {
 module.exports = {
   getAllStudents,
   getStudentById,
-  updatePoint,
+  updateStudentPoint,
   deleteUser,
   userEdit,
-  addUser,
+  addStudent,
   userAuth,
 };

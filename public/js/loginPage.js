@@ -32,7 +32,7 @@ $("#form-login").on("submit", function (e) {
       }
     },
     error: function (data, status, error) {
-      $(`<div class="bg-red-500/70 fixed top-8 left-1/2 -translate-x-1/2 min-w-[400px] text-center py-1.5 rounded-lg border border-red-900 text-[#000] text-sm">${status}: ${data.responseJSON.error}</div>`)
+      $(`<div class="bg-red-500/80 fixed top-8 left-1/2 -translate-x-1/2 min-w-[400px] text-center py-1.5 rounded-lg border border-red-900 text-[#000] text-sm z-10">${status}: ${data.responseJSON.error}</div>`)
         .insertBefore("#login-page")
         .delay(3000)
         .fadeOut("slow", function () {

@@ -639,66 +639,60 @@ function displayQueuedImages() {
 
 
 
-
-setInterval(function(){
-  const form = document.getElementById("submit-form");
-  let formData = new FormData(form);
-  formData.append("card_answers", JSON.stringify(allDataArray));
-  formData.append("id", USER_ID)
-  $.ajax({
-    url: "/api/v1/temp-form-data",
-    type: "POST",
-    data: formData,
-    async: false,
-    cache: false,
-    contentType: false,
-    encrypt: "multipart/form-data",
-    processData: false,
-    success: (response) => {
-      console.log("SAVED");
-    },
-  });
-}, 5000)
-
 setTimeout(function(){
-  $.get("/api/v1/temp-form-data", function(result){
-    let temp_data = result.TEMP_DATA.find(data => data.id == USER_ID)
-    if(temp_data){
-      const CONFIRM_TEMP = confirm("ingin melanjutkan save?")
-      if(CONFIRM_TEMP){
-        $("input[name=exam_name]").val(temp_data.exam_name)
-        $("select[name=exam_type]").val(temp_data.exam_type)
-        $("input[name=kkm_point]").val(temp_data.kkm_point)
-        if(temp_data.question_type){
-          // Menambah question box apabila ada soal dalam data temp
-          $("#add-question").remove();
-          $("#submit-form").append([
-            `
-              <div class="questions-box">
-                <div class="questions text-main"></div>
-                <div class="add-more">
-                  <button id="add-more" type="button">Tambah Soal</button>
-                </div>
-              </div>
-              <div class="submit-input">
-                <button type="button" id="selesai">Selesai</button>
-              </div>
-              `,
-          ]);
+  setInterval(function(){
+    const form = document.getElementById("submit-form");
+    let formData = new FormData(form);
+    formData.append("card_answers", JSON.stringify(allDataArray));
+    formData.append("id", USER_ID)
+    $.ajax({
+      url: "/api/v1/temp-form-data",
+      type: "POST",
+      data: formData,
+      async: false,
+      cache: false,
+      contentType: false,
+      encrypt: "multipart/form-data",
+      processData: false,
+      success: (response) => {
+        console.log("SAVED");
+      },
+    });
+  }, 5000)
+}, 180_000)
 
-          // melakukan foreach untuk menambah soal
-          if(Array.isArray(temp_data.question_type)){
-            temp_data.question_type.forEach(function(type, index){
-              addQuestionForTemp(temp_data, index, type)
-            })
-          }
-        }
-      }else{
-        alert("OK")
+$.get("/api/v1/temp-form-data", function(result){
+  let temp_data = result.TEMP_DATA.find(data => data.id == USER_ID)
+  if(temp_data){
+    $("input[name=exam_name]").val(temp_data.exam_name)
+    $("select[name=exam_type]").val(temp_data.exam_type)
+    $("input[name=kkm_point]").val(temp_data.kkm_point)
+    if(temp_data.question_type){
+      // Menambah question box apabila ada soal dalam data temp
+      $("#add-question").remove();
+      $("#submit-form").append([
+        `
+          <div class="questions-box">
+            <div class="questions text-main"></div>
+            <div class="add-more">
+              <button id="add-more" type="button">Tambah Soal</button>
+            </div>
+          </div>
+          <div class="submit-input">
+            <button type="button" id="selesai">Selesai</button>
+          </div>
+          `,
+      ]);
+
+      // melakukan foreach untuk menambah soal
+      if(Array.isArray(temp_data.question_type)){
+        temp_data.question_type.forEach(function(type, index){
+          addQuestionForTemp(temp_data, index, type)
+        })
       }
     }
-  })
-},500)
+  }
+})
 
 
 let COUNT_CARD = 0

@@ -1,4 +1,5 @@
-const { Exam, Student, Question, StudentExam, ExamType } = require("../../models");
+const { Exam, Student, Question, StudentExam, ExamType, Metric } = require("../../models");
+const TempData = require("../../utils/TempData");
 const response = require("./response");
 const fs = require("fs");
 const path = require('path')
@@ -52,6 +53,18 @@ async function tambahExam(req, res) {
       school_id,
       school_name
     });
+
+    // TempData = []
+
+    // metrics to analytics how many student has created on our website
+    let metric = await Metric.findOne()
+    if(metric) {
+      metric.update({
+        exam_counter: metric.exam_counter + 1,
+      })
+    }else{
+      await Metric.create({exam_counter:1})
+    }
 
     if (Array.isArray(question_text)) {
       let question_with_img = req.body.index_deleted.split(",");
@@ -308,7 +321,7 @@ async function updateExam(req, res) {
               return item.fieldname.startsWith("answer_image_")
             });
 
-            let answers = [correct_answer[answer_count], ...req.body.wrong_answer.slice(answer_count * 4, (answer_count + 1) * 4)]
+            let answers = [Array.isArray(correct_answer)?correct_answer[answer_count]:correct_answer, ...req.body.wrong_answer.slice(answer_count * 4, (answer_count + 1) * 4)]
             let pilgan_answers = answers.map((ans, index_ans) => {
               let answer_img = filteredData.filter(item => {
                 return item.fieldname == `answer_image_${index}${index_ans}`
