@@ -415,7 +415,7 @@ manualForm.addEventListener("submit", (e) => {
 });
 
 //GET EXAMS TYPE
-$.get("/api/v1/exam_type", async (data, status) => {
+$.get("/api/v1/topic", async (data, status) => {
   if (status == "success" && data.datas.length !== 0) {
     let datas = data.datas;
     let filteredType = datas.filter(examt => {

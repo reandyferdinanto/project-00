@@ -12,7 +12,7 @@ $("#button-batal").on("click", () => {
 // GET Admin unique Id dari URL
 let TOPIK_UNIQUE_ID = window.location.href.substring(window.location.href.lastIndexOf("/") + 1);
 
-$.get(`/api/v1/exam_type/${TOPIK_UNIQUE_ID}`, async (topik) => {
+$.get(`/api/v1/topic/${TOPIK_UNIQUE_ID}`, async (topik) => {
   if (topik.datas) {
     $("input[name=exam_type]").val(topik.datas.exam_type);
   }
@@ -23,7 +23,7 @@ $("#form-topik-edit").on("submit", function (e) {
   const formData = new FormData(this);
 
   $.ajax({
-    url: `/api/v1/exam_type/${TOPIK_UNIQUE_ID}`,
+    url: `/api/v1/topic/${TOPIK_UNIQUE_ID}`,
     type: "PUT",
     data: formData,
     contentType: false,

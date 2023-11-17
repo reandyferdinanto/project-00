@@ -35,13 +35,13 @@ $("#bg-table-topik").on("click", ".checkbox-delete", function () {
   if(!anyChecked) $("#selectAll").prop('checked', false)
 });
 
-$.get("/api/v1/exam_type", async (data, status) => {
+$.get("/api/v1/topic", async (data, status) => {
   if (data.datas.length !== 0) {
     $("#bg-nothing").remove()
     $("#table-topik").removeClass("hidden")
     $("#table-topik").DataTable({
       ajax: {
-        url: "/api/v1/exam_type",
+        url: "/api/v1/topic",
         dataSrc: function(json){
           let filteredData = json.datas.filter(function (data) {
             return data.school_id === SCHOOL_ID;
@@ -138,7 +138,7 @@ $("#form-topik-delete").on("submit", function (e) {
   const formData = new FormData(this);
 
   $.ajax({
-    url: "/api/v1/exam_type",
+    url: "/api/v1/topic",
     type: "DELETE",
     data: formData,
     contentType: false,

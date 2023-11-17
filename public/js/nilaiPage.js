@@ -63,6 +63,7 @@ $(document).ready(() => {
           ],
           columns: [
             {
+              // TABLE NUMBER
               data: null,
               width: "2%",
               render: function (data, type, row, meta) {
@@ -70,6 +71,7 @@ $(document).ready(() => {
               },
             },
             {
+              // TABLE NIS
               data: "nis",
               render: function (data) {
                 return data.slice(4);
@@ -77,6 +79,7 @@ $(document).ready(() => {
             },
             { data: "username" },
             {
+              // TABLE NAMA UJIAN
               data: "Exams",
               render: function (data) {
                 if (data.length !== 0) {
@@ -93,6 +96,7 @@ $(document).ready(() => {
               },
             },
             {
+              // TABLE KKM
               data: "Exams",
               render: function (data) {
                 if (data.length !== 0) {
@@ -110,6 +114,7 @@ $(document).ready(() => {
               },
             },
             {
+              // TABLE NIALI 1
               data: "Exams",
               render: function (data) {
                 if (data.length !== 0) {
@@ -118,7 +123,7 @@ $(document).ready(() => {
                   });
                   if (correct.length !== 0) {
                     let kkm = correct[0].kkm_point;
-                    let point = correct[0].StudentExam.point;
+                    let point = JSON.parse(correct[0].StudentExam.point);
                     if (point) {
                       if (point[0]) {
                         if (point[0].point >= kkm) {
@@ -138,6 +143,7 @@ $(document).ready(() => {
               },
             },
             {
+              // TABLE NILAI 2
               data: "Exams",
               render: function (data) {
                 if (data.length !== 0) {
@@ -146,7 +152,7 @@ $(document).ready(() => {
                   });
                   if (correct.length !== 0) {
                     let kkm = correct[0].kkm_point;
-                    let point = correct[0].StudentExam.point;
+                    let point = JSON.parse(correct[0].StudentExam.point);
                     if (point) {
                       if (point[1]) {
                         if (point[1].point >= kkm) {
@@ -240,6 +246,7 @@ $(document).ready(() => {
       ],
       columns: [
         {
+          // TABLE NUMBER
           data: null,
           width: "2%",
           render: function (data, type, row, meta) {
@@ -249,6 +256,7 @@ $(document).ready(() => {
         { data: "nis" },
         { data: "username" },
         {
+          // TABLE EXAM NAME
           data: "Exams",
           render: function (data) {
             if (data.length !== 0) {
@@ -265,6 +273,7 @@ $(document).ready(() => {
           },
         },
         {
+          // TABLE KKM
           data: "Exams",
           render: function (data) {
             if (data.length !== 0) {
@@ -282,6 +291,8 @@ $(document).ready(() => {
           },
         },
         {
+          
+          // TABLE NILAI 1
           data: "Exams",
           render: function (data) {
             if (data.length !== 0) {
@@ -290,7 +301,7 @@ $(document).ready(() => {
               });
               if (correct.length !== 0) {
                 let kkm = correct[0].kkm_point;
-                let point = correct[0].StudentExam.point;
+                let point = JSON.parse(correct[0].StudentExam.point);
                 if (point) {
                   if (point[0]) {
                     if (point[0].point >= kkm) {
@@ -310,6 +321,7 @@ $(document).ready(() => {
           },
         },
         {
+          // TABLE NILAI 2
           data: "Exams",
           render: function (data) {
             if (data.length !== 0) {
@@ -318,7 +330,7 @@ $(document).ready(() => {
               });
               if (correct.length !== 0) {
                 let kkm = correct[0].kkm_point;
-                let point = correct[0].StudentExam.point;
+                let point = JSON.parse(correct[0].StudentExam.point);
                 if (point) {
                   if (point[1]) {
                     if (point[1].point >= kkm) {
