@@ -82,12 +82,6 @@ import { connectToDatabase } from "./models";
 import webRouter from "./routers/webRouter";
 import v1Router from './routers/v1Router';
 import Metric from "./models/Metric";
-// import seekerRouter from "./router/seeker.router";
-// import recruiterRouter from "./router/recruiter.router";
-// import postRouter from "./router/post.router";
-// const db = require("./models");
-// const webRouter = require("./routers/webRouter");
-// const v0Router = require('./routers/v0Router')
 
 // ERROR HANDLER
 // app.all("*", (req, res, next) => {

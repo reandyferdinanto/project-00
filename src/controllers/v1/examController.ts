@@ -189,8 +189,6 @@ export async function AddExam(req, res) {
       } else if (question_type == "kartu") {
         let card_answers_questionId = card_answers[0].questionId;
         let card_answers_answers = card_answers[0].answers;
-        console.log(card_answers_questionId);
-        console.log(card_answers_answers);
         
         
 
@@ -413,8 +411,9 @@ export async function UpdateExam(req, res) {
           }
         })
         // ----------END HANDLE---------------
-        let pilgan_answers_stringify = JSON.stringify(pilgan_answers);
-        await Question.update({
+        let Pilgananswer = await PilganAnswer.bulkCreate(pilgan_answers)
+        let questionUpdated = await Question.findByPk(question_id[0])
+        questionUpdated.update({
           question_text,
           question_img:
             question_image[0] !== undefined
@@ -422,21 +421,16 @@ export async function UpdateExam(req, res) {
                   question_image[0].filename
                 }`
               : null,
-          pilgan_answers: pilgan_answers_stringify,
           question_type,
-        }, {
-          where: {
-            unique_id: question_id,
-          },
         })
-          .then(async() => {
-            let question = await Question.findAll({ where: { unique_id: question_id } });
-            exam.setQuestions(question);
-          })
+        await questionUpdated.getPilgan_answers().then(pilgan => {
+          pilgan.forEach(pil => pil.destroy())
+        })
+        questionUpdated.removePilgan_answers()
+        questionUpdated.setPilgan_answers(Pilgananswer)   
       } else if (question_type == "kartu") {
-        console.log(card_answers);
-        
-        card_answers = JSON.stringify(card_answers);
+        let card_answers_questionId = card_answers[0].questionId;
+        let card_answers_answers = card_answers[0].answers;
         let newBody = {
           question_text,
           question_img:
@@ -446,17 +440,18 @@ export async function UpdateExam(req, res) {
                 }`
               : null,
           question_type,
-          card_answers,
         };
-        await Question.update(newBody, {
-          where: {
-            unique_id: question_id,
-          },
-        })
-          .then(async () => {
-            let question = await Question.findAll({ where: { unique_id: question_id } });
-            exam.setQuestions(question);
-          })
+        let questionUpdated = await Question.findByPk(question_id[0])
+        questionUpdated.update(newBody)
+        let card_answer = await questionUpdated.getCard_answers()
+        let card_answer_answers = await card_answer.getAnswers()
+        card_answer_answers.forEach(answer => answer.destroy())
+        card_answer.destroy()
+        
+        let Cardanswer = await CardAnswer.create({questionId:card_answers_questionId})
+        let Cardansweranswer = await CardAnswerAnswer.bulkCreate(card_answers_answers)
+        questionUpdated.setCard_answers(Cardanswer)
+        Cardanswer.addAnswers(Cardansweranswer)
       }
     }
     response(200, "updated exams success", [], res);

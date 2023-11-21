@@ -26,7 +26,7 @@ class Question extends Model {
   declare setPilgan_answers: HasManySetAssociationsMixin<PilganAnswer,number>
 
   declare createCard_answer: HasOneCreateAssociationMixin<CardAnswer>
-  declare getCard_answer: HasOneGetAssociationMixin<CardAnswer>
+  declare getCard_answers: HasOneGetAssociationMixin<CardAnswer>
   declare setCard_answers: HasOneSetAssociationMixin<CardAnswer,number>
 
   // createdAt can be undefined during creation
