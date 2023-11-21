@@ -19,6 +19,7 @@ const generateAccessToken = (user) => {
     {
       id: user.unique_id,
       username: user.username,
+      school_id: user.school_id,
       school_name: user.school_name,
       email: user.email,
       role: user.role,

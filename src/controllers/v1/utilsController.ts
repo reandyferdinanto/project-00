@@ -1,4 +1,4 @@
-import csv from "fast-csv";
+import csv from "csv-parser";
 import fs from "fs";
 import path from "path";
 import response from "../response";
@@ -6,64 +6,75 @@ import Student from "../../models/Student";
 import Exam from "../../models/Exam";
 import Admin from "../../models/Admin";
 import { convertCsvToXlsx } from "@aternus/csv-to-xlsx";
+import Metric from "../../models/Metric";
+import MetricSchool from "../../models/MetricSchool";
+import {Request, Response} from "express"
 
-// export async function UploadCSV(req, res) {
-//   try {
-//     const filePath = path.join(
-//       __dirname,
-//       "..",
-//       "..",
-//       "..",
-//       "public",
-//       "files",
-//       "uploads",
-//       req.files[0].filename
-//     );
-//     const siswa = [];
-//     fs.createReadStream(filePath).pipe(
-//       csv
-//         .parse({ headers: true })
-//         .on("data", (row) => {
-//           let input_header = Object.keys(row);
-//           let correct_header = ["username", "class", "nis", "major", "gender"];
-//           const sortedInputHeader = input_header.slice().sort();
-//           const sortedCorrectHeader = correct_header.slice().sort();
-//           if (JSON.stringify(sortedInputHeader) !==JSON.stringify(sortedCorrectHeader)) {
-//             throw Error(
-//               `Header dari csv harus berupa "username", "class", "nis", "major", "gender"`
-//             );
-//           }
-//           row.nis = req.body.school_id + row.nis;
-//           row.password = row.nis + "##";
-//           row.school_id = req.body.school_id;
-//           row.school_name = req.body.school_name;
-//           siswa.push(row);
-//         })
-//         .on("error", function (e) {
-//           return response(400, e.message, [], res);
-//         })
-//         .on("end", () => {
-//           Student.bulkCreate(siswa).then((datas) => {
-//             return response(201, "add new user", datas, res);
-//           });
-//           if (fs.existsSync(filePath)) {
-//             // The file exists, so you can proceed with deleting it
-//             try {
-//               fs.unlinkSync(filePath);
-//             } catch (err) {
-//               console.error(err);
-//             }
-//           } else {
-//             console.log("File not found");
-//           }
-//         })
-//     );
-//   } catch (error) {
-//     res.status().json({
-//       error: error.message,
-//     });
-//   }
-// }
+let RowCount = 0
+
+export async function UploadCSV(req:Request, res:Response) {
+  const CORRECT_HEADER = ["username", "class", "nis", "major", "gender"];
+  
+  try {
+    const filePath = path.join(__dirname,"..","..","..","public","files","uploads",req.files[0].filename);
+
+    fs.createReadStream(filePath).pipe(csv())
+        .on("data", async (row) => {
+          let input_header = Object.keys(row);
+          const sortedInputHeader = input_header.slice().sort();
+          const sortedCorrectHeader = CORRECT_HEADER.slice().sort();
+          if (JSON.stringify(sortedInputHeader) !== JSON.stringify(sortedCorrectHeader)) {
+            throw Error(
+              `Header dari csv harus berupa "username", "class", "nis", "major", "gender"`
+            );
+          }
+
+          row.nis = req.body.school_id + row.nis;
+          row.password = row.nis + "##";
+          row.role = "siswa"
+          row.school_id = req.body.school_id;
+          row.school_name = req.body.school_name;
+          RowCount += 1
+          
+          await Student.create(row)
+        })
+        .on("error", e => response(400, e.message, [], res))
+        .on("end", async () => {
+          if (fs.existsSync(filePath)) {
+            try {
+              fs.unlinkSync(filePath);
+            } catch (err) {
+              console.error(err);
+            }
+          } else {
+            console.log("File not found");
+          }
+
+          const METRIC = await Metric.findOne();
+          const METRICSCHOOL = await MetricSchool.findOne({ where: { school_id: req.body.school_id } });
+          await METRIC.update({ total_student: METRIC.total_student + RowCount });
+          const isHas = await METRIC.hasMetric_school(METRICSCHOOL);
+          if (!isHas) {
+            let NEW_METRICSCHOOL = await MetricSchool.create({
+              student_counter: RowCount,
+              school_id: req.body.school_id,
+              school_name: req.body.school_name
+            });
+            await METRIC.addMetric_school(NEW_METRICSCHOOL);
+          } else {
+            await METRICSCHOOL.update({
+              student_counter: METRICSCHOOL.student_counter + RowCount
+            });
+          }
+
+          return response(201, "add new user", [], res);
+        })
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+}
 
 // export async function ExportCSV(req, res) {
 //   let users = await Student.findAll({
