@@ -161,6 +161,7 @@ $(document).ready(() => {
         // Initialize Question Tipe Kartu
         if(question.question_type == "kartu"){
           let card_answers = question.card_answers
+          console.log(question);
           addMoreQuestion(question_card, index+1)
           $(".question").eq(index).find(".soal-text").val(question.question_text)
           card_answers.answers.reverse().forEach((card,idx) => {
@@ -705,7 +706,7 @@ $(document).ready(() => {
     });
   }
   function initializeExamType(exams_data){
-    $.get("/api/v1/exam_type", async (exam_types, status) => {
+    $.get("/api/v1/topic", async (exam_types, status) => {
       if (status == "success" && exam_types.datas.length !== 0) {
         exam_types.datas.forEach((exam_type) => {
           $("#exam_type").append([

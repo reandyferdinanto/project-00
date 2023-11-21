@@ -36,7 +36,7 @@ $("#form-topik-create").on("submit", function (e) {
   formData.append("school_name", SCHOOL_NAME)
 
   $.ajax({
-    url: "/api/v1/exam_type",
+    url: "/api/v1/topic",
     type: "POST",
     data: formData,
     contentType: false,
