@@ -4,8 +4,6 @@ dotenv.config();
 
 let sequelize: Sequelize
 if(process.env.ENV_TYPE == 'production'){
-  console.log("DB run on host");
-  
   sequelize = new Sequelize({
     dialect: "mysql", // Ganti dengan jenis database yang Anda gunakan
     host: process.env.DB_HOST,
