@@ -90,15 +90,10 @@ exports.GetAllAdmin = GetAllAdmin;
 async function GetAdminById(req, res) {
     const pk = req.params.id;
     try {
-        await Admin_1.default.findByPk(pk, {
-            attributes: {
-                exclude: ["createdAt", "updatedAt", "password"],
-            },
-        }).then((result) => {
-            if (!result)
-                return (0, response_1.default)(200, `no admin with id ${pk}`, [], res);
-            (0, response_1.default)(200, "success get all admin", result, res);
-        });
+        const admin = await Admin_1.default.findByPk(pk, { attributes: { exclude: ["createdAt", "updatedAt", "password"], }, });
+        if (!admin)
+            return (0, response_1.default)(404, `no admin with id ${pk}`, [], res);
+        (0, response_1.default)(200, "success get all admin", admin, res);
     }
     catch (error) {
         (0, response_1.default)(500, "server failed to get admin", { error: error.message }, res);

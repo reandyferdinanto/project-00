@@ -10,11 +10,11 @@ const router = express_1.default.Router();
 router.get("/", studentController_1.GetAllStudent);
 router.get("/:id", studentController_1.GetStudentById);
 router.post("/", JWT_1.validateTokenAPI, studentController_1.AddStudent);
-router.post("/edit", JWT_1.validateTokenAPI, studentController_1.EditStudent);
 // // no need validate token cause it used for game
 router.post("/auth", studentController_1.AuthStudent);
 // no need validate token cause it used for game
-router.put("/:id", studentController_1.UpdateStudentPoint);
+router.put("/:id", JWT_1.validateTokenAPI, studentController_1.EditStudent);
+router.put("/:id/point", studentController_1.UpdateStudentPoint);
 router.delete("/", JWT_1.validateTokenAPI, studentController_1.DeleteUser);
 exports.default = router;
 //# sourceMappingURL=studentRoute.js.map
