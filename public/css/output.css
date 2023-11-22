@@ -636,6 +636,10 @@ video {
   margin-top: 2rem;
 }
 
+.mt-16 {
+  margin-top: 4rem;
+}
+
 .block {
   display: block;
 }
@@ -1214,6 +1218,10 @@ input[type="file"]::file-selector-button {
   outline-offset: 2px;
 }
 
+.focus\:outline-white:focus {
+  outline-color: #fff;
+}
+
 .focus\:ring-0:focus {
   --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
   --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(0px + var(--tw-ring-offset-width)) var(--tw-ring-color);
@@ -1228,6 +1236,11 @@ input[type="file"]::file-selector-button {
 
 .focus\:ring-white-60:focus {
   --tw-ring-color: rgba(255, 255, 255, 0.60);;
+}
+
+.focus\:ring-white:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(255 255 255 / var(--tw-ring-opacity));
 }
 
 .focus\:invalid\:border-pink-500:invalid:focus {

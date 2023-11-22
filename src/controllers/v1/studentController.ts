@@ -133,18 +133,19 @@ export const DeleteUser = async (req:Request, res:Response) => {
 
 export const EditStudent = async (req:Request, res:Response) => {
   try {
-    let siswaData = req.body;
+    let studentId = req.params.id
+    let studentData = req.body;
     // User update
-    const user = await Student.findByPk(siswaData.unique_id);
+    const user = await Student.findByPk(studentId);
     if(!user) return response(400, "user not found", [], res);
-    siswaData.nis = user.school_id + siswaData.nis
-    user.update(siswaData)
+    if(studentData.nis !== undefined) studentData.nis = user.school_id + studentData.nis
+    user.update(studentData)
 
-    let exams_on = Object.keys(siswaData).filter((key) => {
-      return siswaData[key] === "on";
+    let exams_on = Object.keys(studentData).filter((key) => {
+      return studentData[key] === "on";
     });
-    let exams_off = Object.keys(siswaData).filter((key) => {
-      return siswaData[key] === "off";
+    let exams_off = Object.keys(studentData).filter((key) => {
+      return studentData[key] === "off";
     });
 
     exams_on.forEach(async (exam_id) => {

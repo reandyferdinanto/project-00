@@ -114,11 +114,10 @@ $(document).ready(() => {
   const manualForm = document.getElementById("submit-form");
   manualForm.addEventListener("submit", (e) => {
     let formData = new FormData(manualForm);
-    formData.append("unique_id", unique_id);
     e.preventDefault();
     $.ajax({
-      url: "/api/v1/students/edit",
-      type: "POST",
+      url: `/api/v1/students/${unique_id}`,
+      type: "PUT",
       data: formData,
       async: false,
       cache: false,

@@ -559,7 +559,7 @@ $(document).ready(() => {
     formData.append("allImage", allImage)
 
     $.ajax({
-      url: "/api/v1/exams",
+      url: `/api/v1/exams/${unique_id}`,
       type: "DELETE",
       data: formData,
       contentType: false,

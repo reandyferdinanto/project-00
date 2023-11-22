@@ -1,5 +1,4 @@
 <%- include('./layouts/header'); -%>
-<link rel="stylesheet" href="/css/nilaiPage.css" />
 <body>
   <!-- NAV -->
   <%- include('./layouts/navbar'); -%>
@@ -8,39 +7,48 @@
   <!-- MAIN -->
   <main>
     <%- include('./layouts/superSidebar'); -%>
-    <div class="main-content">
-      <div class="main-background">
-        <div class="main-title mt-3">
-          <p class="text-main font-bold text-2xl mt-3">Nilai Siswa</p>
-          <form id="download-form" method="post">
-            <a href="/exams/create"><button class="download-csv-button text-sm mt-10" type="submit">Download Data</button></a
-            >
-          </form>
-        </div>
-        <div class="filter-option">
-          <select id="exams-filter" name="exams-filter" class="min-w-[240px] block px-3 py-2 rounded-lg text-sm border-0 text-white bg-main focus:ring-0 focus:outline-none" id="exams-select">
-            <option value="0">Manasik</option>
-          </select>
-        </div>
-        <div class="main-table">
-          <div class="main-table-title">
-            <table id="siswa-table" class="display" style="width: 100%">
-              <thead>
-                <tr>
-                  <th>No.</th>
-                  <th>NIS</th>
-                  <th>Nama Siswa</th>
-                  <th>Nama Ujian</th>
-                  <th>KKM</th>
-                </tr>
-              </thead>
-            </table>
-          </div>
-          <hr />
-          <div class="main-table-body flex flex-col items-center"></div>
-        </div>
+    <section id="nilai-page" class="h-full bg-white rounded-tl-3xl p-8">
+      <div class="flex justify-between">
+        <p class="text-main font-bold text-2xl">Nilai Siswa</p>
+        <select name="" id="nilai-select" class="mt-16 bg-main px-10 h-max py-2 text-white rounded-lg text-sm focus:outline-white focus:ring-white">
+          <option value="">Manasik</option>
+        </select>
+        <form id="form-nilai-download" class="flex gap-4 mt-5 h-max">
+          <button id="button-download" type="submit" class="bg-main text-white text-sm px-8 py-2 rounded-lg">Download Nilai</button>
+        </form>
       </div>
-    </div>
+      <div id="bg-table-nilai" class="min-h-screen shadow-[0_0px_40px_-15px_rgba(0,0,0,0.2)] w-full mt-8 rounded-3xl p-8 bg-white">
+          <table id="table-nilai" class="display hidden" style="width: 100%;">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>NIS</th>
+                <th>Nama Siswa</th>
+                <th>Nama Ujian</th>
+                <th>KKM</th>
+                <th>Nilai 1</th>
+                <th>Nilai 2</th>
+              </tr>
+            </thead>
+          </table>
+          <div id="bg-nothing" class="text-center">
+            <img src="/img/nothing.png" alt="" class="m-auto mt-20">
+            <p class="text-sm text-main font-normal">Belum Ada Nilai</p>
+          </div>
+
+
+          <section id="popup" class="bg-[#000]/50 fixed top-0 bottom-0 right-0 left-0 flex items-center hidden">
+            <div class="delete-popup w-[50%] bg-white m-auto flex flex-col items-center py-20 rounded-2xl">
+              <img src="/img/warning-alt.png" alt="" width="120px">
+              <p class="text-sm my-3">Apakah anda yakin ingin menghapus data tersebut ?</p>
+              <div class="mt-4 flex gap-4">
+                <button type="button" id="button-batal" class="py-1.5 px-8 bg-red-500 text-white rounded-full text-sm">Batal</button>
+                <button type="submit" class="py-1.5 px-8 bg-main text-white rounded-full text-sm">Hapus</button>
+              </div>
+            </div>
+          </section>
+      </div>
+    </section>
   </main>
 </body>
 <%- include('./layouts/footer'); -%>

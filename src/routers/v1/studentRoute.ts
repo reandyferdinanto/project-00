@@ -7,11 +7,11 @@ const router = express.Router()
 router.get("/", GetAllStudent);
 router.get("/:id", GetStudentById);
 router.post("/", validateTokenAPI, AddStudent);
-router.post("/edit", validateTokenAPI, EditStudent);
 // // no need validate token cause it used for game
 router.post("/auth", AuthStudent);
 // no need validate token cause it used for game
-router.put("/:id", UpdateStudentPoint);
+router.put("/:id", validateTokenAPI, EditStudent);
+router.put("/:id/point", UpdateStudentPoint);
 router.delete("/", validateTokenAPI, DeleteUser);
 
 export default router

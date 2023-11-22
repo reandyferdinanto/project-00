@@ -1,6 +1,6 @@
 import express from "express";
 import { validateTokenAPI } from "../../utils/JWT";
-import { UpdateLoginStatus, UploadCSV } from "../../controllers/v1/utilsController";
+import { ExportCSV, UpdateLoginStatus, UploadCSV } from "../../controllers/v1/utilsController";
 
 const router = express.Router()
 

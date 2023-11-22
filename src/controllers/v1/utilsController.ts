@@ -76,100 +76,51 @@ export async function UploadCSV(req:Request, res:Response) {
   }
 }
 
-// export async function ExportCSV(req, res) {
-//   let users = await Student.findAll({
-//     attributes: { exclude: ["createdAt", "updatedAt"] },
-//     include: [
-//       {
-//         model: Exam,
-//         attributes: { exclude: ["createdAt", "updatedAt"] },
-//         through: {
-//           attributes: { exclude: ["createdAt", "updatedAt"] },
-//         },
-//       },
-//     ],
-//     order: [[Student,"username"], [Exam, "createdAt"]],
-//   });
-//   if (!fs.existsSync("public/files/exports")) {
-//     if (!fs.existsSync("public/files")) {
-//       fs.mkdirSync("public/files");
-//     }
-//     if (!fs.existsSync("public/files/exports")) {
-//       fs.mkdirSync("public/files/exports");
-//     }
-//   }
+export async function ExportCSV(req, res) {
+  let Users = await Student.findAll({
+    include: [
+      {model: Exam,attributes: { exclude: ["createdAt", "updatedAt"] },through: {attributes: { exclude: ["createdAt", "updatedAt"] },},},
+    ],
+    order: [[Student,"username"], [Exam, "createdAt"]],
+  });
 
-//   const csvStream = csv.format({
-//     headers: true,
-//   });
-//   const writableStream = fs.createWriteStream(
-//     `public/files/exports/nilai-siswa.csv`
-//   );
-//   writableStream.on("finish", () => {
-//     try {
-//       let source = "public/files/exports/nilai-siswa.csv";
-//       let destination = "public/files/exports/nilai-siswa.xlsx";
-//       convertCsvToXlsx(source, destination);
-//       res.json({
-//         status_code: 200,
-//         downloadURL: `public/files/exports/nilai-siswa.xlsx`,
-//       });
-//     } catch (error) {
-//       response(500, "server failed to generate report", error.message, res);
-//     }
-//   });
-//   csvStream.pipe(writableStream);
-//   if (users.length > 0) {
-//     users.forEach((user) => {
-//       if (user.Exams.length !== 0) {
-//         user.Exams.forEach((exam) => {
-//           csvStream.write({
-//             nis: user.nis ? user.nis : 0,
-//             nama: user.username ? user.username : "",
-//             kelas: user.class ? user.class : "",
-//             jurusan: user.major ? user.major : "",
-//             ujian: exam.exam_name,
-//             nilai: exam.StudentExam.point,
-//             nilai_remedial: exam.StudentExam.remedial_point,
-//           });
-//         });
-//       } else {
-//         csvStream.write({
-//           nis: user.nis ? user.nis : 0,
-//           nama: user.username ? user.username : "",
-//           kelas: user.class ? user.class : "",
-//           jurusan: user.major ? user.major : "",
-//           ujian: "Belum mengambil ujian",
-//         });
-//       }
-//     });
-//   }
-//   csvStream.end();
-//   writableStream.end();
-// }
+  if (!fs.existsSync("public/files/exports")) {
+    if (!fs.existsSync("public/files")) {
+      fs.mkdirSync("public/files");
+    }
+    if (!fs.existsSync("public/files/exports")) {
+      fs.mkdirSync("public/files/exports");
+    }
+  }
 
-export async function UpdateLoginStatus(req, res) {
+  // writableStream.on("finish", () => {
+  //   try {
+  //     let source = "public/files/exports/nilai-siswa.csv";
+  //     let destination = "public/files/exports/nilai-siswa.xlsx";
+  //     convertCsvToXlsx(source, destination);
+  //     res.json({
+  //       status_code: 200,
+  //       downloadURL: `public/files/exports/nilai-siswa.xlsx`,
+  //     });
+  //   } catch (error) {
+  //     response(500, "server failed to generate report", error.message, res);
+  //   }
+  // });
+}
+
+export async function UpdateLoginStatus(req:Request, res:Response) {
   try {
     let { login_status, id } = req.body;
     let student = await Student.findByPk(id);
     let admin = await Admin.findByPk(id);
 
     if (student) {
-      student.update({
-        login_status,
-      });
+      student.update({login_status});
     } else {
-      admin.update({
-        login_status,
-      });
+      admin.update({login_status});
     }
     response(200, "success update login status", [], res);
   } catch (error) {
-    response(
-      500,
-      "server failed to update login status",
-      { error: error.message },
-      res
-    );
+    response(500,"server failed to update login status",{ error: error.message },res);
   }
 }
