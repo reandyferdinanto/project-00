@@ -2,7 +2,7 @@ import { Sequelize } from "sequelize";
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-let sequelize
+let sequelize: Sequelize
 if(process.env.ENV_TYPE == 'production'){
   console.log("DB run on host");
   
@@ -12,12 +12,6 @@ if(process.env.ENV_TYPE == 'production'){
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    dialectOptions: {
-      ssl: {
-        rejectUnauthorized: true,
-      },
-    },
-    logging:false
   });
 }else{
   console.log("DB run on local");

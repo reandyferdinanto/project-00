@@ -4,28 +4,28 @@ import path from "path";
 import multer from 'multer';
 import cookieParser from "cookie-parser"
 import cors from "cors"
+import helmet from 'helmet';
 const app = express();
 
-// const helmet = require('helmet')
 
-// const cspOptions = {
-//   directives: {
-//     defaultSrc: ["'self'"],
-//     imgSrc: ["'self'", "data:", "blob:"], // Menambahkan "blob:"
-//     scriptSrc: [
-//       "'self'",
-//       'code.jquery.com',
-//       'cdnjs.cloudflare.com',
-//       'cdn.datatables.net',
-//       "cdn.jsdelivr.net"
-//     ],
-//   },
-// };
+const cspOptions = {
+  directives: {
+    defaultSrc: ["'self'"],
+    imgSrc: ["'self'", "data:", "blob:"], // Menambahkan "blob:"
+    scriptSrc: [
+      "'self'",
+      'code.jquery.com',
+      'cdnjs.cloudflare.com',
+      'cdn.datatables.net',
+      "cdn.jsdelivr.net"
+    ],
+  },
+};
 
-// var whitelist = ["https://dev.festivo.co/", "localhost:3000/"]
+var whitelist = ["https://dev.festivo.co/", "localhost:3000/"]
 var corsOptions = {
   origin: ['https://dev.festivo.co/'],
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  optionsSuccessStatus: 200
 }
 
 // default membuat folder untuk penempatan file upload
@@ -56,17 +56,16 @@ app.use(multer({ storage: storage, limits: { fileSize: 1000000 } }).any());
 app.use(cors(corsOptions));
 app.use(cookieParser());
 
-// app.use(helmet({
-//   xFrameOptions: { action: "deny" },
-// }));
-// app.use(helmet.contentSecurityPolicy(cspOptions));
-// app.use(
-//   helmet.hsts({
-//     maxAge: 31536000, // Durasi HSTS dalam detik (setahun)
-//     includeSubDomains: true, // Sertakan subdomain
-//   })
-// );
-// app.use(morgan("common"));
+app.use(helmet({
+  xFrameOptions: { action: "deny" },
+}));
+app.use(helmet.contentSecurityPolicy(cspOptions));
+app.use(
+  helmet.hsts({
+    maxAge: 31536000, // Durasi HSTS dalam detik (setahun)
+    includeSubDomains: true, // Sertakan subdomain
+  })
+);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
