@@ -70,7 +70,7 @@ app.use(
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use("/files", express.static(path.join(__dirname, "public", "files")));
+app.use("/files", express.static(path.join(__dirname, "../public", "files")));
 app.use("/", express.static(path.join(__dirname, "../public")));
 
 app.set("view engine", "ejs");
