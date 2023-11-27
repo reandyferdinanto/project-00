@@ -105,29 +105,23 @@ async function UpdateAdmin(req, res) {
         let adminData = req.body;
         const adminId = req.params.id;
         let admin = await Admin_1.default.findByPk(adminId);
+        console.log(adminData);
         if (admin) {
-            if (adminData.prev_password && adminData.new_password) {
-                bcrypt_1.default.compare(adminData.prev_password, admin.password).then((match) => {
-                    if (!match) {
-                        res.status(400).json({ error: "Kata sandi lama yang dimasukan salah" });
-                    }
-                    else {
-                        bcrypt_1.default.hash(adminData.new_password, 10).then((hash) => {
-                            adminData.password = hash;
-                            admin.update(adminData);
-                            (0, response_1.default)(200, "success update admin data", [], res);
-                        });
-                    }
+            if (adminData.new_password) {
+                bcrypt_1.default.hash(adminData.new_password, 10).then((hash) => {
+                    adminData.password = hash;
+                    admin.update(adminData);
+                    return (0, response_1.default)(200, "success update admin data", [], res);
                 });
             }
             else {
                 adminData.nuptk = admin.school_id + adminData.nuptk;
                 admin.update(adminData);
-                (0, response_1.default)(200, "success update admin data", [], res);
+                return (0, response_1.default)(200, "success update admin data", [], res);
             }
         }
         else {
-            (0, response_1.default)(400, "admin not found", [], res);
+            return (0, response_1.default)(400, "admin not found", [], res);
         }
     }
     catch (error) {

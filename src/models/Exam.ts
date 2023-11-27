@@ -34,6 +34,7 @@ class Exam extends Model {
   declare createdAt: CreationOptional<Date>;
   // updatedAt can be undefined during creation
   declare updatedAt: CreationOptional<Date>;
+  StudentExam: any;
 }
 
 Exam.init(

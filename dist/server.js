@@ -37,6 +37,9 @@ if (!fs_1.default.existsSync("public/files/uploads")) {
     if (!fs_1.default.existsSync("public/files/uploads")) {
         fs_1.default.mkdirSync("public/files/uploads");
     }
+    if (!fs_1.default.existsSync("public/files/exports")) {
+        fs_1.default.mkdirSync("public/files/exports");
+    }
 }
 // multer setup disk storage
 const storage = multer_1.default.diskStorage({

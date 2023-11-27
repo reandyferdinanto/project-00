@@ -1,8 +1,6 @@
 getDate()
 
 $("#side-siswa").addClass("sidelist-selected")
-
-$("#side-siswa").addClass("sidelist-selected")
   
 $("#button-selesai").click(function(){ 
   $("#popup").removeClass("hidden")

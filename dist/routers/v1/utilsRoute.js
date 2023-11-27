@@ -8,7 +8,7 @@ const JWT_1 = require("../../utils/JWT");
 const utilsController_1 = require("../../controllers/v1/utilsController");
 const router = express_1.default.Router();
 router.post("/upload", JWT_1.validateTokenAPI, utilsController_1.UploadCSV);
-// router.post("/export", validateTokenAPI, ExportCSV);
+router.post("/export", JWT_1.validateTokenAPI, utilsController_1.ExportCSV);
 // no need validate token cause it used for game
 router.put("/login-status", utilsController_1.UpdateLoginStatus);
 exports.default = router;

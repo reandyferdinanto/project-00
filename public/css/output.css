@@ -612,6 +612,10 @@ video {
   margin-top: 2.5rem;
 }
 
+.mt-16 {
+  margin-top: 4rem;
+}
+
 .mt-20 {
   margin-top: 5rem;
 }
@@ -634,10 +638,6 @@ video {
 
 .mt-8 {
   margin-top: 2rem;
-}
-
-.mt-16 {
-  margin-top: 4rem;
 }
 
 .block {
@@ -729,10 +729,6 @@ video {
   width: 100%;
 }
 
-.min-w-\[240px\] {
-  min-width: 240px;
-}
-
 .min-w-\[400px\] {
   min-width: 400px;
 }
@@ -812,6 +808,10 @@ video {
 
 .rounded-lg {
   border-radius: 0.5rem;
+}
+
+.rounded-sm {
+  border-radius: 0.125rem;
 }
 
 .rounded-tl-3xl {
@@ -925,6 +925,10 @@ video {
   padding: 0.5rem;
 }
 
+.p-4 {
+  padding: 1rem;
+}
+
 .p-8 {
   padding: 2rem;
 }
@@ -1030,6 +1034,10 @@ video {
 
 .pt-5 {
   padding-top: 1.25rem;
+}
+
+.pb-5 {
+  padding-bottom: 1.25rem;
 }
 
 .text-left {
@@ -1234,13 +1242,13 @@ input[type="file"]::file-selector-button {
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
 }
 
-.focus\:ring-white-60:focus {
-  --tw-ring-color: rgba(255, 255, 255, 0.60);;
-}
-
 .focus\:ring-white:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(255 255 255 / var(--tw-ring-opacity));
+}
+
+.focus\:ring-white-60:focus {
+  --tw-ring-color: rgba(255, 255, 255, 0.60);;
 }
 
 .focus\:invalid\:border-pink-500:invalid:focus {

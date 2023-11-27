@@ -13,6 +13,7 @@ const Exam_1 = __importDefault(require("../../models/Exam"));
 const Admin_1 = __importDefault(require("../../models/Admin"));
 const Metric_1 = __importDefault(require("../../models/Metric"));
 const MetricSchool_1 = __importDefault(require("../../models/MetricSchool"));
+const exceljs_1 = __importDefault(require("exceljs"));
 let RowCount = 0;
 async function UploadCSV(req, res) {
     const CORRECT_HEADER = ["username", "class", "nis", "major", "gender"];
@@ -75,33 +76,53 @@ async function UploadCSV(req, res) {
 }
 exports.UploadCSV = UploadCSV;
 async function ExportCSV(req, res) {
-    let Users = await Student_1.default.findAll({
-        include: [
-            { model: Exam_1.default, attributes: { exclude: ["createdAt", "updatedAt"] }, through: { attributes: { exclude: ["createdAt", "updatedAt"] }, }, },
-        ],
-        order: [[Student_1.default, "username"], [Exam_1.default, "createdAt"]],
-    });
-    if (!fs_1.default.existsSync("public/files/exports")) {
-        if (!fs_1.default.existsSync("public/files")) {
-            fs_1.default.mkdirSync("public/files");
-        }
-        if (!fs_1.default.existsSync("public/files/exports")) {
-            fs_1.default.mkdirSync("public/files/exports");
-        }
+    const userData = [];
+    const users = await Student_1.default.findAll({ where: { school_id: req.body.school_id }, include: Exam_1.default });
+    const workbook = new exceljs_1.default.Workbook();
+    const worksheet = workbook.addWorksheet("Nilai Siswa");
+    const filePath = path_1.default.join(__dirname, "..", "..", "..", "public", "files", "exports");
+    worksheet.columns = [
+        { header: "NIS", key: "nis" },
+        { header: "Nama Siswa", key: "username" },
+        { header: "Kelas", key: "class" },
+        { header: "Jurusan", key: "major" },
+        { header: "Ujian", key: "exam_name" },
+        { header: "KKM", key: "kkm" },
+        { header: "Nilai 1", key: "point1" },
+        { header: "Nilai 2", key: "point2" },
+    ];
+    for (const user of users) {
+        let Exams = (await user.getExams());
+        let point = JSON.parse(Exams[0].StudentExam.point);
+        let data = {
+            nis: user.nis,
+            username: user.username,
+            class: user.class,
+            major: user.major,
+            exam_name: Exams.length !== 0 ? Exams[0].exam_name : "",
+            kkm: Exams.length !== 0 ? Exams[0].kkm_point : "",
+            point1: Exams.length !== 0 && point ? point[0].point : "",
+            point2: Exams.length !== 0 && point ? point[1].point : "",
+        };
+        worksheet.addRow(data);
     }
-    // writableStream.on("finish", () => {
-    //   try {
-    //     let source = "public/files/exports/nilai-siswa.csv";
-    //     let destination = "public/files/exports/nilai-siswa.xlsx";
-    //     convertCsvToXlsx(source, destination);
-    //     res.json({
-    //       status_code: 200,
-    //       downloadURL: `public/files/exports/nilai-siswa.xlsx`,
-    //     });
-    //   } catch (error) {
-    //     response(500, "server failed to generate report", error.message, res);
-    //   }
-    // });
+    worksheet.getRow(1).eachCell((cell) => {
+        cell.font = { bold: true };
+    });
+    try {
+        const data = await workbook.xlsx.writeFile(`${filePath}/nilai-siswa.xlsx`)
+            .then(() => {
+            console.log(data);
+            res.send({
+                status: "success",
+                message: "file successfully downloaded",
+                path: `${path_1.default}/nilai-siswa.xlsx`,
+            });
+        });
+    }
+    catch (error) {
+        res.send(error);
+    }
 }
 exports.ExportCSV = ExportCSV;
 async function UpdateLoginStatus(req, res) {

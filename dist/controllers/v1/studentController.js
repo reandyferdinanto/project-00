@@ -14,7 +14,7 @@ const Metric_1 = __importDefault(require("../../models/Metric"));
 const MetricSchool_1 = __importDefault(require("../../models/MetricSchool"));
 const GetAllStudent = async (req, res, next) => {
     try {
-        let students = await Student_1.default.findAll({ attributes: { exclude: ["createdAt", "updatedAt"] }, include: [
+        let students = await Student_1.default.findAll({ attributes: { exclude: ["createdAt", "updatedAt", "password"] }, include: [
                 { model: Exam_1.default, attributes: { exclude: ["createdAt", "updatedAt"] },
                     through: {
                         attributes: { exclude: ["createdAt", "updatedAt"] }
@@ -36,13 +36,6 @@ const GetStudentById = async (req, res) => {
         const student = await Student_1.default.findByPk(studentId, { attributes: { exclude: ["createdAt", "updatedAt", "password"] }, include: [
                 { model: Exam_1.default, attributes: { exclude: ["createdAt", "updatedAt"] }, },
             ] });
-        // if (student.Exams.length !== 0) {
-        //   student.Exams.forEach((exam) => {
-        //     if (exam.StudentExam.point) {
-        //       exam.StudentExam.point = JSON.parse(exam.StudentExam.point);
-        //     }
-        //   });
-        // }
         if (student) {
             (0, response_1.default)(200, "showing student data by ID", student, res);
         }

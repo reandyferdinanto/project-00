@@ -2,7 +2,7 @@ import { DataTypes, Model,Association, HasManyAddAssociationMixin, HasManyCountA
   HasManyCreateAssociationMixin, HasManyGetAssociationsMixin, HasManyHasAssociationMixin,
   HasManySetAssociationsMixin, HasManyAddAssociationsMixin, HasManyHasAssociationsMixin,
   HasManyRemoveAssociationMixin, HasManyRemoveAssociationsMixin, ModelDefined, Optional,
-  Sequelize, InferAttributes, InferCreationAttributes, CreationOptional, NonAttribute, ForeignKey, HasOneCreateAssociationMixin, HasOneGetAssociationMixin, HasOneSetAssociationMixin, } from "sequelize";
+  Sequelize, InferAttributes, InferCreationAttributes, CreationOptional, NonAttribute, ForeignKey, HasOneCreateAssociationMixin, HasOneGetAssociationMixin, HasOneSetAssociationMixin, BelongsToManyGetAssociationsMixin, } from "sequelize";
 import { sequelize } from "."; // Pastikan Anda mengganti path sesuai dengan struktur direktori Anda
 import Exam from "./Exam";
 import StudentExam from "./StudentExam";
@@ -19,6 +19,8 @@ class Student extends Model {
   declare school_id: string;
   declare school_name: string;
   declare login_status: string;
+
+  declare getExams: BelongsToManyGetAssociationsMixin<Exam>
 
   // createdAt can be undefined during creation
   declare createdAt: CreationOptional<Date>;

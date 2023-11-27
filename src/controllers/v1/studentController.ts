@@ -10,7 +10,7 @@ import MetricSchool from "../../models/MetricSchool";
 
 export const GetAllStudent = async (req:Request, res:Response, next) => {
   try {
-    let students = await Student.findAll({attributes: { exclude: ["createdAt", "updatedAt"] },include: [
+    let students = await Student.findAll({attributes: { exclude: ["createdAt", "updatedAt", "password"] },include: [
         {model: Exam, attributes: { exclude: ["createdAt", "updatedAt"] },
         through: {
           attributes: {exclude: ["createdAt", "updatedAt"]}}
@@ -30,14 +30,6 @@ export const GetStudentById = async (req: Request, res:Response) => {
     const student = await Student.findByPk(studentId, {attributes: { exclude: ["createdAt", "updatedAt", "password"] },include: [
       {model: Exam,attributes: { exclude: ["createdAt", "updatedAt"] },},
     ]});
-
-    // if (student.Exams.length !== 0) {
-    //   student.Exams.forEach((exam) => {
-    //     if (exam.StudentExam.point) {
-    //       exam.StudentExam.point = JSON.parse(exam.StudentExam.point);
-    //     }
-    //   });
-    // }
 
     if (student){
       response(200, "showing student data by ID", student, res);

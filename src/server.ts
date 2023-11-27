@@ -36,6 +36,9 @@ if (!fs.existsSync("public/files/uploads")) {
   if (!fs.existsSync("public/files/uploads")) {
     fs.mkdirSync("public/files/uploads");
   }
+  if (!fs.existsSync("public/files/exports")) {
+    fs.mkdirSync("public/files/exports");
+  }
 }
 
 // multer setup disk storage

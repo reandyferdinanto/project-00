@@ -5,7 +5,7 @@ import { ExportCSV, UpdateLoginStatus, UploadCSV } from "../../controllers/v1/ut
 const router = express.Router()
 
 router.post("/upload",validateTokenAPI, UploadCSV);
-// router.post("/export", validateTokenAPI, ExportCSV);
+router.post("/export", validateTokenAPI, ExportCSV);
 
 // no need validate token cause it used for game
 router.put("/login-status", UpdateLoginStatus);

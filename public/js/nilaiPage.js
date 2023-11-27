@@ -365,10 +365,13 @@ $("#nilai-select").on("change", function () {
 // DOWNLOAD
 $("#form-nilai-download").on("submit", function (e) {
   e.preventDefault();
+  const formData = new FormData(this);
+  formData.append("school_id", SCHOOL_ID)
 
   $.ajax({
     url: "/api/v1/utils/export",
     type: "POST",
+    data: formData,
     async: false,
     cache: false,
     contentType: false,
