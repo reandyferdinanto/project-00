@@ -7,6 +7,12 @@ $(document).ready(() => {
     }
   });
 
+  const USER_ID = $("#user_id").text()
+  let SCHOOL_ID
+  $.get(`/api/v1/admins/${USER_ID}`, function(data) {
+    SCHOOL_ID = data.datas.school_id
+  })
+
   const d = new Date();
   $("#date").html(d.toLocaleString("id-ID", {
     dateStyle: "medium",
@@ -205,7 +211,12 @@ $(document).ready(() => {
         $("#assign-table").DataTable({
           ajax: {
             url: "/api/v1/students",
-            dataSrc: "datas",
+            dataSrc: function(json){
+              let filteredData = json.datas.filter(function (data) {
+                return data.school_id === SCHOOL_ID;
+              });
+              return filteredData;
+            },
           },
           pageLength: -1,
           lengthMenu: [[-1], ["Semua"]],

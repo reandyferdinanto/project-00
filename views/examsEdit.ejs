@@ -3,6 +3,7 @@
 <body>
   <!-- NAV -->
   <%- include('./layouts/navbar'); -%>
+  <p id="user_id" class="hidden"><%= user.id %></p>
 
   <main>
     <!-- SIDEBAR START -->
@@ -95,7 +96,7 @@
             <div class="assign-bg">
               <div class="close">X</div>
               <div class="assign-bg-head">
-                <h1>Diujikan ke:</h1>
+                <h1 class="text-main font-bold text-2xl">Diujikan ke:</h1>
                 <p>
                   silakan tentukan kelas atau siswa individu yang akan mengikuti
                   ujian ini
