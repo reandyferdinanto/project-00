@@ -88,33 +88,36 @@ export async function ExportCSV(req:Request, res:Response) {
   const workbook = new ExcelJs.Workbook()
   const filePath = path.join(__dirname,"..","..","..","public","files","exports");
 
-  for (const exam of Exams) {
+  for (const [index,exam] of Exams.entries()) {
     const worksheet = workbook.addWorksheet(exam.exam_name)
+
     worksheet.columns = [
-      {header: "NIS", key: "nis"},
-      {header: "Nama Siswa", key: "username"},
+      {header: "NIS", key: "nis", width:20},
+      {header: "Nama Siswa", key: "username", width:20},
       {header: "Kelas", key: "class"},
-      {header: "Jurusan", key: "major"},
-      {header: "Ujian", key: "exam_name"},
-      {header: "KKM", key: "kkm"},
-      // {header: "Nilai 1", key: "point1"},
-      // {header: "Nilai 2", key: "point2"},
+      {header: "Jurusan", key: "major", width:20},
+      {header: "Ujian", key: "exam_name", width:20},
+      {header: "KKM", key: "kkm", width:5},
+      {header: "Nilai 1", key: "point1", width:7},
+      {header: "Nilai 2", key: "point2", width:7},
     ]
 
-    for (const [index, user] of Users.entries()) {
+    for (const user of Users) {
       let Exams = (await user.getExams());
       let point = JSON.parse(Exams[0].StudentExam.point)
       
+      
+      
   
       let data = {
-        nis: user.nis,
+        nis: user.nis.slice(4),
         username: user.username,
         class: user.class,
         major: user.major,
-        exam_name: Exams.length !== 0 ? Exams[index].exam_name : "",
-        kkm: Exams.length !== 0 ? Exams[index].kkm_point : "",
-        // point1: Exams.length !== 0 && point ? point[0].point : "",
-        // point2: Exams.length !== 0 && point ? point[1].point : "",
+        exam_name: Exams.length !== 0 && Exams[index] ? Exams[index].exam_name : "Belum mengambil ujian",
+        kkm: Exams.length !== 0 && Exams[index] ? Exams[index].kkm_point : "-",
+        point1: Exams.length !== 0 && point && Exams[index] ? point[0].point : "-",
+        point2: Exams.length !== 0 && point && Exams[index] ? point[1].point : "-",
       };
       worksheet.addRow(data);
     }
@@ -122,7 +125,47 @@ export async function ExportCSV(req:Request, res:Response) {
   
     worksheet.getRow(1).eachCell((cell) => {
       cell.font = { bold: true };
+      cell.fill = {
+        type: 'pattern',
+        pattern:'solid',
+        fgColor:{argb: "ff8000"}
+      };
     });
+    // Mendapatkan jumlah baris dan kolom dalam worksheet
+    const rowCount = worksheet.rowCount;
+    const columnCount = worksheet.columnCount;
+
+    // Loop untuk menambahkan border ke setiap sel
+    function getExcelColumnLetter(colNumber) {
+      let dividend = colNumber + 1;
+      let columnName = '';
+    
+      while (dividend > 0) {
+        const modulo = (dividend - 1) % 26;
+        columnName = String.fromCharCode(65 + modulo) + columnName;
+        dividend = Math.floor((dividend - modulo) / 26);
+      }
+    
+      return columnName;
+    }
+    
+    // Loop untuk menambahkan border ke setiap sel
+    for (let i = 0; i <= rowCount; i++) {
+      for (let j = 0; j < columnCount; j++) {
+        const cellRef = getExcelColumnLetter(j) + i;
+        const cell = worksheet.getCell(cellRef);
+        cell.border = {
+          top: { style: 'medium' },
+          left: { style: 'medium' },
+          bottom: { style: 'medium' },
+          right: { style: 'medium' },
+        };
+      }
+    }
+
+    worksheet.getColumn(6).alignment = {horizontal:"center"}
+    worksheet.getColumn(7).alignment = {horizontal:"center"}
+    worksheet.getColumn(8).alignment = {horizontal:"center"}
     
   }
 
