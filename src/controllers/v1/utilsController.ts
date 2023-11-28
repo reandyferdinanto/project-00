@@ -77,61 +77,68 @@ export async function UploadCSV(req:Request, res:Response) {
 }
 
 export async function ExportCSV(req:Request, res:Response) {
-  const userData = []
-  const users = await Student.findAll({where: {school_id: req.body.school_id}, include: Exam});
+
+
+  // HIRARKI
+  // Kelas + Jurusan (Nama FIle) -> Nama Ujian (Worksheet) -> Nilai nilai (Row)
+
+
+  
+  // const userData = []
+  // const users = await Student.findAll({where: {school_id: req.body.school_id}, include: Exam});
   
 
-  const workbook = new ExcelJs.Workbook()
-  const worksheet = workbook.addWorksheet("Nilai Siswa")
-  const filePath = path.join(__dirname,"..","..","..","public","files","exports");
+  // const workbook = new ExcelJs.Workbook()
+  // const worksheet = workbook.addWorksheet("Nilai Siswa")
+  // const filePath = path.join(__dirname,"..","..","..","public","files","exports");
 
-  worksheet.columns = [
-    {header: "NIS", key: "nis"},
-    {header: "Nama Siswa", key: "username"},
-    {header: "Kelas", key: "class"},
-    {header: "Jurusan", key: "major"},
-    {header: "Ujian", key: "exam_name"},
-    {header: "KKM", key: "kkm"},
-    {header: "Nilai 1", key: "point1"},
-    {header: "Nilai 2", key: "point2"},
-  ]
+  // worksheet.columns = [
+  //   {header: "NIS", key: "nis"},
+  //   {header: "Nama Siswa", key: "username"},
+  //   {header: "Kelas", key: "class"},
+  //   {header: "Jurusan", key: "major"},
+  //   {header: "Ujian", key: "exam_name"},
+  //   {header: "KKM", key: "kkm"},
+  //   {header: "Nilai 1", key: "point1"},
+  //   {header: "Nilai 2", key: "point2"},
+  // ]
 
-  for (const user of users) {
-    let Exams = (await user.getExams());
-    let point = JSON.parse(Exams[0].StudentExam.point)
+  // for (const user of users) {
+  //   let Exams = (await user.getExams());
+  //   let point = JSON.parse(Exams[0].StudentExam.point)
 
-    let data = {
-      nis: user.nis,
-      username: user.username,
-      class: user.class,
-      major: user.major,
-      exam_name: Exams.length !== 0 ? Exams[0].exam_name : "",
-      kkm: Exams.length !== 0 ? Exams[0].kkm_point : "",
-      point1: Exams.length !== 0 && point ? point[0].point : "",
-      point2: Exams.length !== 0 && point ? point[1].point : "",
-    };
-    worksheet.addRow(data);
-  }
+  //   let data = {
+  //     nis: user.nis,
+  //     username: user.username,
+  //     class: user.class,
+  //     major: user.major,
+  //     exam_name: Exams.length !== 0 ? Exams[0].exam_name : "",
+  //     kkm: Exams.length !== 0 ? Exams[0].kkm_point : "",
+  //     point1: Exams.length !== 0 && point ? point[0].point : "",
+  //     point2: Exams.length !== 0 && point ? point[1].point : "",
+  //   };
+  //   worksheet.addRow(data);
+  // }
   
 
-  worksheet.getRow(1).eachCell((cell) => {
-    cell.font = { bold: true };
-  });
+  // worksheet.getRow(1).eachCell((cell) => {
+  //   cell.font = { bold: true };
+  // });
 
-  try {
-    const data = await workbook.xlsx.writeFile(`${filePath}/nilai-siswa.xlsx`)
-   .then(() => {
-    console.log(data);
+  // try {
+  //   const data = await workbook.xlsx.writeFile(`${filePath}/nilai-siswa.xlsx`)
+  //  .then(() => {
+  //   console.log(data);
     
-     res.send({
-       status: "success",
-       message: "file successfully downloaded",
-       path: `${path}/nilai-siswa.xlsx`,
-      });
-   });
-  } catch (error) {
-    res.send(error)
-  }
+  //    res.send({
+  //      status: "success",
+  //      message: "file successfully downloaded",
+  //      path: `${path}/nilai-siswa.xlsx`,
+  //     });
+  //  });
+  // } catch (error) {
+  //   res.send(error)
+  // }
 
 }
 
