@@ -306,6 +306,11 @@ export async function UpdateExam(req, res) {
       let imgCounter = 0
       let answerCounter = 0
 
+      let a = req.body.all_question_id.split(',');
+      let b = req.body.question_unique_id.split(',');
+      const valuesNotInB = a.filter(value => !b.includes(value));
+      
+      await Question.destroy({where: {unique_id:valuesNotInB}})
 
       for(const[index, questId] of question_id.entries()){
         const question_image = req.files.filter((item) => item.fieldname === `question_img`);
@@ -316,7 +321,6 @@ export async function UpdateExam(req, res) {
         } else {
           img = null;
         }
-
 
         if (question_type[index] === "pilihan_ganda") {
           // HANDLE IMAGE
@@ -435,12 +439,7 @@ export async function UpdateExam(req, res) {
     }
     response(200, "updated exams success", [], res);
   } catch (error) {
-    response(
-      500,
-      "server failed to update the exam",
-      { error: error.message },
-      res
-    );
+    response(500,"server failed to update the exam",{ error: error.message },res);
   }
 }
 
