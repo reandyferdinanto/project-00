@@ -539,7 +539,7 @@ $(document).ready(() => {
     formData.append("allImage", allImage)
     e.preventDefault();
     $.ajax({
-      url: "/api/v1/exams",
+      url: `/api/v1/exams/${unique_id}`,
       type: "PUT",
       data: formData,
       async: false,

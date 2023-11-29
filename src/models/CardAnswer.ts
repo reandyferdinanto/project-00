@@ -14,6 +14,7 @@ import CardAnswerAnswer from "./CardAnswerAnswer";
     declare ownerId: ForeignKey<Question['unique_id']>;
 
     declare addAnswers: HasManyAddAssociationsMixin<CardAnswerAnswer,number>
+    declare setAnswers: HasManySetAssociationsMixin<CardAnswerAnswer,number>
     declare getAnswers: HasManyGetAssociationsMixin<CardAnswerAnswer>
   
     // createdAt can be undefined during creation

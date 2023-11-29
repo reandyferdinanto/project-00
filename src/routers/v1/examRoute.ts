@@ -7,7 +7,7 @@ const router = express.Router()
 router.get("/", GetAllExam);
 router.get("/:id", GetExamById);
 router.post("/", validateTokenAPI, AddExam);
-router.put("/", validateTokenAPI, UpdateExam);
+router.put("/:id", validateTokenAPI, UpdateExam);
 router.delete("/:id", validateTokenAPI, DeleteExam);
 
 export default router;
