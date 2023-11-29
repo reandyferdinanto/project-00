@@ -493,7 +493,8 @@ export async function GetAllExam(req, res) {
 export async function DeleteExam(req, res) {
   try {
 
-    let {allImage, exam_unique_id,question_unique_id} = req.body
+    const examId = req.params.id
+    let {allImage,question_unique_id} = req.body
 
     allImage = allImage.split(',')
 
@@ -531,24 +532,14 @@ export async function DeleteExam(req, res) {
 
 
     // DELETE EXAM
-    if (!exam_unique_id)
-      return response(400, "body can't be undefined", [], res);
+    if (!examId) return response(400, "body can't be undefined", [], res);
 
     // FIND USER AND DELETE
-    const exams = await Exam.destroy({
-      where: {
-        unique_id: exam_unique_id,
-      },
-    });
+    const exams = await Exam.destroy({where: {unique_id: examId}});
 
     // CHECK IF USER IS NOT FOUND
-    if (!exams)
-      return response(
-        400,
-        "cant find user with id:" + exam_unique_id,
-        [],
-        res
-      );
+    if (!exams)return response(400,"cant find user with id:" + examId,[],res);
+    
     response(200, "delete exam success", exams, res);
   } catch (error) {
     response(500, "server failed delete exam", { error: error.message }, res);

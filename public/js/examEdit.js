@@ -565,7 +565,6 @@ $(document).ready(() => {
   $("#form-hapus-ujian").on("submit", function (e) {
     e.preventDefault();
     const formData = new FormData(this);
-    formData.append("exam_unique_id", unique_id);
     formData.append("question_unique_id", question_id);
     formData.append("allImage", allImage)
 

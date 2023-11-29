@@ -8,6 +8,6 @@ router.get("/", GetAllExam);
 router.get("/:id", GetExamById);
 router.post("/", validateTokenAPI, AddExam);
 router.put("/", validateTokenAPI, UpdateExam);
-router.delete("/", validateTokenAPI, DeleteExam);
+router.delete("/:id", validateTokenAPI, DeleteExam);
 
 export default router;
