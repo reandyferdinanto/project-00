@@ -367,6 +367,7 @@ $("#form-nilai-download").on("submit", function (e) {
   e.preventDefault();
   const formData = new FormData(this);
   formData.append("school_id", SCHOOL_ID)
+  formData.append("school_name", SCHOOL_NAME)
 
   $.ajax({
     url: "/api/v1/utils/export",
@@ -377,8 +378,8 @@ $("#form-nilai-download").on("submit", function (e) {
     contentType: false,
     processData: false,
     success: function (response) {
-      if (response.status_code == 200) {
-        window.location.href = "files/exports/nilai-siswa.xlsx";
+      if (response) {
+        window.location.href = response.downloadLink;
       }
     },
     error: function (data, status, error) {

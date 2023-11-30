@@ -9,6 +9,7 @@ import Metric from "../../models/Metric";
 import MetricSchool from "../../models/MetricSchool";
 import {Request, Response} from "express"
 import ExcelJs from "exceljs"
+import JSZip from "jszip";
 
 let RowCount = 0
 
@@ -81,107 +82,127 @@ export async function ExportCSV(req:Request, res:Response) {
 
   // HIRARKI
   // Kelas + Jurusan (Nama FIle) || Nama Ujian (Worksheet) -> Nilai nilai (Row)
+  const filePath = path.join(__dirname,"..","..","..","public","files","exports");
+
+  const zip = new JSZip()
 
   const Users = await Student.findAll({where: {school_id: req.body.school_id}, include: Exam});
   const Exams = await Exam.findAll({where: {school_id: req.body.school_id}});
 
-  const workbook = new ExcelJs.Workbook()
-  const filePath = path.join(__dirname,"..","..","..","public","files","exports");
-
-  for (const [index,exam] of Exams.entries()) {
-    const worksheet = workbook.addWorksheet(exam.exam_name)
-
-    worksheet.columns = [
-      {header: "NIS", key: "nis", width:20},
-      {header: "Nama Siswa", key: "username", width:20},
-      {header: "Kelas", key: "class"},
-      {header: "Jurusan", key: "major", width:20},
-      {header: "Ujian", key: "exam_name", width:20},
-      {header: "KKM", key: "kkm", width:5},
-      {header: "Nilai 1", key: "point1", width:7},
-      {header: "Nilai 2", key: "point2", width:7},
-    ]
-
-    for (const user of Users) {
-      let Exams = (await user.getExams());
-      let point = JSON.parse(Exams[0].StudentExam.point)
-      
-      
-      
+  const registeredClass = [...new Set(Users.map(item => item.class))];
   
-      let data = {
-        nis: user.nis.slice(4),
-        username: user.username,
-        class: user.class,
-        major: user.major,
-        exam_name: Exams.length !== 0 && Exams[index] ? Exams[index].exam_name : "Belum mengambil ujian",
-        kkm: Exams.length !== 0 && Exams[index] ? Exams[index].kkm_point : "-",
-        point1: Exams.length !== 0 && point && Exams[index] ? point[0].point : "-",
-        point2: Exams.length !== 0 && point && Exams[index] ? point[1].point : "-",
-      };
-      worksheet.addRow(data);
-    }
-    
-  
-    worksheet.getRow(1).eachCell((cell) => {
-      cell.font = { bold: true };
-      cell.fill = {
-        type: 'pattern',
-        pattern:'solid',
-        fgColor:{argb: "ff8000"}
-      };
-    });
-    // Mendapatkan jumlah baris dan kolom dalam worksheet
-    const rowCount = worksheet.rowCount;
-    const columnCount = worksheet.columnCount;
+  for (const [_, kelas] of registeredClass.entries()){
 
-    // Loop untuk menambahkan border ke setiap sel
-    function getExcelColumnLetter(colNumber) {
-      let dividend = colNumber + 1;
-      let columnName = '';
+
+    const usersFilterKelas = Users.filter(user => user.class == kelas)
     
-      while (dividend > 0) {
-        const modulo = (dividend - 1) % 26;
-        columnName = String.fromCharCode(65 + modulo) + columnName;
-        dividend = Math.floor((dividend - modulo) / 26);
-      }
+    const workbook = new ExcelJs.Workbook()
+
+    for (const [index,exam] of Exams.entries()) {
+      const worksheet = workbook.addWorksheet(exam.exam_name)
+
+      worksheet.columns = [
+        {header: "NIS", key: "nis", width:20},
+        {header: "Nama Siswa", key: "username", width:20},
+        {header: "Kelas", key: "class"},
+        {header: "Jurusan", key: "major", width:20},
+        {header: "Ujian", key: "exam_name", width:20},
+        {header: "KKM", key: "kkm", width:5},
+        {header: "Nilai 1", key: "point1", width:7},
+        {header: "Nilai 2", key: "point2", width:7},
+      ]
+
+      for (const user of usersFilterKelas) {
+        let Exams = (await user.getExams());
+        
+        let point = Exams.length !== 0 ? JSON.parse(Exams[0].StudentExam.point) : null
+        
+        
+        
     
-      return columnName;
-    }
-    
-    // Loop untuk menambahkan border ke setiap sel
-    for (let i = 0; i <= rowCount; i++) {
-      for (let j = 0; j < columnCount; j++) {
-        const cellRef = getExcelColumnLetter(j) + i;
-        const cell = worksheet.getCell(cellRef);
-        cell.border = {
-          top: { style: 'medium' },
-          left: { style: 'medium' },
-          bottom: { style: 'medium' },
-          right: { style: 'medium' },
+        let data = {
+          nis: user.nis.slice(4),
+          username: user.username,
+          class: user.class,
+          major: user.major,
+          exam_name: Exams.length !== 0 && Exams[index] ? Exams[index].exam_name : "Belum mengambil ujian",
+          kkm: Exams.length !== 0 && Exams[index] ? Exams[index].kkm_point : "-",
+          point1: Exams.length !== 0 && point && Exams[index] ? point[0].point : "-",
+          point2: Exams.length !== 0 && point && Exams[index] ? point[1].point : "-",
         };
+        worksheet.addRow(data);
       }
+      
+    
+      worksheet.getRow(1).eachCell((cell) => {
+        cell.font = { bold: true };
+        cell.fill = {
+          type: 'pattern',
+          pattern:'solid',
+          fgColor:{argb: "ff8000"}
+        };
+      });
+      // Mendapatkan jumlah baris dan kolom dalam worksheet
+      const rowCount = worksheet.rowCount;
+      const columnCount = worksheet.columnCount;
+
+      // Loop untuk menambahkan border ke setiap sel
+      function getExcelColumnLetter(colNumber) {
+        let dividend = colNumber + 1;
+        let columnName = '';
+      
+        while (dividend > 0) {
+          const modulo = (dividend - 1) % 26;
+          columnName = String.fromCharCode(65 + modulo) + columnName;
+          dividend = Math.floor((dividend - modulo) / 26);
+        }
+      
+        return columnName;
+      }
+      
+      // Loop untuk menambahkan border ke setiap sel
+      for (let i = 0; i <= rowCount; i++) {
+        for (let j = 0; j < columnCount; j++) {
+          const cellRef = getExcelColumnLetter(j) + i;
+          const cell = worksheet.getCell(cellRef);
+          cell.border = {
+            top: { style: 'medium' },
+            left: { style: 'medium' },
+            bottom: { style: 'medium' },
+            right: { style: 'medium' },
+          };
+        }
+      }
+
+      worksheet.getColumn(6).alignment = {horizontal:"center"}
+      worksheet.getColumn(7).alignment = {horizontal:"center"}
+      worksheet.getColumn(8).alignment = {horizontal:"center"}
+    
     }
 
-    worksheet.getColumn(6).alignment = {horizontal:"center"}
-    worksheet.getColumn(7).alignment = {horizontal:"center"}
-    worksheet.getColumn(8).alignment = {horizontal:"center"}
+
+    try {
+      await workbook.xlsx.writeFile(`${filePath}/${req.body.school_name}-${kelas}.xlsx`)
+      const excelData = fs.readFileSync(`${filePath}/${req.body.school_name}-${kelas}.xlsx`);
+      zip.file(`${req.body.school_name}-${kelas}.xlsx`, excelData)
+      fs.unlinkSync(`${filePath}/${req.body.school_name}-${kelas}.xlsx`);
+    } catch (error) {
+      return res.send(error)
+    }
+
+  }
+  
+  try {
+    zip.generateNodeStream({ type: 'nodebuffer', streamFiles: true })
+      .pipe(fs.createWriteStream(`${filePath}/${req.body.school_name}.zip`))
+      .on('finish', function () {
+          res.json({
+            downloadLink: `files/exports/${req.body.school_name}.zip`
+          })
+      });
+  } catch (error) {
     
   }
-
-  try {
-    const data = await workbook.xlsx.writeFile(`${filePath}/nilai-siswa.xlsx`)
-   .then(() => {
-     res.send({
-       status: "success",
-       message: "file successfully downloaded",
-       path: `${path}/nilai-siswa.xlsx`,
-      });
-   });
-  } catch (error) {
-    res.send(error)
-  }
-
 }
 
 export async function UpdateLoginStatus(req:Request, res:Response) {
