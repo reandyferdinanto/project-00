@@ -100,7 +100,6 @@ export async function ExportCSV(req:Request, res:Response) {
 
     for (const [index,exam] of Exams.entries()) {
       const worksheet = workbook.addWorksheet(exam.exam_name)
-
       worksheet.columns = [
         {header: "NIS", key: "nis", width:20},
         {header: "Nama Siswa", key: "username", width:20},
