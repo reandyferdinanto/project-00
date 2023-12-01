@@ -10,7 +10,7 @@ const router = express_1.default.Router();
 router.get("/", examController_1.GetAllExam);
 router.get("/:id", examController_1.GetExamById);
 router.post("/", JWT_1.validateTokenAPI, examController_1.AddExam);
-router.put("/", JWT_1.validateTokenAPI, examController_1.UpdateExam);
-router.delete("/", JWT_1.validateTokenAPI, examController_1.DeleteExam);
+router.put("/:id", JWT_1.validateTokenAPI, examController_1.UpdateExam);
+router.delete("/:id", JWT_1.validateTokenAPI, examController_1.DeleteExam);
 exports.default = router;
 //# sourceMappingURL=examRoute.js.map

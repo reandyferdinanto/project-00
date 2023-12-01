@@ -14,6 +14,7 @@ const Admin_1 = __importDefault(require("../../models/Admin"));
 const Metric_1 = __importDefault(require("../../models/Metric"));
 const MetricSchool_1 = __importDefault(require("../../models/MetricSchool"));
 const exceljs_1 = __importDefault(require("exceljs"));
+const jszip_1 = __importDefault(require("jszip"));
 let RowCount = 0;
 async function UploadCSV(req, res) {
     const CORRECT_HEADER = ["username", "class", "nis", "major", "gender"];
@@ -76,52 +77,102 @@ async function UploadCSV(req, res) {
 }
 exports.UploadCSV = UploadCSV;
 async function ExportCSV(req, res) {
-    const userData = [];
-    const users = await Student_1.default.findAll({ where: { school_id: req.body.school_id }, include: Exam_1.default });
-    const workbook = new exceljs_1.default.Workbook();
-    const worksheet = workbook.addWorksheet("Nilai Siswa");
+    // HIRARKI
+    // Kelas + Jurusan (Nama FIle) || Nama Ujian (Worksheet) -> Nilai nilai (Row)
     const filePath = path_1.default.join(__dirname, "..", "..", "..", "public", "files", "exports");
-    worksheet.columns = [
-        { header: "NIS", key: "nis" },
-        { header: "Nama Siswa", key: "username" },
-        { header: "Kelas", key: "class" },
-        { header: "Jurusan", key: "major" },
-        { header: "Ujian", key: "exam_name" },
-        { header: "KKM", key: "kkm" },
-        { header: "Nilai 1", key: "point1" },
-        { header: "Nilai 2", key: "point2" },
-    ];
-    for (const user of users) {
-        let Exams = (await user.getExams());
-        let point = JSON.parse(Exams[0].StudentExam.point);
-        let data = {
-            nis: user.nis,
-            username: user.username,
-            class: user.class,
-            major: user.major,
-            exam_name: Exams.length !== 0 ? Exams[0].exam_name : "",
-            kkm: Exams.length !== 0 ? Exams[0].kkm_point : "",
-            point1: Exams.length !== 0 && point ? point[0].point : "",
-            point2: Exams.length !== 0 && point ? point[1].point : "",
-        };
-        worksheet.addRow(data);
+    const zip = new jszip_1.default();
+    const Users = await Student_1.default.findAll({ where: { school_id: req.body.school_id }, include: Exam_1.default });
+    const Exams = await Exam_1.default.findAll({ where: { school_id: req.body.school_id } });
+    const registeredClass = [...new Set(Users.map(item => item.class))];
+    for (const [_, kelas] of registeredClass.entries()) {
+        const usersFilterKelas = Users.filter(user => user.class == kelas);
+        const workbook = new exceljs_1.default.Workbook();
+        for (const [index, exam] of Exams.entries()) {
+            const worksheet = workbook.addWorksheet(exam.exam_name);
+            worksheet.columns = [
+                { header: "NIS", key: "nis", width: 20 },
+                { header: "Nama Siswa", key: "username", width: 20 },
+                { header: "Kelas", key: "class" },
+                { header: "Jurusan", key: "major", width: 20 },
+                { header: "Ujian", key: "exam_name", width: 20 },
+                { header: "KKM", key: "kkm", width: 5 },
+                { header: "Nilai 1", key: "point1", width: 7 },
+                { header: "Nilai 2", key: "point2", width: 7 },
+            ];
+            for (const user of usersFilterKelas) {
+                let Exams = (await user.getExams());
+                let point = Exams.length !== 0 ? JSON.parse(Exams[0].StudentExam.point) : null;
+                let data = {
+                    nis: user.nis.slice(4),
+                    username: user.username,
+                    class: user.class,
+                    major: user.major,
+                    exam_name: Exams.length !== 0 && Exams[index] ? Exams[index].exam_name : "Belum mengambil ujian",
+                    kkm: Exams.length !== 0 && Exams[index] ? Exams[index].kkm_point : "-",
+                    point1: Exams.length !== 0 && point && Exams[index] ? point[0].point : "-",
+                    point2: Exams.length !== 0 && point && Exams[index] ? point[1].point : "-",
+                };
+                worksheet.addRow(data);
+            }
+            worksheet.getRow(1).eachCell((cell) => {
+                cell.font = { bold: true };
+                cell.fill = {
+                    type: 'pattern',
+                    pattern: 'solid',
+                    fgColor: { argb: "ff8000" }
+                };
+            });
+            // Mendapatkan jumlah baris dan kolom dalam worksheet
+            const rowCount = worksheet.rowCount;
+            const columnCount = worksheet.columnCount;
+            // Loop untuk menambahkan border ke setiap sel
+            function getExcelColumnLetter(colNumber) {
+                let dividend = colNumber + 1;
+                let columnName = '';
+                while (dividend > 0) {
+                    const modulo = (dividend - 1) % 26;
+                    columnName = String.fromCharCode(65 + modulo) + columnName;
+                    dividend = Math.floor((dividend - modulo) / 26);
+                }
+                return columnName;
+            }
+            // Loop untuk menambahkan border ke setiap sel
+            for (let i = 0; i <= rowCount; i++) {
+                for (let j = 0; j < columnCount; j++) {
+                    const cellRef = getExcelColumnLetter(j) + i;
+                    const cell = worksheet.getCell(cellRef);
+                    cell.border = {
+                        top: { style: 'medium' },
+                        left: { style: 'medium' },
+                        bottom: { style: 'medium' },
+                        right: { style: 'medium' },
+                    };
+                }
+            }
+            worksheet.getColumn(6).alignment = { horizontal: "center" };
+            worksheet.getColumn(7).alignment = { horizontal: "center" };
+            worksheet.getColumn(8).alignment = { horizontal: "center" };
+        }
+        try {
+            await workbook.xlsx.writeFile(`${filePath}/${req.body.school_name}-${kelas}.xlsx`);
+            const excelData = fs_1.default.readFileSync(`${filePath}/${req.body.school_name}-${kelas}.xlsx`);
+            zip.file(`${req.body.school_name}-${kelas}.xlsx`, excelData);
+            fs_1.default.unlinkSync(`${filePath}/${req.body.school_name}-${kelas}.xlsx`);
+        }
+        catch (error) {
+            return res.send(error);
+        }
     }
-    worksheet.getRow(1).eachCell((cell) => {
-        cell.font = { bold: true };
-    });
     try {
-        const data = await workbook.xlsx.writeFile(`${filePath}/nilai-siswa.xlsx`)
-            .then(() => {
-            console.log(data);
-            res.send({
-                status: "success",
-                message: "file successfully downloaded",
-                path: `${path_1.default}/nilai-siswa.xlsx`,
+        zip.generateNodeStream({ type: 'nodebuffer', streamFiles: true })
+            .pipe(fs_1.default.createWriteStream(`${filePath}/${req.body.school_name}.zip`))
+            .on('finish', function () {
+            res.json({
+                downloadLink: `files/exports/${req.body.school_name}.zip`
             });
         });
     }
     catch (error) {
-        res.send(error);
     }
 }
 exports.ExportCSV = ExportCSV;

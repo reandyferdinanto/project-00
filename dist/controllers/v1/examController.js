@@ -178,7 +178,11 @@ async function AddExam(req, res) {
 exports.AddExam = AddExam;
 async function UpdateExam(req, res) {
     try {
+        const examId = req.params.id;
         let { exam_type, exam_name, kkm_point, available_try, question_text, correct_answer, question_type, card_answers, allImage } = req.body;
+        let card_answer_index = 0;
+        card_answers = JSON.parse(card_answers);
+        let question_id = req.body.question_unique_id.split(",");
         allImage = allImage.split(',');
         // DELETE FILE NOT USED
         const filePath = path_1.default.join(__dirname, '..', '..', '..', 'public', 'files', 'uploads');
@@ -202,30 +206,17 @@ async function UpdateExam(req, res) {
         else {
             console.log('No files to delete.');
         }
-        let card_answer_index = 0;
-        card_answers = JSON.parse(card_answers);
-        let question_id = req.body.question_unique_id.split(",");
-        let all_question_id = req.body.all_question_id.split(",");
         // cari exam untuk prev data
-        const exam = await Exam_1.default.findOne({
-            where: {
-                unique_id: req.body.exam_unique_id,
-            },
-        });
+        const exam = await Exam_1.default.findByPk(examId);
         if (!exam)
             return (0, response_1.default)(400, "exam not found", [], res);
-        await Exam_1.default.update({
-            exam_name: exam_name !== null ? exam_name : exam.exam_name,
-            exam_type: exam_type !== null ? exam_type : exam.exam_type,
-            kkm_point: kkm_point !== null ? kkm_point : exam.kkm_point,
-            available_try: available_try !== null ? available_try : exam.available_try,
-        }, {
-            where: {
-                unique_id: req.body.exam_unique_id,
-            },
+        exam.update({
+            exam_name: exam_name,
+            exam_type: exam_type,
+            kkm_point: kkm_point,
+            available_try: available_try,
         });
         // daftarkan siswa ke ujian atau hapus siswa dari ujain
-        let exam_unique_id = req.body.exam_unique_id;
         let siswa_on = Object.keys(req.body).filter((key) => {
             return req.body[key] === "on";
         });
@@ -233,14 +224,12 @@ async function UpdateExam(req, res) {
             return req.body[key] === "off";
         });
         siswa_on.forEach(async (siswa_id) => {
-            let exam = await Exam_1.default.findByPk(exam_unique_id);
             let user = await Student_1.default.findByPk(siswa_id);
             if (!(await exam.hasStudent(user))) {
                 await exam.addStudent(user);
             }
         });
         siswa_off.forEach(async (siswa_id) => {
-            let exam = await Exam_1.default.findByPk(exam_unique_id);
             let user = await Student_1.default.findByPk(siswa_id);
             if (await exam.hasStudent(user)) {
                 await exam.removeStudent(user);
@@ -251,61 +240,64 @@ async function UpdateExam(req, res) {
         if (Array.isArray(question_text)) {
             question_type = question_type.split(',');
             let question_with_img = req.body.index_deleted.split(",");
-            let count = 0;
-            let answer_count = 0;
-            const bulkNewBody = await Promise.all(question_id.map(async (quest_id, index) => {
+            let imgCounter = 0;
+            let answerCounter = 0;
+            let a = req.body.all_question_id.split(',');
+            let b = req.body.question_unique_id.split(',');
+            const valuesNotInB = a.filter(value => !b.includes(value));
+            await Question_1.default.destroy({ where: { unique_id: valuesNotInB } });
+            for (const [index, questId] of question_id.entries()) {
                 const question_image = req.files.filter((item) => item.fieldname === `question_img`);
                 let img = "";
                 if (question_with_img.includes(index.toString())) {
-                    img = `${req.protocol + "://" + req.get("host")}/files/uploads/${question_image[count].filename}`;
-                    count += 1;
+                    img = `${req.protocol + "://" + req.get("host")}/files/uploads/${question_image[index].filename}`;
+                    imgCounter += 1;
                 }
                 else {
                     img = null;
                 }
                 if (question_type[index] === "pilihan_ganda") {
                     // HANDLE IMAGE
-                    const filteredData = req.files.filter((item, idx) => {
-                        return item.fieldname.startsWith("answer_image_");
-                    });
-                    let answers = [Array.isArray(correct_answer) ? correct_answer[answer_count] : correct_answer, ...req.body.wrong_answer.slice(answer_count * 4, (answer_count + 1) * 4)];
-                    let pilgan_answers = answers.map((ans, index_ans) => {
-                        let answer_img = filteredData.filter(item => {
-                            return item.fieldname == `answer_image_${index}${index_ans}`;
-                        });
+                    const filteredData = req.files.filter(item => item.fieldname.startsWith("answer_image_"));
+                    let answers = [Array.isArray(correct_answer) ? correct_answer[answerCounter] : correct_answer, ...req.body.wrong_answer.slice(answerCounter * 4, (answerCounter + 1) * 4)];
+                    let updatePilgan = answers.map((ans, index_ans) => {
+                        let answer_img = filteredData.filter(item => item.fieldname == `answer_image_${index}${index_ans}`);
                         return {
                             index: index_ans,
                             answer: ans,
                             image: answer_img.length !== 0 ? `${req.protocol + "://" + req.get("host")}/files/uploads/${answer_img[0].filename}` : null
                         };
                     });
-                    answer_count += 1;
-                    return {
+                    let PILGANANSWER = await PilganAnswer_1.default.bulkCreate(updatePilgan);
+                    answerCounter += 1;
+                    let updateQuestion = {
                         question_text: question_text[index],
                         question_img: img,
-                        pilgan_answers: JSON.stringify(pilgan_answers),
                         question_type: question_type[index],
                     };
+                    const QUESTION = await Question_1.default.findByPk(questId);
+                    QUESTION.update(updateQuestion);
+                    await QUESTION.getPilgan_answers().then(pilgan => {
+                        pilgan.forEach(pil => pil.destroy());
+                    });
+                    QUESTION.setPilgan_answers(PILGANANSWER);
                 }
-                else if (question_type[index] == "kartu") {
-                    let newCradAnswers = JSON.stringify(card_answers[card_answer_index]);
-                    card_answer_index += 1;
-                    return ({
+                if (question_type[index] === "kartu") {
+                    let updateQuestion = {
                         question_text: question_text[index],
                         question_img: img,
-                        card_answers: newCradAnswers,
                         question_type: question_type[index],
-                    });
+                    };
+                    const QUESTION = await Question_1.default.findByPk(questId);
+                    QUESTION.update(updateQuestion);
+                    let card_answers_answers = card_answers[card_answer_index].answers;
+                    let Cardanswers = await QUESTION.getCard_answers();
+                    let card_answer_answers = await Cardanswers.getAnswers();
+                    card_answer_answers.forEach(answer => answer.destroy());
+                    let Cardansweranswer = await CardAnswerAnswer_1.default.bulkCreate(card_answers_answers);
+                    Cardanswers.setAnswers(Cardansweranswer);
                 }
-            }));
-            await Question_1.default.bulkCreate(bulkNewBody).then(async (result) => {
-                await Question_1.default.destroy({
-                    where: {
-                        unique_id: all_question_id,
-                    },
-                });
-                exam.setQuestions(result);
-            });
+            }
             // IF QUESTION == 1
         }
         else {
@@ -396,7 +388,8 @@ async function GetAllExam(req, res) {
 exports.GetAllExam = GetAllExam;
 async function DeleteExam(req, res) {
     try {
-        let { allImage, exam_unique_id, question_unique_id } = req.body;
+        const examId = req.params.id;
+        let { allImage, question_unique_id } = req.body;
         allImage = allImage.split(',');
         // DELETE FILE NOT USED
         const filePath = path_1.default.join(__dirname, '..', '..', '..', 'public', 'files', 'uploads');
@@ -428,17 +421,13 @@ async function DeleteExam(req, res) {
             },
         });
         // DELETE EXAM
-        if (!exam_unique_id)
+        if (!examId)
             return (0, response_1.default)(400, "body can't be undefined", [], res);
         // FIND USER AND DELETE
-        const exams = await Exam_1.default.destroy({
-            where: {
-                unique_id: exam_unique_id,
-            },
-        });
+        const exams = await Exam_1.default.destroy({ where: { unique_id: examId } });
         // CHECK IF USER IS NOT FOUND
         if (!exams)
-            return (0, response_1.default)(400, "cant find user with id:" + exam_unique_id, [], res);
+            return (0, response_1.default)(400, "cant find user with id:" + examId, [], res);
         (0, response_1.default)(200, "delete exam success", exams, res);
     }
     catch (error) {
