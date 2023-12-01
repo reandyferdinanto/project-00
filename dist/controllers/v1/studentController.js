@@ -168,82 +168,70 @@ const AuthStudent = async (req, res) => {
     let { nis, password } = req.body;
     try {
         let data;
-        await Student_1.default.findOne({
-            where: {
-                nis,
-            },
-        }).then(result => {
-            if (result) {
-                data = {
-                    unique_id: result.unique_id,
-                    username: result.username,
-                    nis: result.nis,
-                    class: result.class,
-                    major: result.major,
-                    role: result.role
-                };
-                if (result.password == password) {
-                    return res.json({
-                        ResultCode: 1,
-                        UserId: result.unique_id,
-                        Data: data,
-                    });
-                }
-                else {
-                    return res.json({
-                        ResultCode: 2,
-                        Message: "NIS and Password combination didn't match.",
-                        Status: "failed",
-                    });
-                }
-            }
-            else {
-                Admin_1.default.findOne({
-                    where: {
-                        nuptk: nis
-                    }
-                }).then(hasil => {
-                    if (hasil) {
-                        data = {
-                            unique_id: hasil.unique_id,
-                            username: hasil.username,
-                            role: hasil.role,
-                            email: hasil.email,
-                        };
-                        bcrypt_1.default.compare(password, hasil.password, function (err, match) {
-                            if (err) {
-                                return res.json({
-                                    ResultCode: 2,
-                                    Message: err,
-                                    Status: "failed",
-                                });
-                            }
-                            if (match) {
-                                return res.json({
-                                    ResultCode: 1,
-                                    UserId: hasil.unique_id,
-                                    Data: data,
-                                });
-                            }
-                            else if (!match) {
-                                return res.json({
-                                    ResultCode: 2,
-                                    Message: "NUPTK and Password combination didn't match.",
-                                    Status: "failed",
-                                });
-                            }
-                        });
-                    }
-                    else {
-                        return res.json({
-                            ResultCode: 2,
-                            Message: "All user not found.",
-                            Status: "failed",
-                        });
-                    }
+        let studentLogin = await Student_1.default.findOne({ where: { nis }, raw: true, attributes: { exclude: ["createdAt", "updatedAt"] } });
+        let adminLogin = await Admin_1.default.findOne({ where: { nuptk: nis }, raw: true, attributes: { exclude: ["createdAt", "updatedAt"] } });
+        if (!studentLogin && !adminLogin) {
+            res.json({
+                ResultCode: 2,
+                Message: "User not found.",
+                Status: "failed",
+            });
+        }
+        if (studentLogin) {
+            if (password == studentLogin.password) {
+                data = studentLogin;
+                res.json({
+                    ResultCode: 1,
+                    UserId: studentLogin.unique_id,
+                    Data: data,
                 });
             }
-        });
+            else {
+                res.json({
+                    ResultCode: 2,
+                    Message: "NIS and Password combination didn't match.",
+                    Status: "failed",
+                });
+            }
+        }
+        if (adminLogin) {
+            let passwordCorrect = await bcrypt_1.default.compare(password, adminLogin.password);
+            if (passwordCorrect) {
+                data = adminLogin;
+                res.json({
+                    ResultCode: 1,
+                    UserId: adminLogin.unique_id,
+                    Data: adminLogin,
+                });
+            }
+            else {
+                res.json({
+                    ResultCode: 2,
+                    Message: "NIS and Password combination didn't match.",
+                    Status: "failed",
+                });
+            }
+        }
+        if (data !== undefined) {
+            const METRIC = await Metric_1.default.findOne();
+            const METRICSCHOOL = await MetricSchool_1.default.findOne({ where: { school_id: data.school_id } });
+            METRIC.update({ total_login: METRIC.total_login + 1 });
+            METRIC.hasMetric_school(METRICSCHOOL).then(async (isHas) => {
+                if (!isHas) {
+                    let NEW_METRICSCHOOL = await MetricSchool_1.default.create({
+                        login_counter: 1,
+                        school_id: data.school_id,
+                        school_name: data.school_name
+                    });
+                    METRIC.addMetric_school(NEW_METRICSCHOOL);
+                }
+                else {
+                    METRICSCHOOL.update({
+                        login_counter: METRICSCHOOL.login_counter + 1
+                    });
+                }
+            });
+        }
     }
     catch (error) {
         res.json({
