@@ -659,7 +659,7 @@ setTimeout(function(){
       },
     });
   }, 5000)
-}, 180_000)
+}, 100)
 
 $.get("/api/v1/temp-form-data", function(result){
   let temp_data = result.TEMP_DATA.find(data => data.id == USER_ID)

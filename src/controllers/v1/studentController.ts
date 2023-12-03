@@ -10,6 +10,20 @@ import MetricSchool from "../../models/MetricSchool";
 
 export const GetAllStudent = async (req:Request, res:Response, next) => {
   try {
+    let studentQuery = req.query
+
+    if(Object.keys(studentQuery).length !== 0){
+      let students = await Student.findAll({attributes: { exclude: ["createdAt", "updatedAt", "password"] },include: [
+          {model: Exam, attributes: { exclude: ["createdAt", "updatedAt"] },
+          through: {
+            attributes: {exclude: ["createdAt", "updatedAt"]}}
+          },
+        ],
+        order: ["nis"]
+      });
+      return response(200, "showing all students", students, res);
+    }
+
     let students = await Student.findAll({attributes: { exclude: ["createdAt", "updatedAt", "password"] },include: [
         {model: Exam, attributes: { exclude: ["createdAt", "updatedAt"] },
         through: {

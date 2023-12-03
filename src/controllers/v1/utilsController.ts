@@ -112,22 +112,22 @@ export async function ExportCSV(req:Request, res:Response) {
       ]
 
       for (const user of usersFilterKelas) {
-        let Exams = (await user.getExams());
+        let Exams = (await user.getExams({where:{unique_id:exam.unique_id}}))[0];
+        console.log(user.username);
+        console.log(exam.exam_name);
         
-        let point = Exams.length !== 0 ? JSON.parse(Exams[0].StudentExam.point) : null
+        let point = Exams ? JSON.parse(Exams.StudentExam.point) : null        
         
         
-        
-    
         let data = {
           nis: user.nis.slice(4),
           username: user.username,
           class: user.class,
           major: user.major,
-          exam_name: Exams.length !== 0 && Exams[index] ? Exams[index].exam_name : "Belum mengambil ujian",
-          kkm: Exams.length !== 0 && Exams[index] ? Exams[index].kkm_point : "-",
-          point1: Exams.length !== 0 && point && Exams[index] ? point[0].point : "-",
-          point2: Exams.length !== 0 && point && Exams[index] ? point[1].point : "-",
+          exam_name: Exams ? Exams.exam_name : "Belum mengambil ujian",
+          kkm: Exams ? Exams.kkm_point : "-",
+          point1: Exams && point && point[0] ? +point[0].point : "-",
+          point2: Exams && point && point[1] ? +point[1].point : "-",
         };
         worksheet.addRow(data);
       }

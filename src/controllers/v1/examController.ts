@@ -27,10 +27,13 @@ export async function AddExam(req, res) {
       school_name
     } = req.body;
 
-    // const USER_ID = req.user.id
-    // TempData = TempData.filter(function( obj ) {
-    //   return obj.id !== USER_ID;
-    // });
+    const USER_ID = req.user.id
+    for (let i = 0; i < TempData.length; i++) {
+      if (TempData[i].id === USER_ID) {
+        TempData.splice(i, 1);
+        i--;
+      }
+    }
 
     let card_answer_index = 0;
     card_answers = JSON.parse(card_answers);
