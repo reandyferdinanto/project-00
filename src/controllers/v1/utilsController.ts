@@ -113,9 +113,6 @@ export async function ExportCSV(req:Request, res:Response) {
 
       for (const user of usersFilterKelas) {
         let Exams = (await user.getExams({where:{unique_id:exam.unique_id}}))[0];
-        console.log(user.username);
-        console.log(exam.exam_name);
-        
         let point = Exams ? JSON.parse(Exams.StudentExam.point) : null        
         
         

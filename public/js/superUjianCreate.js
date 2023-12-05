@@ -17,6 +17,10 @@ $('form').bind("keypress", function(e) {
   }
 });
 
+$("#confirm-popup button").click(function(){
+  window.location = "/topik"
+})
+
 
     // get school user_id
 let USER_ID = $("#user_id").text()
@@ -44,7 +48,8 @@ $("#form-topik-create").on("submit", function (e) {
     processData: false,
     success: function (response) {
       if (response.status_code == 201) {
-        window.location = "/topik"
+        $(".delete-popup").addClass("hidden")
+        $("#confirm-popup").removeClass("hidden")
       }
     },
     error: function (data, status, error) {

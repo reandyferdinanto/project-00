@@ -18,17 +18,7 @@
         <div class="main-title">
           <p class="text-main font-bold text-2xl mt-3">Mengubah Ujian</p>
           <form action="" id="form-hapus-ujian">
-            <button type="button" id="selesai-hapus" class="text-sm rounded-lg">Hapus Ujian</button>
-            <div class="submit-hapus">
-              <div class="submit-question">
-                <img src="/img/warning-alt.png" alt="" width="150" />
-                <p class="my-3">Apakah anda yakin ingin menghapus ujian?</p>
-                <div class="submit-buttons mt-4">
-                  <button class="ubah-button" type="button">Batal</button>
-                  <button class="selesai-button" type="submit">Hapus</button>
-                </div>
-              </div>
-            </div>
+            <button type="button" id="button-delete" class="text-sm rounded-lg py-2 px-10 text-white mt-10 bg-red-500">Hapus Ujian</button>
           </form>
         </div>
         <!-- HAPUS UJIAN START -->
@@ -59,30 +49,7 @@
               </div>
             </div>
           </div>
-          <!-- EXAM END -->
-
-          <!-- SUBMIT LAYER START -->
-          <div class="submit-layer">
-            <div class="submit-question">
-              <img src="/img/warning-alt.png" alt="" width="150" />
-              <p class="text-sm my-3">Apakah anda yakin ingin mengubah data tersebut ?</p>
-              <div class="submit-buttons mt-4">
-                <button class="ubah-button" type="button">Ubah</button>
-                <button class="selesai-button" type="submit">Selesai</button>
-              </div>
-            </div>
-          </div>
-          <!-- SUBMIT LAYER END -->
-
-          <!-- WARNING LAYER START -->
-          <div class="file-layer">
-            <div class="file-toolarge">
-              File terlalu besar <br />
-              max: 200kb
-              <button>Ok</button>
-            </div>
-          </div>
-          <!-- WARNING LAYER END -->
+          
 
           <div class="questions-box">
             <div class="questions"></div>
@@ -112,24 +79,53 @@
                   <th><input type="checkbox" name="" id="selectAll" /></th>
                 </thead>
               </table>
-              <!-- <button class="assign-table-button">Simpan Perubahan</button> -->
             </div>
           </div>
+
+
+
+          <section id="popup" class="bg-[#000]/50 fixed top-0 bottom-0 right-0 left-0 flex items-center hidden z-10">
+            <div id="submit-popup" class="w-[50%] bg-white m-auto flex flex-col items-center py-20 rounded-2xl hidden">
+              <img src="/img/warning-alt.png" alt="" width="120px">
+              <p class="text-sm my-3">Apakah anda yakin ingin membuat data tersebut ?</p>
+              <div class="mt-4 flex gap-4">
+                <button type="button" class="button-batal py-1.5 px-8 bg-red-500 text-white rounded-full text-sm">Batal</button>
+                <button type="submit" class="button-selesai py-1.5 px-8 bg-main text-white rounded-full text-sm">Selesai</button>
+              </div>
+            </div>
+  
+            <div id="delete-popup" class="w-[50%] bg-white m-auto flex flex-col items-center py-20 rounded-2xl hidden">
+              <img src="/img/warning-alt.png" alt="" width="120px">
+              <p class="text-sm my-3">Apakah anda yakin ingin menghapus data ini ?</p>
+              <div class="mt-4 flex gap-4">
+                <button type="button" class="button-batal py-1.5 px-8 bg-red-500 text-white rounded-full text-sm">Batal</button>
+                <button type="button" class="button-hapus py-1.5 px-8 bg-main text-white rounded-full text-sm">Hapus</button>
+              </div>
+            </div>
+  
+            <div id="file-large-popup" class="w-[20%] bg-white m-auto flex flex-col items-center py-10 rounded-2xl gap-2 hidden">
+              <div class="flex flex-col items-center">
+                <p class="text-sm">File terlalu besar</p>
+                <p class="text-slate-500">max: 1MB</p>
+              </div>
+              <button type="button" class="py-1.5 px-8 bg-main text-white rounded-full text-sm mt-4">OK</button>
+            </div>
+  
+            <div id="confirm-popup" class="w-[30%] bg-white m-auto flex flex-col items-center py-10 rounded-2xl gap-2 hidden">
+              <img src="/img/check.png" width="70" alt="">
+              <p class="text-sm">Data berhasil diubah</p>
+              <button type="button" class="py-1.5 px-8 bg-main text-white rounded-full text-sm mt-4">OK</button>
+            </div>
+  
+            <div id="confirm-hapus-popup" class="w-[30%] bg-white m-auto flex flex-col items-center py-10 rounded-2xl gap-2 hidden">
+              <img src="/img/check.png" width="70" alt="">
+              <p class="text-sm">Data berhasil dihapus</p>
+              <button type="button" class="py-1.5 px-8 bg-main text-white rounded-full text-sm mt-4">OK</button>
+            </div>
+          </section>
         </form>
-        <div class="complete-layer">
-          <div class="complete-background">
-            <img src="/img/check.png" width="50" alt="" />
-            <p>Ujian berhasil diubah</p>
-            <button type="button" id="complete-upload">OK</button>
-          </div>
-        </div>
-        <div class="complete-layer-hapus">
-          <div class="complete-background">
-            <img src="/img/check.png" width="50" alt="" />
-            <p>Ujian berhasil dihapus</p>
-            <button type="button" id="complete-hapus">OK</button>
-          </div>
-        </div>
+
+
 
       </div>
     </div>

@@ -22,6 +22,10 @@ $("#button-batal").click(function(){
   $("#popup").addClass("hidden")
 });
 
+$("#confirm-popup button").click(function(){
+  window.location = "/siswa"
+})
+
 
 // GET URL
 let user_data;
@@ -93,7 +97,8 @@ $("#form-siswa-edit").submit(function(e){
     processData: false,
     success: function (response) {
       if (response.status_code == 200) {
-        window.location = "/siswa"
+        $(".delete-popup").addClass("hidden")
+        $("#confirm-popup").removeClass("hidden")
       }
     },
     error: function (data, status, error) {

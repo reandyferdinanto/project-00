@@ -321,30 +321,8 @@ $(document).ready(() => {
     })
   });
   $(".main-background").on("click", "#selesai", () => {
-    $(".submit-layer").css("visibility", "visible");
-  });
-  $(".ubah-button").on("click", () => {
-    $(".submit-layer").css("visibility", "hidden");
-  });
-
-  $(".main-background").on("click", "#selesai-hapus", () => {
-    $(".submit-hapus").css("visibility", "visible");
-  });
-  $(".ubah-button").on("click", () => {
-    $(".submit-hapus").css("visibility", "hidden");
-  });
-
-  $(".file-toolarge button").on("click", (e) => {
-    e.preventDefault();
-    $(".file-layer").css("visibility", "hidden");
-  });
-  $("#complete-upload").on("click", function (e) {
-    e.preventDefault();
-    window.location = "/ujian";
-  });
-  $("#complete-hapus").on("click", function (e) {
-    e.preventDefault();
-    window.location = "/ujian";
+    $("#popup").removeClass("hidden")
+    $("#submit-popup").removeClass("hidden")
   });
   $(".main-background").on("click", ".answer-card-add", function () {
     $(
@@ -526,10 +504,65 @@ $(document).ready(() => {
     $(this).closest(".display_image_answer").html("");
   });
 
+
+  $("#button-delete").click(function(){
+    $("#popup").removeClass('hidden')
+    $("#delete-popup").removeClass('hidden')
+  })
+  $("#delete-popup .button-hapus").click(function(){
+    $("#form-hapus-ujian").submit(function(e){
+      e.preventDefault()
+      let formData = new FormData(manualForm);
+      formData.append("allImage", allImage);
+      formData.append("question_unique_id", question_id);
+      $.ajax({
+        url: `/api/v1/exams/${unique_id}`,
+        type: "DELETE",
+        data: formData,
+        contentType: false,
+        enctype: "multipart/form-data",
+        processData: false,
+        success: function (response) {
+          if (response.status_code == 200) {
+            $("#delete-popup").addClass("hidden")
+            $("#confirm-hapus-popup").removeClass("hidden")
+          } else if (response.message == "you're not authenticated") {
+            window.location = "/login";
+          }
+        },
+        error: function (data, status, error) {
+          $(`<div class="bg-red-500/70 fixed top-8 left-1/2 -translate-x-1/2 min-w-[400px] text-center py-1.5 rounded-lg border border-red-900 text-[#000] text-sm">${status}: ${data.responseJSON.error}</div>`)
+            .insertBefore("#admin-page")
+            .delay(3000)
+            .fadeOut("slow", function () {
+              $(this).remove();
+            });
+        },
+      });
+    })
+    $("#form-hapus-ujian").submit()
+  })
+  $("#delete-popup .button-batal").click(function(){
+    $("#popup").addClass("hidden")
+    $("#delete-popup").addClass("hidden")
+  })
+  $("#confirm-hapus-popup button").click(function(){
+    window.location = '/ujian'
+  })
+
+  $("#submit-popup .button-batal").click(function(){
+    $("#popup").addClass("hidden")
+    $("#submit-popup").addClass("hidden")
+  })
+
+  $("#confirm-popup button").click(function(){
+    window.location = "/ujian"
+  })
+
   // UPDATE FORM SUBMIT
-  const manualForm = document.getElementById("form-submit-exam");
-  manualForm.addEventListener("submit", (e) => {
-    let formData = new FormData(manualForm);
+  $("#form-submit-exam").on("submit", function (e) {
+    e.preventDefault();
+    let formData = new FormData(this);
     formData.append("exam_unique_id", unique_id);
     formData.append("question_unique_id", question_id);
     formData.append("all_question_id", all_question_id);
@@ -537,56 +570,24 @@ $(document).ready(() => {
     formData.append("card_answers", JSON.stringify(allDataArray));
     formData.append("question_type", question_type)
     formData.append("allImage", allImage)
-    e.preventDefault();
+  
     $.ajax({
       url: `/api/v1/exams/${unique_id}`,
       type: "PUT",
-      data: formData,
-      async: false,
-      cache: false,
-      contentType: false,
-      encrypt: "multipart/form-data",
-      processData: false,
-      success: (response) => {
-        $(".submit-layer").css("visibility", "hidden");
-        if (response.status_code == 200) {
-          $(".complete-layer").removeClass("hide");
-          $(".complete-layer").css("visibility", "visible");
-        } else if (response.message == "you're not authenticated") {
-          window.location = "/login";
-        }
-      },
-    });
-  });
-
-
-
-
-  $("#form-hapus-ujian").on("submit", function (e) {
-    e.preventDefault();
-    const formData = new FormData(this);
-    formData.append("question_unique_id", question_id);
-    formData.append("allImage", allImage)
-
-    $.ajax({
-      url: `/api/v1/exams/${unique_id}`,
-      type: "DELETE",
       data: formData,
       contentType: false,
       enctype: "multipart/form-data",
       processData: false,
       success: function (response) {
-        $(".submit-hapus").css("visibility", "hidden");
         if (response.status_code == 200) {
-          $(".complete-layer-hapus").removeClass("hide");
-          $(".complete-layer-hapus").css("visibility", "visible");
-        } else if (response.message == "you're not authenticated") {
-          window.location = "/login";
+          $("#submit-popup").addClass("hidden")
+          $("#confirm-popup").removeClass("hidden")
         }
       },
       error: function (data, status, error) {
-        $(`<div class="bg-red-500/70 fixed top-8 left-1/2 -translate-x-1/2 min-w-[400px] text-center py-1.5 rounded-lg border border-red-900 text-[#000] text-sm">${status}: ${data.responseJSON.error}</div>`)
-          .insertBefore("#admin-page")
+        const ErrorMessage = `<div id="ErrorMessage" class="bg-red-500/80 fixed top-8 left-1/2 -translate-x-1/2 min-w-[400px] text-center py-1.5 rounded-lg border border-red-900 text-[#000] text-sm z-10">${status}: ${data.responseJSON.datas.error}</div>`
+        $("body").prepend(ErrorMessage)
+        $("#ErrorMessage")
           .delay(3000)
           .fadeOut("slow", function () {
             $(this).remove();
@@ -595,8 +596,10 @@ $(document).ready(() => {
     });
   });
 
- 
-
+  $("#file-large-popup button").click(function(){
+    $("#file-large-popup").addClass("hidden")
+    $("#popup").addClass("hidden")
+  })
 
 
 
@@ -676,12 +679,23 @@ $(document).ready(() => {
     question_with_img = []
     $(".input-file").each(function(idx){
       if($(this)[0].files[0]){
-        question_with_img.push(idx)
-        $(".display_image").eq(idx).css('display', 'flex')
-        $(".display_image").eq(idx).html(`
-          <img src="${URL.createObjectURL($(this)[0].files[0])}" alt="no img" />
-          <span title="Hapus Gambar" class="deleteImg"><i class="uil uil-times"></i></span>
-        `)
+        if($(this)[0].files[0].size < 1000000){
+          question_with_img.push(idx)
+          $(".display_image").eq(idx).css('display', 'flex')
+          $(".display_image").eq(idx).html(`
+            <img src="${URL.createObjectURL($(this)[0].files[0])}" alt="no img" />
+            <span title="Hapus Gambar" class="deleteImg"><i class="uil uil-times"></i></span>
+          `)
+        }else{
+          $(this).val("")
+          $("#popup").removeClass("hidden")
+          $("#file-large-popup").removeClass("hidden")
+          $(".display_image").eq(idx).css('display', 'flex')
+          $(".display_image").eq(idx).html(`
+            <img src="" alt="no img" />
+            <span title="Hapus Gambar" class="deleteImg"><i class="uil uil-times"></i></span>
+          `)
+        }
       };
     })
   }

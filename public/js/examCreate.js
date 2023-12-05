@@ -148,14 +148,16 @@ $(".main-background").on("click", ".delete-quest", function () {
   })
 });
 $(".main-background").on("click", "#selesai", () => {
-  $(".submit-layer").css("visibility", "visible");
+  $(".delete-popup").removeClass("hidden")
+  $("#popup").removeClass("hidden")
 });
 $(".ubah-button").on("click", () => {
   $(".submit-layer").css("visibility", "hidden");
 });
-$(".file-toolarge button").on("click", (e) => {
+$("#file-large-popup button").on("click", (e) => {
   e.preventDefault();
-  $(".file-layer").css("visibility", "hidden");
+  $("#file-large-popup").addClass("hidden")
+  $("#popup").addClass("hidden")
 });
 $(".main-background").on("mouseover", ".answer-card", function () {
   $(this).find(".delete-card").css("visibility", "visible");
@@ -301,6 +303,13 @@ $(".main-background").on("change", ".answer-card input", function () {
   }
 });
 
+$("#button-batal").click(function(){ 
+  $("#popup").addClass("hidden")
+});
+$("#confirm-popup button").click(function(){
+  window.location = "/ujian"
+})
+
 // IMAGE INPUT
 $(".main-background").on("change", ".input-file", function () {
   let input_file = document.querySelectorAll(".input-file");
@@ -316,7 +325,11 @@ $(".main-background").on("change", ".input-file", function () {
         document.querySelectorAll(".display_image")[index].style.display =
           "flex";
       } else {
-        $(".file-layer").css("visibility", "visible");
+        $("#popup").removeClass("hidden")
+        $(".delete-popup").addClass("hidden")
+        $("#file-large-popup").removeClass("hidden")
+        input_file[index].value = ""
+        console.log(input_file[index].files[0]);
       }
     }
   });
@@ -405,8 +418,8 @@ manualForm.addEventListener("submit", (e) => {
     success: (response) => {
       $(".submit-layer").css("visibility", "hidden");
       if (response.status_code == 200) {
-        $(".complete-layer").removeClass("hide");
-        $(".complete-layer").css("visibility", "visible");
+        $(".delete-popup").addClass("hidden")
+        $("#confirm-popup").removeClass("hidden")
       } else if (response.message == "you're not authenticated") {
         window.location = "/login";
       }
@@ -659,7 +672,7 @@ setTimeout(function(){
       },
     });
   }, 5000)
-}, 100)
+}, 180_000)
 
 $.get("/api/v1/temp-form-data", function(result){
   let temp_data = result.TEMP_DATA.find(data => data.id == USER_ID)

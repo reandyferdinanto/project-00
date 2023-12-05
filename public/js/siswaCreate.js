@@ -23,6 +23,10 @@ $("input[type=file]").change(function () {
   }
 });
 
+$("#confirm-popup button").click(function(){
+  window.location = "/siswa"
+})
+
 // Fetch super admin school id and school name
 let USER_ID = $("#user_id").text()
 let SCHOOL_ID
@@ -48,7 +52,8 @@ $("#form-siswa-create").on("submit", function (e) {
     processData: false,
     success: function (response) {
       if (response.status_code == 201) {
-        window.location = "/siswa"
+        $(".delete-popup").addClass("hidden")
+        $("#confirm-popup").removeClass("hidden")
       }
     },
     error: function (data, status, error) {
@@ -78,7 +83,9 @@ $("#form-siswa-upload").submit(function(e){
     processData: false,
     success: function (response) {
       if (response.status_code == 201) {
-        window.location = "/siswa"
+        $("#popup").removeClass("hidden")
+        $(".delete-popup").addClass("hidden")
+        $("#confirm-popup").removeClass("hidden")
       }
     },
     error: function (data, status, error) {

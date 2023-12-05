@@ -31,6 +31,9 @@ $('form').bind("keypress", function(e) {
       return false;
   }
 });
+$("#confirm-popup button").click(function(){
+  window.location = "/admin"
+})
 
 // GET Admin unique Id dari URL
 const ADMIN_UNIQUE_ID = window.location.href.substring(window.location.href.lastIndexOf("/") + 1);
@@ -56,7 +59,8 @@ $("#form-admin-edit").on("submit", function (e) {
     processData: false,
     success: function (response) {
       if (response.status_code == 200) {
-        window.location = "/admin"
+        $(".delete-popup").addClass("hidden")
+        $("#confirm-popup").removeClass("hidden")
       }
     },
     error: function (data, status, error) {
@@ -84,7 +88,8 @@ $("#form-admin-edit-katasandi").on("submit", function (e) {
     processData: false,
     success: function (response) {
       if (response.status_code == 200) {
-        window.location = "/admin"
+        $("#popup-katasandi").addClass("hidden")
+        $("#confirm-popup").removeClass("hidden")
       }
     },
     error: function (data, status, error) {

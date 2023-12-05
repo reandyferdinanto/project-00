@@ -30,33 +30,32 @@
             />
         </div>
           <button class="main-create-question" id="add-question">Membuat Soal</button>
-          <div class="submit-layer">
-            <div class="submit-question">
-              <img src="/img/warning-alt.png" alt="" width="150" />
-              <p class="my-3">Apakah anda sudah yakin selesai?</p>
-              <div class="submit-buttons mt-4">
-                <button class="ubah-button" type="button">Ubah</button>
-                <button class="selesai-button" type="submit">Selesai</button>
+
+
+          <section id="popup" class="bg-[#000]/50 fixed top-0 bottom-0 right-0 left-0 flex items-center hidden z-10">
+            <div class="delete-popup w-[50%] bg-white m-auto flex flex-col items-center py-20 rounded-2xl">
+              <img src="/img/warning-alt.png" alt="" width="120px">
+              <p class="text-sm my-3">Apakah anda yakin ingin membuat data tersebut ?</p>
+              <div class="mt-4 flex gap-4">
+                <button type="button" id="button-batal" class="py-1.5 px-8 bg-red-500 text-white rounded-full text-sm">Batal</button>
+                <button type="submit" class="py-1.5 px-8 bg-main text-white rounded-full text-sm">Selesai</button>
               </div>
             </div>
-          </div>
 
-          
-          <div class="file-layer">
-            <div class="file-toolarge">
-              File terlalu besar <br />max: 1MB
-              <button>Ok</button>
+            <div id="file-large-popup" class="w-[20%] bg-white m-auto flex flex-col items-center py-10 rounded-2xl gap-2 hidden">
+              <div class="flex flex-col items-center">
+                <p class="text-sm">File terlalu besar</p>
+                <p class="text-slate-500">max: 1MB</p>
+              </div>
+              <button type="button" class="py-1.5 px-8 bg-main text-white rounded-full text-sm mt-4">OK</button>
             </div>
-          </div>
 
-
-          <div class="complete-layer">
-            <div class="complete-background">
-              <img src="/img/check.png" width="50" alt="" />
-              <p>Ujian berhasil diunggah</p>
-              <button type="button" id="complete-upload">OK</button>
+            <div id="confirm-popup" class="w-[30%] bg-white m-auto flex flex-col items-center py-10 rounded-2xl gap-2 hidden">
+              <img src="/img/check.png" width="70" alt="">
+              <p class="text-sm">Data berhasil ditambahkan</p>
+              <button type="button" class="py-1.5 px-8 bg-main text-white rounded-full text-sm mt-4">OK</button>
             </div>
-          </div>
+          </section>
         </form>
       </div>
     </div>

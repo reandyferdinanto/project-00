@@ -1,31 +1,31 @@
 getDate()
 
 $("#side-admin").addClass("sidelist-selected")
-  let first_intro = initializeIntro({
-    dontShowAgainCookie: "adminCreate_intro",
-    dontShowAgain: true,
-    dontShowAgainLabel: "Jangan tampilkan lagi",
-    tooltipClass: "customTooltip",
-    prevLabel: "Kembali",
-    nextLabel: "Lanjut",
-    doneLabel: "Selesai",
-    steps: [
-        {
-        title: "Tambah Admin",
-        intro: "Halaman ini berfungsi untuk menambahkan Admin baru ke dalam tabel",
+let first_intro = initializeIntro({
+  dontShowAgainCookie: "adminCreate_intro",
+  dontShowAgain: true,
+  dontShowAgainLabel: "Jangan tampilkan lagi",
+  tooltipClass: "customTooltip",
+  prevLabel: "Kembali",
+  nextLabel: "Lanjut",
+  doneLabel: "Selesai",
+  steps: [
+      {
+      title: "Tambah Admin",
+      intro: "Halaman ini berfungsi untuk menambahkan Admin baru ke dalam tabel",
+    },
+    {
+        element: "#bg-table-admin",
+        intro: "Super Admin dapat mengisi formulir ini bila ingin menambahkan Admin",
       },
       {
-          element: "#bg-table-admin",
-          intro: "Super Admin dapat mengisi formulir ini bila ingin menambahkan Admin",
+          element: "#button-selesai",
+          intro: "Apabila sudah selesai mengisi formulir dapat langsung menekan tombol selesai",
+          position: "left"
         },
-        {
-            element: "#button-selesai",
-            intro: "Apabila sudah selesai mengisi formulir dapat langsung menekan tombol selesai",
-            position: "left"
-          },
-        ],
-      });
-      first_intro.start();
+      ],
+    });
+    first_intro.start();
 
       
 $("#button-selesai").click(function(){ 
@@ -42,6 +42,10 @@ $('form').bind("keypress", function(e) {
     return false;
   }
 });
+
+$("#confirm-popup button").click(function(){
+  window.location = "/admin"
+})
       
       
 // Fetch super admin school id and school name
@@ -69,7 +73,8 @@ $("#form-admin-create").on("submit", function (e) {
     processData: false,
     success: function (response) {
       if (response.status_code == 201) {
-        window.location = "/admin"
+        $(".delete-popup").addClass("hidden")
+        $("#confirm-popup").removeClass("hidden")
       }
     },
     error: function (data, status, error) {

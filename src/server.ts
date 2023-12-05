@@ -22,7 +22,6 @@ const cspOptions = {
   },
 };
 
-var whitelist = ["https://dev.festivo.co/", "localhost:3000/"]
 var corsOptions = {
   origin: ['https://dev.festivo.co/'],
   optionsSuccessStatus: 200
@@ -86,20 +85,18 @@ import v1Router from './routers/v1Router';
 import Metric from "./models/Metric";
 
 // ERROR HANDLER
-// app.all("*", (req, res, next) => {
-//   const err = new Error(`can't find ${req.originalUrl} on the server!`);
-//   err.status = "fail";
-//   err.statusCode = 404;
-//   next(err);
-// });
-// app.use((error, req, res, next) => {
-//   error.statusCode = error.statusCode || 500;
-//   error.status = error.status || "error";
-//   res.status(error.statusCode).json({
-//     status: error.statusCode,
-//     message: error.message,
-//   });
-// });
+app.all("*", (req, res, next) => {
+  const err = new Error(`can't find ${req.originalUrl} on the server!`);
+  next(err);
+});
+app.use((error, req, res, next) => {
+  error.statusCode = error.statusCode || 404;
+  error.status = error.status || "error";
+  res.status(error.statusCode).json({
+    status: error.statusCode,
+    message: error.message,
+  });
+});
 
 let PORT = process.env.PORT || 3000;
 

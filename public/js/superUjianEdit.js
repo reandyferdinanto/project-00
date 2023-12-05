@@ -8,6 +8,9 @@ $("#button-selesai").on("click", () => {
 $("#button-batal").on("click", () => {
   $("#popup").addClass("hidden")
 });
+$("#confirm-popup button").click(function(){
+  window.location = "/topik"
+})
 
 // GET Admin unique Id dari URL
 let TOPIK_UNIQUE_ID = window.location.href.substring(window.location.href.lastIndexOf("/") + 1);
@@ -31,7 +34,8 @@ $("#form-topik-edit").on("submit", function (e) {
     processData: false,
     success: function (response) {
       if (response.status_code == 200) {
-        window.location = "/topik"
+        $(".delete-popup").addClass("hidden")
+        $("#confirm-popup").removeClass("hidden")
       }
     },
     error: function (data, status, error) {
