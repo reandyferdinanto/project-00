@@ -512,7 +512,7 @@ $(document).ready(() => {
   $("#delete-popup .button-hapus").click(function(){
     $("#form-hapus-ujian").submit(function(e){
       e.preventDefault()
-      let formData = new FormData(manualForm);
+      let formData = new FormData(this);
       formData.append("allImage", allImage);
       formData.append("question_unique_id", question_id);
       $.ajax({
