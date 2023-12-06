@@ -167,7 +167,6 @@ $(document).ready(() => {
         // Initialize Question Tipe Kartu
         if(question.question_type == "kartu"){
           let card_answers = question.card_answers
-          console.log(question);
           addMoreQuestion(question_card, index+1)
           $(".question").eq(index).find(".soal-text").val(question.question_text)
           card_answers.answers.reverse().forEach((card,idx) => {
@@ -642,8 +641,6 @@ $(document).ready(() => {
             answers: tempArray,
           });
         }
-
-        console.log(allDataArray);
       },
       update: function (event, ui) {
         const sortedElements = $(this).find("> .answer-card");

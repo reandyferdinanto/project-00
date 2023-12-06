@@ -7,6 +7,7 @@ exports.GetExamById = exports.DeleteExam = exports.GetAllExam = exports.UpdateEx
 const Exam_1 = __importDefault(require("../../models/Exam"));
 const Student_1 = __importDefault(require("../../models/Student"));
 const Question_1 = __importDefault(require("../../models/Question"));
+const TempData_1 = __importDefault(require("../../utils/TempData"));
 const response_1 = __importDefault(require("../response"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
@@ -18,10 +19,13 @@ const MetricSchool_1 = __importDefault(require("../../models/MetricSchool"));
 async function AddExam(req, res) {
     try {
         let { exam_type, exam_name, kkm_point, available_try, question_text, correct_answer, question_type, card_answers, answer_with_image, school_id, school_name } = req.body;
-        // const USER_ID = req.user.id
-        // TempData = TempData.filter(function( obj ) {
-        //   return obj.id !== USER_ID;
-        // });
+        const USER_ID = req.user.id;
+        for (let i = 0; i < TempData_1.default.length; i++) {
+            if (TempData_1.default[i].id === USER_ID) {
+                TempData_1.default.splice(i, 1);
+                i--;
+            }
+        }
         let card_answer_index = 0;
         card_answers = JSON.parse(card_answers);
         answer_with_image = JSON.parse(answer_with_image);

@@ -12,8 +12,14 @@
     <div class="main-content">
       <div class="main-background">
         <form id="submit-form">
-          <div class="main-title">
-          <p class="text-main font-bold text-2xl mt-4">Membuat Ujian Baru <span class="text-red-500 font-medium text-xs">* harus diisi</span></p>
+          <div class="main-title flex justify-between items-center">
+            <p class="text-main font-bold text-2xl mt-4">Membuat Ujian Baru <span class="text-red-500 font-medium text-xs">* harus diisi</span></p>
+            <div id="popup-autosave" class="flex gap-1 items-center bg-[#418DFF]/20 py-[3px] px-2.5 mt-auto rounded-lg hidden">
+              <p class="text-sm font-medium text-[#418DFF]">Sudah tersimpan di Cloud</p>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 48 48" fill="none">
+                <path d="M20.7 34L32 22.7L29.1 19.8L20.65 28.25L16.45 24.05L13.6 26.9L20.7 34ZM13 40C9.96667 40 7.375 38.95 5.225 36.85C3.075 34.75 2 32.1833 2 29.15C2 26.55 2.78333 24.2333 4.35 22.2C5.91667 20.1667 7.96667 18.8667 10.5 18.3C11.3333 15.2333 13 12.75 15.5 10.85C18 8.95 20.8333 8 24 8C27.9 8 31.2083 9.35833 33.925 12.075C36.6417 14.7917 38 18.1 38 22C40.3 22.2667 42.2083 23.2583 43.725 24.975C45.2417 26.6917 46 28.7 46 31C46 33.5 45.125 35.625 43.375 37.375C41.625 39.125 39.5 40 37 40H13Z" fill="#418DFF"/>
+              </svg>
+            </div>
           </div>
           <div class="main-input">
             <label for="" class="text-sm font-bold">Nama Ujian<span style="color: #ff4c4c"> *</span></label>

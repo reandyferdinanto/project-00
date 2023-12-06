@@ -105,7 +105,6 @@ async function UpdateAdmin(req, res) {
         let adminData = req.body;
         const adminId = req.params.id;
         let admin = await Admin_1.default.findByPk(adminId);
-        console.log(adminData);
         if (admin) {
             if (adminData.new_password) {
                 bcrypt_1.default.hash(adminData.new_password, 10).then((hash) => {

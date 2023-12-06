@@ -329,7 +329,6 @@ $(".main-background").on("change", ".input-file", function () {
         $(".delete-popup").addClass("hidden")
         $("#file-large-popup").removeClass("hidden")
         input_file[index].value = ""
-        console.log(input_file[index].files[0]);
       }
     }
   });
@@ -650,29 +649,10 @@ function displayQueuedImages() {
 
 
 
-
-
-setTimeout(function(){
-  setInterval(function(){
-    const form = document.getElementById("submit-form");
-    let formData = new FormData(form);
-    formData.append("card_answers", JSON.stringify(allDataArray));
-    formData.append("id", USER_ID)
-    $.ajax({
-      url: "/api/v1/temp-form-data",
-      type: "POST",
-      data: formData,
-      async: false,
-      cache: false,
-      contentType: false,
-      encrypt: "multipart/form-data",
-      processData: false,
-      success: (response) => {
-        console.log("SAVED");
-      },
-    });
-  }, 5000)
-}, 180_000)
+$(".main-background").on("change","input, textarea, select",function(){
+  saveTempData()
+  $("#popup-autosave").removeClass("hidden")
+})
 
 $.get("/api/v1/temp-form-data", function(result){
   let temp_data = result.TEMP_DATA.find(data => data.id == USER_ID)
@@ -702,6 +682,8 @@ $.get("/api/v1/temp-form-data", function(result){
         temp_data.question_type.forEach(function(type, index){
           addQuestionForTemp(temp_data, index, type)
         })
+      }else{
+        addQuestionForTemp(temp_data, 0, temp_data.question_type)
       }
     }
   }
@@ -746,7 +728,7 @@ function pilganTemp(TEMP_DATA, index){
   <div class="question_pilgan">  
     <div class="display_image"></div>
     <div class="question-text-container">
-      <textarea data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal" required>${TEMP_DATA.question_text[index]}</textarea>
+      <textarea data-max-words="2" name="question_text" class='soal-text' placeholder="Masukan Soal" required>${Array.isArray(TEMP_DATA.question_text)?TEMP_DATA.question_text[index]:TEMP_DATA.question_text}</textarea>
       <div class="upload-img">
         <label class="custom-file-upload">
           <input type="file" class="input-file" multiple="multiple" name="question_img" accept="image/*"/>
@@ -812,10 +794,8 @@ function pilganTemp(TEMP_DATA, index){
 }
 function kartuTemp(TEMP_DATA, index){
   const CARD_ANSWER = JSON.parse(TEMP_DATA.card_answers)[COUNT_CARD].answers
-  console.log(JSON.parse(TEMP_DATA.card_answers)[COUNT_CARD]);
-  console.log(COUNT_CARD);
-  let cards = CARD_ANSWER.map(card => {
-    return cardAnswer(card)
+  let cards = CARD_ANSWER.map((card, idx) => {
+    return cardAnswer(card,idx)
   })
   return `
   <div class="question_kartu">  
@@ -833,20 +813,20 @@ function kartuTemp(TEMP_DATA, index){
     
     <div class="answers-card">
       ${cards.join("")}
-    <div class="answer-card-add">
-      <img src="/img/plus.png" alt="" width="40" />
+      <div class="answer-card-add">
+        <img src="/img/plus.png" alt="" width="40" />
+      </div>
     </div>
   </div>
-</div>
   `
 }
-function cardAnswer(card){
+function cardAnswer(card,idx){
   return `
     <div class="answer-card">
       <div class="answer-card-head">
-        <span>#1</span>
+        <span>#${idx+1}</span>
         <i class="uil uil-draggabledots"></i>
-        <span style="color:transparent">#1</span>
+        <span style="color:transparent">#${idx+1}</span>
       </div>
       <div class="answer-card-input">
         <input name="kartu" required type="text" placeholder='Kartu' value='${card.value}'/>
@@ -887,8 +867,6 @@ function tempInitializeSortable() {
           answers: tempArray,
         });
       }
-
-      console.log(allDataArray);
     },
     update: function (event, ui) {
       const sortedElements = $(this).find("> .answer-card");
@@ -917,6 +895,23 @@ function tempInitializeSortable() {
           answers: tempArray,
         });
       }
+    },
+  });
+}
+function saveTempData(){
+  const form = document.getElementById("submit-form");
+  let formData = new FormData(form);
+  formData.append("card_answers", JSON.stringify(allDataArray));
+  formData.append("id", USER_ID)
+  const urlencoded = new URLSearchParams(formData).toString()
+  $.ajax({
+    url: "/api/v1/temp-form-data",
+    type: "POST",
+    data: urlencoded,
+    contentType: 'application/x-www-form-urlencoded',
+    processData: false,
+    success: (response) => {
+      console.log("SAVED");
     },
   });
 }

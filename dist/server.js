@@ -24,7 +24,6 @@ const cspOptions = {
         ],
     },
 };
-var whitelist = ["https://dev.festivo.co/", "localhost:3000/"];
 var corsOptions = {
     origin: ['https://dev.festivo.co/'],
     optionsSuccessStatus: 200
@@ -75,21 +74,6 @@ const models_1 = require("./models");
 const webRouter_1 = __importDefault(require("./routers/webRouter"));
 const v1Router_1 = __importDefault(require("./routers/v1Router"));
 const Metric_1 = __importDefault(require("./models/Metric"));
-// ERROR HANDLER
-// app.all("*", (req, res, next) => {
-//   const err = new Error(`can't find ${req.originalUrl} on the server!`);
-//   err.status = "fail";
-//   err.statusCode = 404;
-//   next(err);
-// });
-// app.use((error, req, res, next) => {
-//   error.statusCode = error.statusCode || 500;
-//   error.status = error.status || "error";
-//   res.status(error.statusCode).json({
-//     status: error.statusCode,
-//     message: error.message,
-//   });
-// });
 let PORT = process.env.PORT || 3000;
 (0, models_1.connectToDatabase)()
     .then(async () => {
@@ -98,6 +82,18 @@ let PORT = process.env.PORT || 3000;
         await Metric_1.default.create();
     app.use("/", webRouter_1.default);
     app.use("/api/v1", v1Router_1.default);
+    app.all("*", (req, res, next) => {
+        const err = new Error(`can't find ${req.originalUrl} on the server!`);
+        next(err);
+    });
+    app.use((error, req, res, next) => {
+        error.statusCode = error.statusCode || 404;
+        error.status = error.status || "error";
+        res.status(error.statusCode).json({
+            status: error.statusCode,
+            message: error.message,
+        });
+    });
     app.listen(PORT, () => {
         console.log(`Server berjalan di http://localhost:${PORT}`);
     });

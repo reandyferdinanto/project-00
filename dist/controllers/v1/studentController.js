@@ -14,6 +14,19 @@ const Metric_1 = __importDefault(require("../../models/Metric"));
 const MetricSchool_1 = __importDefault(require("../../models/MetricSchool"));
 const GetAllStudent = async (req, res, next) => {
     try {
+        let studentQuery = req.query;
+        if (Object.keys(studentQuery).length !== 0) {
+            let students = await Student_1.default.findAll({ attributes: { exclude: ["createdAt", "updatedAt", "password"] }, include: [
+                    { model: Exam_1.default, attributes: { exclude: ["createdAt", "updatedAt"] },
+                        through: {
+                            attributes: { exclude: ["createdAt", "updatedAt"] }
+                        }
+                    },
+                ],
+                order: ["nis"]
+            });
+            return (0, response_1.default)(200, "showing all students", students, res);
+        }
         let students = await Student_1.default.findAll({ attributes: { exclude: ["createdAt", "updatedAt", "password"] }, include: [
                 { model: Exam_1.default, attributes: { exclude: ["createdAt", "updatedAt"] },
                     through: {

@@ -102,7 +102,6 @@ export async function UpdateAdmin(req:Request, res:Response) {
     let adminData = req.body;
     const adminId = req.params.id
     let admin = await Admin.findByPk(adminId)
-    console.log(adminData);
     
 
     if(admin){

@@ -60,7 +60,6 @@ export async function CreateExamType(req, res) {
 }
 
 export async function DeleteExamType(req, res) {
-  console.log(req.body);
   try {
     let unique_id = req.body.unique_id;
     if (!unique_id)
