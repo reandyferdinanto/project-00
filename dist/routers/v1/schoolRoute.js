@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const Module_1 = __importDefault(require("../../models/Module"));
 const School_1 = __importDefault(require("../../models/School"));
+const SchoolModule_1 = __importDefault(require("../../models/SchoolModule"));
 const router = express_1.default.Router();
 router.get("/", async (req, res) => {
     let school = await School_1.default.findAll({
@@ -33,7 +34,9 @@ router.get("/:id", async (req, res) => {
 router.post('/', async (req, res) => {
     let schoolData = req.body;
     try {
+        let module = await Module_1.default.findAll();
         let school = await School_1.default.create(schoolData);
+        school.setModules(module);
         res.json(school);
     }
     catch (error) {
@@ -47,13 +50,16 @@ router.put("/:id", async (req, res) => {
     let schoolData = req.body;
     try {
         if (school) {
+            let modules = await school.getModules({ where: { unique_id: moduleId } });
             school.update(schoolData);
-            let module = await Module_1.default.findByPk(moduleId);
-            if (module) {
-                school.setModules([module]);
-                return res.json("Success add new module to school");
+            if (modules.length !== 0) {
+                modules.forEach(async (module) => {
+                    let schoolmodule = await SchoolModule_1.default.findOne({ where: { ModuleUniqueId: module.unique_id, ownerId: schoolId } });
+                    schoolmodule.update({ subscribed: true });
+                });
+                return res.send("GG");
             }
-            res.json("Success update school data");
+            return res.send(school);
         }
         else {
             res.json("School not found");

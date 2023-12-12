@@ -2,6 +2,7 @@ import express from "express"
 import { validateTokenAPI } from "../../utils/JWT";
 import Module from "../../models/Module";
 import School from "../../models/School";
+import SchoolModule from "../../models/SchoolModule";
 
 const router = express.Router()
 
@@ -31,7 +32,10 @@ router.get("/:id", async (req, res) => {
 router.post('/', async (req, res) => {
   let schoolData = req.body
   try {
+    let module = await Module.findAll()
     let school = await School.create(schoolData)
+    school.setModules(module)
+
     res.json(school)
   } catch (error) {
     res.json(error)
@@ -45,13 +49,18 @@ router.put("/:id", async(req,res) => {
   let schoolData = req.body
   try {
     if(school){
+      let modules = await school.getModules({where:{unique_id: moduleId}})
       school.update(schoolData)
-      let module = await Module.findByPk(moduleId)
-      if(module){
-        school.setModules([module])
-        return res.json("Success add new module to school")
+      
+      if(modules.length !== 0){
+        modules.forEach(async module => {
+          let schoolmodule = await SchoolModule.findOne({where:{ModuleUniqueId: module.unique_id, ownerId:schoolId}})
+          schoolmodule.update({subscribed: true})
+        })
+        return res.send("GG")
       }
-      res.json("Success update school data")
+
+      return res.send(school)
     }else{
       res.json("School not found")
     }

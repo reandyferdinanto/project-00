@@ -2,7 +2,7 @@ import { DataTypes, Model,Association, HasManyAddAssociationMixin, HasManyCountA
     HasManyCreateAssociationMixin, HasManyGetAssociationsMixin, HasManyHasAssociationMixin,
     HasManySetAssociationsMixin, HasManyAddAssociationsMixin, HasManyHasAssociationsMixin,
     HasManyRemoveAssociationMixin, HasManyRemoveAssociationsMixin, ModelDefined, Optional,
-    Sequelize, InferAttributes, InferCreationAttributes, CreationOptional, NonAttribute, ForeignKey, HasOneCreateAssociationMixin, HasOneGetAssociationMixin, HasOneSetAssociationMixin, BelongsToManyAddAssociationsMixin, BelongsToManyHasAssociationMixin, BelongsToManyAddAssociationMixin, BelongsToManyRemoveAssociationMixin, BelongsToManySetAssociationsMixin, } from "sequelize";
+    Sequelize, InferAttributes, InferCreationAttributes, CreationOptional, NonAttribute, ForeignKey, HasOneCreateAssociationMixin, HasOneGetAssociationMixin, HasOneSetAssociationMixin, BelongsToManyAddAssociationsMixin, BelongsToManyHasAssociationMixin, BelongsToManyAddAssociationMixin, BelongsToManyRemoveAssociationMixin, BelongsToManySetAssociationsMixin, BelongsToManyGetAssociationsMixin, } from "sequelize";
 import { sequelize } from "."; // Pastikan Anda mengganti path sesuai dengan struktur direktori Anda
 import Module from "./Module";
 import SchoolModule from "./SchoolModule";
@@ -13,6 +13,7 @@ class School extends Model {
   school_name: string;
 
 
+  declare getModules: BelongsToManyGetAssociationsMixin<Module>;
   declare addModule: BelongsToManyAddAssociationMixin<Module, number>;
   declare addModules: BelongsToManyAddAssociationsMixin<Module, number>;
   declare setModules: BelongsToManySetAssociationsMixin<Module, number>;
