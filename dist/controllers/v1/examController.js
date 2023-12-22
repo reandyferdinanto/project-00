@@ -254,7 +254,7 @@ async function UpdateExam(req, res) {
                 const question_image = req.files.filter((item) => item.fieldname === `question_img`);
                 let img = "";
                 if (question_with_img.includes(index.toString())) {
-                    img = `${req.protocol + "://" + req.get("host")}/files/uploads/${question_image[index].filename}`;
+                    img = `${req.protocol + "://" + req.get("host")}/files/uploads/${question_image[imgCounter].filename}`;
                     imgCounter += 1;
                 }
                 else {
@@ -361,6 +361,7 @@ async function UpdateExam(req, res) {
         (0, response_1.default)(200, "updated exams success", [], res);
     }
     catch (error) {
+        console.log(error);
         (0, response_1.default)(500, "server failed to update the exam", { error: error.message }, res);
     }
 }

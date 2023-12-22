@@ -317,17 +317,21 @@ export async function UpdateExam(req, res) {
 
       for(const[index, questId] of question_id.entries()){
         const question_image = req.files.filter((item) => item.fieldname === `question_img`);
+        
         let img = "";
+        
         if (question_with_img.includes(index.toString())) {
-          img = `${req.protocol + "://" + req.get("host")}/files/uploads/${question_image[index].filename}`;
+          img = `${req.protocol + "://" + req.get("host")}/files/uploads/${question_image[imgCounter].filename}`;
           imgCounter += 1;
         } else {
           img = null;
         }
+            
 
         if (question_type[index] === "pilihan_ganda") {
           // HANDLE IMAGE
           const filteredData = req.files.filter(item =>item.fieldname.startsWith("answer_image_"));
+          
           let answers = [Array.isArray(correct_answer)?correct_answer[answerCounter]:correct_answer, ...req.body.wrong_answer.slice(answerCounter * 4, (answerCounter + 1) * 4)]
           
           let updatePilgan = answers.map((ans, index_ans) => {
@@ -442,7 +446,8 @@ export async function UpdateExam(req, res) {
     }
     response(200, "updated exams success", [], res);
   } catch (error) {
-    response(500,"server failed to update the exam",{ error: error.message },res);
+    console.log(error);
+    response(500,"server failed to update the exam", { error: error.message },res);
   }
 }
 
