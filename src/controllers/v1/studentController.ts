@@ -7,6 +7,12 @@ import StudentExam from "../../models/StudentExam";
 import Admin from "../../models/Admin";
 import Metric from "../../models/Metric";
 import MetricSchool from "../../models/MetricSchool";
+import { generateInGameAccessToken } from "../../utils/JWT";
+import { sign, verify } from "jsonwebtoken";
+import path from "path"
+require("dotenv").config({ path: path.resolve(__dirname + "/./../../../.env") });
+
+const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET || "SECRET"
 
 export const GetAllStudent = async (req:Request, res:Response, next) => {
   try {
@@ -178,13 +184,39 @@ export const EditStudent = async (req:Request, res:Response) => {
 }
 
 export const AuthStudent = async (req, res) => {
-  let { nis, password } = req.body;
+  let nis = req.body.nis ? req.body.nis : ""
+  let password = req.body.password ? req.body.password : ""
   try {
     let data;
 
     let studentLogin = await Student.findOne({where:{nis},raw:true,attributes:{exclude:["createdAt","updatedAt"]}})
     let adminLogin = await Admin.findOne({where:{nuptk:nis},raw:true,attributes:{exclude:["createdAt","updatedAt"]}})
 
+    const accessToken = req.cookies["ingame-login-token"];
+    // if token expired or not login
+    if(accessToken){
+      try {
+        return verify(accessToken, ACCESS_TOKEN_SECRET, function(err, user){
+          if(err) {
+            return res.json({
+              ResultCode: 2,
+              Message: { error: err.message },
+              Status: "failed",
+            })
+          }else{
+            return res.json({
+              ResultCode: 1,
+              UserId: user.unique_id,
+              Data: user,
+            });
+          }
+        });
+      } catch (error) {
+        return response(500, "server error", { error: error.message }, res);
+      }
+    }
+
+    // User not found !
     if(!studentLogin && !adminLogin){
       res.json({
         ResultCode: 2,
@@ -195,13 +227,20 @@ export const AuthStudent = async (req, res) => {
     
     if(studentLogin){
       if(password == studentLogin.password){
+        const accessToken = generateInGameAccessToken(studentLogin);
+        res.cookie("ingame-login-token", accessToken, {
+          httpOnly: true,
+        });
+
         data = studentLogin
+        
         res.json({
           ResultCode: 1,
           UserId: studentLogin.unique_id,
           Data: data,
         });
       }else{
+        // Nis Password Not Match !
         res.json({
           ResultCode: 2,
           Message: "NIS and Password combination didn't match.",
@@ -209,16 +248,26 @@ export const AuthStudent = async (req, res) => {
         });
       }
     }
+    
     if(adminLogin){
       let passwordCorrect = await bcrypt.compare(password, adminLogin.password)
       if(passwordCorrect){
+        console.log(adminLogin);
+        
+        const accessToken = generateInGameAccessToken(adminLogin);
+        res.cookie("ingame-login-token", accessToken, {
+          httpOnly: true,
+        });
+
         data = adminLogin
+        
         res.json({
           ResultCode: 1,
           UserId: adminLogin.unique_id,
           Data: adminLogin,
         });
       }else{
+        // Nis Password not Match
         res.json({
           ResultCode: 2,
           Message: "NIS and Password combination didn't match.",
@@ -226,6 +275,8 @@ export const AuthStudent = async (req, res) => {
         });
       }
     }
+
+
     
     
     if(data !== undefined){
