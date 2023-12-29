@@ -186,17 +186,18 @@ export const EditStudent = async (req:Request, res:Response) => {
 export const AuthStudent = async (req, res) => {
   let nis = req.body.nis ? req.body.nis : ""
   let password = req.body.password ? req.body.password : ""
+  let token = req.body.token ? req.body.token : null
+
   try {
     let data;
 
     let studentLogin = await Student.findOne({where:{nis},raw:true,attributes:{exclude:["createdAt","updatedAt"]}})
     let adminLogin = await Admin.findOne({where:{nuptk:nis},raw:true,attributes:{exclude:["createdAt","updatedAt"]}})
 
-    const accessToken = req.cookies["ingame-login-token"];
     // if token expired or not login
-    if(accessToken){
+    if(token){
       try {
-        return verify(accessToken, ACCESS_TOKEN_SECRET, function(err, user){
+        return verify(token, ACCESS_TOKEN_SECRET, function(err, user){
           if(err) {
             return res.json({
               ResultCode: 2,
@@ -228,15 +229,13 @@ export const AuthStudent = async (req, res) => {
     if(studentLogin){
       if(password == studentLogin.password){
         const accessToken = generateInGameAccessToken(studentLogin);
-        res.cookie("ingame-login-token", accessToken, {
-          httpOnly: true,
-        });
 
         data = studentLogin
+        data['token'] = accessToken
         
         res.json({
           ResultCode: 1,
-          UserId: studentLogin.unique_id,
+          UserId: data.unique_id,
           Data: data,
         });
       }else{
@@ -252,14 +251,11 @@ export const AuthStudent = async (req, res) => {
     if(adminLogin){
       let passwordCorrect = await bcrypt.compare(password, adminLogin.password)
       if(passwordCorrect){
-        console.log(adminLogin);
         
         const accessToken = generateInGameAccessToken(adminLogin);
-        res.cookie("ingame-login-token", accessToken, {
-          httpOnly: true,
-        });
 
         data = adminLogin
+        data['token'] = accessToken
         
         res.json({
           ResultCode: 1,
