@@ -12,6 +12,11 @@ const StudentExam_1 = __importDefault(require("../../models/StudentExam"));
 const Admin_1 = __importDefault(require("../../models/Admin"));
 const Metric_1 = __importDefault(require("../../models/Metric"));
 const MetricSchool_1 = __importDefault(require("../../models/MetricSchool"));
+const JWT_1 = require("../../utils/JWT");
+const jsonwebtoken_1 = require("jsonwebtoken");
+const path_1 = __importDefault(require("path"));
+require("dotenv").config({ path: path_1.default.resolve(__dirname + "/./../../../.env") });
+const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET || "SECRET";
 const GetAllStudent = async (req, res, next) => {
     try {
         let studentQuery = req.query;
@@ -178,11 +183,38 @@ const EditStudent = async (req, res) => {
 };
 exports.EditStudent = EditStudent;
 const AuthStudent = async (req, res) => {
-    let { nis, password } = req.body;
+    let nis = req.body.nis ? req.body.nis : "";
+    let password = req.body.password ? req.body.password : "";
+    let token = req.body.token ? req.body.token : null;
     try {
         let data;
         let studentLogin = await Student_1.default.findOne({ where: { nis }, raw: true, attributes: { exclude: ["createdAt", "updatedAt"] } });
         let adminLogin = await Admin_1.default.findOne({ where: { nuptk: nis }, raw: true, attributes: { exclude: ["createdAt", "updatedAt"] } });
+        // if token expired or not login
+        if (token) {
+            try {
+                return (0, jsonwebtoken_1.verify)(token, ACCESS_TOKEN_SECRET, function (err, user) {
+                    if (err) {
+                        return res.json({
+                            ResultCode: 2,
+                            Message: { error: err.message },
+                            Status: "failed",
+                        });
+                    }
+                    else {
+                        return res.json({
+                            ResultCode: 1,
+                            UserId: user.unique_id,
+                            Data: user,
+                        });
+                    }
+                });
+            }
+            catch (error) {
+                return (0, response_1.default)(500, "server error", { error: error.message }, res);
+            }
+        }
+        // User not found !
         if (!studentLogin && !adminLogin) {
             res.json({
                 ResultCode: 2,
@@ -192,14 +224,17 @@ const AuthStudent = async (req, res) => {
         }
         if (studentLogin) {
             if (password == studentLogin.password) {
+                const accessToken = (0, JWT_1.generateInGameAccessToken)(studentLogin);
                 data = studentLogin;
+                data['token'] = accessToken;
                 res.json({
                     ResultCode: 1,
-                    UserId: studentLogin.unique_id,
+                    UserId: data.unique_id,
                     Data: data,
                 });
             }
             else {
+                // Nis Password Not Match !
                 res.json({
                     ResultCode: 2,
                     Message: "NIS and Password combination didn't match.",
@@ -210,7 +245,9 @@ const AuthStudent = async (req, res) => {
         if (adminLogin) {
             let passwordCorrect = await bcrypt_1.default.compare(password, adminLogin.password);
             if (passwordCorrect) {
+                const accessToken = (0, JWT_1.generateInGameAccessToken)(adminLogin);
                 data = adminLogin;
+                data['token'] = accessToken;
                 res.json({
                     ResultCode: 1,
                     UserId: adminLogin.unique_id,
@@ -218,6 +255,7 @@ const AuthStudent = async (req, res) => {
                 });
             }
             else {
+                // Nis Password not Match
                 res.json({
                     ResultCode: 2,
                     Message: "NIS and Password combination didn't match.",
