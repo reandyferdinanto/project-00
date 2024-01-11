@@ -23,8 +23,8 @@ const cspOptions = {
 };
 
 var corsOptions = {
-  // origin: ['https://dev.festivo.co/'],
-  origin: ['https://muslim-maya.netlify.app/'],
+  origin: ['https://dev.festivo.co/'],
+  // origin: ['https://muslim-maya.netlify.app/'],
 
   optionsSuccessStatus: 200
 }
