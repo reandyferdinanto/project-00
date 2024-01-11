@@ -24,7 +24,7 @@ const cspOptions = {
 
 var corsOptions = {
   // origin: ['https://dev.festivo.co/'],
-  origin: ['https://shiny-centaur-b7b1e2.netlify.app/'],
+  origin: ['https://muslim-maya.netlify.app/'],
 
   optionsSuccessStatus: 200
 }
