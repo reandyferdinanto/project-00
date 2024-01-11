@@ -81,13 +81,13 @@ main {
   margin-top: auto;
 }
 
-.main-input {
+/* .main-input {
   margin: 1rem 2rem 2rem;
   background-color: #358f6c;
   border-radius: 20px;
   padding: 2rem;
   color: white;
-}
+} */
 .exam-type {
   width: 100%;
   background-color: white;
@@ -269,9 +269,9 @@ label {
   color: white;
 }
 
-input[type="file"] {
+/* input { */
   /* display: none; */
-}
+/* } */
 
 .custom-file-upload {
   border-radius: 7px;
