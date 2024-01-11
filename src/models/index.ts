@@ -10,6 +10,11 @@ if(process.env.ENV_TYPE == 'production'){
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
+    dialectOptions: {
+          ssl: {
+            rejectUnauthorized: false,
+          },
+        },
   });
 }else{
   console.log("DB run on local");
