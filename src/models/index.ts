@@ -3,24 +3,26 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 let sequelize: Sequelize
+console.log("ENV_TYPE:", process.env.ENV_TYPE);
+
 if(process.env.ENV_TYPE == 'production'){
   sequelize = new Sequelize({
-    dialect: "mysql", // Ganti dengan jenis database yang Anda gunakan
+    dialect: "mysql",
     host: process.env.DB_HOST,
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     dialectOptions: {
-          ssl: {
-            rejectUnauthorized: false,
-          },
-        },
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    },
   });
-}else{
+} else {
   console.log("DB run on local");
-  // Konfigurasi koneksi database Anda
+  // Local configuration
   sequelize = new Sequelize({
-    dialect: "mysql", // Ganti dengan jenis database yang Anda gunakan
+    dialect: "mysql",
     host: "127.0.0.1",
     username: "root",
     password: "1234",
