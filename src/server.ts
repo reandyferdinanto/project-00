@@ -23,7 +23,9 @@ const cspOptions = {
 };
 
 var corsOptions = {
-  origin: ['https://dev.festivo.co/'],
+  // origin: ['https://dev.festivo.co/'],
+  origin: ['https://shiny-centaur-b7b1e2.netlify.app/'],
+
   optionsSuccessStatus: 200
 }
 
