@@ -4,5 +4,5 @@
   status = 200
 
 [build]
-   command = "npx ts-node-dev --transpile-only src/server.ts"
+  command = "npx tsc && npm run start"
   publish = "dist"
