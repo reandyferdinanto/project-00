@@ -3,6 +3,6 @@
   to = "/"
   status = 200
 
-  [build]
-  command = "npm run tailwind"
+[build]
+  command = "npm run dev && npm run tailwind"
   publish = "dist"
