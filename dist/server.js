@@ -26,8 +26,7 @@ const cspOptions = {
 };
 var corsOptions = {
     // origin: ['https://dev.festivo.co/'],
-    origin: ['https://dev.festivo.comuslim-maya.netlify.app/'],
-
+    origin: ['https://muslim-maya.netlify.app/'],
     optionsSuccessStatus: 200
 };
 // default membuat folder untuk penempatan file upload
