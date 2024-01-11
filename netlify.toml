@@ -4,5 +4,5 @@
   status = 200
 
 [build]
-  command = "npm run dev && npm run tailwind"
+   command = "npx ts-node-dev --transpile-only src/server.ts"
   publish = "dist"
