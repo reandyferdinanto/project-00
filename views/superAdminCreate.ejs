@@ -4,10 +4,19 @@
   <%- include('./layouts/navbar'); -%>
   <p id="user_id" class="hidden"><%= user.id %></p>
   <!-- MAIN -->
-  <main>
-    <%- include('./layouts/superSidebar'); -%>
-    <section id="admin-create" class="min-h-screen bg-white rounded-tl-3xl p-8">
-      <p class="text-main font-bold text-2xl">Menambahkan Admin Baru <span class="text-red-500 font-medium text-xs">* harus diisi</span></p>
+  <main class="flex flex-col md:flex-row overflow-x-hidden p-0">
+
+    <div class="h-full lg:w-80 lg:pl-10">
+      <%- include('./layouts/superSidebar'); -%>
+    </div>
+
+    <section id="admin-create" class="min-h-screen w-full bg-white rounded-tl-2xl md:rounded-tl-3xl rounded-tr-2xl md:rounded-tr-2xl p-8">
+      
+      <div class="flex flex-col sm:flex-row md:flex-row">
+        <p class="text-main font-bold text-2xl">Menambahkan Admin Baru </p>
+        <p class="text-red-500 font-medium text-xs">* harus diisi</p>
+      </div>
+      
       <form id="form-admin-create" class="">
         <div id="bg-table-admin" class="h-max shadow-[0_0px_40px_-15px_rgba(0,0,0,0.2)] w-full mt-8 rounded-3xl p-8 bg-main">
           <div class="flex flex-col gap-4">
@@ -56,7 +65,7 @@
         </div>
 
         <section id="popup" class="bg-[#000]/50 fixed top-0 bottom-0 right-0 left-0 flex items-center hidden">
-          <div class="delete-popup w-[50%] bg-white m-auto flex flex-col items-center py-20 rounded-2xl">
+          <div class="delete-popup w-full md:w-[50%] bg-white m-auto flex flex-col items-center py-20 rounded-2xl">
             <img src="/img/warning-alt.png" alt="" width="120px">
             <p class="text-sm my-3">Apakah anda yakin ingin membuat data tersebut ?</p>
             <div class="mt-4 flex gap-4">
@@ -64,7 +73,7 @@
               <button type="submit" class="py-1.5 px-8 bg-main text-white rounded-full text-sm">Selesai</button>
             </div>
           </div>
-          <div id="confirm-popup" class="w-[30%] bg-white m-auto flex flex-col items-center py-10 rounded-2xl gap-2 hidden">
+          <div id="confirm-popup" class="w-full md:w-[30%] bg-white m-auto flex flex-col items-center py-10 rounded-2xl gap-2 hidden">
             <img src="/img/check.png" width="70" alt="">
             <p class="text-sm">Data berhasil ditambahkan</p>
             <button type="button" class="py-1.5 px-8 bg-main text-white rounded-full text-sm mt-4">OK</button>

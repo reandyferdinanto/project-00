@@ -62,16 +62,16 @@ main {
 }
 .main-background {
   width: 100%;
-  height: 100%;
+  /* height: 100%;
   background-color: white;
   border-radius: 20px 0 0px 0px;
-  overflow: hidden;
+  overflow: hidden; */
 }
 .main-title {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between;
   padding: 1rem 2rem;
-  position: relative;
+  position: relative; */
 }
 
 .main-title h2 {

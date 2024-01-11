@@ -4,18 +4,56 @@
   <%- include('./layouts/navbar'); -%>
   <p id="user_id" class="hidden"><%= user.id %></p>
 
-  <!-- MAIN -->
-  <main>
-    <%- include('./layouts/superSidebar'); -%>
-    <section id="ujian-page" class="h-full bg-white rounded-tl-3xl p-8">
-      <div class="flex justify-between">
-        <p class="text-main font-bold text-2xl">Daftar Ujian</p>
-        <div class="flex gap-4 mt-5">
-          <a id="button-tambah" href="/ujian/buat"><button class="bg-main text-white text-sm px-8 py-2 rounded-lg">Tambah Ujian</button></a>
+  <!-- MAIN - FULL SCREEN & TABLET SCREEN-->
+  <main class="flex flex-col sm:flex-row md:flex-row sm:flex overflow-x-hidden p-0">
+
+    <div class="h-full lg:w-80 lg:pl-10">
+      <%- include('./layouts/superSidebar'); -%>
+    </div>
+
+    <section id="ujian-page" class="flex-grow bg-white rounded-tl-2xl lg:rounded-tl-3xl rounded-tr-2xl lg:rounded-tr-none px-2 lg:px-8 md:py-8">
+      
+      <div class="flex w-full justify-between px-2 lg:px-0 py-5 md:py-0">
+        <p class="text-main font-bold text-xl md:text-2xl flex md:flex-none items-center md:items-start">Daftar Ujian</p>
+        <div class="flex gap-2 md:gap-4 mt-0 md:mt-5 items-center md:items-end">
+          <a id="button-tambah" href="/ujian/buat"><button class="bg-main text-white text-xs md:text-sm px-4 md:px-8 py-2 rounded-lg">Tambah Ujian</button></a>
         </div>
       </div>
-      <div id="bg-table-ujian" class="min-h-screen shadow-[0_0px_40px_-15px_rgba(0,0,0,0.2)] w-full mt-8 rounded-3xl p-8 bg-white">
+
+      <!-- sort - search - select -->
+      <div id="bg-table-ujian" class="h-full md:min-h-screen shadow-[0_0px_40px_-15px_rgba(0,0,0,0.2)] w-full mt-0 md:mt-8 rounded-3xl p-4 md:p-4 sm:p-8 bg-white">
         <form id="form-ujian-delete">
+
+          <div class="md:hidden flex flex-col">
+            <div class="flex flex-row gap-4 items-center justify-between">
+              <div class="flex flex-row items-center gap-2">
+                <div class="flex">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 16 10" fill="none">
+                    <path d="M6.33333 10V8.33333H9.66667V10H6.33333ZM3 5.83333V4.16667H13V5.83333H3ZM0.5 1.66667V0H15.5V1.66667H0.5Z" fill="#358F6C"/>
+                  </svg>
+                </div>
+                <div class="py-2">
+                  <select id="sort-dropdown" class="bg-[#E5EFEB] w-40 text-[#358F6C] font-bold  text-xs border border-gray-300 h-8 py-2 px-3 rounded-full leading-normal focus:outline-none focus:border-[#95C0AE]">
+                    <option class="py-5" disabled selected value="">Abjad</option>
+                    <option class="py-5" value="ascending">A-Z</option>
+                    <option class="py-5" value="descending">Z-A</option>
+                  </select>
+                </div>
+              </div>  
+              
+            </div>
+
+            <div class=" py-2 px-0 flex items-center">
+              <label for="search" class="py-2 pr-2 text-xs">Search:</label>
+              <input type="text" id="search" class="flex-grow px-2 py-2 text-xs border-solid border border-green-950 rounded-lg" placeholder="nama ujian">
+            </div>
+
+            <div class="relative mb-8">
+              <hr class="absolute h-4 left-1/2 top-2 transform -translate-x-1/2 w-screen border-t-8 border-[#95C0AE]">
+            </div>
+
+          </div>
+
           <table id="table-ujian" class="display hidden" style="width: 100%;">
             <thead>
               <tr>
@@ -28,6 +66,23 @@
               </tr>
             </thead>
           </table>
+
+          <!-- CARDS in mobile version -->
+          <div class="md:hidden flex flex-row py-2 pl-0 justify-between items-center">
+            <p id="resultsCount" class="font-bold text-[#95C0AE] text-sm">Showing</p>
+            <div class="md:hidden flex flex-row">
+              <button id="prev-page" class=" hover:text-green-300 text-main text-xs font-bold py-2 px-2 rounded mr-2">Prev</button>
+              <p class="text-xs font-light text-main">page <span id="current-page">1</span></p>
+              <button id="next-page" class=" hover:text-green-300 text-main text-xs font-bold py-2 px-2 rounded ml-2">Next</button>
+            </div>
+          </div>
+          
+
+          <div class="md:hidden flex min-h-screen w-full justify-center">
+            <div id="exam-card" class="max-h-[calc(100vh-80px)]"></div>
+          </div>
+
+          <!-- NO DATA display -->
           <div id="bg-nothing" class="text-center">
             <img src="/img/nothing.png" alt="" class="m-auto mt-20">
             <p class="text-sm text-main font-normal">Belum Ada Ujian</p>

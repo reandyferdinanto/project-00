@@ -5,19 +5,39 @@
   <p id="user_id" class="hidden"><%= user.id %></p>
 
   <!-- MAIN -->
-  <main>
-    <%- include('./layouts/superSidebar'); -%>
-    <section id="nilai-page" class="h-full bg-white rounded-tl-3xl p-8">
-      <div class="flex justify-between">
-        <p class="text-main font-bold text-2xl">Nilai Siswa</p>
-        <select name="" id="nilai-select" class="mt-16 bg-main px-10 h-max py-2 text-white rounded-lg text-sm focus:outline-white focus:ring-white">
-          <option value="">Manasik</option>
-        </select>
-        <form id="form-nilai-download" class="flex gap-4 mt-5 h-max">
-          <button type="submit" class="bg-main text-white text-sm px-8 py-2 rounded-lg">Download Nilai</button>
-        </form>
+  <main class="flex flex-col sm:flex-row md:flex-row sm:flex overflow-x-hidden p-0">
+
+    <div class="h-full lg:w-80 lg:pl-10">
+      <%- include('./layouts/superSidebar'); -%>
+    </div>
+
+    <section id="nilai-page" class="flex-grow bg-white rounded-tl-2xl lg:rounded-tl-3xl rounded-tr-2xl lg:rounded-tr-none px-2 lg:px-8 md:py-8">
+      
+      <div class="flex flex-col px-2 lg:px-0 py-5 md:py-0">
+
+        <div class="flex w-full flex-col md:flex-row justify-center md:justify-between h-14">
+
+          <div class="flex justify-start md:justify-normal items-start">
+            <p class="text-main font-bold text-xl md:text-2xl flex md:flex-none items-center md:items-start">Nilai Siswa</p>
+          </div>
+
+          <div class="flex justify-end md:justify-normal items-end">
+            <form id="form-nilai-download" class="flex">
+              <button type="submit" class="bg-main text-white text-sm px-8 py-2 rounded-lg">Download Nilai</button>
+            </form>
+          </div>
+
+        </div>
+
+        <div class="flex w-full justify-end md:justify-center mt-5">
+          <select name="" id="nilai-select" class="flex bg-main px-10 h-max py-2 text-white rounded-lg text-sm focus:outline-white focus:ring-white">
+            <option value="">Manasik</option>
+          </select>
+        </div>  
+
       </div>
-      <div id="bg-table-nilai" class="min-h-screen shadow-[0_0px_40px_-15px_rgba(0,0,0,0.2)] w-full mt-8 rounded-3xl p-8 bg-white">
+
+      <div id="bg-table-nilai" class="h-full md:min-h-screen shadow-[0_0px_40px_-15px_rgba(0,0,0,0.2)] w-full mt-0 md:mt-8 rounded-3xl p-4 md:p-4 sm:p-8 bg-white">
           <table id="table-nilai" class="display hidden" style="width: 100%;">
             <thead>
               <tr>
@@ -31,6 +51,22 @@
               </tr>
             </thead>
           </table>
+
+          <!-- CARDS in mobile version -->
+          <div class="md:hidden flex flex-row py-2 pl-0 justify-between items-center">
+            <p id="resultsCount" class="font-bold text-[#95C0AE] text-sm">Showing</p>
+            <div class="md:hidden flex flex-row">
+              <button id="prev-page" class=" hover:text-green-300 text-main text-xs font-bold py-2 px-2 rounded mr-2">Prev</button>
+              <p class="text-xs font-light text-main">page <span id="current-page">1</span></p>
+              <button id="next-page" class=" hover:text-green-300 text-main text-xs font-bold py-2 px-2 rounded ml-2">Next</button>
+            </div>
+          </div>
+          
+
+          <div class="md:hidden flex min-h-screen w-full justify-center">
+            <div id="nilai-card" class="max-h-[calc(100vh-80px)]"></div>
+          </div>
+
           <div id="bg-nothing" class="text-center">
             <img src="/img/nothing.png" alt="" class="m-auto mt-20">
             <p class="text-sm text-main font-normal">Belum Ada Nilai</p>

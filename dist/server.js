@@ -74,7 +74,7 @@ const models_1 = require("./models");
 const webRouter_1 = __importDefault(require("./routers/webRouter"));
 const v1Router_1 = __importDefault(require("./routers/v1Router"));
 const Metric_1 = __importDefault(require("./models/Metric"));
-let PORT = process.env.PORT || 3000;
+let PORT = process.env.PORT || 3001;
 (0, models_1.connectToDatabase)()
     .then(async () => {
     const METRIC = await Metric_1.default.findOne();

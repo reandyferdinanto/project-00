@@ -37,7 +37,7 @@ let question_pilgan = `
       <p>*PNG/JPG/JPEG max. 200 kb</p>
     </div>
   </div>
-  <div class="answers">
+  <div class="answers -z-30">
     <div class="answer-container" style="background-color:#2cc489;border: 2px solid white;">
       <div class="answer-container-flex divide-x divide-white-60">
         <input placeholder='jawaban benar' name='correct_answer' class='answer correct-answer'/>
@@ -618,6 +618,8 @@ function addMoreQuestion(event) {
         </div>
       `,
   ]);
+  $(".questions-box").addClass("rounded-3xl");
+
   const questionId = "card_" + quest_length;
   $(".question:last-child").attr("data-question-id", questionId);
   quest_length += 1

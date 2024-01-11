@@ -58,18 +58,17 @@ main {
 }
 .main-content {
   width: 100%;
-  min-height: 100vh;
+  /* min-height: 100vh; */
 }
 .main-background {
-  width: 100%;
+  /* width: 100%;
   height: 100%;
   background-color: white;
-  border-radius: 20px 0 0px 0px;
-  overflow: hidden;
+  border-radius: 20px 0 0px 0px; */
+  color: white;
 }
 .main-title {
   display: flex;
-  padding: 1rem 2rem;
 }
 
 .main-title h2 {
@@ -80,10 +79,6 @@ main {
 }
 
 .main-input {
-  margin: 1rem 2rem 2rem;
-  background-color: #358f6c;
-  border-radius: 20px;
-  padding: 2rem;
   color: white;
 }
 .exam-type {
@@ -107,29 +102,32 @@ main {
   margin: 0.75rem 0;
 }
 .main-create-question {
-  margin-right: 2rem;
+  /* margin-right: 2rem;
   display: block;
   margin-left: auto;
   background-color: #358f6c;
   color: white;
   padding: 0.5rem 1.5rem;
   border-radius: 15px;
-  border: none;
+  border: none; */
   cursor: pointer;
 }
 
 /* QUESTIONS */
 
 .questions-box {
-  margin: 0 2rem;
+  /* margin: 0 2rem; */
   background-color: #358f6c;
   border-radius: 20px;
   margin-bottom: 2rem;
   color: white;
   font-size: 0.9rem;
+  position: relative;
+  z-index: -1;
 }
 .question {
   position: relative;
+  z-index: -1;
   padding: 1rem 2rem;
 }
 .soal-text {
@@ -157,6 +155,7 @@ main {
   border: 0.1px solid gray;
   border-radius: 5px;
   overflow: hidden;
+  z-index: 0;
 }
 .answers .answer-container-flex {
   display: flex;
@@ -425,6 +424,7 @@ input[name="wrong_answer"]::placeholder {
   justify-content: space-between;
   align-items: center;
 }
+
 .word-count {
   font-size: 0.8rem;
 }
@@ -531,5 +531,22 @@ input[name="wrong_answer"]::placeholder {
 }
 
 .question-text-container{
-  position: relative;
+  display: flex;
+}
+
+
+
+@media (max-width: 768px) {
+  .question-head {
+    flex-direction: column; 
+    align-items: flex-start; 
+  }
+
+  .answers {
+    grid-template-columns: 1fr; 
+  }
+
+  .answers-card {
+    grid-template-columns: 1fr;
+  }
 }

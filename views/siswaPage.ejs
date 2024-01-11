@@ -4,22 +4,106 @@
     <p id="user_id" class="hidden"><%= user.id %></p>
     <p id="user_role" class="hidden"><%= user.role %></p>
     <!-- <input type="hidden" name="role" value="<%= user.role %>"> -->
-    <main>
-      <%- include('./layouts/superSidebar'); -%>
-      <section id="siswa-page" class="h-full bg-white rounded-tl-3xl p-8">
-        <div class="flex justify-between">
+
+
+    <main class="flex flex-col sm:flex-row md:flex-row p-0">
+
+      <div class="h-full lg:w-80 lg:pl-10">
+        <%- include('./layouts/superSidebar'); -%>
+      </div>
+
+      <section id="siswa-page" class="flex-grow bg-white rounded-tl-2xl lg:rounded-tl-3xl rounded-tr-2xl lg:rounded-tr-none px-2 lg:px-8 md:py-8">
+        
+        <div class="flex w-full justify-between px-2 lg:px-0 py-5 md:py-0">
           <% if(user.role =="super_admin"){%>
-            <p class="text-main font-bold text-2xl">Daftar Siswa</p>
-            <div class="flex gap-4 mt-5">
-              <a id="button-tambah" href="/siswa/buat"><button class="bg-main text-white text-sm px-8 py-2 rounded-lg">Tambah Siswa</button></a>
-              <button id="button-delete" class="bg-red-500 text-white text-sm px-6 py-2 rounded-lg disabled:bg-red-500/50" disabled>Hapus</button>
+            <p class="text-main font-bold text-xl md:text-2xl flex md:flex-none items-center md:items-start">Daftar Siswa</p>
+            <div class="flex gap-2 md:gap-4 mt-0 md:mt-5 items-center md:items-end">
+              <a id="button-tambah" href="/siswa/buat"><button class="bg-main text-white text-xs md:text-sm px-4 md:px-8 py-2 rounded-lg">Tambah Siswa</button></a>
+              <button id="button-delete" class="bg-red-500 text-white text-xs md:text-sm px-4 md:px-6 py-2 rounded-lg disabled:bg-red-500/50" disabled>Hapus</button>
             </div>
             <% }else{%>
             <p class="text-main font-bold text-2xl">Data Siswa</p>
           <% }%>
         </div>
-        <div id="bg-table-siswa" class="min-h-screen shadow-[0_0px_40px_-15px_rgba(0,0,0,0.2)] w-full mt-8 rounded-3xl p-8 bg-white">
+
+        <div id="bg-table-siswa" class="md:min-h-screen shadow-[0_0px_40px_-15px_rgba(0,0,0,0.2)] w-full mt-0 md:mt-8 rounded-3xl p-4 md:p-4 sm:p-8 bg-white">
           <form id="form-siswa-delete">
+
+            <!-- sort - search - select -->
+            <div class="md:hidden flex flex-col gap-1">
+              <div class="flex flex-row gap-4 items-center justify-between">
+                <div class="flex flex-row items-center gap-2">
+                  <div class="flex">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 16 10" fill="none">
+                      <path d="M6.33333 10V8.33333H9.66667V10H6.33333ZM3 5.83333V4.16667H13V5.83333H3ZM0.5 1.66667V0H15.5V1.66667H0.5Z" fill="#358F6C"/>
+                    </svg>
+                  </div>
+                  <div class="py-2">
+                    <select id="sort-direction" class="bg-[#E5EFEB] w-32  text-xs text-[#358F6C] font-bold border border-gray-300 h-8 py-2 px-3 rounded-full leading-normal focus:outline-none focus:border-[#95C0AE]">
+                      <option class="py-5" disabled selected value="">Abjad</option>
+                      <option class="py-5" value="asc">A-Z</option>
+                      <option class="py-5" value="desc">Z-A</option>
+                    </select>
+                  </div>
+                </div>  
+
+                <div class="flex flex-row items-center gap-2">
+                  <div class="flex">
+                      <svg width="16px" height="16px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                          <g id="Dribbble-Light-Preview" transform="translate(-420.000000, -4959.000000)" fill="#358F6C">
+                            <g id="icons" transform="translate(56.000000, 160.000000)">
+                              <path d="M376,4807.95567 C376,4808.50495 375.552,4808.95074 375,4808.95074 L369,4808.95074 C368.448,4808.95074 368,4808.50495 368,4807.95567 C368,4807.40639 368.448,4806.9606 369,4806.9606 L375,4806.9606 C375.552,4806.9606 376,4807.40639 376,4807.95567 L376,4807.95567 Z M378,4809.94582 C378,4810.4951 377.552,4810.94089 377,4810.94089 L367,4810.94089 C366.448,4810.94089 366,4810.4951 366,4809.94582 L366,4805.96552 C366,4805.41624 366.448,4804.97045 367,4804.97045 L377,4804.97045 C377.552,4804.97045 378,4805.41624 378,4805.96552 L378,4809.94582 Z M370,4802.9803 L374,4802.9803 L374,4800.99015 L370,4800.99015 L370,4802.9803 Z M382,4799 L365,4799 C364.448,4799 364,4799.44579 364,4799.99507 C364,4800.54436 364.448,4800.99015 365,4800.99015 L368,4800.99015 L368,4802.9803 L366,4802.9803 C364.895,4802.9803 364,4803.9704 364,4805.06896 L364,4811.0394 C364,4812.13896 364.895,4812.93104 366,4812.93104 L378,4812.93104 C379.105,4812.93104 380,4812.13896 380,4811.0394 L380,4805.06896 C380,4803.9704 379.105,4802.9803 378,4802.9803 L376,4802.9803 L376,4800.99015 L380.997,4800.99015 C381.551,4800.99015 382,4801.53545 382,4802.08772 L382,4818.00493 C382,4818.5552 382.448,4819 383,4819 C383.552,4819 384,4818.5552 384,4818.00493 L384,4801.08866 C384,4799.9901 383.105,4799 382,4799 L382,4799 Z" id="sign_round-[#729]"></path>
+                            </g>
+                          </g>
+                        </g>
+                    </svg>
+                  </div>
+                  <div class="py-2">
+                    <select id="class-select" class="bg-[#E5EFEB] w-32 text-xs font-bold text-main border border-gray-300 h-8 py-2 px-3 rounded-full leading-tight focus:outline-none focus:border-[#95C0AE]"></select>
+                  </div>
+                </div> 
+                
+              </div>
+
+              <div class="flex flex-row items-center gap-2">
+                <div class="flex">
+                  <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M6.27103 2.11151C5.46135 2.21816 5.03258 2.41324 4.72718 2.71244C4.42179 3.01165 4.22268 3.43172 4.11382 4.225C4.00176 5.04159 4 6.12387 4 7.67568V16.2442C4.38867 15.9781 4.82674 15.7756 5.29899 15.6517C5.82716 15.513 6.44305 15.5132 7.34563 15.5135L20 15.5135V7.67568C20 6.12387 19.9982 5.04159 19.8862 4.22499C19.7773 3.43172 19.5782 3.01165 19.2728 2.71244C18.9674 2.41324 18.5387 2.21816 17.729 2.11151C16.8955 2.00172 15.7908 2 14.2069 2H9.7931C8.2092 2 7.10452 2.00172 6.27103 2.11151ZM6.75862 6.59459C6.75862 6.1468 7.12914 5.78378 7.58621 5.78378H16.4138C16.8709 5.78378 17.2414 6.1468 17.2414 6.59459C17.2414 7.04239 16.8709 7.40541 16.4138 7.40541H7.58621C7.12914 7.40541 6.75862 7.04239 6.75862 6.59459ZM7.58621 9.56757C7.12914 9.56757 6.75862 9.93058 6.75862 10.3784C6.75862 10.8262 7.12914 11.1892 7.58621 11.1892H13.1034C13.5605 11.1892 13.931 10.8262 13.931 10.3784C13.931 9.93058 13.5605 9.56757 13.1034 9.56757H7.58621Z" fill="#358F6C"/>
+                    <path d="M7.47341 17.1351H8.68965H13.1034H19.9991C19.9956 18.2657 19.9776 19.1088 19.8862 19.775C19.7773 20.5683 19.5782 20.9884 19.2728 21.2876C18.9674 21.5868 18.5387 21.7818 17.729 21.8885C16.8955 21.9983 15.7908 22 14.2069 22H9.7931C8.2092 22 7.10452 21.9983 6.27103 21.8885C5.46135 21.7818 5.03258 21.5868 4.72718 21.2876C4.42179 20.9884 4.22268 20.5683 4.11382 19.775C4.07259 19.4746 4.0463 19.1382 4.02952 18.7558C4.30088 18.0044 4.93365 17.4264 5.72738 17.218C6.01657 17.1421 6.39395 17.1351 7.47341 17.1351Z" fill="#358F6C"/>
+                  </svg>
+                </div>
+                <div class="py-2 w-full">
+                  <select id="major-select" class="bg-[#E5EFEB] w-full text-xs font-bold text-main border border-gray-300 h-8 py-2 px-3 rounded-full leading-tight focus:outline-none focus:border-[#95C0AE]"></select>
+                </div>
+              </div> 
+
+              <div class="flex w-full justify-end">
+                <div id="select-container" class="flex flex-row gap-2 px-3 w-fit text-white bg-main h-8 border-gray-300 rounded-full items-center focus:outline-none transform active:scale-90 transition-transform">
+                  <button id="select-button" class="flex">
+                    Select
+                  </button>
+                  <div id="select-icon" class="flex">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none">
+                      <path d="M1 9.5C0.858333 9.5 0.739583 9.45208 0.64375 9.35625C0.547917 9.26042 0.5 9.14167 0.5 9V7.7875C0.5 7.65417 0.525 7.52708 0.575 7.40625C0.625 7.28542 0.695833 7.17917 0.7875 7.0875L7.1 0.7875C7.2 0.695833 7.31042 0.625 7.43125 0.575C7.55208 0.525 7.67917 0.5 7.8125 0.5C7.94583 0.5 8.075 0.525 8.2 0.575C8.325 0.625 8.43333 0.7 8.525 0.8L9.2125 1.5C9.3125 1.59167 9.38542 1.7 9.43125 1.825C9.47708 1.95 9.5 2.075 9.5 2.2C9.5 2.33333 9.47708 2.46042 9.43125 2.58125C9.38542 2.70208 9.3125 2.8125 9.2125 2.9125L2.9125 9.2125C2.82083 9.30417 2.71458 9.375 2.59375 9.425C2.47292 9.475 2.34583 9.5 2.2125 9.5H1ZM7.8 2.9L8.5 2.2L7.8 1.5L7.1 2.2L7.8 2.9Z" fill="white"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+  
+              <div class=" py-2 px-0 flex items-center">
+                <label for="search" class="py-2 pr-2 text-xs text-[#358F6C] font-bold">Search:</label>
+                <input type="text" id="search" class="flex-grow px-2 py-2 text-xs border-solid border border-green-950 rounded-lg" placeholder="nama siswa">
+              </div>
+  
+              <div class="relative mb-8">
+                <hr class="absolute h-4 left-1/2 top-2 transform -translate-x-1/2 w-screen border-t-8 border-[#95C0AE]">
+              </div>
+  
+            </div>
+            <!-- ------------------------------------------------------- -->
+
+            <!-- Data Tables in Full Screen Version -->
             <table id="table-siswa" class="display hidden" style="width: 100%;">
               <thead>
                 <tr>
@@ -37,10 +121,24 @@
               <img src="/img/nothing.png" alt="" class="m-auto mt-20">
               <p class="text-sm text-main font-normal">Belum Ada Siswa</p>
             </div>
+
+            <!-- CARDS in mobile version -->
+            <div class="md:hidden flex flex-row py-2 pl-0 justify-between items-center">
+              <p id="resultsCount" class="font-bold text-[#95C0AE] text-sm">Showing</p>
+              <div class="md:hidden flex flex-row">
+                <button id="prev-page" class=" hover:text-green-300 text-main text-xs font-bold py-2 px-2 rounded mr-2">Prev</button>
+                <p class="text-xs font-light text-main">page <span id="current-page">1</span></p>
+                <button id="next-page" class=" hover:text-green-300 text-main text-xs font-bold py-2 px-2 rounded ml-2">Next</button>
+              </div>
+            </div>
+
+            <div class="md:hidden flex min-h-screen w-full justify-center">
+              <div id="siswa-card" class="max-h-[calc(100vh-80px)]"></div>
+            </div>
   
   
             <section id="popup" class="bg-[#000]/50 fixed top-0 bottom-0 right-0 left-0 flex items-center hidden">
-              <div class="delete-popup w-[50%] bg-white m-auto flex flex-col items-center py-20 rounded-2xl">
+              <div class="delete-popup w-[95%] md:w-[50%] bg-white m-auto flex flex-col items-center py-20 rounded-2xl">
                 <img src="/img/warning-alt.png" alt="" width="120px">
                 <p class="text-sm my-3">Apakah anda yakin ingin menghapus data tersebut ?</p>
                 <div class="mt-4 flex gap-4">

@@ -5,10 +5,19 @@
   <p id="user_id" class="hidden"><%= user.id %></p>
 
   <!-- MAIN -->
-  <main>
-    <%- include('./layouts/superSidebar'); -%>
-    <section id="admin-edit" class="min-h-screen bg-white rounded-tl-3xl p-8">
-      <p class="text-main font-bold text-2xl">Mengubah Data Admin <span class="text-red-500 font-medium text-xs">* harus diisi</span></p>
+  <main class="flex flex-col md:flex-row overflow-x-hidden p-0">
+
+    <div class="h-full lg:w-80 lg:pl-10">
+      <%- include('./layouts/superSidebar'); -%>
+    </div>
+
+    <section id="admin-edit" class="min-h-screen w-full bg-white rounded-tl-2xl md:rounded-tl-3xl rounded-tr-2xl md:rounded-tr-2xl p-6 md:p-8">
+      
+      <div class="flex flex-col sm:flex-row md:flex-row">
+        <p class="text-main font-bold text-xl md:text-2xl">Mengubah Data Admin</p>
+        <p class="text-red-500 font-medium text-xs">* harus diisi</p>
+      </div>
+
       <form id="form-admin-edit" class="">
         <div id="bg-table-admin" class="h-max shadow-[0_0px_40px_-15px_rgba(0,0,0,0.2)] w-full mt-8 rounded-3xl p-8 bg-main">
           <div class="flex flex-col gap-4">
@@ -52,12 +61,12 @@
             </label>
           </div>
         </div>
-        <div class="flex justify-between mt-7">
-          <div class="">
-            <button id="button-katasandi" type="button" class="py-2 px-10 bg-red-500 text-white text-sm rounded-full ms-auto hover:bg-red-500/80 duration-200">Ubah Kata Sandi</button>
+        <div class="flex mt-7 flex-col justify-center md:justify-between w-full gap-2 md:gap-0">
+          <div class="flex h-fit w-full justify-center md:justify-start">
+            <button id="button-katasandi" type="button" class="py-2 px-10 w-52 md:w-auto bg-red-500 text-white text-sm rounded-full hover:bg-red-500/80 duration-200">Ubah Kata Sandi</button>
           </div>
-          <div class="mt-10">
-            <button id="button-selesai" type="button" class="py-2 px-10 bg-main text-white text-sm rounded-full ms-auto hover:bg-main/80 duration-200">Selesai</button>
+          <div class="mt-0 md:mt-10 w-full flex justify-center md:justify-end">
+            <button id="button-selesai" type="button" class="py-2 px-10 w-52 md:w-auto bg-main text-white text-sm rounded-full hover:bg-main/80 duration-200">Selesai</button>
           </div>
         </div>
       </form>
@@ -72,14 +81,14 @@
           <button type="button" id="button-simpan-data" class="py-1.5 px-8 bg-main text-white rounded-full text-sm">Selesai</button>
         </div>
       </div>
-      <div id="confirm-popup" class="w-[30%] bg-white m-auto flex flex-col items-center py-10 rounded-2xl gap-2 hidden">
+      <div id="confirm-popup" class="w-[95%] md:w-[30%] bg-white m-auto flex flex-col items-center py-10 rounded-2xl gap-2 hidden">
         <img src="/img/check.png" width="70" alt="">
         <p class="text-sm">Data berhasil diubah</p>
         <button type="button" class="py-1.5 px-8 bg-main text-white rounded-full text-sm mt-4">OK</button>
       </div>
       <div id="popup-katasandi" class="delete-popup bg-white m-auto flex flex-col py-4 rounded-lg text-left px-4 hidden">
         <form id="form-admin-edit-katasandi">
-          <p class="text-left font-bold text-lg text-main mb-3">Mengubah Katasandi</p>
+          <p class="text-left font-bold text-lg text-main mb-3">Mengubah kata sandi</p>
           <div id="password-confirmation" class="flex flex-col gap-2 mt-3">
             <label class="block">
                 <span class="text-main font-medium text-xs mb-3">Masukan kata sandi baru <span class="text-red-500 font-medium text-xs">*</span></span>

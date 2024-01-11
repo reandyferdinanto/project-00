@@ -1,9 +1,9 @@
 <%- include('./layouts/header'); -%>
 <body class="h-screen flex items-center bg-second">
-  <section id="login-page" class="w-[35%] m-auto">
+  <section id="login-page" class="w-[95%] md:w-[75%] lg:w-[30%] m-auto">
     <form id="form-login" class="flex flex-col border-2 border-third rounded-2xl overflow-hidden">
-      <div class="bg-main px-12 pt-5 pb-8">
-        <div class="login-page-head text-center flex flex-col gap-4 mb-5">
+      <div class="bg-main px-2 md:px-12 pt-5 pb-8">
+        <div class="login-page-head text-center flex flex-col gap-4 mb-5 md:mb-10 lg:mb-5">
           <p class="font-bold text-lg text-white/70">MASUK KE LMS</p>
           <img src="/img/logo.png" alt="" width="50%" class="m-auto"/>
           <div class="flex items-center gap-3 text-left bg-[#000]/30 rounded-lg px-3 py-2.5">
@@ -11,8 +11,8 @@
               <path d="M22.5 37.5H27.5V22.5H22.5V37.5ZM25 17.5C25.7083 17.5 26.3021 17.2604 26.7812 16.7812C27.2604 16.3021 27.5 15.7083 27.5 15C27.5 14.2917 27.2604 13.6979 26.7812 13.2187C26.3021 12.7396 25.7083 12.5 25 12.5C24.2917 12.5 23.6979 12.7396 23.2187 13.2187C22.7396 13.6979 22.5 14.2917 22.5 15C22.5 15.7083 22.7396 16.3021 23.2187 16.7812C23.6979 17.2604 24.2917 17.5 25 17.5ZM25 50C21.5417 50 18.2917 49.3437 15.25 48.0312C12.2083 46.7187 9.5625 44.9375 7.3125 42.6875C5.0625 40.4375 3.28125 37.7917 1.96875 34.75C0.65625 31.7083 0 28.4583 0 25C0 21.5417 0.65625 18.2917 1.96875 15.25C3.28125 12.2083 5.0625 9.5625 7.3125 7.3125C9.5625 5.0625 12.2083 3.28125 15.25 1.96875C18.2917 0.65625 21.5417 0 25 0C28.4583 0 31.7083 0.65625 34.75 1.96875C37.7917 3.28125 40.4375 5.0625 42.6875 7.3125C44.9375 9.5625 46.7187 12.2083 48.0312 15.25C49.3437 18.2917 50 21.5417 50 25C50 28.4583 49.3437 31.7083 48.0312 34.75C46.7187 37.7917 44.9375 40.4375 42.6875 42.6875C40.4375 44.9375 37.7917 46.7187 34.75 48.0312C31.7083 49.3437 28.4583 50 25 50Z" fill="#FBDA5B"/>
             </svg>
             <div class="">
-              <p class="text-xs text-[#FBDA5B] font-bold">Petunjuk Username</p>
-              <p class="text-xs text-white"><b>Username anda adalah Kode Sekolah 4 Digit + NUPTK</b><br>
+              <p class="text-[11px] md:text-xs text-[#FBDA5B] font-bold">Petunjuk Username</p>
+              <p class="text-[11px] md:text-xs text-white"><b>Username anda adalah Kode Sekolah 4 Digit + NUPTK</b><br>
                 Contoh: Jika kode sekolah kamu adalah 0001 dan NUPTK adalah 789456, maka username kamu adalah 0001789456.</p>
             </div>
           </div>

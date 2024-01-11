@@ -5,28 +5,30 @@
   <%- include('./layouts/navbar'); -%>
   <p id="user_id" class="hidden"><%= user.id %></p>
 
-  <main>
+  <main class="flex flex-col md:flex-row overflow-x-hidden p-0">
     <!-- SIDEBAR START -->
-    <%- include('./layouts/superSidebar'); -%>
+    <div class="h-full lg:w-80 lg:pl-10">
+      <%- include('./layouts/superSidebar'); -%>
+    </div>
     <!-- SIDEBAR END -->
 
 
     <div class="main-content">
-      <div class="main-background">
+      <div class="main-background min-h-screen w-full bg-white rounded-tl-2xl md:rounded-tl-3xl rounded-tr-2xl md:rounded-tr-2xl p-6 md:p-8">
 
         <!-- HAPUS UJIAN START -->
-        <div class="main-title">
+        <div class="main-title flex flex-col sm:flex-row md:flex-row">
           <p class="text-main font-bold text-2xl mt-3">Mengubah Ujian</p>
-          <form action="" id="form-hapus-ujian">
-            <button type="button" id="button-delete" class="text-sm rounded-lg py-2 px-10 text-white mt-10 bg-red-500">Hapus Ujian</button>
+          <form action="" id="form-hapus-ujian" class="flex w-full justify-end">
+            <button type="button" id="button-delete" class="text-sm rounded-lg py-2 px-10 text-white mt-2 md:mt-10 bg-red-500">Hapus Ujian</button>
           </form>
         </div>
         <!-- HAPUS UJIAN START -->
 
 
-        <form id="form-submit-exam" action="/api/exams">
+        <form id="form-submit-exam" action="/api/exams" class="flex flex-col">
           <!-- EXAM START -->
-          <div class="main-input">
+          <div class="main-input h-max shadow-[0_0px_40px_-15px_rgba(0,0,0,0.2)] w-full mt-8 rounded-3xl p-8 bg-main">
             <label for="">
               Nama Ujian <br />
               <input class="exam-type text-main" type="text" name="exam_name" id="exam_name" required placeholder="masukan nama ujian" />

@@ -5,21 +5,31 @@
   <p id="user_id" class="hidden"><%= user.id %></p>
 
   <!-- MAIN -->
-  <main>
-    <%- include('./layouts/superSidebar'); -%>
+  <main class="flex flex-col md:flex-row overflow-x-hidden p-0">
 
-    <section id="siswa-create" class="min-h-screen bg-white rounded-tl-3xl p-8">
-      <div class="flex justify-between">
-        <p class="text-main font-bold text-2xl">Menambahkan Siswa Baru <span class="text-red-500 font-medium text-xs">* harus diisi</span></p>
+    <div class="h-full lg:w-80 lg:pl-10">
+      <%- include('./layouts/superSidebar'); -%>
+    </div>
+
+    <section id="siswa-create" class="min-h-screen w-full bg-white rounded-tl-2xl md:rounded-tl-3xl rounded-tr-2xl md:rounded-tr-2xl p-6 md:p-8">
+
+      <div class="flex flex-col md:flex-row justify-center md:justify-between">
+        
+        <div class="flex flex-col sm:flex-row md:flex-row">
+          <p class="text-main font-bold text-xl md:text-2xl">Menambahkan Siswa Baru </p>
+          <p class="text-red-500 font-medium text-xs">* harus diisi</p>
+        </div>
+
         <div class="">
           <form id="form-siswa-upload">
-            <div class="mt-10 flex justify-between p-2 bg-main rounded-full text-white text-sm">
+            <div class="mt-2 md:mt-10 flex justify-between p-2 bg-main rounded-full text-white text-sm">
               <input type="file" name="siswa_upload" id="button-file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
               <button id="button-upload" type="submit" class="bg-[#faebd7] text-main px-4 py-1 rounded-full">Upload</button>
             </div>
             <p class="text-xs text-main mt-1 ms-3">*pilih file yang diinginkan lalu tekan tombol upload</p>
           </form>
         </div>
+
       </div>
       
       <!-- Fotm tambah siswa -->
@@ -82,7 +92,7 @@
 
 
         <section id="popup" class="bg-[#000]/50 fixed top-0 bottom-0 right-0 left-0 flex items-center hidden">
-          <div class="delete-popup w-[50%] bg-white m-auto flex flex-col items-center py-20 rounded-2xl">
+          <div class="delete-popup w-[95%] md:w-[50%] bg-white m-auto flex flex-col items-center py-20 rounded-2xl">
             <img src="/img/warning-alt.png" alt="" width="120px">
             <p class="text-sm my-3">Apakah anda yakin ingin membuat data tersebut ?</p>
             <div class="mt-4 flex gap-4">
@@ -90,7 +100,7 @@
               <button type="submit" class="py-1.5 px-8 bg-main text-white rounded-full text-sm">Selesai</button>
             </div>
           </div>
-          <div id="confirm-popup" class="w-[30%] bg-white m-auto flex flex-col items-center py-10 rounded-2xl gap-2 hidden">
+          <div id="confirm-popup" class="w-[95%] md:w-[30%] bg-white m-auto flex flex-col items-center py-10 rounded-2xl gap-2 hidden">
             <img src="/img/check.png" width="70" alt="">
             <p class="text-sm">Data berhasil ditambahkan</p>
             <button type="button" class="py-1.5 px-8 bg-main text-white rounded-full text-sm mt-4">OK</button>
