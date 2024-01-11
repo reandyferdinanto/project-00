@@ -5,12 +5,12 @@ dotenv.config();
 let sequelize: Sequelize
 console.log("ENV_TYPE:", process.env.ENV_TYPE);
 
-if(process.env.ENV_TYPE == 'production'){
+if (process.env.ENV_TYPE === 'production') {
   sequelize = new Sequelize({
     dialect: "mysql",
     host: process.env.DB_HOST,
     username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
+    port: parseInt(process.env.DB_PORT || '3306', 10),
     database: process.env.DB_NAME,
     dialectOptions: {
       ssl: {
@@ -24,6 +24,7 @@ if(process.env.ENV_TYPE == 'production'){
   sequelize = new Sequelize({
     dialect: "mysql",
     host: "127.0.0.1",
+    port: 3306, // Specify the default MySQL port
     username: "root",
     password: "1234",
     database: "muslim-maya",
