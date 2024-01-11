@@ -14,7 +14,7 @@ const app = (0, express_1.default)();
 const cspOptions = {
     directives: {
         defaultSrc: ["'self'"],
-        imgSrc: ["'self'", "data:", "blob:"],
+        imgSrc: ["'self'", "data:", "blob:"], // Menambahkan "blob:"
         scriptSrc: [
             "'self'",
             'code.jquery.com',
@@ -61,7 +61,7 @@ app.use((0, helmet_1.default)({
 }));
 app.use(helmet_1.default.contentSecurityPolicy(cspOptions));
 app.use(helmet_1.default.hsts({
-    maxAge: 31536000,
+    maxAge: 31536000, // Durasi HSTS dalam detik (setahun)
     includeSubDomains: true, // Sertakan subdomain
 }));
 app.use(express_1.default.urlencoded({ extended: true }));

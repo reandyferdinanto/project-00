@@ -24,7 +24,7 @@ Question.init({
     createdAt: sequelize_1.DataTypes.DATE,
     updatedAt: sequelize_1.DataTypes.DATE,
 }, {
-    tableName: "question",
+    tableName: "question", // Nama tabel di database
     sequelize: // Nama tabel di database
     _1.sequelize, // Instance Sequelize yang digunakan
 });

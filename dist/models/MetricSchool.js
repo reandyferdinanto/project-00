@@ -30,7 +30,7 @@ MetricSchool.init({
     createdAt: sequelize_1.DataTypes.DATE,
     updatedAt: sequelize_1.DataTypes.DATE,
 }, {
-    tableName: "metricschool",
+    tableName: "metricschool", // Nama tabel di database
     sequelize: // Nama tabel di database
     _1.sequelize, // Instance Sequelize yang digunakan
 });

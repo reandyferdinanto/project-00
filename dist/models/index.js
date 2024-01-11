@@ -28,21 +28,29 @@ const sequelize_1 = require("sequelize");
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
 let sequelize;
-if (process.env.ENV_TYPE == 'production') {
+console.log("ENV_TYPE:", process.env.ENV_TYPE);
+if (process.env.ENV_TYPE === 'production') {
     exports.sequelize = sequelize = new sequelize_1.Sequelize({
         dialect: "mysql",
         host: process.env.DB_HOST,
         username: process.env.DB_USERNAME,
-        password: process.env.DB_PASSWORD,
+        password: process.env.DB_PASSWORD || '',
+        port: parseInt(process.env.DB_PORT || '3306', 10),
         database: process.env.DB_NAME,
+        dialectOptions: {
+            ssl: {
+                rejectUnauthorized: false,
+            },
+        },
     });
 }
 else {
     console.log("DB run on local");
-    // Konfigurasi koneksi database Anda
+    // Local configuration
     exports.sequelize = sequelize = new sequelize_1.Sequelize({
         dialect: "mysql",
         host: "127.0.0.1",
+        port: 3306, // Specify the default MySQL port
         username: "root",
         password: "1234",
         database: "muslim-maya",
