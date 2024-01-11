@@ -42,11 +42,16 @@ else {
     // Konfigurasi koneksi database Anda
     exports.sequelize = sequelize = new sequelize_1.Sequelize({
         dialect: "mysql",
-        host: "127.0.0.1",
-        username: "root",
-        password: "181001",
+        host: "mysql-9309b94-r-database.a.aivencloud.com",
+        port: 24416,
+        username: "avnadmin",
+        password: "AVNS_OP-WB1Y5niLQBenGZKl",
         database: "muslim-maya",
-        logging: false,
+        dialectOptions: {
+            ssl: {
+              rejectUnauthorized: false,
+            },
+        }
     });
 }
 // Fungsi untuk menghubungkan ke database
