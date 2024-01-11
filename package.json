@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node ./dist/server.js && echo 'Server started'",
+    "start": "node ./dist/server.js",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "tailwind": "npx tailwindcss -i ./public/css/input.css -o ./public/css/output.css --watch",
     "build": "tsc"
