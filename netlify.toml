@@ -1,4 +1,4 @@
 [build]
-command = "npm install && npx tsc && npm run start"
+command = "npm install && npm run start"
 publish = "dist"
 
