@@ -4,5 +4,5 @@
   status = 200
 
 [build]
-  command = "npx tsc && npm run start"
-  publish = "dist"
+  command = "npx typescript && npm run start"
+  publish = "dist
