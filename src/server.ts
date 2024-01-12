@@ -5,25 +5,6 @@ import multer from 'multer';
 import cookieParser from "cookie-parser"
 import cors from "cors"
 import helmet from 'helmet';
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyCd_rm6rDRmy4xbVA_5tZOs2mxOmGYbfWM",
-  authDomain: "my-project-b3322.firebaseapp.com",
-  projectId: "my-project-b3322",
-  storageBucket: "my-project-b3322.appspot.com",
-  messagingSenderId: "442853102379",
-  appId: "1:442853102379:web:5445b4b6eeef1d46586b6e",
-  measurementId: "G-47BFBMRVCC"
-};
-
-// Initialize Firebase
-const apps = initializeApp(firebaseConfig);
-const analytics = getAnalytics(apps);
-
-
 
 const app = express();
 
@@ -133,3 +114,4 @@ connectToDatabase()
   .catch((error) => {
     console.error("Koneksi database gagal:", error);
   });
+

@@ -5,7 +5,7 @@
   <p id="user_id" class="hidden"><%= user.id %></p>
 
   <!-- MAIN - FULL SCREEN & TABLET SCREEN-->
-  <main class="flex flex-col sm:flex-row md:flex-row sm:flex overflow-x-hidden p-0">
+  <main class="flex flex-col sm:flex-row md:flex-row p-0">
 
     <div class="h-full lg:w-80 lg:pl-10">
       <%- include('./layouts/superSidebar'); -%>
@@ -22,7 +22,7 @@
       </div>
 
       <!-- sort - search - select -->
-      <div id="bg-table-admin" class="h-full md:min-h-screen shadow-[0_0px_40px_-15px_rgba(0,0,0,0.2)] w-full mt-0 md:mt-8 rounded-3xl p-4 md:p-4 sm:p-8 bg-white">
+      <div id="bg-table-admin" class="h-full md:h-screen shadow-[0_0px_40px_-15px_rgba(0,0,0,0.2)] w-full mt-0 md:mt-8 rounded-3xl p-4 md:p-4 sm:p-8 bg-white">
         <form id="form-admin-delete">
 
           <div class="md:hidden flex flex-col">
@@ -93,7 +93,7 @@
           </div>
           
 
-          <div class="md:hidden flex min-h-screen w-full justify-center overflow-y-auto">
+          <div class="md:hidden flex h-screen w-full justify-center overflow-y-auto">
             <div id="admin-card" class="max-h-[calc(100vh-80px)] overflow-y-auto"></div>
           </div>
 
